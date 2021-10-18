@@ -27,6 +27,9 @@
     ]
   },
   "projects": {
+    "backend-feature-table": {
+      "tags": []
+    },
     "pokermoons-backend": {
       "tags": []
     },
@@ -36,6 +39,9 @@
     "pokermoons-frontend-e2e": {
       "tags": [],
       "implicitDependencies": ["pokermoons-frontend"]
+    },
+    "shared-type": {
+      "tags": []
     }
   }
 }
