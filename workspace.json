@@ -13,7 +13,9 @@
             "outputPath": "dist/apps/pokermoons-backend",
             "main": "apps/pokermoons-backend/src/main.ts",
             "tsConfig": "apps/pokermoons-backend/tsconfig.app.json",
-            "assets": ["apps/pokermoons-backend/src/assets"]
+            "assets": ["apps/pokermoons-backend/src/assets"],
+            "maxWorkers": 2,
+            "memoryLimit": 1024
           },
           "configurations": {
             "production": {
