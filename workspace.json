@@ -1,6 +1,28 @@
 {
   "version": 1,
   "projects": {
+    "backend-feature-table": {
+      "root": "libs/backend/feature/table",
+      "sourceRoot": "libs/backend/feature/table/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/backend/feature/table/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/backend/feature/table"],
+          "options": {
+            "jestConfig": "libs/backend/feature/table/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
     "pokermoons-backend": {
       "root": "apps/pokermoons-backend",
       "sourceRoot": "apps/pokermoons-backend/src",
@@ -169,6 +191,28 @@
           "outputs": ["{options.outputFile}"],
           "options": {
             "lintFilePatterns": ["apps/pokermoons-frontend-e2e/**/*.{js,ts}"]
+          }
+        }
+      }
+    },
+    "shared-type": {
+      "root": "libs/shared/type",
+      "sourceRoot": "libs/shared/type/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/shared/type/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/shared/type"],
+          "options": {
+            "jestConfig": "libs/shared/type/jest.config.js",
+            "passWithNoTests": true
           }
         }
       }

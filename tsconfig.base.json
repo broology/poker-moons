@@ -14,8 +14,13 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {},
-    "strict": true
+    "strict": true,
+    "paths": {
+      "@poker-moons/backend/feature/table": [
+        "libs/backend/feature/table/src/index.ts"
+      ],
+      "@poker-moons/shared/type": ["libs/shared/type/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
