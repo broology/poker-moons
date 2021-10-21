@@ -7,7 +7,7 @@ describe('AppService', () => {
 
   beforeAll(async () => {
     const app = await Test.createTestingModule({
-      providers: [AppService],
+      providers: [AppService]
     }).compile();
 
     service = app.get<AppService>(AppService);
@@ -16,7 +16,7 @@ describe('AppService', () => {
   describe('getData', () => {
     it('should return "Welcome to pokermoons-backend!"', () => {
       expect(service.getData()).toEqual({
-        message: 'Welcome to pokermoons-backend!',
+        message: 'Welcome to pokermoons-backend!'
       });
     });
   });

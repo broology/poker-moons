@@ -19,7 +19,7 @@ async function bootstrap() {
       whitelist: true,
       validateCustomDecorators: true,
       forbidNonWhitelisted: true,
-      forbidUnknownValues: true,
+      forbidUnknownValues: true
     })
   );
 

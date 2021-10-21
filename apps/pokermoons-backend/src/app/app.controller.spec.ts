@@ -9,7 +9,7 @@ describe('AppController', () => {
   beforeAll(async () => {
     app = await Test.createTestingModule({
       controllers: [AppController],
-      providers: [AppService],
+      providers: [AppService]
     }).compile();
   });
 
@@ -17,7 +17,7 @@ describe('AppController', () => {
     it('should return "Welcome to pokermoons-backend!"', () => {
       const appController = app.get<AppController>(AppController);
       expect(appController.getData()).toEqual({
-        message: 'Welcome to pokermoons-backend!',
+        message: 'Welcome to pokermoons-backend!'
       });
     });
   });

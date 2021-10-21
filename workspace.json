@@ -8,14 +8,20 @@
       "architect": {
         "lint": {
           "builder": "@nrwl/linter:eslint",
-          "outputs": ["{options.outputFile}"],
+          "outputs": [
+            "{options.outputFile}"
+          ],
           "options": {
-            "lintFilePatterns": ["libs/backend/feature/table/**/*.ts"]
+            "lintFilePatterns": [
+              "libs/backend/feature/table/**/*.ts"
+            ]
           }
         },
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/backend/feature/table"],
+          "outputs": [
+            "coverage/libs/backend/feature/table"
+          ],
           "options": {
             "jestConfig": "libs/backend/feature/table/jest.config.js",
             "passWithNoTests": true
@@ -30,12 +36,16 @@
       "architect": {
         "build": {
           "builder": "@nrwl/node:build",
-          "outputs": ["{options.outputPath}"],
+          "outputs": [
+            "{options.outputPath}"
+          ],
           "options": {
             "outputPath": "dist/apps/pokermoons-backend",
             "main": "apps/pokermoons-backend/src/main.ts",
             "tsConfig": "apps/pokermoons-backend/tsconfig.app.json",
-            "assets": ["apps/pokermoons-backend/src/assets"],
+            "assets": [
+              "apps/pokermoons-backend/src/assets"
+            ],
             "maxWorkers": 2,
             "memoryLimit": 1024
           },
@@ -61,14 +71,20 @@
         },
         "lint": {
           "builder": "@nrwl/linter:eslint",
-          "outputs": ["{options.outputFile}"],
+          "outputs": [
+            "{options.outputFile}"
+          ],
           "options": {
-            "lintFilePatterns": ["apps/pokermoons-backend/**/*.ts"]
+            "lintFilePatterns": [
+              "apps/pokermoons-backend/**/*.ts"
+            ]
           }
         },
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/apps/pokermoons-backend"],
+          "outputs": [
+            "coverage/apps/pokermoons-backend"
+          ],
           "options": {
             "jestConfig": "apps/pokermoons-backend/jest.config.js",
             "passWithNoTests": true
@@ -84,7 +100,9 @@
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
-          "outputs": ["{options.outputPath}"],
+          "outputs": [
+            "{options.outputPath}"
+          ],
           "options": {
             "outputPath": "dist/apps/pokermoons-frontend",
             "index": "apps/pokermoons-frontend/src/index.html",
@@ -96,7 +114,9 @@
               "apps/pokermoons-frontend/src/favicon.ico",
               "apps/pokermoons-frontend/src/assets"
             ],
-            "styles": ["apps/pokermoons-frontend/src/styles.scss"],
+            "styles": [
+              "apps/pokermoons-frontend/src/styles.scss"
+            ],
             "scripts": []
           },
           "configurations": {
@@ -161,7 +181,9 @@
         },
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/apps/pokermoons-frontend"],
+          "outputs": [
+            "coverage/apps/pokermoons-frontend"
+          ],
           "options": {
             "jestConfig": "apps/pokermoons-frontend/jest.config.js",
             "passWithNoTests": true
@@ -188,9 +210,13 @@
         },
         "lint": {
           "builder": "@nrwl/linter:eslint",
-          "outputs": ["{options.outputFile}"],
+          "outputs": [
+            "{options.outputFile}"
+          ],
           "options": {
-            "lintFilePatterns": ["apps/pokermoons-frontend-e2e/**/*.{js,ts}"]
+            "lintFilePatterns": [
+              "apps/pokermoons-frontend-e2e/**/*.{js,ts}"
+            ]
           }
         }
       }
@@ -202,14 +228,20 @@
       "architect": {
         "lint": {
           "builder": "@nrwl/linter:eslint",
-          "outputs": ["{options.outputFile}"],
+          "outputs": [
+            "{options.outputFile}"
+          ],
           "options": {
-            "lintFilePatterns": ["libs/shared/type/**/*.ts"]
+            "lintFilePatterns": [
+              "libs/shared/type/**/*.ts"
+            ]
           }
         },
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/shared/type"],
+          "outputs": [
+            "coverage/libs/shared/type"
+          ],
           "options": {
             "jestConfig": "libs/shared/type/jest.config.js",
             "passWithNoTests": true

@@ -5,7 +5,8 @@ import { TableModule } from './table/table.module';
 @Module({
   imports: [
     TableModule,
-    RouterModule.register([{ path: 'table', module: TableModule }]),
-  ],
+    RouterModule.register([{ path: 'table', module: TableModule }])
+  ]
 })
-export class BackendFeatureTableModule {}
+export class BackendFeatureTableModule {
+}

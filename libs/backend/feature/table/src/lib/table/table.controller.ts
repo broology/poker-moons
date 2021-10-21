@@ -5,7 +5,8 @@ import { CreateTableRequestValidator } from './table.validator';
 
 @Controller()
 export class TableController {
-  constructor(private readonly tableService: TableService) {}
+  constructor(private readonly tableService: TableService) {
+  }
 
   @Post()
   create(@Body() dto: CreateTableRequestValidator): CreateTableResponse {

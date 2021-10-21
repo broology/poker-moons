@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 @Module({
   imports: [BackendFeatureTableModule],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService]
 })
-export class AppModule {}
+export class AppModule {
+}

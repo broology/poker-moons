@@ -1,8 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import {
-  CreateTableRequest,
-  CreateTableResponse,
-} from '@poker-moons/shared/type';
+import { CreateTableRequest, CreateTableResponse } from '@poker-moons/shared/type';
 
 @Injectable()
 export class TableService {
@@ -10,7 +7,7 @@ export class TableService {
     return {
       id: 'table_id',
       players: [],
-      ...dto,
+      ...dto
     };
   }
 }
