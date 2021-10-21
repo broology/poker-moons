@@ -1,10 +1,9 @@
-import { Module } from '@nestjs/common';
-import { TableController } from './table.controller';
-import { TableService } from './table.service';
+import { Module } from "@nestjs/common";
+import { TableController } from "./table.controller";
+import { TableService } from "./table.service";
 
 @Module({
-  controllers: [TableController],
-  providers: [TableService]
+    controllers: [TableController],
+    providers: [TableService]
 })
-export class TableModule {
-}
+export class TableModule {}
