@@ -3,7 +3,6 @@
     "version": "0.0.0",
     "license": "MIT",
     "scripts": {
-        "nx": "node --max_old_space_size=4096 ./node_modules/.bin/nx",
         "ng": "nx",
         "postinstall": "node ./decorate-angular-cli.js && ngcc --properties es2015 browser module main",
         "start": "nx serve",

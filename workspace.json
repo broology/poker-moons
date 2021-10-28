@@ -1,6 +1,59 @@
 {
     "version": 1,
     "projects": {
+        "backend": {
+            "root": "apps/backend",
+            "sourceRoot": "apps/backend/src",
+            "projectType": "application",
+            "architect": {
+                "build": {
+                    "builder": "@nrwl/node:build",
+                    "outputs": ["{options.outputPath}"],
+                    "options": {
+                        "outputPath": "dist/apps/backend",
+                        "main": "apps/backend/src/main.ts",
+                        "tsConfig": "apps/backend/tsconfig.app.json",
+                        "assets": ["apps/backend/src/assets"],
+                        "maxWorkers": 2,
+                        "memoryLimit": 1024
+                    },
+                    "configurations": {
+                        "production": {
+                            "optimization": true,
+                            "extractLicenses": true,
+                            "inspect": false,
+                            "fileReplacements": [
+                                {
+                                    "replace": "apps/backend/src/environments/environment.ts",
+                                    "with": "apps/backend/src/environments/environment.prod.ts"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "serve": {
+                    "builder": "@nrwl/node:execute",
+                    "options": {
+                        "buildTarget": "backend:build"
+                    }
+                },
+                "lint": {
+                    "builder": "@nrwl/linter:eslint",
+                    "outputs": ["{options.outputFile}"],
+                    "options": {
+                        "lintFilePatterns": ["apps/backend/**/*.ts"]
+                    }
+                },
+                "test": {
+                    "builder": "@nrwl/jest:jest",
+                    "outputs": ["coverage/apps/backend"],
+                    "options": {
+                        "jestConfig": "apps/backend/jest.config.js",
+                        "passWithNoTests": true
+                    }
+                }
+            }
+        },
         "backend-feature-table": {
             "root": "libs/backend/feature/table",
             "sourceRoot": "libs/backend/feature/table/src",
@@ -23,77 +76,24 @@
                 }
             }
         },
-        "pokermoons-backend": {
-            "root": "apps/pokermoons-backend",
-            "sourceRoot": "apps/pokermoons-backend/src",
+        "frontend": {
             "projectType": "application",
-            "architect": {
-                "build": {
-                    "builder": "@nrwl/node:build",
-                    "outputs": ["{options.outputPath}"],
-                    "options": {
-                        "outputPath": "dist/apps/pokermoons-backend",
-                        "main": "apps/pokermoons-backend/src/main.ts",
-                        "tsConfig": "apps/pokermoons-backend/tsconfig.app.json",
-                        "assets": ["apps/pokermoons-backend/src/assets"],
-                        "maxWorkers": 2,
-                        "memoryLimit": 1024
-                    },
-                    "configurations": {
-                        "production": {
-                            "optimization": true,
-                            "extractLicenses": true,
-                            "inspect": false,
-                            "fileReplacements": [
-                                {
-                                    "replace": "apps/pokermoons-backend/src/environments/environment.ts",
-                                    "with": "apps/pokermoons-backend/src/environments/environment.prod.ts"
-                                }
-                            ]
-                        }
-                    }
-                },
-                "serve": {
-                    "builder": "@nrwl/node:execute",
-                    "options": {
-                        "buildTarget": "pokermoons-backend:build"
-                    }
-                },
-                "lint": {
-                    "builder": "@nrwl/linter:eslint",
-                    "outputs": ["{options.outputFile}"],
-                    "options": {
-                        "lintFilePatterns": ["apps/pokermoons-backend/**/*.ts"]
-                    }
-                },
-                "test": {
-                    "builder": "@nrwl/jest:jest",
-                    "outputs": ["coverage/apps/pokermoons-backend"],
-                    "options": {
-                        "jestConfig": "apps/pokermoons-backend/jest.config.js",
-                        "passWithNoTests": true
-                    }
-                }
-            }
-        },
-        "pokermoons-frontend": {
-            "projectType": "application",
-            "root": "apps/pokermoons-frontend",
-            "sourceRoot": "apps/pokermoons-frontend/src",
+            "root": "apps/frontend",
+            "sourceRoot": "apps/frontend/src",
             "prefix": "poker-moons",
             "architect": {
                 "build": {
                     "builder": "@angular-devkit/build-angular:browser",
                     "outputs": ["{options.outputPath}"],
                     "options": {
-                        "outputPath": "dist/apps/pokermoons-frontend",
-                        "index": "apps/pokermoons-frontend/src/index.html",
-                        "main": "apps/pokermoons-frontend/src/main.ts",
-                        "polyfills": "apps/pokermoons-frontend/src/polyfills.ts",
-                        "tsConfig": "apps/pokermoons-frontend/tsconfig.app.json",
+                        "outputPath": "dist/apps/frontend",
+                        "index": "apps/frontend/src/index.html",
+                        "main": "apps/frontend/src/main.ts",
+                        "polyfills": "apps/frontend/src/polyfills.ts",
+                        "tsConfig": "apps/frontend/tsconfig.app.json",
                         "inlineStyleLanguage": "scss",
-                        "assets": ["apps/pokermoons-frontend/src/favicon.ico", "apps/pokermoons-frontend/src/assets"],
-                        "styles": ["apps/pokermoons-frontend/src/styles.scss"],
+                        "assets": ["apps/frontend/src/favicon.ico", "apps/frontend/src/assets"],
+                        "styles": ["apps/frontend/src/styles.scss"],
                         "scripts": []
                     },
                     "configurations": {
@@ -112,8 +112,8 @@
                             ],
                             "fileReplacements": [
                                 {
-                                    "replace": "apps/pokermoons-frontend/src/environments/environment.ts",
-                                    "with": "apps/pokermoons-frontend/src/environments/environment.prod.ts"
+                                    "replace": "apps/frontend/src/environments/environment.ts",
+                                    "with": "apps/frontend/src/environments/environment.prod.ts"
                                 }
                             ],
                             "outputHashing": "all"
@@ -133,10 +133,10 @@
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "configurations": {
                         "production": {
-                            "browserTarget": "pokermoons-frontend:build:production"
+                            "browserTarget": "frontend:build:production"
                         },
                         "development": {
-                            "browserTarget": "pokermoons-frontend:build:development"
+                            "browserTarget": "frontend:build:development"
                         }
                     },
                     "defaultConfiguration": "development"
@@ -144,42 +144,39 @@
                 "extract-i18n": {
                     "builder": "@angular-devkit/build-angular:extract-i18n",
                     "options": {
-                        "browserTarget": "pokermoons-frontend:build"
+                        "browserTarget": "frontend:build"
                     }
                 },
                 "lint": {
                     "builder": "@nrwl/linter:eslint",
                     "options": {
-                        "lintFilePatterns": [
-                            "apps/pokermoons-frontend/src/**/*.ts",
-                            "apps/pokermoons-frontend/src/**/*.html"
-                        ]
+                        "lintFilePatterns": ["apps/frontend/src/**/*.ts", "apps/frontend/src/**/*.html"]
                     }
                 },
                 "test": {
                     "builder": "@nrwl/jest:jest",
-                    "outputs": ["coverage/apps/pokermoons-frontend"],
+                    "outputs": ["coverage/apps/frontend"],
                     "options": {
-                        "jestConfig": "apps/pokermoons-frontend/jest.config.js",
+                        "jestConfig": "apps/frontend/jest.config.js",
                         "passWithNoTests": true
                     }
                 }
             }
         },
-        "pokermoons-frontend-e2e": {
-            "root": "apps/pokermoons-frontend-e2e",
-            "sourceRoot": "apps/pokermoons-frontend-e2e/src",
+        "frontend-e2e": {
+            "root": "apps/frontend-e2e",
+            "sourceRoot": "apps/frontend-e2e/src",
             "projectType": "application",
             "architect": {
                 "e2e": {
                     "builder": "@nrwl/cypress:cypress",
                     "options": {
-                        "cypressConfig": "apps/pokermoons-frontend-e2e/cypress.json",
-                        "devServerTarget": "pokermoons-frontend:serve:development"
+                        "cypressConfig": "apps/frontend-e2e/cypress.json",
+                        "devServerTarget": "frontend:serve:development"
                     },
                     "configurations": {
                         "production": {
-                            "devServerTarget": "pokermoons-frontend:serve:production"
+                            "devServerTarget": "frontend:serve:production"
                         }
                     }
                 },
@@ -187,7 +184,7 @@
                     "builder": "@nrwl/linter:eslint",
                     "outputs": ["{options.outputFile}"],
                     "options": {
-                        "lintFilePatterns": ["apps/pokermoons-frontend-e2e/**/*.{js,ts}"]
+                        "lintFilePatterns": ["apps/frontend-e2e/**/*.{js,ts}"]
                     }
                 }
             }

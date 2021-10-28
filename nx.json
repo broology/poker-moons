@@ -27,18 +27,18 @@
         ]
     },
     "projects": {
+        "backend": {
+            "tags": []
+        },
         "backend-feature-table": {
             "tags": []
         },
-        "pokermoons-backend": {
+        "frontend": {
             "tags": []
         },
-        "pokermoons-frontend": {
-            "tags": []
-        },
-        "pokermoons-frontend-e2e": {
+        "frontend-e2e": {
             "tags": [],
-            "implicitDependencies": ["pokermoons-frontend"]
+            "implicitDependencies": ["frontend"]
         },
         "shared-type": {
             "tags": []
