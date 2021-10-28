@@ -3,7 +3,7 @@
 // The list of file replacements can be found in `workspace.json`.
 
 export const environment = {
-  production: false,
+    production: false
 };
 
 /*

@@ -1,15 +1,15 @@
 module.exports = {
-  displayName: 'pokermoons-backend',
-  preset: '../../jest.preset.js',
-  globals: {
-    'ts-jest': {
-      tsconfig: '<rootDir>/tsconfig.spec.json',
+    displayName: "pokermoons-backend",
+    preset: "../../jest.preset.js",
+    globals: {
+        "ts-jest": {
+            tsconfig: "<rootDir>/tsconfig.spec.json"
+        }
     },
-  },
-  testEnvironment: 'node',
-  transform: {
-    '^.+\\.[tj]s$': 'ts-jest',
-  },
-  moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../../coverage/apps/pokermoons-backend',
+    testEnvironment: "node",
+    transform: {
+        "^.+\\.[tj]s$": "ts-jest"
+    },
+    moduleFileExtensions: ["ts", "js", "html"],
+    coverageDirectory: "../../coverage/apps/pokermoons-backend"
 };

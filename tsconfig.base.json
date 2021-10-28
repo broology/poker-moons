@@ -1,26 +1,24 @@
 {
-  "compileOnSave": false,
-  "compilerOptions": {
-    "rootDir": ".",
-    "sourceMap": true,
-    "declaration": false,
-    "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "importHelpers": true,
-    "target": "es2015",
-    "module": "esnext",
-    "lib": ["es2017", "dom"],
-    "skipLibCheck": true,
-    "skipDefaultLibCheck": true,
-    "baseUrl": ".",
-    "strict": true,
-    "paths": {
-      "@poker-moons/backend/feature/table": [
-        "libs/backend/feature/table/src/index.ts"
-      ],
-      "@poker-moons/shared/type": ["libs/shared/type/src/index.ts"]
-    }
-  },
-  "exclude": ["node_modules", "tmp"]
+    "compileOnSave": false,
+    "compilerOptions": {
+        "rootDir": ".",
+        "sourceMap": true,
+        "declaration": false,
+        "moduleResolution": "node",
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "importHelpers": true,
+        "target": "es2015",
+        "module": "esnext",
+        "lib": ["es2017", "dom"],
+        "skipLibCheck": true,
+        "skipDefaultLibCheck": true,
+        "baseUrl": ".",
+        "strict": true,
+        "paths": {
+            "@poker-moons/backend/feature/table": ["libs/backend/feature/table/src/index.ts"],
+            "@poker-moons/shared/type": ["libs/shared/type/src/index.ts"]
+        }
+    },
+    "exclude": ["node_modules", "tmp"]
 }
