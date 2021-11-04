@@ -1,4 +1,5 @@
 import { Player, PlayerId } from "./player";
+import { Round } from "./round";
 
 export type TableId = `table_${string}`;
 
@@ -25,4 +26,9 @@ export interface Table {
      * - The round ends when someone takes the pot.
      */
     roundCount: number;
+
+    /**
+     * The active round of the table
+     */
+    activeRound: Round;
 }
