@@ -1,4 +1,7 @@
-import { Table } from "../table";
+import { Table } from '../table';
 
-export type CreateTableRequest = Pick<Table, "name">;
+/**
+ * POST /table
+ */
+export type CreateTableRequest = Pick<Table, 'name'>;
 export type CreateTableResponse = Table;

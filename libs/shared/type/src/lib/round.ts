@@ -1,5 +1,5 @@
-import { Card } from "./card";
-import { PlayerId } from "./player";
+import { Card } from './card';
+import { PlayerId } from './player';
 
 export interface Round {
     /**

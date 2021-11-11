@@ -1,5 +1,5 @@
-import { Player, PlayerId } from "./player";
-import { Round } from "./round";
+import { Player, PlayerId } from './player';
+import { Round } from './round';
 
 export type TableId = `table_${string}`;
 

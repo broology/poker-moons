@@ -1,15 +1,16 @@
-import { Card } from "./card";
+import { Card } from './card';
 
 export type PlayerId = `player_${string}`;
 
 /**
  * - `waiting`: Awaiting action of player
+ * - `checked`: Played has checked
  * - `call`: Player has called the current bet
  * - `folded`: Player has folded out of the round
  * - `raised`: Player has raised the current bet
  * - `all-in`: Player has leveraged there stack in the current bet
  */
-export type PlayerStatus = "waiting" | "called" | "folded" | "raised" | "all-in";
+export type PlayerStatus = 'waiting' | 'checked' | 'called' | 'folded' | 'raised' | 'all-in';
 
 export interface Player {
     id: PlayerId;
