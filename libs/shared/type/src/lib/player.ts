@@ -1,3 +1,4 @@
+import { StrictOmit } from 'ts-essentials';
 import { Card } from './card';
 
 export type PlayerId = `player_${string}`;
@@ -49,3 +50,5 @@ export interface Player {
      */
     cards: Card[];
 }
+
+export type PublicPlayer = StrictOmit<Player, 'cards'>;

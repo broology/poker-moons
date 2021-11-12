@@ -14,9 +14,12 @@ export interface Table {
     name: string;
 
     /**
-     * A map of seats at the table and the players associated with them
+     * A map of seats at the table to the players associated with them
+     * seatMap defines order of seats (keys) and associated players (values)
+     *
+     *
      */
-    seatMap: Record<SeatId, { playerId: PlayerId; nextSeat: SeatId }>;
+    seatMap: Record<SeatId, PlayerId>;
 
     /**
      * A dictionary of the players sitting at the table
