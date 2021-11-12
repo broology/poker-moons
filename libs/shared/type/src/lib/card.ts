@@ -1,11 +1,14 @@
-type Suit = "C" | "D" | "H" | "S";
-type Rank = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13;
+export const suit = ['clubs', 'diamonds', 'hearts', 'spades'] as const;
+export type Suit = typeof suit[number];
+
+export const rank = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13'] as const;
+export type Rank = typeof rank[number];
 
 /**
- * A card in a deck containing a `Suit` and a `Rank`
- *
- * @example
- * 'C1' // Ace of Clubs
- * 'D12' // Queen of Diamonds
+ * Card
+ * @description A card in a deck containing a `Suit` and a `Rank`
  */
-export type Card = `${Suit}${Rank}`;
+export interface Card {
+    suit: Suit;
+    rank: Rank;
+}

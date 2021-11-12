@@ -1,15 +1,19 @@
-import { Card } from "./card";
+import { StrictOmit } from 'ts-essentials';
+import { Card } from './card';
 
 export type PlayerId = `player_${string}`;
 
+export const playerStatus = ['waiting', 'checked', 'called', 'folded', 'raised', 'all-in'] as const;
+
 /**
  * - `waiting`: Awaiting action of player
- * - `call`: Player has called the current bet
+ * - `checked`: Played has checked
+ * - `called`: Player has called the current bet
  * - `folded`: Player has folded out of the round
  * - `raised`: Player has raised the current bet
  * - `all-in`: Player has leveraged there stack in the current bet
  */
-export type PlayerStatus = "waiting" | "called" | "folded" | "raised" | "all-in";
+export type PlayerStatus = typeof playerStatus[number];
 
 export interface Player {
     id: PlayerId;
@@ -46,3 +50,5 @@ export interface Player {
      */
     cards: Card[];
 }
+
+export type PublicPlayer = StrictOmit<Player, 'cards'>;
