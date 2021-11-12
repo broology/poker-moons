@@ -11,7 +11,7 @@ export const playerStatus = ['waiting', 'checked', 'called', 'folded', 'raised',
  * - `called`: Player has called the current bet
  * - `folded`: Player has folded out of the round
  * - `raised`: Player has raised the current bet
- * - `all-ined`: Player has leveraged there stack in the current bet
+ * - `all-in`: Player has leveraged there stack in the current bet
  */
 export type PlayerStatus = typeof playerStatus[number];
 
