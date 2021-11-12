@@ -1,5 +1,8 @@
-import { Card } from './card';
-import { PlayerId } from './player';
+import type { Card } from './card';
+import type { SeatId } from './table';
+
+export const roundStatus = ['deal', 'flop', 'turn', 'river'] as const;
+export type RoundStatus = typeof roundStatus[number];
 
 export interface Round {
     /**
@@ -14,20 +17,26 @@ export interface Round {
 
     /**
      * Increments each time a turn is passed to another player
+     * Resets every time the round status changes
      */
     turnCount: number;
 
     /**
-     * The ID the active players turn
+     * The state of the round
      */
-    activePlayer: PlayerId;
+    roundStatus: RoundStatus;
 
     /**
-     * The index of the dealer in the player array
-     * - Small blind: (dealerIndex + 1) % # of players
-     * - Big blind: (dealerIndex + 2) % # of players
+     * The ID the active players turn
      */
-    dealerIndex: number;
+    activeSeat: SeatId;
+
+    /**
+     * The seat of the dealer in the player array
+     * - Small blind: (dealerSeat + 1) % # of players
+     * - Big blind: (dealerSeat + 2) % # of players
+     */
+    dealerSeat: SeatId;
 
     /**
      * The small blind during the round.

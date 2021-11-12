@@ -1,4 +1,4 @@
-import { PlayerAction } from '../player-action';
+import type { PlayerAction } from '../player-action';
 
 /**
  * PUT /table/:tableId/player/:playerId/action

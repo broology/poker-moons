@@ -1,7 +1,9 @@
-import { Player, PlayerId } from './player';
-import { Round } from './round';
+import type { Player, PlayerId } from './player';
+import type { Round } from './round';
 
 export type TableId = `table_${string}`;
+
+export type SeatId = 0 | 1 | 2 | 3 | 4 | 5;
 
 export interface Table {
     id: TableId;
@@ -12,14 +14,14 @@ export interface Table {
     name: string;
 
     /**
-     * The array of playerIds at the table
+     * A map of seats at the table and the players associated with them
      */
-    playerIds: PlayerId[];
+    seatMap: Record<SeatId, { playerId: PlayerId; nextSeat: SeatId }>;
 
     /**
      * A dictionary of the players sitting at the table
      */
-    players: Player[];
+    playerMap: Record<PlayerId, Player>;
 
     /**
      * The number of rounds played around a game.
