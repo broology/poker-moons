@@ -27,18 +27,8 @@
         ]
     },
     "projects": {
-        "backend": {
-            "tags": []
-        },
         "backend-feature-table": {
             "tags": []
-        },
-        "frontend": {
-            "tags": []
-        },
-        "frontend-e2e": {
-            "tags": [],
-            "implicitDependencies": ["frontend"]
         },
         "shared-type": {
             "tags": []
