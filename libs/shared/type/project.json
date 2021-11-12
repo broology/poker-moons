@@ -1,0 +1,23 @@
+{
+    "root": "libs/shared/type",
+    "sourceRoot": "libs/shared/type/src",
+    "projectType": "library",
+    "architect": {
+        "lint": {
+            "builder": "@nrwl/linter:eslint",
+            "outputs": ["{options.outputFile}"],
+            "options": {
+                "lintFilePatterns": ["libs/shared/type/**/*.ts"]
+            }
+        },
+        "test": {
+            "builder": "@nrwl/jest:jest",
+            "outputs": ["coverage/libs/shared/type"],
+            "options": {
+                "jestConfig": "libs/shared/type/jest.config.js",
+                "passWithNoTests": true
+            }
+        }
+    },
+    "tags": []
+}
