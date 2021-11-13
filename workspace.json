@@ -2,6 +2,7 @@
     "version": 2,
     "projects": {
         "backend-feature-table": "libs/backend/feature/table",
+        "frontend-shared-table-state": "libs/frontend/shared/table-state",
         "shared-type": "libs/shared/type"
     }
 }
