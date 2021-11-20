@@ -2,23 +2,12 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TableEvent } from '@poker-moons/shared/type';
-import { of } from 'rxjs';
-import { switchMap, tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
+import { connectToWs, tableWsActionMap } from '../actions/ws.actions';
 import { TableSocketService } from '../shared/data-access/table-socket.service';
-import { connectToWs, initialize, tableWsActionMap } from '../table-state.actions';
 
 @Injectable()
 export class TableStateWsEffects {
-    /**
-     * Fetches an loads the question into the state. Then triggers the action to connect to the websocket
-     */
-    loadTable$ = createEffect(() =>
-        this.actions$.pipe(
-            ofType(initialize),
-            switchMap(({ tableId }) => of(connectToWs.request({ payload: { tableId } }))),
-        ),
-    );
-
     /**
      * When the websocket is requested to be loaded.
      * - Initializes the socket connection

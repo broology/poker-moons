@@ -1,6 +1,6 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
 import { ClientTableState } from '@poker-moons/shared/type';
-import { connectToWs, tableWsActionMap } from './table-state.actions';
+import { connectToWs, tableWsActionMap } from './actions/ws.actions';
 
 export const initialState: ClientTableState = {
     playerMap: {},
@@ -24,6 +24,7 @@ export const initialState: ClientTableState = {
         turnCount: 0,
     },
     cards: [],
+    playerId: null,
 };
 
 export const storeFeature = createFeature({

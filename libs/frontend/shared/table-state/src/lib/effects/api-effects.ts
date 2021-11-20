@@ -1,4 +1,4 @@
 import { Injectable } from '@angular/core';
 
 @Injectable()
-export class TableStatePlayerActionEffects {}
+export class TableStateApiEffects {}

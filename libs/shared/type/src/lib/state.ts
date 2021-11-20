@@ -11,6 +11,11 @@ export interface SharedTableState extends Pick<Table, 'seatMap' | 'roundCount' |
 
 export interface ClientTableState extends SharedTableState {
     cards: [Card, Card] | [];
+
+    /**
+     * The `playerId` of client, if null, then the user hasn't joined the table yet
+     */
+    playerId: PlayerId | null;
 }
 
 export interface ServerTableState extends SharedTableState {

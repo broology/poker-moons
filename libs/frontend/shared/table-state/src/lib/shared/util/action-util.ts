@@ -5,7 +5,7 @@ export type ActionType<T> = ActionCreator<string, (props: { payload: T }) => { p
 
 export const generateActionName = (description: string): string => `[@poker-moons] ${description}`;
 
-export function createActionTyped<T>(description: string): ActionType<T> {
+export function createActionType<T>(description: string): ActionType<T> {
     return createAction(generateActionName(description), props<{ payload: T }>());
 }
 
@@ -23,8 +23,8 @@ export function buildAsyncRequestActions<Request, SuccessResponse, ErrorResponse
     failure: ActionType<ErrorResponse>;
 } {
     return {
-        request: createActionTyped(`${description} - request`),
-        success: createActionTyped(`${description} - success`),
-        failure: createActionTyped(`${description} - failed`),
+        request: createActionType(`${description} - request`),
+        success: createActionType(`${description} - success`),
+        failure: createActionType(`${description} - failed`),
     };
 }
