@@ -1,13 +1,6 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
 import { ClientTableState } from '@poker-moons/shared/type';
-import {
-    wsConnectionSuccessful,
-    wsPlayerJoined,
-    wsPlayerLeft,
-    wsPlayerTurn,
-    wsRoundStatusChanged,
-    wsWinnerWinnerChickenDinner,
-} from './table-state.actions';
+import { connectToWs, tableWsActionMap } from './table-state.actions';
 
 export const initialState: ClientTableState = {
     playerMap: {},
@@ -37,13 +30,13 @@ export const storeFeature = createFeature({
     name: 'tableState',
     reducer: createReducer<ClientTableState>(
         initialState,
-        on(wsConnectionSuccessful, (state, { payload }) => ({ ...state, ...payload })),
-        on(wsPlayerJoined, (state, { payload: { seatId, player } }) => ({
+        on(connectToWs.success, (state, { payload }) => ({ ...state, ...payload })),
+        on(tableWsActionMap.playerJoined, (state, { payload: { seatId, player } }) => ({
             ...state,
             playerMap: { ...state.playerMap, [player.id]: player },
             seatMap: { ...state.seatMap, [seatId]: player.id },
         })),
-        on(wsPlayerLeft, (state, { payload: { seatId } }) => {
+        on(tableWsActionMap.playerLeft, (state, { payload: { seatId } }) => {
             const playerId = state.seatMap[seatId];
 
             if (playerId == null) {
@@ -56,7 +49,7 @@ export const storeFeature = createFeature({
                 seatMap: { ...state.seatMap, [seatId]: null },
             };
         }),
-        on(wsPlayerTurn, (state, { payload }) => {
+        on(tableWsActionMap.turn, (state, { payload }) => {
             const { bidAmount, playerId, newActiveSeatId, newStatus } = payload;
 
             const player = state.playerMap[playerId];
@@ -82,7 +75,7 @@ export const storeFeature = createFeature({
                 },
             };
         }),
-        on(wsRoundStatusChanged, (state, { payload }) => ({
+        on(tableWsActionMap.roundStatusChanged, (state, { payload }) => ({
             ...state,
             activeRound: {
                 ...state.activeRound,
@@ -90,7 +83,7 @@ export const storeFeature = createFeature({
                 cards: payload.cards,
             },
         })),
-        on(wsWinnerWinnerChickenDinner, (state, { payload }) => {
+        on(tableWsActionMap.winner, (state, { payload }) => {
             const player = state.playerMap[payload.playerId];
 
             return {

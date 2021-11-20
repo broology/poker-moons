@@ -1,58 +1,46 @@
 import { createAction, props } from '@ngrx/store';
 import {
+    ConnectedEvent,
     GetPlayerCardsResponse,
+    PerformPlayerActionRequest,
     PerformPlayerActionResponse,
-    PlayerJoinedTableEvent,
-    PlayerLeftTableEvent,
-    PlayerTurnEvent,
     PokerMoonsError,
-    RoundStatusChangedEvent,
-    SharedTableState,
-    WinnerWinnerChickenDinnerEvent,
+    TableEvent,
+    TableId,
 } from '@poker-moons/shared/type';
-import { buildAsyncRequestActions, generateActionName } from './util/action-util';
+import { ActionType, buildAsyncRequestActions, createActionTyped, generateActionName } from './shared/util/action-util';
 
 /**
  * Action performed when the table state is initialized
  */
-export const initialize = createAction(generateActionName('Initialize the table'));
+export const initialize = createAction(generateActionName('Initialize the table'), props<{ tableId: TableId }>());
 
 /* On `initialize` attempt to connect to websocket */
-export const [requestWsConnection, wsConnectionSuccessful, wsConnectionFailed] = buildAsyncRequestActions<
-    SharedTableState,
-    PokerMoonsError
->('connect to table websocket');
+export const connectToWs = buildAsyncRequestActions<{ tableId: TableId }, ConnectedEvent, PokerMoonsError>(
+    'connect to table websocket',
+);
 
 /* The private way for the user to request the cards themselves once the round starts */
-export const [requestPlayerCards, playerCardsSuccessful, playerCardsFailed] = buildAsyncRequestActions<
-    GetPlayerCardsResponse,
-    PokerMoonsError
->('get player cards');
+export const playerGetCards = buildAsyncRequestActions<undefined, GetPlayerCardsResponse, PokerMoonsError>(
+    'get player cards',
+);
 
 /* Actions used when the client player attempts to perform an action  */
-export const [requestPlayerAction, playerActionSuccessful, playerActionFailed] = buildAsyncRequestActions<
+export const playerAction = buildAsyncRequestActions<
+    PerformPlayerActionRequest,
     PerformPlayerActionResponse,
     PokerMoonsError
 >('perform player action');
 
 /* Websocket actions that are pushed to the client */
-export const wsPlayerJoined = createAction(
-    generateActionName('Player has joined the table'),
-    props<{ payload: PlayerJoinedTableEvent }>(),
-);
-export const wsPlayerLeft = createAction(
-    generateActionName('Player has left the table'),
-    props<{ payload: PlayerLeftTableEvent }>(),
-);
-export const wsRoundStatusChanged = createAction(
-    generateActionName('The round status has changed'),
-    props<{ payload: RoundStatusChangedEvent }>(),
-);
-export const wsPlayerTurn = createAction(
-    generateActionName('A Player has completed their turn'),
-    props<{ payload: PlayerTurnEvent }>(),
-);
-export const wsWinnerWinnerChickenDinner = createAction(
-    generateActionName('Winner of round has been declared'),
-    props<{ payload: WinnerWinnerChickenDinnerEvent }>(),
-);
+export type TableWsActionMap = {
+    [type in Exclude<TableEvent['type'], 'connected'>]: ActionType<Extract<TableEvent, { type: type }>>;
+};
+
+export const tableWsActionMap: TableWsActionMap = {
+    playerJoined: createActionTyped('player has joined the table'),
+    playerLeft: createActionTyped('player has left the table'),
+    roundStatusChanged: createActionTyped('round status has changed'),
+    turn: createActionTyped('player turn has occurred'),
+    winner: createActionTyped('winner has been decided'),
+};
