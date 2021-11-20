@@ -9,6 +9,11 @@ export function createActionType<T>(description: string): ActionType<T> {
     return createAction(generateActionName(description), props<{ payload: T }>());
 }
 
+export interface AsyncRequestActions<Request, SuccessResponse, ErrorResponse> {
+    request: ActionType<Request>;
+    success: ActionType<SuccessResponse>;
+    failure: ActionType<ErrorResponse>;
+}
 /**
  * Function to standardize the different actions in an client async request
  *
@@ -17,11 +22,7 @@ export function createActionType<T>(description: string): ActionType<T> {
  */
 export function buildAsyncRequestActions<Request, SuccessResponse, ErrorResponse>(
     description: string,
-): {
-    request: ActionType<Request>;
-    success: ActionType<SuccessResponse>;
-    failure: ActionType<ErrorResponse>;
-} {
+): AsyncRequestActions<Request, SuccessResponse, ErrorResponse> {
     return {
         request: createActionType(`${description} - request`),
         success: createActionType(`${description} - success`),

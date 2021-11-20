@@ -19,21 +19,37 @@ export class TableStateWsEffects {
             this.actions$.pipe(
                 ofType(connectToWs.request),
                 tap(({ payload: { tableId } }) => {
-                    this.tableSocketService.initialize(tableId);
+                    try {
+                        this.tableSocketService.initialize(tableId);
 
-                    this.tableSocketService
-                        .onEvent('connected')
-                        .pipe(tap((data) => this.store.dispatch(connectToWs.success({ payload: data }))))
-                        .subscribe();
-
-                    for (const [type, action] of Object.entries(tableWsActionMap)) {
                         this.tableSocketService
-                            .onEvent(<TableEvent['type']>type)
-                            .pipe(tap((data) => this.store.dispatch(action({ payload: <never>data }))))
+                            .onEvent('connected')
+                            .pipe(tap((data) => this.store.dispatch(connectToWs.success({ payload: data }))))
                             .subscribe();
-                    }
 
-                    this.tableSocketService.connect();
+                        for (const [type, action] of Object.entries(tableWsActionMap)) {
+                            this.tableSocketService
+                                .onEvent(<TableEvent['type']>type)
+                                .pipe(tap((data) => this.store.dispatch(action({ payload: <never>data }))))
+                                .subscribe();
+                        }
+
+                        this.tableSocketService.connect();
+                    } catch (e) {
+                        console.error(e);
+                        this.store.dispatch(connectToWs.failure({ payload: 'Failed to connect to table.' }));
+                    }
+                }),
+            ),
+        { dispatch: false },
+    );
+
+    failedWsConnection$ = createEffect(
+        () =>
+            this.actions$.pipe(
+                ofType(connectToWs.failure),
+                tap(({ payload }) => {
+                    alert(payload);
                 }),
             ),
         { dispatch: false },

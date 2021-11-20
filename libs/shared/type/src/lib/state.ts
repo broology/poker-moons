@@ -1,3 +1,4 @@
+import { TableId } from '..';
 import type { Card } from './card';
 import type { PlayerId, PublicPlayer } from './player';
 import type { Table } from './table';
@@ -16,6 +17,11 @@ export interface ClientTableState extends SharedTableState {
      * The `playerId` of client, if null, then the user hasn't joined the table yet
      */
     playerId: PlayerId | null;
+
+    /**
+     * The `TableId` that is loaded, if null, then the table isn't loaded yet
+     */
+    tableId: TableId | null;
 }
 
 export interface ServerTableState extends SharedTableState {

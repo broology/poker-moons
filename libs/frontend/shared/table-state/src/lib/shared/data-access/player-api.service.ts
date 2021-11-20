@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { NgEnvironment, NG_ENVIRONMENT } from '@poker-moons/frontend/shared/environment';
 import {
+    GetPlayerCardsResponse,
     JoinTableRequest,
     JoinTableResponse,
     LeaveTableResponse,
@@ -27,6 +28,10 @@ export class PlayerApiService {
 
     leave(tableId: TableId, playerId: PlayerId): Observable<LeaveTableResponse> {
         return this.httpClient.put<LeaveTableResponse>(`${this.env.api}/table/${tableId}/player/${playerId}`, {});
+    }
+
+    getCards(tableId: TableId, playerId: PlayerId): Observable<GetPlayerCardsResponse> {
+        return this.httpClient.get<GetPlayerCardsResponse>(`${this.env.api}/table/${tableId}/player/${playerId}/cards`);
     }
 
     performAction(
