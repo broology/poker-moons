@@ -1,6 +1,6 @@
 import { StrictOmit } from 'ts-essentials';
-import { SeatId } from '..';
 import { Card } from './card';
+import { SeatId } from './table';
 
 export type PlayerId = `player_${string}`;
 

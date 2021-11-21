@@ -1,7 +1,6 @@
-import { TableId } from '..';
 import type { Card } from './card';
 import type { PlayerId, PublicPlayer } from './player';
-import type { Table } from './table';
+import type { Table, TableId } from './table';
 
 export interface SharedTableState extends Pick<Table, 'seatMap' | 'roundCount' | 'activeRound'> {
     /**
