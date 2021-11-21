@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TableEvent } from '@poker-moons/shared/type';
-import { tap } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { switchMap, tap } from 'rxjs/operators';
+import { getCards } from '../actions/api.actions';
 import { connectToWs, tableWsActionMap } from '../actions/ws.actions';
 import { TableSocketService } from '../shared/data-access/table-socket.service';
 
@@ -42,6 +44,13 @@ export class TableStateWsEffects {
                 }),
             ),
         { dispatch: false },
+    );
+
+    updateClientCards$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(connectToWs.success, tableWsActionMap.roundStatusChanged),
+            switchMap(() => of(getCards.request({ payload: undefined }))),
+        ),
     );
 
     failedWsConnection$ = createEffect(
