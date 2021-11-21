@@ -37,7 +37,7 @@ export const leaveTable = buildAsyncRequestActions<undefined, LeaveTableResponse
 /**
  *  Actions used when the client player attempts to perform an action
  */
-export const preformTableAction = buildAsyncRequestActions<
+export const performTableAction = buildAsyncRequestActions<
     PerformPlayerActionRequest,
     PerformPlayerActionResponse,
     PokerMoonsError
