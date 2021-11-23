@@ -2,8 +2,8 @@ export const playerActions = ['fold', 'call', 'raise', 'check'] as const;
 
 export type PlayerActionType = typeof playerActions[number];
 
-interface GeneralPlayerAction<Type extends PlayerActionType> {
-    type: Type;
+interface GeneralPlayerAction<T extends PlayerActionType> {
+    type: T;
 }
 
 export type FoldPlayerAction = GeneralPlayerAction<'fold'>;
