@@ -1,6 +1,16 @@
 import { Type } from 'class-transformer';
 import { PerformPlayerActionRequest } from '@poker-moons/shared/type';
-import { Equals, IsDefined, IsIn, IsNotEmpty, IsString, ValidateNested } from 'class-validator';
+import {
+    Equals,
+    IsDefined,
+    IsIn,
+    IsInt,
+    IsNotEmpty,
+    IsPositive,
+    isPositive,
+    IsString,
+    ValidateNested,
+} from 'class-validator';
 import { PlayerAction, playerActions, PlayerActionType } from 'libs/shared/type/src/lib/player-action';
 
 class BasePlayerActionValidator {
@@ -21,6 +31,9 @@ class CallPlayerActionValidator {
 class RaisePlayerActionValidator {
     @Equals('raise')
     type!: 'raise';
+    @IsInt()
+    @IsPositive()
+    amount!: number;
 }
 
 class CheckPlayerActionValidator {
