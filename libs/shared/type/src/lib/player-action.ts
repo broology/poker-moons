@@ -1,4 +1,4 @@
-export const playerActions = ['fold', 'call', 'raise', 'check'] as const;
+export const playerActions = ['fold', 'call', 'raise', 'check', 'getCards'] as const;
 
 export type PlayerActionType = typeof playerActions[number];
 
@@ -12,5 +12,11 @@ export interface RaisePlayerAction extends GeneralPlayerAction<'raise'> {
     amount: number;
 }
 export type CheckPlayerAction = GeneralPlayerAction<'check'>;
+export type GetCardsPlayerAction = GeneralPlayerAction<'getCards'>;
 
-export type PlayerAction = FoldPlayerAction | CallPlayerAction | RaisePlayerAction | CheckPlayerAction;
+export type PlayerAction =
+    | FoldPlayerAction
+    | CallPlayerAction
+    | RaisePlayerAction
+    | CheckPlayerAction
+    | GetCardsPlayerAction;
