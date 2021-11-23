@@ -1,22 +1,51 @@
 import { Type } from 'class-transformer';
 import { PerformPlayerActionRequest } from '@poker-moons/shared/type';
-import { IsDefined, IsNotEmpty, IsString, ValidateNested } from 'class-validator';
-import { PlayerAction } from 'libs/shared/type/src/lib/player-action';
+import { Equals, IsDefined, IsIn, IsNotEmpty, IsString, ValidateNested } from 'class-validator';
+import { PlayerAction, playerActions, PlayerActionType } from 'libs/shared/type/src/lib/player-action';
+
+class BasePlayerActionValidator {
+    @IsIn([...playerActions])
+    type!: PlayerActionType;
+}
+
+class FoldPlayerActionValidator {
+    @Equals('fold')
+    type!: 'fold';
+}
+
+class CallPlayerActionValidator {
+    @Equals('call')
+    type!: 'call';
+}
+
+class RaisePlayerActionValidator {
+    @Equals('raise')
+    type!: 'raise';
+}
+
+class CheckPlayerActionValidator {
+    @Equals('check')
+    type!: 'check';
+}
+
+class GetHandPlayerActionValidator {
+    @Equals('get-hand')
+    type!: 'get-hand';
+}
 
 export class PerformPlayerActionRequestValidator implements PerformPlayerActionRequest {
     @IsDefined()
     @ValidateNested()
-    @Type(() => BaseTableActionValidator, {
+    @Type(() => BasePlayerActionValidator, {
         keepDiscriminatorProperty: true,
         discriminator: {
             property: 'type',
             subTypes: [
-                { name: 'bid', value: BidTableActionValidator },
-                { name: 'hit', value: HitTableActionValidator },
-                { name: 'stand', value: StandTableActionValidator },
-                { name: 'double', value: DoubleTableActionValidator },
-                { name: 'join', value: JoinTableActionValidator },
-                { name: 'leave', value: LeaveTableActionValidator },
+                { name: 'fold', value: FoldPlayerActionValidator },
+                { name: 'call', value: CallPlayerActionValidator },
+                { name: 'raise', value: RaisePlayerActionValidator },
+                { name: 'check', value: CheckPlayerActionValidator },
+                { name: 'get-hand', value: GetHandPlayerActionValidator },
             ],
         },
     })
