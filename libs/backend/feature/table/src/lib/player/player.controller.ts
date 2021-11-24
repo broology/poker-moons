@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { JoinTableResponse } from '@poker-moons/shared/type';
 import { PlayerService } from './player.service';
 import { JoinTableRequestValidator,  } from './player.validator';
