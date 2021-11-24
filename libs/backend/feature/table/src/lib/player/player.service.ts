@@ -7,11 +7,11 @@ export class PlayerService {
         throw new NotImplementedException();
     }
   
-    delete(player_id: PlayerId, table_id: TableId): LeaveTableResponse {
+    delete(tableId: TableId, playerId: PlayerId): LeaveTableResponse {
         throw new NotImplementedException();
     }
   
-    getCards(player_id: PlayerId, table_id: TableId): GetPlayerCardsResponse {
+    getCards(tableId: TableId, playerId: PlayerId): GetPlayerCardsResponse {
         throw new NotImplementedException();
     }
 }
