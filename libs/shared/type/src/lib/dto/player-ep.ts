@@ -1,6 +1,8 @@
 import type { Card } from '../card';
 import type { Player } from '../player';
 
+export const PLAYER_PREFIX = 'player' as const;
+
 /**
  * POST /table/:tableId/player
  *
