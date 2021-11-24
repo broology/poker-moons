@@ -1,1 +1,1 @@
-export * from "./lib/backend-feature-table.module";
+export * from './lib/backend-feature-table.module';
