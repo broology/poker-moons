@@ -1,13 +1,13 @@
-import {
+import type {
     CallPlayerAction,
     CheckPlayerAction,
     FoldPlayerAction,
     PerformPlayerActionRequest,
     PlayerAction,
-    playerActions,
     PlayerActionType,
     RaisePlayerAction,
 } from '@poker-moons/shared/type';
+import { playerActions } from '@poker-moons/shared/type';
 import { Type } from 'class-transformer';
 import { Equals, IsDefined, IsIn, IsInt, IsPositive, ValidateNested } from 'class-validator';
 
