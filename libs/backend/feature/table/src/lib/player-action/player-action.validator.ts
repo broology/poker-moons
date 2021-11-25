@@ -1,16 +1,6 @@
 import { Type } from 'class-transformer';
 import { PerformPlayerActionRequest } from '@poker-moons/shared/type';
-import {
-    Equals,
-    IsDefined,
-    IsIn,
-    IsInt,
-    IsNotEmpty,
-    IsPositive,
-    isPositive,
-    IsString,
-    ValidateNested,
-} from 'class-validator';
+import { Equals, IsDefined, IsIn, IsInt, IsPositive, ValidateNested } from 'class-validator';
 import { PlayerAction, playerActions, PlayerActionType } from 'libs/shared/type/src/lib/player-action';
 
 class BasePlayerActionValidator {
@@ -41,11 +31,6 @@ class CheckPlayerActionValidator {
     type!: 'check';
 }
 
-class GetHandPlayerActionValidator {
-    @Equals('get-hand')
-    type!: 'get-hand';
-}
-
 export class PerformPlayerActionRequestValidator implements PerformPlayerActionRequest {
     @IsDefined()
     @ValidateNested()
@@ -58,7 +43,6 @@ export class PerformPlayerActionRequestValidator implements PerformPlayerActionR
                 { name: 'call', value: CallPlayerActionValidator },
                 { name: 'raise', value: RaisePlayerActionValidator },
                 { name: 'check', value: CheckPlayerActionValidator },
-                { name: 'get-hand', value: GetHandPlayerActionValidator },
             ],
         },
     })

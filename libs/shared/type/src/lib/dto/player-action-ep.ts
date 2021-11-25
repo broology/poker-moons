@@ -7,7 +7,6 @@ import type { PlayerAction } from '../player-action';
  * - Call
  * - Raise
  * - Check
- * - Get Hand
  */
 export interface PerformPlayerActionRequest {
     action: PlayerAction;
