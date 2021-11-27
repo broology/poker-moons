@@ -1,5 +1,5 @@
 import type { Card } from '../card';
-import type { PlayerStatus, PublicPlayer } from '../player';
+import type { PlayerId, PlayerStatus, PublicPlayer } from '../player';
 import type { RoundStatus } from '../round';
 import type { SharedTableState } from '../state';
 import type { SeatId } from '../table';
@@ -44,9 +44,14 @@ export interface PlayerTurnEvent extends GeneralTableEvent<'turn'> {
     newStatus: PlayerStatus;
 
     /**
-     * The active seat
+     * The player who performed this action
      */
-    activeSeat: SeatId;
+    playerId: PlayerId;
+
+    /**
+     * The new active seat after this turn
+     */
+    newActiveSeatId: SeatId;
 }
 
 export interface WinnerWinnerChickenDinnerEvent extends GeneralTableEvent<'winner'> {
@@ -57,7 +62,7 @@ export interface WinnerWinnerChickenDinnerEvent extends GeneralTableEvent<'winne
 
     pot: number;
 
-    seatId: SeatId;
+    playerId: PlayerId;
 }
 
 export type TableEvent =
