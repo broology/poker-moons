@@ -1,6 +1,6 @@
 import type { Card } from './card';
 import type { PlayerId, PublicPlayer } from './player';
-import type { Table } from './table';
+import type { Table, TableId } from './table';
 
 export interface SharedTableState extends Pick<Table, 'seatMap' | 'roundCount' | 'activeRound'> {
     /**
@@ -11,6 +11,16 @@ export interface SharedTableState extends Pick<Table, 'seatMap' | 'roundCount' |
 
 export interface ClientTableState extends SharedTableState {
     cards: [Card, Card] | [];
+
+    /**
+     * The `playerId` of client, if null, then the user hasn't joined the table yet
+     */
+    playerId: PlayerId | null;
+
+    /**
+     * The `TableId` that is loaded, if null, then the table isn't loaded yet
+     */
+    tableId: TableId | null;
 }
 
 export interface ServerTableState extends SharedTableState {

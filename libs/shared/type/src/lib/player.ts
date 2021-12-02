@@ -1,5 +1,6 @@
 import { StrictOmit } from 'ts-essentials';
 import { Card } from './card';
+import { SeatId } from './table';
 
 export type PlayerId = `player_${string}`;
 
@@ -46,9 +47,14 @@ export interface Player {
     called: number;
 
     /**
+     * The seat the player is sitting in. If they left, then this will be `null`
+     */
+    seatId: SeatId | null;
+
+    /**
      * Cards the player has in the active round
      */
-    cards: Card[];
+    cards: [Card, Card] | [];
 }
 
 export type PublicPlayer = StrictOmit<Player, 'cards'>;

@@ -8,9 +8,11 @@ interface GeneralPlayerAction<T extends PlayerActionType> {
 
 export type FoldPlayerAction = GeneralPlayerAction<'fold'>;
 export type CallPlayerAction = GeneralPlayerAction<'call'>;
+
 export interface RaisePlayerAction extends GeneralPlayerAction<'raise'> {
     amount: number;
 }
+
 export type CheckPlayerAction = GeneralPlayerAction<'check'>;
 
 export type PlayerAction = FoldPlayerAction | CallPlayerAction | RaisePlayerAction | CheckPlayerAction;
