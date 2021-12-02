@@ -2,6 +2,14 @@
 
 <!--- A brief description of the changes that this PR introduces. -->
 
+## Linked Issue
+
+<!--- The PR closes, fixes, or resolves an issue. -->
+
+**closes <issue number>**
+**fixes <issue number>**
+**resolves <issue number>**
+
 ## Types of changes
 
 <!--- What types of changes does your code introduce? Put an `x` in all the boxes that apply: -->
