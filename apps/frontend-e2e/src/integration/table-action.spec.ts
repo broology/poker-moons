@@ -3,6 +3,12 @@ describe('table action', () => {
         // * Load game state for player to be active seat
     });
 
+    it('should perform check', () => {
+        // * Player clicks `check` button
+        // * `pot` remains unchanged
+        // * Active turn is moved to next player
+    });
+
     it('should perform call', () => {
         // * Player clicks `call` button
         // * Correct number of chips are moved into `pot`
