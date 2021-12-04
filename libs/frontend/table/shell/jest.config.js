@@ -1,5 +1,5 @@
 module.exports = {
-    displayName: 'frontend-shared-environment',
+    displayName: 'frontend-table-shell',
     preset: '../../../../jest.preset.js',
     setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
     globals: {
@@ -8,7 +8,7 @@ module.exports = {
             stringifyContentPathRegex: '\\.(html|svg)$',
         },
     },
-    coverageDirectory: '../../../../coverage/libs/frontend/shared/environment',
+    coverageDirectory: '../../../../coverage/libs/frontend/table/shell',
     transform: {
         '^.+\\.(ts|js|html)$': 'jest-preset-angular',
     },
