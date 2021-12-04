@@ -1,4 +1,4 @@
-import { NgEnvironment } from '@poker-moons/frontend/shared/environment';
+import { NgEnvironment } from '@poker-moons/frontend/shared/util/environment';
 
 export const environment: NgEnvironment = {
     env: 'production',

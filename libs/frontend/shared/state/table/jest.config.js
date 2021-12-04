@@ -1,6 +1,6 @@
 module.exports = {
-    displayName: 'frontend-shared-table-state',
-    preset: '../../../../jest.preset.js',
+    displayName: 'frontend-shared-state-table',
+    preset: '../../../../../jest.preset.js',
     setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
     globals: {
         'ts-jest': {
@@ -8,7 +8,7 @@ module.exports = {
             stringifyContentPathRegex: '\\.(html|svg)$',
         },
     },
-    coverageDirectory: '../../../../coverage/libs/frontend/shared/table-state',
+    coverageDirectory: '../../../../../coverage/libs/frontend/shared/state/table',
     transform: {
         '^.+\\.(ts|js|html)$': 'jest-preset-angular',
     },

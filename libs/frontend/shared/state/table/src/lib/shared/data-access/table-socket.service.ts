@@ -1,5 +1,5 @@
 import { Inject, Injectable, OnDestroy } from '@angular/core';
-import { NgEnvironment, NG_ENVIRONMENT } from '@poker-moons/frontend/shared/environment';
+import { NgEnvironment, NG_ENVIRONMENT } from '@poker-moons/frontend-shared-util-environment';
 import { TableEvent, TableId } from '@poker-moons/shared/type';
 import { Observable } from 'rxjs';
 import { SocketClient } from '../util/socket-client';

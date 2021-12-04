@@ -4,8 +4,8 @@
         "backend-feature-table": "libs/backend/feature/table",
         "frontend": "apps/frontend",
         "frontend-e2e": "apps/frontend-e2e",
-        "frontend-shared-environment": "libs/frontend/shared/environment",
-        "frontend-shared-table-state": "libs/frontend/shared/table-state",
+        "frontend-shared-state-table": "libs/frontend/shared/state/table",
+        "frontend-shared-util-environment": "libs/frontend/shared/util/environment",
         "frontend-table-shell": "libs/frontend/table/shell",
         "shared-type": "libs/shared/type"
     }

@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { NG_ENVIRONMENT } from '@poker-moons/frontend/shared/util/environment';
+import { environment } from '../environments/environment';
 
 @NgModule({
     imports: [
@@ -16,5 +18,6 @@ import { RouterModule } from '@angular/router';
             },
         ),
     ],
+    providers: [{ provide: NG_ENVIRONMENT, useValue: environment }],
 })
 export class AppRoutingModule {}
