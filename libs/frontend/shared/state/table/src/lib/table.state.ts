@@ -6,7 +6,8 @@ import { wsReducers } from './reducers/ws.reducers';
 export const TABLE_STATE = 'tableState';
 
 export const initialState: ClientTableState = {
-    playerMap: {},
+    immutablePlayerMap: {},
+    mutablePlayerMap: {},
     seatMap: {
         0: null,
         1: null,
@@ -36,5 +37,12 @@ export const storeFeature = createFeature({
     reducer: createReducer<ClientTableState>(initialState, ...wsReducers, ...apiReducers),
 });
 
-export const { selectActiveRound, selectCards, selectPlayerId, selectTableId, selectPlayerMap, selectSeatMap } =
-    storeFeature;
+export const {
+    selectActiveRound,
+    selectCards,
+    selectPlayerId,
+    selectTableId,
+    selectImmutablePlayerMap,
+    selectMutablePlayerMap,
+    selectSeatMap,
+} = storeFeature;

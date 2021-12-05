@@ -5,11 +5,25 @@ import { ActionType } from '../shared/util/action-util';
 
 export const wsReducers: ReducerTypes<ClientTableState, [ActionType<any>]>[] = [
     on(connectToWs.success, (state, { payload }) => ({ ...state, ...payload })),
-    on(tableWsActionMap.playerJoined, (state, { payload: { seatId, player } }) => ({
-        ...state,
-        playerMap: { ...state.playerMap, [player.id]: player },
-        seatMap: { ...state.seatMap, [seatId]: player.id },
-    })),
+
+    /**
+     * When a player joins the table, set the players data in the `immutable` and `mutable` maps.
+     * And place them at their seat.
+     */
+    on(tableWsActionMap.playerJoined, (state, { payload: { seatId, player } }) => {
+        const { status, stack, called, ...immutable } = player;
+
+        return {
+            ...state,
+            immutablePlayerMap: { ...state.immutablePlayerMap, [player.id]: immutable },
+            mutablePlayerMap: { ...state.mutablePlayerMap, [player.id]: { status, stack, called } },
+            seatMap: { ...state.seatMap, [seatId]: player.id },
+        };
+    }),
+
+    /**
+     * When a player leaves the table, just remove them from the seat. As we need to maintain their player data for history
+     */
     on(tableWsActionMap.playerLeft, (state, { payload: { seatId } }) => {
         const playerId = state.seatMap[seatId];
 
@@ -19,36 +33,44 @@ export const wsReducers: ReducerTypes<ClientTableState, [ActionType<any>]>[] = [
 
         return {
             ...state,
-            playerMap: { ...state.playerMap, [playerId]: undefined },
             seatMap: { ...state.seatMap, [seatId]: null },
         };
     }),
+
+    /**
+     * When a turn is performed update the players mutable data. And update the active round.
+     */
     on(tableWsActionMap.turn, (state, { payload }) => {
         const { bidAmount, playerId, newActiveSeatId, newStatus } = payload;
 
-        const player = state.playerMap[playerId];
+        const mutablePlayer = state.mutablePlayerMap[playerId];
         const round = state.activeRound;
 
         return {
             ...state,
-            playerMap: {
-                ...state.playerMap,
+            mutablePlayerMap: {
+                ...state.mutablePlayerMap,
                 [playerId]: {
-                    ...player,
+                    ...mutablePlayer,
                     status: newStatus,
-                    called: player.called + bidAmount,
-                    stack: player.stack - bidAmount,
+                    called: mutablePlayer.called + bidAmount,
+                    stack: mutablePlayer.stack - bidAmount,
                 },
             },
             activeRound: {
                 ...round,
                 pot: round.pot + payload.bidAmount,
-                toCall: player.called + bidAmount > round.toCall ? player.called + bidAmount : round.toCall,
+                toCall:
+                    mutablePlayer.called + bidAmount > round.toCall ? mutablePlayer.called + bidAmount : round.toCall,
                 turnCount: round.turnCount + 1,
                 activeSeat: newActiveSeatId,
             },
         };
     }),
+
+    /**
+     * When the round status changes, update the active round data.
+     */
     on(tableWsActionMap.roundStatusChanged, (state, { payload }) => ({
         ...state,
         activeRound: {
@@ -57,16 +79,20 @@ export const wsReducers: ReducerTypes<ClientTableState, [ActionType<any>]>[] = [
             cards: payload.cards,
         },
     })),
+
+    /**
+     * When a winner is declared at the end of a round. Update the the mutable players pot.
+     */
     on(tableWsActionMap.winner, (state, { payload }) => {
-        const player = state.playerMap[payload.playerId];
+        const mutablePlayer = state.mutablePlayerMap[payload.playerId];
 
         return {
             ...state,
-            playerMap: {
-                ...state.playerMap,
+            mutablePlayerMap: {
+                ...state.mutablePlayerMap,
                 [payload.playerId]: {
-                    ...player,
-                    stack: player.stack + payload.pot,
+                    ...mutablePlayer,
+                    stack: mutablePlayer.stack + payload.pot,
                 },
             },
         };

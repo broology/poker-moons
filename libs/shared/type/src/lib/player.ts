@@ -58,3 +58,18 @@ export interface Player {
 }
 
 export type PublicPlayer = StrictOmit<Player, 'cards'>;
+/*
+ * We've split Player into `MutablePlayer` and `ImmutablePlayer`
+ * so that on the frontend we do a significant smaller amount of rerenders.
+ * As, updating `MutablePlayer` will only update components that depend on it
+ */
+
+/**
+ * Data on the player that is to be frequently updated during the game
+ */
+export type MutablePublicPlayer = Pick<PublicPlayer, 'stack' | 'status' | 'called'>;
+
+/**
+ * Data on the player that will stay the same during the game (mostly)
+ */
+export type ImmutablePublicPlayer = StrictOmit<PublicPlayer, keyof MutablePublicPlayer>;
