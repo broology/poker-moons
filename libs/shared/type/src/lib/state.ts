@@ -1,12 +1,18 @@
+import { ImmutablePublicPlayer } from '..';
 import type { Card } from './card';
-import type { PlayerId, PublicPlayer } from './player';
+import type { MutablePublicPlayer, PlayerId } from './player';
 import type { Table, TableId } from './table';
 
 export interface SharedTableState extends Pick<Table, 'seatMap' | 'roundCount' | 'activeRound'> {
     /**
-     * Project out the cards on the player
+     * Map of player data that will be frequently changed.
      */
-    playerMap: Record<PlayerId, PublicPlayer>;
+    mutablePlayerMap: Record<PlayerId, MutablePublicPlayer>;
+
+    /**
+     * Map of player data that will (for the most part) stay the same during the game
+     */
+    immutablePlayerMap: Record<PlayerId, ImmutablePublicPlayer>;
 }
 
 export interface ClientTableState extends SharedTableState {

@@ -2,17 +2,24 @@ import { Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import {
     Card,
+    ImmutablePublicPlayer,
     JoinTableRequest,
+    MutablePublicPlayer,
     PerformPlayerActionRequest,
     PlayerId,
-    PublicPlayer,
     Round,
     SeatId,
 } from '@poker-moons/shared/type';
 import { Observable } from 'rxjs';
-import { joinTable, leaveTable, preformTableAction } from './actions/api.actions';
-import { selectClientPlayer } from './table-state.selectors';
-import { selectActiveRound, selectCards, selectPlayerMap, selectSeatMap } from './table.state';
+import { joinTable, leaveTable, performTableAction } from './actions/api.actions';
+import { selectClientImmutablePlayer, selectClientMutablePlayer } from './table-state.selectors';
+import {
+    selectActiveRound,
+    selectCards,
+    selectImmutablePlayerMap,
+    selectMutablePlayerMap,
+    selectSeatMap,
+} from './table.state';
 
 @Injectable({ providedIn: 'root' })
 export class TableStateFacade {
@@ -30,10 +37,17 @@ export class TableStateFacade {
     }
 
     /**
-     * The map get the player from the state, while maintaining memoization
+     * The map of the players immutable data
      */
-    selectPlayerMap(): Observable<Record<PlayerId, PublicPlayer>> {
-        return this.store.pipe(select(selectPlayerMap));
+    selectImmutablePlayerMap(): Observable<Record<PlayerId, ImmutablePublicPlayer>> {
+        return this.store.pipe(select(selectImmutablePlayerMap));
+    }
+
+    /**
+     * The map of the players mutable data
+     */
+    selectMutablePlayerMap(): Observable<Record<PlayerId, MutablePublicPlayer>> {
+        return this.store.pipe(select(selectMutablePlayerMap));
     }
 
     /**
@@ -44,10 +58,17 @@ export class TableStateFacade {
     }
 
     /**
-     * Selects the player that is on this client
+     * Selects the immutable player that is on this client
      */
-    selectClientPlayer(): Observable<PublicPlayer | null> {
-        return this.store.pipe(select(selectClientPlayer));
+    selectClientImmutablePlayer(): Observable<ImmutablePublicPlayer | null> {
+        return this.store.pipe(select(selectClientImmutablePlayer));
+    }
+
+    /**
+     * Selects the immutable player that is on this client
+     */
+    selectClientMutablePlayer(): Observable<MutablePublicPlayer | null> {
+        return this.store.pipe(select(selectClientMutablePlayer));
     }
 
     /**
@@ -77,6 +98,6 @@ export class TableStateFacade {
      * Perform an action with the current client
      */
     performAction(dto: PerformPlayerActionRequest): void {
-        this.store.dispatch(preformTableAction.request({ payload: dto }));
+        this.store.dispatch(performTableAction.request({ payload: dto }));
     }
 }
