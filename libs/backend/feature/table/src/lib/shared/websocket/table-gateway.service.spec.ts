@@ -38,7 +38,7 @@ describe('TableGatewayService', () => {
     const seatId: SeatId = 2;
     const player: PublicPlayer = mockPublicPlayer();
 
-    describe('emitPlayerJoinedTable', () => {
+    describe('emitPlayerJoinedTableEvent', () => {
         it('should call server.to with the correct info', () => {
             const playerJoinedTableEvent: PlayerJoinedTableEvent = { type: 'playerJoined', seatId, player };
 
@@ -49,13 +49,13 @@ describe('TableGatewayService', () => {
                 },
             });
 
-            service.emitPlayerJoinedTable(tableId, playerJoinedTableEvent);
+            service.emitTableEvent(tableId, playerJoinedTableEvent);
 
             expect(serverSpy).toHaveBeenCalledWith(tableId);
         });
     });
 
-    describe('emitPlayerLeftTable', () => {
+    describe('emitPlayerLeftTableEvent', () => {
         it('should call server.to with the correct info', () => {
             const playerLeftTableEvent: PlayerLeftTableEvent = { type: 'playerLeft', seatId };
 
@@ -66,13 +66,13 @@ describe('TableGatewayService', () => {
                 },
             });
 
-            service.emitPlayerLeftTable(tableId, playerLeftTableEvent);
+            service.emitTableEvent(tableId, playerLeftTableEvent);
 
             expect(serverSpy).toHaveBeenCalledWith(tableId);
         });
     });
 
-    describe('emitRoundStatusChange', () => {
+    describe('emitRoundStatusChangedEvent', () => {
         it('should call server.to with the correct info', () => {
             const roundStatusChangedEvent: RoundStatusChangedEvent = {
                 type: 'roundStatusChanged',
@@ -87,13 +87,13 @@ describe('TableGatewayService', () => {
                 },
             });
 
-            service.emitRoundStatusChange(tableId, roundStatusChangedEvent);
+            service.emitTableEvent(tableId, roundStatusChangedEvent);
 
             expect(serverSpy).toHaveBeenCalledWith(tableId);
         });
     });
 
-    describe('emitPlayerTurn', () => {
+    describe('emitPlayerTurnEvent', () => {
         it('should call server.to with the correct info', () => {
             const playerTurnEvent: PlayerTurnEvent = {
                 type: 'turn',
@@ -110,13 +110,13 @@ describe('TableGatewayService', () => {
                 },
             });
 
-            service.emitPlayerTurn(tableId, playerTurnEvent);
+            service.emitTableEvent(tableId, playerTurnEvent);
 
             expect(serverSpy).toHaveBeenCalledWith(tableId);
         });
     });
 
-    describe('emitWinner', () => {
+    describe('emitWinnerWinnerChickenDinnerEvent', () => {
         it('should call server.to with the correct info', () => {
             const winnerEvent: WinnerWinnerChickenDinnerEvent = {
                 type: 'winner',
@@ -132,7 +132,7 @@ describe('TableGatewayService', () => {
                 },
             });
 
-            service.emitWinner(tableId, winnerEvent);
+            service.emitTableEvent(tableId, winnerEvent);
 
             expect(serverSpy).toHaveBeenCalledWith(tableId);
         });
