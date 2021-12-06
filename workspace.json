@@ -7,6 +7,8 @@
         "frontend-shared-state-table": "libs/frontend/shared/state/table",
         "frontend-shared-util-environment": "libs/frontend/shared/util/environment",
         "frontend-table-shell": "libs/frontend/table/shell",
-        "shared-type": "libs/shared/type"
+        "shared-testing": "libs/shared/testing",
+        "shared-type": "libs/shared/type",
+        "shared-util": "libs/shared/util"
     }
 }
