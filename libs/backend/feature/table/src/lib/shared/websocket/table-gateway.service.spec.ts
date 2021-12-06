@@ -1,4 +1,13 @@
-import { PlayerJoinedTableEvent, PlayerLeftTableEvent, PlayerTurnEvent, PublicPlayer, RoundStatusChangedEvent, SeatId, TableId, WinnerWinnerChickenDinnerEvent } from '@poker-moons/shared/type';
+import {
+    PlayerJoinedTableEvent,
+    PlayerLeftTableEvent,
+    PlayerTurnEvent,
+    PublicPlayer,
+    RoundStatusChangedEvent,
+    SeatId,
+    TableId,
+    WinnerWinnerChickenDinnerEvent,
+} from '@poker-moons/shared/type';
 import { Test } from '@nestjs/testing';
 import { TableGatewayService } from './table-gateway.service';
 import { mockCard, mockPublicPlayer } from '@poker-moons/shared/testing';
@@ -65,7 +74,11 @@ describe('TableGatewayService', () => {
 
     describe('emitRoundStatusChange', () => {
         it('should call server.to with the correct info', () => {
-            const roundStatusChangedEvent: RoundStatusChangedEvent = { type: 'roundStatusChanged', status: 'flop', cards: [mockCard(), mockCard({ suit: 'hearts', rank: '12' }), mockCard({ suit: 'spades', rank: '05' })] };
+            const roundStatusChangedEvent: RoundStatusChangedEvent = {
+                type: 'roundStatusChanged',
+                status: 'flop',
+                cards: [mockCard(), mockCard({ suit: 'hearts', rank: '12' }), mockCard({ suit: 'spades', rank: '05' })],
+            };
 
             serverSpy.mockReturnValue({
                 emit: (type: string, event: RoundStatusChangedEvent) => {
@@ -82,7 +95,13 @@ describe('TableGatewayService', () => {
 
     describe('emitPlayerTurn', () => {
         it('should call server.to with the correct info', () => {
-            const playerTurnEvent: PlayerTurnEvent = { type: 'turn', bidAmount: 100, newStatus: 'raised', playerId: player.id, newActiveSeatId: 3 };
+            const playerTurnEvent: PlayerTurnEvent = {
+                type: 'turn',
+                bidAmount: 100,
+                newStatus: 'raised',
+                playerId: player.id,
+                newActiveSeatId: 3,
+            };
 
             serverSpy.mockReturnValue({
                 emit: (type: string, event: PlayerTurnEvent) => {
@@ -99,7 +118,12 @@ describe('TableGatewayService', () => {
 
     describe('emitWinner', () => {
         it('should call server.to with the correct info', () => {
-            const winnerEvent: WinnerWinnerChickenDinnerEvent = { type: 'winner', displayText: `${player.username} has won!`, pot: 10000, playerId: player.id };
+            const winnerEvent: WinnerWinnerChickenDinnerEvent = {
+                type: 'winner',
+                displayText: `${player.username} has won!`,
+                pot: 10000,
+                playerId: player.id,
+            };
 
             serverSpy.mockReturnValue({
                 emit: (type: string, event: WinnerWinnerChickenDinnerEvent) => {

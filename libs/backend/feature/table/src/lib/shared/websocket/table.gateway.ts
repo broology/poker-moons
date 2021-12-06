@@ -1,20 +1,14 @@
 import { TableId, TABLE_NAMESPACE } from '@poker-moons/shared/type';
 import { Logger } from '@nestjs/common';
-import {
-    OnGatewayConnection,
-    OnGatewayDisconnect,
-    OnGatewayInit,
-    WebSocketGateway,
-} from '@nestjs/websockets';
+import { OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit, WebSocketGateway } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { TableGatewayService } from './table-gateway.service';
 
 @WebSocketGateway({ namespace: TABLE_NAMESPACE })
 export class TableGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
-
     private logger = new Logger('Table Gateway');
 
-    constructor(private tableGatewayService: TableGatewayService) { }
+    constructor(private tableGatewayService: TableGatewayService) {}
 
     afterInit(server: Server): void {
         this.tableGatewayService.init(server);
@@ -33,7 +27,7 @@ export class TableGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
             return;
         }
 
-        // TODO: Confirm that the tableId given in the socket request actually links to a table 
+        // TODO: Confirm that the tableId given in the socket request actually links to a table
 
         this.logger.log(`${client.handshake.address} connected to ${tableId}`);
 

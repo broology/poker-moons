@@ -6,4 +6,4 @@ import { TableGatewayService } from './table-gateway.service';
     providers: [TableGateway, TableGatewayService],
     exports: [TableGatewayService],
 })
-export class TableGatewayModule { }
+export class TableGatewayModule {}

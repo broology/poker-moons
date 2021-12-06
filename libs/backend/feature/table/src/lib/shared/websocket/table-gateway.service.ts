@@ -1,4 +1,11 @@
-import { PlayerJoinedTableEvent, PlayerLeftTableEvent, PlayerTurnEvent, RoundStatusChangedEvent, TableId, WinnerWinnerChickenDinnerEvent } from '@poker-moons/shared/type';
+import {
+    PlayerJoinedTableEvent,
+    PlayerLeftTableEvent,
+    PlayerTurnEvent,
+    RoundStatusChangedEvent,
+    TableId,
+    WinnerWinnerChickenDinnerEvent,
+} from '@poker-moons/shared/type';
 import { Injectable } from '@nestjs/common';
 import { Server } from 'socket.io';
 

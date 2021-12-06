@@ -10,7 +10,7 @@ export function mockPublicPlayer(overrides: DeepPartial<PublicPlayer> = {}): Pub
         stack: 1000,
         status: 'waiting',
         called: 100,
-        seatId: 1
+        seatId: 1,
     };
 
     return merge(publicPlayer, overrides);
