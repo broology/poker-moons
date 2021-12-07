@@ -1,0 +1,26 @@
+{
+    "projectType": "library",
+    "root": "libs/backend/shared/util/validators",
+    "sourceRoot": "libs/backend/shared/util/validators/src",
+    "prefix": "poker-moons",
+    "targets": {
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/libs/backend/shared/util/validators"],
+            "options": {
+                "jestConfig": "libs/backend/shared/util/validators/jest.config.js",
+                "passWithNoTests": true
+            }
+        },
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "options": {
+                "lintFilePatterns": [
+                    "libs/backend/shared/util/validators/src/**/*.ts",
+                    "libs/backend/shared/util/validators/src/**/*.html"
+                ]
+            }
+        }
+    },
+    "tags": ["scope: shared", "type:util"]
+}

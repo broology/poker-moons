@@ -3,8 +3,9 @@ Reference: https://github.com/jordems/black-jack-sim/blob/6c496de7171ae01a323b6e
  */
 import { registerDecorator } from 'class-validator';
 
-export function IsEntityId(prefix: string) {
-    return function (object: any, propertyName: string) {
+function IsEntityId(prefix: string) {
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    return function (object: Object, propertyName: string) {
         registerDecorator({
             name: 'isEntityId',
             target: object.constructor,
@@ -21,3 +22,5 @@ export function IsEntityId(prefix: string) {
         });
     };
 }
+
+export { IsEntityId };
