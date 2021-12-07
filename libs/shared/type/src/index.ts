@@ -8,3 +8,4 @@ export * from './lib/player-action';
 export * from './lib/round';
 export * from './lib/state';
 export * from './lib/table';
+export * from './lib/id.validator';

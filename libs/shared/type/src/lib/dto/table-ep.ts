@@ -1,7 +1,5 @@
 import { Table } from '../table';
 
-export const TABLE_PREFIX = 'table' as const;
-
 /**
  * POST /table
  */
