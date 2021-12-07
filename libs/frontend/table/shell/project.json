@@ -1,0 +1,23 @@
+{
+    "projectType": "library",
+    "root": "libs/frontend/table/shell",
+    "sourceRoot": "libs/frontend/table/shell/src",
+    "prefix": "poker-moons",
+    "targets": {
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/libs/frontend/table/shell"],
+            "options": {
+                "jestConfig": "libs/frontend/table/shell/jest.config.js",
+                "passWithNoTests": true
+            }
+        },
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "options": {
+                "lintFilePatterns": ["libs/frontend/table/shell/src/**/*.ts", "libs/frontend/table/shell/src/**/*.html"]
+            }
+        }
+    },
+    "tags": ["scope:frontend", "type:shell"]
+}

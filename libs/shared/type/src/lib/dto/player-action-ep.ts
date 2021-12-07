@@ -8,5 +8,7 @@ import type { PlayerAction } from '../player-action';
  * - Raise
  * - Check
  */
-export type PerformPlayerActionRequest = PlayerAction;
+export interface PerformPlayerActionRequest {
+    action: PlayerAction;
+}
 export type PerformPlayerActionResponse = void;

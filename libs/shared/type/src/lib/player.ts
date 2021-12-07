@@ -1,5 +1,6 @@
 import { StrictOmit } from 'ts-essentials';
 import { Card } from './card';
+import { SeatId } from './table';
 
 export type PlayerId = `player_${string}`;
 
@@ -46,9 +47,29 @@ export interface Player {
     called: number;
 
     /**
+     * The seat the player is sitting in. If they left, then this will be `null`
+     */
+    seatId: SeatId | null;
+
+    /**
      * Cards the player has in the active round
      */
-    cards: Card[];
+    cards: [Card, Card] | [];
 }
 
 export type PublicPlayer = StrictOmit<Player, 'cards'>;
+/*
+ * We've split Player into `MutablePlayer` and `ImmutablePlayer`
+ * so that on the frontend we do a significant smaller amount of rerenders.
+ * As, updating `MutablePlayer` will only update components that depend on it
+ */
+
+/**
+ * Data on the player that is to be frequently updated during the game
+ */
+export type MutablePublicPlayer = Pick<PublicPlayer, 'stack' | 'status' | 'called'>;
+
+/**
+ * Data on the player that will stay the same during the game (mostly)
+ */
+export type ImmutablePublicPlayer = StrictOmit<PublicPlayer, keyof MutablePublicPlayer>;
