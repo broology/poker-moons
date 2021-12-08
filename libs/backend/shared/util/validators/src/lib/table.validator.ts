@@ -1,5 +1,5 @@
-import { CreateTableRequest, IsEntityId, TABLE_PREFIX, TableId } from '@poker-moons/shared/type';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { CreateTableRequest, IsEntityId, TABLE_PREFIX, TableId, UpdateTableRequest } from '@poker-moons/shared/type';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreateTableRequestValidator implements CreateTableRequest {
     @IsString()
@@ -10,4 +10,10 @@ export class CreateTableRequestValidator implements CreateTableRequest {
 export class GetTableRequestValidator {
     @IsEntityId(TABLE_PREFIX)
     id!: TableId;
+}
+
+export class UpdateTableRequestValidator implements UpdateTableRequest {
+    @IsString()
+    @IsOptional()
+    name!: string;
 }
