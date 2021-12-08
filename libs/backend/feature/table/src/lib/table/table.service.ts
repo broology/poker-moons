@@ -1,5 +1,12 @@
 import { Injectable, NotImplementedException } from '@nestjs/common';
-import { CreateTableRequest, CreateTableResponse, GetTableResponse, TableId } from '@poker-moons/shared/type';
+import {
+    CreateTableRequest,
+    CreateTableResponse,
+    GetTableResponse,
+    TableId,
+    UpdateTableRequest,
+    UpdateTableResponse,
+} from '@poker-moons/shared/type';
 
 @Injectable()
 export class TableService {
@@ -8,6 +15,10 @@ export class TableService {
     }
 
     get(id: TableId): GetTableResponse {
+        throw new NotImplementedException();
+    }
+
+    update(dto: UpdateTableRequest): UpdateTableResponse {
         throw new NotImplementedException();
     }
 }
