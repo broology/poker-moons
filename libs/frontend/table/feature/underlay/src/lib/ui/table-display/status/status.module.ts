@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { StatusComponent } from './status.component';
 
 @NgModule({
-    declarations: [],
     imports: [CommonModule],
+    declarations: [StatusComponent],
 })
 export class StatusModule {}
