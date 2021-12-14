@@ -27,7 +27,7 @@ export interface Table {
     /**
      * A dictionary of the players sitting at the table
      */
-    playerMap: Record<PlayerId, Player>;
+    playerMap: Record<PlayerId, Player> | null;
 
     /**
      * The number of rounds played around a game.
