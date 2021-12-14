@@ -7,13 +7,13 @@ export class CreateTableRequestValidator implements CreateTableRequest {
     name!: string;
 }
 
-export class GetTableRequestValidator {
+export class TableIdValidator {
     @IsEntityId(TABLE_PREFIX)
-    id!: TableId;
+    tableId!: TableId;
 }
 
 export class UpdateTableRequestValidator implements UpdateTableRequest {
-    @IsString()
     @IsOptional()
+    @IsString()
     name!: string;
 }

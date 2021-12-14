@@ -18,7 +18,7 @@ export class TableService {
         throw new NotImplementedException();
     }
 
-    update(dto: UpdateTableRequest): UpdateTableResponse {
+    update(id: TableId, dto: UpdateTableRequest): UpdateTableResponse {
         throw new NotImplementedException();
     }
 }
