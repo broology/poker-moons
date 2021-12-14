@@ -1,0 +1,26 @@
+{
+    "projectType": "library",
+    "root": "libs/backend/feature/mock-state",
+    "sourceRoot": "libs/backend/feature/mock-state/src",
+    "prefix": "poker-moons",
+    "targets": {
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/libs/backend/feature/mock-state"],
+            "options": {
+                "jestConfig": "libs/backend/feature/mock-state/jest.config.js",
+                "passWithNoTests": true
+            }
+        },
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "options": {
+                "lintFilePatterns": [
+                    "libs/backend/feature/mock-state/src/**/*.ts",
+                    "libs/backend/feature/mock-state/src/**/*.html"
+                ]
+            }
+        }
+    },
+    "tags": []
+}
