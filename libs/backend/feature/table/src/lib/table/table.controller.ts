@@ -3,7 +3,7 @@ import { CreateTableResponse, GetTableResponse, UpdateTableResponse } from '@pok
 import { TableService } from './table.service';
 import {
     CreateTableRequestValidator,
-    GetTableRequestValidator,
+    TableIdValidator,
     UpdateTableRequestValidator,
 } from '@poker-moons/backend/shared/util/validators';
 
@@ -17,12 +17,12 @@ export class TableController {
     }
 
     @Get(':tableId')
-    get(@Param() { id }: GetTableRequestValidator): GetTableResponse {
-        return this.tableService.get(id);
+    get(@Param() { tableId }: TableIdValidator): GetTableResponse {
+        return this.tableService.get(tableId);
     }
 
     @Put(':tableId')
-    update(@Body() dto: UpdateTableRequestValidator): UpdateTableResponse {
-        return this.tableService.update(dto);
+    update(@Param() { tableId }: TableIdValidator, @Body() dto: UpdateTableRequestValidator): UpdateTableResponse {
+        return this.tableService.update(tableId, dto);
     }
 }

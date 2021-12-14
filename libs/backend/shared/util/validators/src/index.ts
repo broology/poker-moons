@@ -1,1 +1,1 @@
-export * from './lib/table.validator';
+export * from '../../../../feature/table/src/lib/table/table.validator';
