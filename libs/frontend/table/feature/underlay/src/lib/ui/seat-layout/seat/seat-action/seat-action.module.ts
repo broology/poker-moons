@@ -5,5 +5,6 @@ import { SeatActionComponent } from './seat-action.component';
 @NgModule({
     imports: [CommonModule],
     declarations: [SeatActionComponent],
+    exports: [SeatActionComponent],
 })
 export class SeatActionModule {}

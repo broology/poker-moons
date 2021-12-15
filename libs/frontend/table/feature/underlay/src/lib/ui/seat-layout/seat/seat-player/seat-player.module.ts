@@ -5,5 +5,6 @@ import { SeatPlayerComponent } from './seat-player.component';
 @NgModule({
     imports: [CommonModule],
     declarations: [SeatPlayerComponent],
+    exports: [SeatPlayerComponent],
 })
 export class SeatPlayerModule {}

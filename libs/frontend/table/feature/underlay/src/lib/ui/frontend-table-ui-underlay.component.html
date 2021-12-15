@@ -1,1 +1,10 @@
-<p>frontend-table-ui-underlay works!</p>
+<ng-template>
+    <poker-moons-seat-layout
+        [activeRound$]="activeRound$"
+        [immutablePlayerMap$]="immutablePlayerMap$"
+        [mutablePlayerMap$]="mutablePlayerMap$"
+        [seatMap]="seatMap$ | push: 'global'"
+    ></poker-moons-seat-layout>
+
+    <poker-moons-table-display></poker-moons-table-display>
+</ng-template>

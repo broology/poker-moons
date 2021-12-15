@@ -6,5 +6,6 @@ import { FrontendTableUiUnderlayModule } from './ui/frontend-table-ui-underlay.m
 @NgModule({
     imports: [CommonModule, FrontendTableUiUnderlayModule],
     declarations: [FrontendTableFeatureUnderlayComponent],
+    exports: [FrontendTableFeatureUnderlayComponent],
 })
 export class FrontendTableFeatureUnderlayModule {}

@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { MutablePublicPlayer, Round } from '@poker-moons/shared/type';
 
 @Component({
     selector: 'poker-moons-seat-action',

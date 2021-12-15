@@ -8,5 +8,6 @@ import { TableDisplayComponent } from './table-display.component';
 @NgModule({
     imports: [CommonModule, CommunityCardsModule, PotModule, StatusModule],
     declarations: [TableDisplayComponent],
+    exports: [TableDisplayComponent],
 })
 export class TableDisplayModule {}

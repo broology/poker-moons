@@ -1,4 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ImmutablePublicPlayer, MutablePublicPlayer, PlayerId, Round, SeatId } from '@poker-moons/shared/type';
+import { Observable } from 'rxjs';
 
 @Component({
     selector: 'poker-moons-frontend-table-ui-underlay',
@@ -6,4 +8,12 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
     styleUrls: ['./frontend-table-ui-underlay.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FrontendTableUiUnderlayComponent {}
+export class FrontendTableUiUnderlayComponent {
+    @Input() activeRound$!: Observable<Round>;
+
+    @Input() immutablePlayerMap$!: Observable<Record<PlayerId, ImmutablePublicPlayer>>;
+
+    @Input() mutablePlayerMap$!: Observable<Record<PlayerId, MutablePublicPlayer>>;
+
+    @Input() seatMap$!: Observable<Record<SeatId, PlayerId | null>>;
+}
