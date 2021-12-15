@@ -2,13 +2,11 @@ import { Injectable, NotImplementedException } from '@nestjs/common';
 import {
     CallPlayerAction,
     CheckPlayerAction,
-    ClientTableState,
     FoldPlayerAction,
     PerformPlayerActionRequest,
     PerformPlayerActionResponse,
     PokerMoonsError,
     RaisePlayerAction,
-    Table,
 } from '@poker-moons/shared/type';
 import { Either, isRight, left, right } from 'fp-ts/lib/Either';
 import { match } from 'ts-pattern';
@@ -16,22 +14,22 @@ import { match } from 'ts-pattern';
 @Injectable()
 export class PlayerActionService {
     perform(dto: PerformPlayerActionRequest): PerformPlayerActionResponse {
+        //get state and table
+
         switch (dto.action.type) {
             case 'fold':
-                this.fold(this.canFold());
+                this.fold(this.canFold(dto.action));
                 break;
             case 'call':
-                this.call(dto.action);
+                this.call(this.canCall(dto.action));
                 break;
             case 'raise':
-                this.raise(dto.action);
+                this.raise(this.canRaise(dto.action));
                 break;
             case 'check':
-                this.check(dto.action);
+                this.check(this.canCheck(dto.action));
                 break;
         }
-
-        throw new NotImplementedException();
     }
 
     fold(action: Either<PokerMoonsError, FoldPlayerAction>): PerformPlayerActionResponse {
@@ -52,8 +50,8 @@ export class PlayerActionService {
     }
 
     canFold(
-        table: Table,
-        clientState: ClientTableState,
+        // table: Table,
+        // clientState: ClientTableState,
         action: FoldPlayerAction,
     ): Either<PokerMoonsError, FoldPlayerAction> {
         return match([])
@@ -61,8 +59,8 @@ export class PlayerActionService {
             .otherwise(() => right(action));
     }
     canCall(
-        table: Table,
-        clientState: ClientTableState,
+        // table: Table,
+        // clientState: ClientTableState,
         action: CallPlayerAction,
     ): Either<PokerMoonsError, CallPlayerAction> {
         return match([])
@@ -70,8 +68,8 @@ export class PlayerActionService {
             .otherwise(() => right(action));
     }
     canRaise(
-        table: Table,
-        clientState: ClientTableState,
+        // table: Table,
+        // clientState: ClientTableState,
         action: RaisePlayerAction,
     ): Either<PokerMoonsError, RaisePlayerAction> {
         return match([])
@@ -79,8 +77,8 @@ export class PlayerActionService {
             .otherwise(() => right(action));
     }
     canCheck(
-        table: Table,
-        clientState: ClientTableState,
+        // table: Table,
+        // clientState: ClientTableState,
         action: CheckPlayerAction,
     ): Either<PokerMoonsError, CheckPlayerAction> {
         return match([])
