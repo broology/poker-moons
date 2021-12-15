@@ -1,9 +1,9 @@
 import { Body, Controller, Post, Put, Get, Param } from '@nestjs/common';
-import { JoinTableResponse, LeaveTableResponse, GetPlayerCardsResponse } from '@poker-moons/shared/type';
+import type { JoinTableResponse, LeaveTableResponse, GetPlayerCardsResponse } from '@poker-moons/shared/type';
 import { PlayerService } from './player.service';
 import { JoinTableRequestValidator, LeaveTableRequestValidator, GetPlayerCardsRequestValidator } from './player.validator';
 
-@Controller('player')
+@Controller()
 export class PlayerController {
     constructor(private readonly playerService: PlayerService) {}
 
@@ -12,12 +12,12 @@ export class PlayerController {
         return this.playerService.create(dto);
     }
   
-    @Put(':tableId', ':playerId')
-    delete(@Param() {tableId, playerId}: LeaveTableRequestValidator): LeaveTableResponse {
+    @Put(':playerId')
+    leave(@Param() {tableId, playerId}: LeaveTableRequestValidator): LeaveTableResponse {
         return this.playerService.delete(tableId, playerId);
     }
   
-    @Get(':tableId', ':playerId')
+    @Get(':playerId/cards')
     getCards(@Param() {tableId, playerId}: GetPlayerCardsRequestValidator): GetPlayerCardsResponse {
         return this.playerService.getCards(tableId, playerId);
     }
