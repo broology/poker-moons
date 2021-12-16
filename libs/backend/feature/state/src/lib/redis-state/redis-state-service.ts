@@ -1,10 +1,10 @@
 import { Injectable, NotImplementedException } from '@nestjs/common';
-import { GenericStateService } from '../GenericStateService';
+import { GenericStateServiceImpl } from '../generic-state-service.impl';
 import { ServerTableState, TableId } from '@poker-moons/shared/type';
 
 Injectable();
 
-export class RedisStateService extends GenericStateService {
+export class RedisStateService extends GenericStateServiceImpl {
     create(serverTableState: ServerTableState): Promise<TableId> {
         throw new NotImplementedException();
     }
