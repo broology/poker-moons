@@ -3,7 +3,6 @@
     "projects": {
         "backend-feature-state": "libs/backend/feature/state",
         "backend-feature-table": "libs/backend/feature/table",
-        "backend-shared-util-validators": "libs/backend/shared/util/validators",
         "frontend": "apps/frontend",
         "frontend-builder-feature-form": "libs/frontend/builder/feature/form",
         "frontend-builder-shell": "libs/frontend/builder/shell",
