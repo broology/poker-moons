@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ServerTableState, TableId } from '@poker-moons/shared/type';
 
 @Injectable()
-export abstract class GenericStateService {
+export abstract class GenericStateServiceImpl {
     abstract getState(tableId: TableId): Promise<ServerTableState>;
 
     abstract create(serverTableState: ServerTableState): Promise<TableId>;

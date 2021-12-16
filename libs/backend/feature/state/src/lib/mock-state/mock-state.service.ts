@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { GenericStateService, ServerState } from '../GenericStateService';
+import { GenericStateServiceImpl, ServerState } from '../generic-state-service.impl';
 import { ServerTableState, TableId } from '@poker-moons/shared/type';
 
 @Injectable()
-export class MockStateService extends GenericStateService {
+export class MockStateService extends GenericStateServiceImpl {
     private state: ServerState = {};
     private id = 0;
 
@@ -27,7 +27,7 @@ export class MockStateService extends GenericStateService {
         this.state[tableId] = { ...this.state[tableId], ...updatedTable };
         return;
     }
-
+    
     private generateNewId(): number {
         this.id++;
         return this.id;
