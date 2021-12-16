@@ -27,7 +27,7 @@ export class MockStateService extends GenericStateServiceImpl {
         this.state[tableId] = { ...this.state[tableId], ...updatedTable };
         return;
     }
-    
+
     private generateNewId(): number {
         this.id++;
         return this.id;
