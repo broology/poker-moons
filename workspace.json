@@ -2,7 +2,6 @@
     "version": 2,
     "projects": {
         "backend-feature-table": "libs/backend/feature/table",
-        "backend-shared-util-validators": "libs/backend/shared/util/validators",
         "frontend": "apps/frontend",
         "frontend-e2e": "apps/frontend-e2e",
         "frontend-shared-state-table": "libs/frontend/shared/state/table",
