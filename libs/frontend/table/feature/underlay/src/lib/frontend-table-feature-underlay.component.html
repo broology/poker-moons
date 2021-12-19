@@ -1,6 +1,10 @@
-<poker-moons-frontend-table-ui-underlay
-    [activeRound$]="activeRound$"
-    [immutablePlayerMap$]="immutablePlayerMap$"
-    [mutablePlayerMap$]="mutablePlayerMap$"
-    [seatMap$]="seatMap$"
-></poker-moons-frontend-table-ui-underlay>
+<ng-template>
+    <poker-moons-seat-layout
+        [activeRound$]="activeRound$"
+        [immutablePlayerMap$]="immutablePlayerMap$"
+        [mutablePlayerMap$]="mutablePlayerMap$"
+        [seatMap]="seatMap$ | push"
+    ></poker-moons-seat-layout>
+
+    <poker-moons-table-display></poker-moons-table-display>
+</ng-template>

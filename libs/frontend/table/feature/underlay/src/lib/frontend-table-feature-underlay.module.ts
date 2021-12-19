@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { PushModule } from '@rx-angular/template';
 import { FrontendTableFeatureUnderlayComponent } from './frontend-table-feature-underlay.component';
-import { FrontendTableUiUnderlayModule } from './ui/frontend-table-ui-underlay.module';
+import { SeatLayoutModule } from './seat-layout/seat-layout.module';
+import { TableDisplayModule } from './table-display/table-display.module';
 
 @NgModule({
-    imports: [CommonModule, FrontendTableUiUnderlayModule],
+    imports: [CommonModule, SeatLayoutModule, TableDisplayModule, PushModule],
     declarations: [FrontendTableFeatureUnderlayComponent],
-    exports: [FrontendTableFeatureUnderlayComponent],
 })
 export class FrontendTableFeatureUnderlayModule {}

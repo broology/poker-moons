@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { ImmutablePublicPlayer, MutablePublicPlayer, PlayerId, Round, SeatId, seats } from '@poker-moons/shared/type';
+import type { ImmutablePublicPlayer, MutablePublicPlayer, PlayerId, Round, SeatId } from '@poker-moons/shared/type';
+import { seats } from '@poker-moons/shared/type';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -18,7 +19,7 @@ export class SeatLayoutComponent {
 
     @Input() seatMap!: Record<SeatId, PlayerId | null>;
 
-    seats = seats;
+    _seats = seats;
 
     selectPlayerBySeatId<T>(
         seatId: SeatId,
