@@ -1,1 +1,2 @@
-export * from './lib/frontend-hud-feature-action-panel.module';
+export * from './lib/action-panel-feature.component';
+export * from './lib/action-panel-feature.module';

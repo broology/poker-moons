@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { FrontendHudShellModule } from '@poker-moons/frontend/hud/shell';
 import { FrontendUnderlayShellModule } from '@poker-moons/frontend/underlay/shell';
 import { UnderlayHudSeparatorComponent } from './underlay-hud-separator.component';
 
@@ -8,15 +9,9 @@ import { UnderlayHudSeparatorComponent } from './underlay-hud-separator.componen
     imports: [
         CommonModule,
         FrontendUnderlayShellModule,
-        RouterModule.forChild([
-            {
-                path: '',
-                component: UnderlayHudSeparatorComponent,
-                loadChildren: () => import('@poker-moons/frontend/hud/shell').then((m) => m.FrontendHudShellModule),
-            },
-        ]),
+        FrontendHudShellModule,
+        RouterModule.forChild([{ path: '', component: UnderlayHudSeparatorComponent }]),
     ],
     declarations: [UnderlayHudSeparatorComponent],
-    exports: [UnderlayHudSeparatorComponent],
 })
 export class UnderlayHudSeparatorModule {}

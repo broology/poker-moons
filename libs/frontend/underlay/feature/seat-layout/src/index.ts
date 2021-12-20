@@ -1,1 +1,2 @@
-export * from './lib/frontend-underlay-feature-seat-layout.module';
+export * from './lib/seat-layout-feature.component';
+export * from './lib/seat-layout-feature.module';

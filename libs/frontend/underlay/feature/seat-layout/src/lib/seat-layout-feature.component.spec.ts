@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TableDisplayComponent } from './table-display.component';
+import { SeatLayoutFeatureComponent } from './seat-layout-feature.component';
 
-describe('TableDisplayComponent', () => {
-    let component: TableDisplayComponent;
-    let fixture: ComponentFixture<TableDisplayComponent>;
+describe('SeatLayoutComponent', () => {
+    let component: SeatLayoutFeatureComponent;
+    let fixture: ComponentFixture<SeatLayoutFeatureComponent>;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [TableDisplayComponent],
+            declarations: [SeatLayoutFeatureComponent],
         }).compileComponents();
     });
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(TableDisplayComponent);
+        fixture = TestBed.createComponent(SeatLayoutFeatureComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

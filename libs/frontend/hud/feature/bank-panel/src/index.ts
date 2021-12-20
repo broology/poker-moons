@@ -1,1 +1,2 @@
-export * from './lib/frontend-hud-feature-bank-panel.module';
+export * from './lib/bank-panel-feature.component';
+export * from './lib/bank-panel-feature.module';

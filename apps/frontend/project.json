@@ -46,13 +46,24 @@
                     "vendorChunk": true,
                     "extractLicenses": false,
                     "sourceMap": true,
-                    "namedChunks": true
+                    "namedChunks": true,
+                    "outputHashing": "all"
                 }
             },
-            "defaultConfiguration": "production"
+            "dependsOn": [
+                {
+                    "target": "build",
+                    "projects": "dependencies"
+                }
+            ],
+            "defaultConfiguration": "development"
         },
         "serve": {
             "executor": "@nrwl/web:file-server",
+            "options": {
+                "withDeps": false,
+                "maxParallel": 10
+            },
             "configurations": {
                 "production": {
                     "buildTarget": "frontend:build:production"
