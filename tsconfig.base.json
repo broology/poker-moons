@@ -17,11 +17,19 @@
         "strict": true,
         "paths": {
             "@poker-moons/backend/feature/table": ["libs/backend/feature/table/src/index.ts"],
+            "@poker-moons/frontend/hud/feature/action-panel": ["libs/frontend/hud/feature/action-panel/src/index.ts"],
+            "@poker-moons/frontend/hud/feature/bank-panel": ["libs/frontend/hud/feature/bank-panel/src/index.ts"],
+            "@poker-moons/frontend/hud/shell": ["libs/frontend/hud/shell/src/index.ts"],
             "@poker-moons/frontend/shared/state/table": ["libs/frontend/shared/state/table/src/index.ts"],
             "@poker-moons/frontend/shared/ui": ["libs/frontend/shared/ui/src/index.ts"],
             "@poker-moons/frontend/shared/util/environment": ["libs/frontend/shared/util/environment/src/index.ts"],
-            "@poker-moons/frontend/table/feature/underlay": ["libs/frontend/table/feature/underlay/src/index.ts"],
-            "@poker-moons/frontend/table/shell": ["libs/frontend/table/shell/src/index.ts"],
+            "@poker-moons/frontend/underlay/feature/seat-layout": [
+                "libs/frontend/underlay/feature/seat-layout/src/index.ts"
+            ],
+            "@poker-moons/frontend/underlay/feature/table-display": [
+                "libs/frontend/underlay/feature/table-display/src/index.ts"
+            ],
+            "@poker-moons/frontend/underlay/shell": ["libs/frontend/underlay/shell/src/index.ts"],
             "@poker-moons/shared/testing": ["libs/shared/testing/src/index.ts"],
             "@poker-moons/shared/type": ["libs/shared/type/src/index.ts"],
             "@poker-moons/shared/util": ["libs/shared/util/src/index.ts"]

@@ -1,0 +1,42 @@
+{
+    "projectType": "library",
+    "root": "libs/frontend/underlay/feature/seat-layout",
+    "sourceRoot": "libs/frontend/underlay/feature/seat-layout/src",
+    "prefix": "poker-moons",
+    "targets": {
+        "build": {
+            "executor": "@nrwl/angular:ng-packagr-lite",
+            "outputs": ["dist/libs/frontend/underlay/feature/seat-layout"],
+            "options": {
+                "project": "libs/frontend/underlay/feature/seat-layout/ng-package.json"
+            },
+            "configurations": {
+                "production": {
+                    "tsConfig": "libs/frontend/underlay/feature/seat-layout/tsconfig.lib.prod.json"
+                },
+                "development": {
+                    "tsConfig": "libs/frontend/underlay/feature/seat-layout/tsconfig.lib.json"
+                }
+            },
+            "defaultConfiguration": "production"
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/libs/frontend/underlay/feature/seat-layout"],
+            "options": {
+                "jestConfig": "libs/frontend/underlay/feature/seat-layout/jest.config.js",
+                "passWithNoTests": true
+            }
+        },
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "options": {
+                "lintFilePatterns": [
+                    "libs/frontend/underlay/feature/seat-layout/src/**/*.ts",
+                    "libs/frontend/underlay/feature/seat-layout/src/**/*.html"
+                ]
+            }
+        }
+    },
+    "tags": []
+}

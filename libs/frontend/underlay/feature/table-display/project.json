@@ -1,0 +1,42 @@
+{
+    "projectType": "library",
+    "root": "libs/frontend/underlay/feature/table-display",
+    "sourceRoot": "libs/frontend/underlay/feature/table-display/src",
+    "prefix": "poker-moons",
+    "targets": {
+        "build": {
+            "executor": "@nrwl/angular:ng-packagr-lite",
+            "outputs": ["dist/libs/frontend/underlay/feature/table-display"],
+            "options": {
+                "project": "libs/frontend/underlay/feature/table-display/ng-package.json"
+            },
+            "configurations": {
+                "production": {
+                    "tsConfig": "libs/frontend/underlay/feature/table-display/tsconfig.lib.prod.json"
+                },
+                "development": {
+                    "tsConfig": "libs/frontend/underlay/feature/table-display/tsconfig.lib.json"
+                }
+            },
+            "defaultConfiguration": "production"
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/libs/frontend/underlay/feature/table-display"],
+            "options": {
+                "jestConfig": "libs/frontend/underlay/feature/table-display/jest.config.js",
+                "passWithNoTests": true
+            }
+        },
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "options": {
+                "lintFilePatterns": [
+                    "libs/frontend/underlay/feature/table-display/src/**/*.ts",
+                    "libs/frontend/underlay/feature/table-display/src/**/*.html"
+                ]
+            }
+        }
+    },
+    "tags": []
+}
