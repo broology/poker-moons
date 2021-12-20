@@ -35,5 +35,5 @@
             }
         }
     },
-    "tags": []
+    "tags": ["scope:frontend", "scope:hud", "type:shell"]
 }
