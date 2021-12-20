@@ -17,5 +17,6 @@ import { UnderlayHudSeparatorComponent } from './underlay-hud-separator.componen
         ]),
     ],
     declarations: [UnderlayHudSeparatorComponent],
+    exports: [UnderlayHudSeparatorComponent],
 })
 export class UnderlayHudSeparatorModule {}
