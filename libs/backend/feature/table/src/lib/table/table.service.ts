@@ -1,13 +1,24 @@
-import { Injectable } from '@nestjs/common';
-import { CreateTableRequest, CreateTableResponse } from '@poker-moons/shared/type';
+import { Injectable, NotImplementedException } from '@nestjs/common';
+import {
+    CreateTableRequest,
+    CreateTableResponse,
+    GetTableResponse,
+    TableId,
+    UpdateTableRequest,
+    UpdateTableResponse,
+} from '@poker-moons/shared/type';
 
 @Injectable()
 export class TableService {
     create(dto: CreateTableRequest): CreateTableResponse {
-        return {
-            id: 'table_id',
-            players: [],
-            ...dto,
-        };
+        throw new NotImplementedException();
+    }
+
+    get(id: TableId): GetTableResponse {
+        throw new NotImplementedException();
+    }
+
+    update(id: TableId, dto: UpdateTableRequest): UpdateTableResponse {
+        throw new NotImplementedException();
     }
 }

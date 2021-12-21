@@ -1,6 +1,8 @@
 import type { Player, PlayerId } from './player';
 import type { Round } from './round';
 
+export const TABLE_PREFIX = 'table' as const;
+
 export type TableId = `table_${string}`;
 
 export type SeatId = 0 | 1 | 2 | 3 | 4 | 5;
