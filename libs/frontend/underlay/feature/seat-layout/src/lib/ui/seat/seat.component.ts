@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { ImmutablePublicPlayer, MutablePublicPlayer, SeatId } from '@poker-moons/shared/type';
+import { TableStateFacade } from '@poker-moons/frontend/shared/state/table';
+import { SeatId } from '@poker-moons/shared/type';
 
 @Component({
     selector: 'poker-moons-seat',
@@ -10,7 +11,9 @@ import { ImmutablePublicPlayer, MutablePublicPlayer, SeatId } from '@poker-moons
 export class SeatComponent {
     @Input() seatId!: SeatId;
 
-    @Input() mutablePlayer!: MutablePublicPlayer | null;
+    readonly mutablePlayer$ = this.tableStateFacade.selectMutablePlayerBySeatId(this.seatId);
 
-    @Input() immutablePlayer!: ImmutablePublicPlayer | null;
+    readonly immutablePlayer$ = this.tableStateFacade.selectImmutablePlayerBySeatId(this.seatId);
+
+    constructor(private readonly tableStateFacade: TableStateFacade) {}
 }

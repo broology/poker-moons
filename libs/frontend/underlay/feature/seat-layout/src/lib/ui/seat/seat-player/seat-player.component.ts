@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ImmutablePublicPlayer } from '@poker-moons/shared/type';
 
 @Component({
     selector: 'poker-moons-seat-player',
@@ -6,4 +7,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
     styleUrls: ['./seat-player.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SeatPlayerComponent {}
+export class SeatPlayerComponent {
+    @Input() immutablePlayer!: ImmutablePublicPlayer | null;
+}

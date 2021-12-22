@@ -1,1 +1,7 @@
-<p>seat-player works!</p>
+<div>
+    <div>
+        <strong>Player Display</strong>
+    </div>
+    <span *ngIf="immutablePlayer; else isEmpty">{{ immutablePlayer | json }}</span>
+    <ng-template #isEmpty>Empty Seat</ng-template>
+</div>

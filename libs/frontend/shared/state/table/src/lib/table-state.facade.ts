@@ -12,14 +12,13 @@ import {
 } from '@poker-moons/shared/type';
 import { Observable } from 'rxjs';
 import { joinTable, leaveTable, performTableAction } from './actions/api.actions';
-import { selectClientImmutablePlayer, selectClientMutablePlayer } from './table-state.selectors';
 import {
-    selectActiveRound,
-    selectCards,
-    selectImmutablePlayerMap,
-    selectMutablePlayerMap,
-    selectSeatMap,
-} from './table.state';
+    selectClientImmutablePlayer,
+    selectClientMutablePlayer,
+    selectImmutablePlayerBySeatId,
+    selectMutablePlayerBySeatId,
+} from './table-state.selectors';
+import { selectActiveRound, selectCards, selectSeatMap } from './table.state';
 
 @Injectable({ providedIn: 'root' })
 export class TableStateFacade {
@@ -37,17 +36,17 @@ export class TableStateFacade {
     }
 
     /**
-     * The map of the players immutable data
+     * The immutable player data with is sitting at the seat
      */
-    selectImmutablePlayerMap(): Observable<Record<PlayerId, ImmutablePublicPlayer>> {
-        return this.store.pipe(select(selectImmutablePlayerMap));
+    selectImmutablePlayerBySeatId(seatId: SeatId): Observable<ImmutablePublicPlayer | null> {
+        return this.store.pipe(select(selectImmutablePlayerBySeatId({ seatId })));
     }
 
     /**
-     * The map of the players mutable data
+     * The mutable player data which is sitting at the seat
      */
-    selectMutablePlayerMap(): Observable<Record<PlayerId, MutablePublicPlayer>> {
-        return this.store.pipe(select(selectMutablePlayerMap));
+    selectMutablePlayerBySeatId(seatId: SeatId): Observable<MutablePublicPlayer | null> {
+        return this.store.pipe(select(selectMutablePlayerBySeatId({ seatId })));
     }
 
     /**

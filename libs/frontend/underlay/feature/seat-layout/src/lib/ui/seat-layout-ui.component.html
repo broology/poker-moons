@@ -1,7 +1,3 @@
 <div *ngFor="let seat of seats">
-    <poker-moons-seat
-        [immutablePlayer]="selectPlayerAtSeatId(seat, immutablePlayerMap$) | push"
-        [mutablePlayer]="selectPlayerAtSeatId(seat, mutablePlayerMap$) | push"
-        [seatId]="seat"
-    ></poker-moons-seat>
+    <poker-moons-seat [seatId]="seat"></poker-moons-seat>
 </div>

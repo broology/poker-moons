@@ -2,6 +2,6 @@
     <div>
         <strong>Seat #{{ seatId + 1 }}</strong>
     </div>
-    <span *ngIf="immutablePlayer; else isEmpty">{{ immutablePlayer | json }}<br />{{ mutablePlayer | json }}</span>
-    <ng-template #isEmpty>Empty Seat</ng-template>
+    <poker-moons-seat-player [immutablePlayer]="immutablePlayer$ | push"></poker-moons-seat-player>
+    <poker-moons-seat-action [mutablePlayer]="mutablePlayer$ | push"></poker-moons-seat-action>
 </div>

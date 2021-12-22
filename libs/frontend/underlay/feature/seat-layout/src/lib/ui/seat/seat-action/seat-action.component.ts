@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { MutablePublicPlayer, Round } from '@poker-moons/shared/type';
+import { MutablePublicPlayer } from '@poker-moons/shared/type';
 
 @Component({
     selector: 'poker-moons-seat-action',
@@ -7,4 +7,6 @@ import { MutablePublicPlayer, Round } from '@poker-moons/shared/type';
     styleUrls: ['./seat-action.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SeatActionComponent {}
+export class SeatActionComponent {
+    @Input() mutablePlayer!: MutablePublicPlayer | null;
+}
