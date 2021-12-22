@@ -1,1 +1,7 @@
-<p>seat-layout-ui works!</p>
+<div *ngFor="let seat of seats">
+    <poker-moons-seat
+        [immutablePlayer]="selectPlayerAtSeatId(seat, immutablePlayerMap$) | push"
+        [mutablePlayer]="selectPlayerAtSeatId(seat, mutablePlayerMap$) | push"
+        [seatId]="seat"
+    ></poker-moons-seat>
+</div>

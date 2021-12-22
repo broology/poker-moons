@@ -1,1 +1,7 @@
-<p>seat works!</p>
+<div>
+    <div>
+        <strong>Seat #{{ seatId + 1 }}</strong>
+    </div>
+    <span *ngIf="immutablePlayer; else isEmpty">{{ immutablePlayer | json }}<br />{{ mutablePlayer | json }}</span>
+    <ng-template #isEmpty>Empty Seat</ng-template>
+</div>
