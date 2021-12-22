@@ -34,7 +34,7 @@ export const initialState: ClientTableState = {
 
 export const storeFeature = createFeature({
     name: TABLE_STATE,
-    reducer: createReducer<ClientTableState>(initialState, ...wsReducers, ...apiReducers),
+    reducer: createReducer<ClientTableState>(initialState, ...[...wsReducers, ...apiReducers]),
 });
 
 export const {

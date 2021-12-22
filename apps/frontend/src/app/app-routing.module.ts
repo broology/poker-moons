@@ -20,6 +20,5 @@ import { environment } from '../environments/environment';
             },
         ),
     ],
-    providers: [{ provide: NG_ENVIRONMENT, useValue: environment }],
 })
 export class AppRoutingModule {}
