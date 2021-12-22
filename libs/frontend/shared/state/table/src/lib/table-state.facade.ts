@@ -28,11 +28,11 @@ export class TableStateFacade {
     /* Selectors */
 
     /**
-     * The list of seats to display on the table.
+     * The map of seats to display on the table.
      * - if `null` then the seat is empty and can be joined
      * - if `PlayerId` then the seat contains a player
      */
-    selectSeatList(): Observable<Record<SeatId, PlayerId | null>> {
+    selectSeatMap(): Observable<Record<SeatId, PlayerId | null>> {
         return this.store.pipe(select(selectSeatMap));
     }
 
