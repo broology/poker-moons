@@ -3,8 +3,10 @@ import { NgModule } from '@angular/core';
 import { SeatLayoutFeatureComponent } from './seat-layout-feature.component';
 import { SeatLayoutUiModule } from './ui/seat-layout-ui.module';
 
+export const seatLayoutFeatureImports = [...([CommonModule, SeatLayoutUiModule] as const)];
+
 @NgModule({
-    imports: [CommonModule, SeatLayoutUiModule],
+    imports: seatLayoutFeatureImports,
     declarations: [SeatLayoutFeatureComponent],
     exports: [SeatLayoutFeatureComponent],
 })

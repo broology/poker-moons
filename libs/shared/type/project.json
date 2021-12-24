@@ -1,41 +1,33 @@
 {
-  "root": "libs/shared/type",
-  "sourceRoot": "libs/shared/type/src",
-  "projectType": "library",
-  "targets": {
-    "lint": {
-      "executor": "@nrwl/linter:eslint",
-      "outputs": [
-        "{options.outputFile}"
-      ],
-      "options": {
-        "lintFilePatterns": [
-          "libs/shared/type/**/*.ts"
-        ]
-      }
+    "root": "libs/shared/type",
+    "sourceRoot": "libs/shared/type/src",
+    "projectType": "library",
+    "targets": {
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "outputs": ["{options.outputFile}"],
+            "options": {
+                "lintFilePatterns": ["libs/shared/type/**/*.ts"]
+            }
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/libs/shared/type"],
+            "options": {
+                "jestConfig": "libs/shared/type/jest.config.js",
+                "passWithNoTests": true
+            }
+        },
+        "build": {
+            "executor": "@nrwl/node:package",
+            "options": {
+                "outputPath": "dist/libs/shared/type",
+                "tsConfig": "libs/shared/type/tsconfig.lib.json",
+                "packageJson": "libs/shared/type/package.json",
+                "main": "libs/shared/type/src/index.ts",
+                "assets": ["libs/shared/type/*.md"]
+            }
+        }
     },
-    "test": {
-      "executor": "@nrwl/jest:jest",
-      "outputs": [
-        "coverage/libs/shared/type"
-      ],
-      "options": {
-        "jestConfig": "libs/shared/type/jest.config.js",
-        "passWithNoTests": true
-      }
-    },
-    "build": {
-      "executor": "@nrwl/node:package",
-      "options": {
-        "outputPath": "dist/libs/shared/type",
-        "tsConfig": "libs/shared/type/tsconfig.lib.json",
-        "packageJson": "libs/shared/type/package.json",
-        "main": "libs/shared/type/src/index.ts",
-        "assets": [
-          "libs/shared/type/*.md"
-        ]
-      }
-    }
-  },
-  "tags": []
+    "tags": []
 }

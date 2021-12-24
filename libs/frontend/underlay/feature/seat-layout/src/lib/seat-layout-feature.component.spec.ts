@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 import { SeatLayoutFeatureComponent } from './seat-layout-feature.component';
+import { seatLayoutFeatureImports } from './seat-layout-feature.module';
 
 describe('SeatLayoutComponent', () => {
     let component: SeatLayoutFeatureComponent;
@@ -8,6 +9,7 @@ describe('SeatLayoutComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
+            imports: seatLayoutFeatureImports,
             declarations: [SeatLayoutFeatureComponent],
             providers: [provideMockStore()],
         }).compileComponents();

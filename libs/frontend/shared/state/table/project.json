@@ -1,43 +1,38 @@
 {
-  "projectType": "library",
-  "root": "libs/frontend/shared/state/table",
-  "sourceRoot": "libs/frontend/shared/state/table/src",
-  "prefix": "poker-moons",
-  "targets": {
-    "test": {
-      "executor": "@nrwl/jest:jest",
-      "outputs": [
-        "coverage/libs/frontend/shared/state/table"
-      ],
-      "options": {
-        "jestConfig": "libs/frontend/shared/state/table/jest.config.js",
-        "passWithNoTests": true
-      }
-    },
-    "lint": {
-      "executor": "@nrwl/linter:eslint",
-      "options": {
-        "lintFilePatterns": [
-          "libs/frontend/shared/state/table/src/**/*.ts",
-          "libs/frontend/shared/state/table/src/**/*.html"
-        ]
-      }
-    },
-    "build": {
-      "executor": "@nrwl/angular:ng-packagr-lite",
-      "options": {
-        "tsConfig": "libs/frontend/shared/state/table/tsconfig.lib.json",
-        "project": "libs/frontend/shared/state/table/ng-package.json"
-      },
-      "configurations": {
-        "": {
-          "tsConfig": "libs/frontend/shared/state/table/tsconfig.lib.prod.json"
+    "projectType": "library",
+    "root": "libs/frontend/shared/state/table",
+    "sourceRoot": "libs/frontend/shared/state/table/src",
+    "prefix": "poker-moons",
+    "targets": {
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/libs/frontend/shared/state/table"],
+            "options": {
+                "jestConfig": "libs/frontend/shared/state/table/jest.config.js",
+                "passWithNoTests": true
+            }
+        },
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "options": {
+                "lintFilePatterns": [
+                    "libs/frontend/shared/state/table/src/**/*.ts",
+                    "libs/frontend/shared/state/table/src/**/*.html"
+                ]
+            }
+        },
+        "build": {
+            "executor": "@nrwl/angular:ng-packagr-lite",
+            "options": {
+                "tsConfig": "libs/frontend/shared/state/table/tsconfig.lib.json",
+                "project": "libs/frontend/shared/state/table/ng-package.json"
+            },
+            "configurations": {
+                "": {
+                    "tsConfig": "libs/frontend/shared/state/table/tsconfig.lib.prod.json"
+                }
+            }
         }
-      }
-    }
-  },
-  "tags": [
-    "scope:frontend",
-    "type:state"
-  ]
+    },
+    "tags": ["scope:frontend", "type:state"]
 }

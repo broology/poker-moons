@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideMockStore } from '@ngrx/store/testing';
 import { SeatComponent } from './seat.component';
+import { seatModuleImports } from './seat.module';
 
 describe('SeatComponent', () => {
     let component: SeatComponent;
@@ -7,7 +9,9 @@ describe('SeatComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
+            imports: seatModuleImports,
             declarations: [SeatComponent],
+            providers: [provideMockStore()],
         }).compileComponents();
     });
 

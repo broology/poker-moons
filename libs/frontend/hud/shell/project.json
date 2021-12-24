@@ -1,50 +1,39 @@
 {
-  "projectType": "library",
-  "root": "libs/frontend/hud/shell",
-  "sourceRoot": "libs/frontend/hud/shell/src",
-  "prefix": "poker-moons",
-  "targets": {
-    "build": {
-      "executor": "@nrwl/angular:ng-packagr-lite",
-      "outputs": [
-        "dist/libs/frontend/hud/shell"
-      ],
-      "options": {
-        "project": "libs/frontend/hud/shell/ng-package.json"
-      },
-      "configurations": {
-        "production": {
-          "tsConfig": "libs/frontend/hud/shell/tsconfig.lib.prod.json"
+    "projectType": "library",
+    "root": "libs/frontend/hud/shell",
+    "sourceRoot": "libs/frontend/hud/shell/src",
+    "prefix": "poker-moons",
+    "targets": {
+        "build": {
+            "executor": "@nrwl/angular:ng-packagr-lite",
+            "outputs": ["dist/libs/frontend/hud/shell"],
+            "options": {
+                "project": "libs/frontend/hud/shell/ng-package.json"
+            },
+            "configurations": {
+                "production": {
+                    "tsConfig": "libs/frontend/hud/shell/tsconfig.lib.prod.json"
+                },
+                "development": {
+                    "tsConfig": "libs/frontend/hud/shell/tsconfig.lib.json"
+                }
+            },
+            "defaultConfiguration": "production"
         },
-        "development": {
-          "tsConfig": "libs/frontend/hud/shell/tsconfig.lib.json"
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/libs/frontend/hud/shell"],
+            "options": {
+                "jestConfig": "libs/frontend/hud/shell/jest.config.js",
+                "passWithNoTests": true
+            }
+        },
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "options": {
+                "lintFilePatterns": ["libs/frontend/hud/shell/src/**/*.ts", "libs/frontend/hud/shell/src/**/*.html"]
+            }
         }
-      },
-      "defaultConfiguration": "production"
     },
-    "test": {
-      "executor": "@nrwl/jest:jest",
-      "outputs": [
-        "coverage/libs/frontend/hud/shell"
-      ],
-      "options": {
-        "jestConfig": "libs/frontend/hud/shell/jest.config.js",
-        "passWithNoTests": true
-      }
-    },
-    "lint": {
-      "executor": "@nrwl/linter:eslint",
-      "options": {
-        "lintFilePatterns": [
-          "libs/frontend/hud/shell/src/**/*.ts",
-          "libs/frontend/hud/shell/src/**/*.html"
-        ]
-      }
-    }
-  },
-  "tags": [
-    "scope:frontend",
-    "scope:hud",
-    "type:shell"
-  ]
+    "tags": ["scope:frontend", "scope:hud", "type:shell"]
 }
