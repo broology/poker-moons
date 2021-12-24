@@ -1,23 +1,29 @@
 {
-    "root": "libs/backend/feature/table",
-    "sourceRoot": "libs/backend/feature/table/src",
-    "projectType": "library",
-    "targets": {
-        "lint": {
-            "executor": "@nrwl/linter:eslint",
-            "outputs": ["{options.outputFile}"],
-            "options": {
-                "lintFilePatterns": ["libs/backend/feature/table/**/*.ts"]
-            }
-        },
-        "test": {
-            "executor": "@nrwl/jest:jest",
-            "outputs": ["coverage/libs/backend/feature/table"],
-            "options": {
-                "jestConfig": "libs/backend/feature/table/jest.config.js",
-                "passWithNoTests": true
-            }
-        }
+  "root": "libs/backend/feature/table",
+  "sourceRoot": "libs/backend/feature/table/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": [
+        "{options.outputFile}"
+      ],
+      "options": {
+        "lintFilePatterns": [
+          "libs/backend/feature/table/**/*.ts"
+        ]
+      }
     },
-    "tags": []
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": [
+        "coverage/libs/backend/feature/table"
+      ],
+      "options": {
+        "jestConfig": "libs/backend/feature/table/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
 }

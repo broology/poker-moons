@@ -1,42 +1,50 @@
 {
-    "projectType": "library",
-    "root": "libs/frontend/hud/feature/bank-panel",
-    "sourceRoot": "libs/frontend/hud/feature/bank-panel/src",
-    "prefix": "poker-moons",
-    "targets": {
-        "build": {
-            "executor": "@nrwl/angular:ng-packagr-lite",
-            "outputs": ["dist/libs/frontend/hud/feature/bank-panel"],
-            "options": {
-                "project": "libs/frontend/hud/feature/bank-panel/ng-package.json"
-            },
-            "configurations": {
-                "production": {
-                    "tsConfig": "libs/frontend/hud/feature/bank-panel/tsconfig.lib.prod.json"
-                },
-                "development": {
-                    "tsConfig": "libs/frontend/hud/feature/bank-panel/tsconfig.lib.json"
-                }
-            },
-            "defaultConfiguration": "production"
+  "projectType": "library",
+  "root": "libs/frontend/hud/feature/bank-panel",
+  "sourceRoot": "libs/frontend/hud/feature/bank-panel/src",
+  "prefix": "poker-moons",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/angular:ng-packagr-lite",
+      "outputs": [
+        "dist/libs/frontend/hud/feature/bank-panel"
+      ],
+      "options": {
+        "project": "libs/frontend/hud/feature/bank-panel/ng-package.json"
+      },
+      "configurations": {
+        "production": {
+          "tsConfig": "libs/frontend/hud/feature/bank-panel/tsconfig.lib.prod.json"
         },
-        "test": {
-            "executor": "@nrwl/jest:jest",
-            "outputs": ["coverage/libs/frontend/hud/feature/bank-panel"],
-            "options": {
-                "jestConfig": "libs/frontend/hud/feature/bank-panel/jest.config.js",
-                "passWithNoTests": true
-            }
-        },
-        "lint": {
-            "executor": "@nrwl/linter:eslint",
-            "options": {
-                "lintFilePatterns": [
-                    "libs/frontend/hud/feature/bank-panel/src/**/*.ts",
-                    "libs/frontend/hud/feature/bank-panel/src/**/*.html"
-                ]
-            }
+        "development": {
+          "tsConfig": "libs/frontend/hud/feature/bank-panel/tsconfig.lib.json"
         }
+      },
+      "defaultConfiguration": "production"
     },
-    "tags": ["scope:frontend", "scope:hud", "type:feature"]
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": [
+        "coverage/libs/frontend/hud/feature/bank-panel"
+      ],
+      "options": {
+        "jestConfig": "libs/frontend/hud/feature/bank-panel/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/frontend/hud/feature/bank-panel/src/**/*.ts",
+          "libs/frontend/hud/feature/bank-panel/src/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": [
+    "scope:frontend",
+    "scope:hud",
+    "type:feature"
+  ]
 }

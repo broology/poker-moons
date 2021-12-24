@@ -1,33 +1,44 @@
 {
-    "root": "libs/shared/testing",
-    "sourceRoot": "libs/shared/testing/src",
-    "projectType": "library",
-    "targets": {
-        "lint": {
-            "executor": "@nrwl/linter:eslint",
-            "outputs": ["{options.outputFile}"],
-            "options": {
-                "lintFilePatterns": ["libs/shared/testing/**/*.ts"]
-            }
-        },
-        "test": {
-            "executor": "@nrwl/jest:jest",
-            "outputs": ["coverage/libs/shared/testing"],
-            "options": {
-                "jestConfig": "libs/shared/testing/jest.config.js",
-                "passWithNoTests": true
-            }
-        },
-        "build": {
-            "executor": "@nrwl/node:package",
-            "options": {
-                "outputPath": "dist/libs/shared/testing",
-                "tsConfig": "libs/shared/testing/tsconfig.lib.json",
-                "packageJson": "libs/shared/testing/package.json",
-                "main": "libs/shared/testing/src/index.ts",
-                "assets": ["libs/shared/testing/*.md"]
-            }
-        }
+  "root": "libs/shared/testing",
+  "sourceRoot": "libs/shared/testing/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": [
+        "{options.outputFile}"
+      ],
+      "options": {
+        "lintFilePatterns": [
+          "libs/shared/testing/**/*.ts"
+        ]
+      }
     },
-    "tags": ["scope:shared", "type:testing"]
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": [
+        "coverage/libs/shared/testing"
+      ],
+      "options": {
+        "jestConfig": "libs/shared/testing/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "build": {
+      "executor": "@nrwl/node:package",
+      "options": {
+        "outputPath": "dist/libs/shared/testing",
+        "tsConfig": "libs/shared/testing/tsconfig.lib.json",
+        "packageJson": "libs/shared/testing/package.json",
+        "main": "libs/shared/testing/src/index.ts",
+        "assets": [
+          "libs/shared/testing/*.md"
+        ]
+      }
+    }
+  },
+  "tags": [
+    "scope:shared",
+    "type:testing"
+  ]
 }
