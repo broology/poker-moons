@@ -1,0 +1,6 @@
+<div class="chip-absoluter">
+    <div *ngFor="let number of numbers" class="chip-container" [style]="' z-index:' + -number + ';'">
+        <!-- TODO Move asset into AWS S3 CDN -->
+        <img src="chip.png" class="chip" [style]="cssFilter" />
+    </div>
+</div>
