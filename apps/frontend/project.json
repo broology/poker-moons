@@ -5,7 +5,7 @@
     "prefix": "poker-moons",
     "targets": {
         "build": {
-            "executor": "@angular-devkit/build-angular:browser",
+            "executor": "@nrwl/angular:webpack-browser",
             "outputs": ["{options.outputPath}"],
             "options": {
                 "outputPath": "dist/apps/frontend",
@@ -46,19 +46,30 @@
                     "vendorChunk": true,
                     "extractLicenses": false,
                     "sourceMap": true,
-                    "namedChunks": true
+                    "namedChunks": true,
+                    "outputHashing": "all"
                 }
             },
-            "defaultConfiguration": "production"
+            "dependsOn": [
+                {
+                    "target": "build",
+                    "projects": "dependencies"
+                }
+            ],
+            "defaultConfiguration": "development"
         },
         "serve": {
-            "executor": "@angular-devkit/build-angular:dev-server",
+            "executor": "@nrwl/web:file-server",
+            "options": {
+                "withDeps": false,
+                "maxParallel": 10
+            },
             "configurations": {
                 "production": {
-                    "browserTarget": "frontend:build:production"
+                    "buildTarget": "frontend:build:production"
                 },
                 "development": {
-                    "browserTarget": "frontend:build:development"
+                    "buildTarget": "frontend:build:development"
                 }
             },
             "defaultConfiguration": "development"

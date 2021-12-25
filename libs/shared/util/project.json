@@ -17,6 +17,16 @@
                 "jestConfig": "libs/shared/util/jest.config.js",
                 "passWithNoTests": true
             }
+        },
+        "build": {
+            "executor": "@nrwl/node:package",
+            "options": {
+                "outputPath": "dist/libs/shared/util",
+                "tsConfig": "libs/shared/util/tsconfig.lib.json",
+                "packageJson": "libs/shared/util/package.json",
+                "main": "libs/shared/util/src/index.ts",
+                "assets": ["libs/shared/util/*.md"]
+            }
         }
     },
     "tags": ["scope:shared", "type:util"]

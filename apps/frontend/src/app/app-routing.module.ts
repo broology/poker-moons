@@ -10,7 +10,9 @@ import { environment } from '../environments/environment';
                 {
                     path: '',
                     loadChildren: () =>
-                        import('@poker-moons/frontend/table/shell').then((m) => m.FrontendTableShellModule),
+                        import('./underlay-hud-separator/underlay-hud-separator.module').then(
+                            (m) => m.UnderlayHudSeparatorModule,
+                        ),
                 },
             ],
             {
@@ -18,6 +20,5 @@ import { environment } from '../environments/environment';
             },
         ),
     ],
-    providers: [{ provide: NG_ENVIRONMENT, useValue: environment }],
 })
 export class AppRoutingModule {}

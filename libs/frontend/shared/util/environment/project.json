@@ -20,6 +20,18 @@
                     "libs/frontend/shared/util/environment/src/**/*.html"
                 ]
             }
+        },
+        "build": {
+            "executor": "@nrwl/angular:ng-packagr-lite",
+            "options": {
+                "tsConfig": "libs/frontend/shared/util/environment/tsconfig.lib.json",
+                "project": "libs/frontend/shared/util/environment/ng-package.json"
+            },
+            "configurations": {
+                "": {
+                    "tsConfig": "libs/frontend/shared/util/environment/tsconfig.lib.prod.json"
+                }
+            }
         }
     },
     "tags": ["scope:frontend", "type:util"]

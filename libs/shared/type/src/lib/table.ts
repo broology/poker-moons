@@ -5,7 +5,8 @@ export const TABLE_PREFIX = 'table' as const;
 
 export type TableId = `table_${string}`;
 
-export type SeatId = 0 | 1 | 2 | 3 | 4 | 5;
+export const seats = [0, 1, 2, 3, 4, 5] as const;
+export type SeatId = typeof seats[number];
 
 export interface Table {
     id: TableId;
