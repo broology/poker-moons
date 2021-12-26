@@ -1,7 +1,23 @@
+.chip-stacks-container {
+    display: flex;
+    align-items: center;
+    align-content: center;
+}
+
+.chip-stack {
+    position: relative;
+    width: 65px;
+    height: 14px;
+    bottom: 50px;
+}
+
+.chip-container {
+    position: relative;
+    right: 40px;
+    height: 0px;
+}
+
 // TODO Media Filters
 .chip {
-    width: 100px;
-}
-.chip-container {
-    height: 10px;
+    width: 150px;
 }

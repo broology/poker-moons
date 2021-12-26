@@ -1,12 +1,13 @@
 import { Meta, moduleMetadata, Story } from '@storybook/angular';
 import { ChipsComponent } from './chips.component';
+import { chipsModuleImports } from './chips.module';
 
 export default {
     title: 'ChipsComponent',
     component: ChipsComponent,
     decorators: [
         moduleMetadata({
-            imports: [],
+            imports: chipsModuleImports,
         }),
     ],
 } as Meta<ChipsComponent>;
