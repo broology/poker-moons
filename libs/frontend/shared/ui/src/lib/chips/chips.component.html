@@ -1,3 +1,9 @@
-<div *ngFor="let chipValue of chipValues; let i = index" [style]="'margin-left: ' + i * 32.5 + 'px;'">
-    <poker-moons-chip-stack [count]="chipValue.count" [colour]="chipValue.colour"></poker-moons-chip-stack>
+<div style="margin-top: 5em">
+    <div
+        *ngFor="let data of chipStacks"
+        class="chip-stack-container"
+        [style]="'left: ' + (data.col * 62 + data.row * 31) + 'px;top: ' + data.row * 15 + 'px'"
+    >
+        <poker-moons-chip-stack [count]="data.count" [colour]="data.colour"></poker-moons-chip-stack>
+    </div>
 </div>

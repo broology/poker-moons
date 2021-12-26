@@ -15,9 +15,11 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 const denominations = [5000, 2500, 1000, 500, 250, 100, 50, 25, 10, 5, 1] as const;
 type Denomination = typeof denominations[number];
 
-interface ChipValue {
+interface ChipStackData {
     count: number;
     colour: string;
+    col: number;
+    row: number;
 }
 
 @Component({
@@ -45,29 +47,63 @@ export class ChipsComponent {
         5000: '#B87426', // brown
     };
 
-    chipValues!: ChipValue[];
+    /**
+     * The max number of chips that will fit on one stack
+     */
+    private static MAX_CHIPS_PER_STACK = 10;
+
+    /**
+     * The number of stacks in a row before making to an new row
+     */
+    private static STACKS_PER_ROW = 4;
+
+    chipStacks!: ChipStackData[];
 
     /**
      * Converts the amount of dollars to be displayed into the count of each poker chip
      *
      * @param amount - The amount to be displayed in poker chips
-     * @returns {ChipValue[]} - The count of each poker chip to be displayed
+     * @returns {ChipStackData[]} - The data for the individual poker chip stacks
      */
-    private static amountToChipValues(amount: number): ChipValue[] {
-        const chipValues: ChipValue[] = [];
+    private static amountToChipStackData(amount: number): ChipStackData[] {
+        const chipStacks: ChipStackData[] = [];
+
+        const getColumn = () => chipStacks.length % ChipsComponent.STACKS_PER_ROW;
+        const getRow = () => Math.floor(chipStacks.length / ChipsComponent.STACKS_PER_ROW);
 
         let total = amount;
         for (const denomination of denominations) {
             const count = Math.floor(total / denomination);
             const delta = denomination * count;
             total -= delta;
-            if (count > 0) chipValues.push({ count, colour: ChipsComponent.chipDenominationColours[denomination] });
+
+            // * Build full stacks
+            const stacks = Math.floor(count / ChipsComponent.MAX_CHIPS_PER_STACK);
+            for (let x = 0; x < stacks; x++) {
+                chipStacks.push({
+                    count: ChipsComponent.MAX_CHIPS_PER_STACK,
+                    colour: ChipsComponent.chipDenominationColours[denomination],
+                    col: getColumn(),
+                    row: getRow(),
+                });
+            }
+
+            // * Build the remainder stack
+            const remainder = count % ChipsComponent.MAX_CHIPS_PER_STACK;
+            if (remainder > 0) {
+                chipStacks.push({
+                    count: remainder,
+                    colour: ChipsComponent.chipDenominationColours[denomination],
+                    col: getColumn(),
+                    row: getRow(),
+                });
+            }
         }
 
-        return chipValues;
+        return chipStacks;
     }
 
     @Input() set amount(value: number) {
-        this.chipValues = ChipsComponent.amountToChipValues(value);
+        this.chipStacks = ChipsComponent.amountToChipStackData(value);
     }
 }
