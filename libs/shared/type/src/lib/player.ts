@@ -57,7 +57,12 @@ export interface Player {
     cards: [Card, Card] | [];
 }
 
-export type PublicPlayer = StrictOmit<Player, 'cards'>;
+export interface PublicPlayer extends StrictOmit<Player, 'cards'> {
+    /**
+     * The cards of the player, If they have cards but they should be private then will be `[null, null]`
+     */
+    cards: Player['cards'] | [null, null];
+}
 /*
  * We've split Player into `MutablePlayer` and `ImmutablePlayer`
  * so that on the frontend we do a significant smaller amount of rerenders.
@@ -67,7 +72,7 @@ export type PublicPlayer = StrictOmit<Player, 'cards'>;
 /**
  * Data on the player that is to be frequently updated during the game
  */
-export type MutablePublicPlayer = Pick<PublicPlayer, 'stack' | 'status' | 'called'>;
+export type MutablePublicPlayer = Pick<PublicPlayer, 'stack' | 'status' | 'called' | 'cards'>;
 
 /**
  * Data on the player that will stay the same during the game (mostly)
