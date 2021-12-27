@@ -1,6 +1,5 @@
 <div class="chip-stack">
     <div *ngFor="let chip of chips" class="chip-container" [style]="'bottom:' + chip * SINGLE_CHIP_OFFSET + 'px;'">
-        <!-- TODO Move asset into AWS S3 CDN -->
-        <img src="chip.png" class="chip" [style]="'background: ' + colour + '33;'" />
+        <img [src]="chipAssetPath | assetUrl" class="chip" />
     </div>
 </div>

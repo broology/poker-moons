@@ -1,9 +1,7 @@
-<div style="margin-top: 5em">
-    <div
-        *ngFor="let data of chipStacks"
-        class="chip-stack-container"
-        [style]="'left: ' + (data.col * 62 + data.row * 31) + 'px;top: ' + data.row * 15 + 'px'"
-    >
-        <poker-moons-chip-stack [count]="data.count" [colour]="data.colour"></poker-moons-chip-stack>
-    </div>
+<div
+    *ngFor="let data of chipStacks"
+    class="chip-stack-container"
+    [style]="'left: ' + calculateXPosition(data.col, data.row) + 'px;top: ' + calculateYPosition(data.row) + 'px'"
+>
+    <poker-moons-chip-stack [count]="data.count" [chipAssetPath]="data.assetPath"></poker-moons-chip-stack>
 </div>

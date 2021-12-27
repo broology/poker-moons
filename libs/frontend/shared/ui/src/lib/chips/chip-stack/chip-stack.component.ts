@@ -16,7 +16,7 @@ export class ChipStackComponent {
         this.chips = new Array(value).fill(0).map((_, i) => i);
     }
 
-    @Input() colour!: string;
+    @Input() chipAssetPath!: string;
 
     /**
      * The amount of numbers in count but into an array, so it can be used in an `ngFor`

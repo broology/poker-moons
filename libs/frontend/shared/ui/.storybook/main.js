@@ -17,5 +17,4 @@ module.exports = {
 
         return config;
     },
-    staticDirs: [...(rootMain.staticDirs ?? []), '../src/lib/chips/chip-stack/assets'],
 };

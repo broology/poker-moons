@@ -17,7 +17,7 @@ type Denomination = typeof denominations[number];
 
 interface ChipStackData {
     count: number;
-    colour: string;
+    assetPath: string;
     col: number;
     row: number;
 }
@@ -30,21 +30,20 @@ interface ChipStackData {
 })
 export class ChipsComponent {
     /**
-     * Chip colours taken from https://www.thesprucecrafts.com/standard-poker-chip-denominations-412236
-     * - May want to fiddle with colours to make them match better
+     * Chip denominations to their matching `.png` asset.
      */
-    private static readonly chipDenominationColours: Record<Denomination, string> = {
-        1: '#FFFFFF', // white
-        5: '#D60C02', // red
-        10: '#3435FA', // blue
-        25: '#30B830', // green
-        50: '#FF9124', // orange
-        100: '#000000', // black
-        250: '#D02BEB', // pink
-        500: '#6E52EB', // purple
-        1000: '#FAEE18', // yellow
-        2500: '#A0D4FF', // light blue
-        5000: '#B87426', // brown
+    private static readonly chipDenominationAssets: Record<Denomination, string> = {
+        1: '/chips/chip.png', // white
+        5: '/chips/chip.png', // red
+        10: '/chips/chip.png', // blue
+        25: '/chips/chip.png', // green
+        50: '/chips/chip.png', // orange
+        100: '/chips/chip.png', // black
+        250: '/chips/chip.png', // pink
+        500: '/chips/chip.png', // purple
+        1000: '/chips/chip.png', // yellow
+        2500: '/chips/chip.png', // light blue
+        5000: '/chips/chip.png', // brown
     };
 
     /**
@@ -57,10 +56,14 @@ export class ChipsComponent {
      */
     private static STACKS_PER_ROW = 4;
 
+    /**
+     * The data for each chip stack to be displayed. Compiled together from the {@link amountToChipStackData} method.
+     */
     chipStacks!: ChipStackData[];
 
     /**
-     * Converts the amount of dollars to be displayed into the count of each poker chip
+     * Converts the amount of dollars to be displayed into the count of each poker chip.
+     * Also taking to account the {@link MAX_CHIPS_PER_STACK} and building multiple stacks of the same type.
      *
      * @param amount - The amount to be displayed in poker chips
      * @returns {ChipStackData[]} - The data for the individual poker chip stacks
@@ -82,7 +85,7 @@ export class ChipsComponent {
             for (let x = 0; x < stacks; x++) {
                 chipStacks.push({
                     count: ChipsComponent.MAX_CHIPS_PER_STACK,
-                    colour: ChipsComponent.chipDenominationColours[denomination],
+                    assetPath: ChipsComponent.chipDenominationAssets[denomination],
                     col: getColumn(),
                     row: getRow(),
                 });
@@ -93,7 +96,7 @@ export class ChipsComponent {
             if (remainder > 0) {
                 chipStacks.push({
                     count: remainder,
-                    colour: ChipsComponent.chipDenominationColours[denomination],
+                    assetPath: ChipsComponent.chipDenominationAssets[denomination],
                     col: getColumn(),
                     row: getRow(),
                 });
@@ -105,5 +108,31 @@ export class ChipsComponent {
 
     @Input() set amount(value: number) {
         this.chipStacks = ChipsComponent.amountToChipStackData(value);
+    }
+
+    /**
+     * Determines the `x` offset to apply to the chip stack depending on it's `col` and `row` value.
+     *
+     * The goal is to have the chips look 3D. So we also add an extra offset if its on a further row.
+     * This is to emulate the look that the chips are slotted in-between each other.
+     *
+     * @param col - Column the stack should be in
+     * @param row - Row the stack should be in
+     * @returns - The number of pixels to shift the chip-stack from the `left`
+     */
+    calculateXPosition(col: number, row: number): number {
+        return col * 62 + row * 31;
+    }
+
+    /**
+     * Determines the `y` offset to apply to the chip stack depending on it's `row` value.
+     *
+     * The goal is to have the chips be close enough to each other that it looks like they are touching.
+     *
+     * @param row - Row the stack should be in
+     * @returns - The number of pixels to shift the chip-stack from the `top`
+     */
+    calculateYPosition(row: number): number {
+        return row * 15;
     }
 }
