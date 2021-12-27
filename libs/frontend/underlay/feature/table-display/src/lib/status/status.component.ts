@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { RoundStatus } from '@poker-moons/shared/type';
 
 @Component({
     selector: 'poker-moons-table-display-status',
@@ -6,4 +7,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
     styleUrls: ['./status.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class StatusComponent {}
+export class StatusComponent {
+    @Input() status!: RoundStatus;
+}
