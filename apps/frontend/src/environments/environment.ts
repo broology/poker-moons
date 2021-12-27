@@ -7,4 +7,6 @@ export const environment: NgEnvironment = {
     env: 'local',
 
     api: 'http://localhost:3001',
+
+    assets: 'https://d17df73wtlc9mc.cloudfront.net',
 };

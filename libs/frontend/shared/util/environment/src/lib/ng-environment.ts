@@ -9,7 +9,12 @@ export interface NgEnvironment {
     env: EnvType;
 
     /**
-     * The base url of the api server
+     * The base url of the api server (no trailing slash)
      */
     api: string;
+
+    /**
+     * The base url of the assets cdn domain. (no trailing slash)
+     */
+    assets: string;
 }
