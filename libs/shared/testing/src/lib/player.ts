@@ -11,6 +11,7 @@ export function mockPublicPlayer(overrides: DeepPartial<PublicPlayer> = {}): Pub
         status: 'waiting',
         called: 100,
         seatId: 1,
+        cards: [],
     };
 
     return merge(publicPlayer, overrides);
@@ -32,6 +33,7 @@ export function mockMutablePublicPlayer(overrides: DeepPartial<MutablePublicPlay
         stack: 100,
         status: 'called',
         called: 10,
+        cards: [],
     };
 
     return merge(mutablePublicPlayer, overrides);
