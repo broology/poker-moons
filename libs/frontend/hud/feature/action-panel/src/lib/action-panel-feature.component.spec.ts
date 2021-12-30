@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { provideMockStore } from '@ngrx/store/testing';
 import { ActionPanelFeatureComponent } from './action-panel-feature.component';
+import { actionPanelFeatureImports } from './action-panel-feature.module';
 
 describe('ActionPanelFeatureComponent', () => {
     let component: ActionPanelFeatureComponent;
@@ -8,7 +9,9 @@ describe('ActionPanelFeatureComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
+            imports: actionPanelFeatureImports,
             declarations: [ActionPanelFeatureComponent],
+            providers: [provideMockStore()],
         }).compileComponents();
     });
 
