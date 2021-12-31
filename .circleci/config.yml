@@ -59,8 +59,6 @@ jobs:
                   paths:
                       - ~/.cache
                       - node_modules
-            - run:
-                  <<: *build_executors
     check-formatting:
         <<: *defaults
         steps:
@@ -138,6 +136,8 @@ jobs:
                   <<: *yarn_cache
             - restore_cache:
                   key: build-{{ .Environment.CIRCLE_WORKFLOW_ID }}
+            - run:
+                  <<: *build_executors
             - run: yarn affected -- --target deploy ${AFFECTED_ARGS}
             - run: git rev-parse HEAD > dist/last-deploy.txt
             - save_cache:
