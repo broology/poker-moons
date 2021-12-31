@@ -69,5 +69,5 @@
             }
         }
     },
-    "tags": []
+    "tags": ["scope:frontend", "scope:builder", "type:feature"]
 }

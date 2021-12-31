@@ -38,5 +38,5 @@
             }
         }
     },
-    "tags": []
+    "tags": ["scope:frontend", "scope:builder", "type:shell"]
 }
