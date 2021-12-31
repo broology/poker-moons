@@ -41,8 +41,12 @@ yarn_install: &yarn_install
     name: Install Dependencies
     command: yarn install --frozen-lockfile --non-interactive
 
+build_executors: &build_executors
+    name: Build Nx Executors
+    command: yarn build:executors
+
 jobs:
-    install:
+    setup:
         <<: *defaults
         steps:
             - checkout
@@ -55,6 +59,8 @@ jobs:
                   paths:
                       - ~/.cache
                       - node_modules
+            - run:
+                  <<: *build_executors
     check-formatting:
         <<: *defaults
         steps:
@@ -143,27 +149,27 @@ workflows:
     version: 2
     pr_check:
         jobs:
-            - install
+            - setup
             - check-formatting:
                   requires:
-                      - install
+                      - setup
             - lint:
                   requires:
-                      - install
+                      - setup
             - test:
                   requires:
-                      - install
+                      - setup
             - build:
                   requires:
-                      - install
+                      - setup
             - e2e:
                   requires:
-                      - install
+                      - setup
             - deploy:
-                  filters:
-                      branches:
-                          only:
-                              - master
+                  # filters: For testing
+                  #     branches:
+                  #         only:
+                  #             - master
                   requires:
                       - check-formatting
                       - lint

@@ -1,0 +1,20 @@
+{
+    "$schema": "http://json-schema.org/schema",
+    "type": "object",
+    "cli": "nx",
+    "properties": {
+        "region": {
+            "type": "string",
+            "description": "The region to perform the deployment"
+        },
+        "bucket": {
+            "type": "string",
+            "description": "The name of the S3 Bucket the app is hosted from"
+        },
+        "distributionId": {
+            "type": "string",
+            "description": "The Cloud Front distribution Id of the the CDN the app is hosted in"
+        }
+    },
+    "required": ["region", "bucket", "distributionId"]
+}
