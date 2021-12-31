@@ -166,10 +166,10 @@ workflows:
                   requires:
                       - setup
             - deploy:
-                  # filters: For testing
-                  #     branches:
-                  #         only:
-                  #             - master
+                  filters:
+                      branches:
+                          only:
+                              - master
                   requires:
                       - check-formatting
                       - lint
