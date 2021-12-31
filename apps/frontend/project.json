@@ -62,7 +62,8 @@
             "executor": "@nrwl/web:file-server",
             "options": {
                 "withDeps": false,
-                "maxParallel": 10
+                "maxParallel": 10,
+                "proxyUrl": "localhost:4200"
             },
             "configurations": {
                 "production": {

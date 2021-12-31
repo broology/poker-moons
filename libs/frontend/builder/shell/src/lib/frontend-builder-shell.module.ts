@@ -4,8 +4,8 @@ import { RouterModule } from '@angular/router';
 import { FrontendBuilderFeatureFormModule } from '@poker-moons/frontend/builder/feature/form';
 import { FrontendBuilderShellComponent } from './frontend-builder-shell.component';
 
-@NgModule({
-    imports: [
+export const frontendBuilderShellImports = [
+    ...([
         CommonModule,
         FrontendBuilderFeatureFormModule,
         RouterModule.forChild([
@@ -14,7 +14,11 @@ import { FrontendBuilderShellComponent } from './frontend-builder-shell.componen
                 component: FrontendBuilderShellComponent,
             },
         ]),
-    ],
+    ] as const),
+];
+
+@NgModule({
+    imports: frontendBuilderShellImports,
     declarations: [FrontendBuilderShellComponent],
 })
 export class FrontendBuilderShellModule {}

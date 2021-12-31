@@ -1,5 +1,6 @@
 import type { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { CreateTableRequest } from '@poker-moons/shared/type';
 import type { Observable } from 'rxjs';
@@ -14,7 +15,7 @@ interface BuilderState {
 export class FrontendBuilderStore extends ComponentStore<BuilderState> {
     readonly loading$: Observable<boolean> = this.select((state) => state.loading);
 
-    constructor(private tableApiService: TableApiService) {
+    constructor(private readonly tableApiService: TableApiService, private readonly router: Router) {
         super({ loading: false });
     }
 
@@ -31,7 +32,7 @@ export class FrontendBuilderStore extends ComponentStore<BuilderState> {
                         (table) => {
                             // Success
                             this.setLoading(false);
-                            //TODO Forward to table page
+                            this.router.navigate(['table', table.id]);
                         },
                         (error: HttpErrorResponse) => {
                             // Failed
