@@ -1,1 +1,10 @@
-<p>{{ card ? card.rank + ', ' + card.suit : 'back' }}</p>
+<span [ngSwitch]="displayView">
+    <span *ngSwitchCase="'none'"></span>
+    <img *ngSwitchCase="'back'" alt="Back of card" class="playing-card back" [src]="BACK_OF_CARD_ASSET | assetUrl" />
+    <img
+        *ngSwitchCase="'face'"
+        [alt]="buildAltText(card!)"
+        class="playing-card front"
+        [src]="getCardAsset(card!) | assetUrl"
+    />
+</span>
