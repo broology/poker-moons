@@ -12,6 +12,7 @@ import {
     Table,
 } from '@poker-moons/shared/type';
 import { Either, isRight, left, right } from 'fp-ts/lib/Either';
+import { pipe } from 'fp-ts/lib/function';
 import { match } from 'ts-pattern';
 
 @Injectable()
@@ -21,20 +22,28 @@ export class PlayerActionService {
 
         switch (dto.action.type) {
             case 'fold':
-                this.fold(this.canFold(dto.action));
+                pipe(this.canFold(dto.action), this.fold);
                 break;
             case 'call':
-                this.call(this.canCall(dto.action));
+                pipe(this.canCall(dto.action), this.call);
                 break;
             case 'raise':
-                this.raise(this.canRaise(dto.action));
+                pipe(this.canRaise(dto.action), this.raise);
                 break;
             case 'check':
-                this.check(this.canCheck(dto.action));
+                pipe(this.canCheck(dto.action), this.check);
                 break;
         }
     }
 
+    /**
+     * PlayerActionService.fold
+     * @description Performs the fold action and returns an action response if the state is valid, else it throws and error describing the invalid state.
+     * @param action
+     * @type Either<PokerMoonsError, FoldPlayerAction>
+     * @returns PerformPlayerActionResponse
+     * @throws Error
+     */
     fold(action: Either<PokerMoonsError, FoldPlayerAction>): PerformPlayerActionResponse {
         if (isRight(action)) throw new NotImplementedException(action.right);
         else throw new Error(action.left);
@@ -63,6 +72,18 @@ export class PlayerActionService {
         else return left('Player not in game');
     }
 
+    /**
+     * PlayerActionService.canFold
+     * @description Determines if a player is able to fold given the current game state.
+     * A fold can happen at any point in the play when it is the players turn to act.
+     * @param table
+     * @type Table
+     * @param clientState
+     * @type ClientTableState
+     * @param action
+     * @type FoldPlayerAction
+     * @returns Either<PokerMoonsError, FoldPlayerAction>
+     */
     canFold(
         table: Table,
         clientState: ClientTableState,
