@@ -38,7 +38,8 @@ export class PlayerActionService {
 
     /**
      * PlayerActionService.fold
-     * @description Performs the fold action and returns an action response if the state is valid, else it throws and error describing the invalid state.
+     * @description Performs the fold action and returns an action response if the state is valid, else it throws an error describing the invalid state.
+     * Folding means the player is out for the current hand. The player no longer will have any claim to the pot for the current hand and is not required to put any money into the pot for the remainder of the current hand.
      * @param action
      * @type Either<PokerMoonsError, FoldPlayerAction>
      * @returns PerformPlayerActionResponse
@@ -48,6 +49,16 @@ export class PlayerActionService {
         if (isRight(action)) throw new NotImplementedException(action.right);
         else throw new Error(action.left);
     }
+
+    /**
+     * PlayerActionService.call
+     * @description Performs the call action and returns an action response if the state is valid, else it throws an error describing the invalid state.
+     * Calling means matching a bet or raise. To call is to bet the minimum amount to stay active in the current hand.
+     * @param action
+     * @type Either<PokerMoonsError, CallPlayerAction>
+     * @returns PerformPlayerActionResponse
+     * @throws Error
+     */
     call(action: Either<PokerMoonsError, CallPlayerAction>): PerformPlayerActionResponse {
         if (isRight(action)) throw new NotImplementedException(action.right);
         else throw new Error(action.left);
@@ -102,6 +113,19 @@ export class PlayerActionService {
                 .otherwise(() => right(action));
         return player;
     }
+
+    /**
+     * PlayerActionService.canCall
+     * @description Determines if a player is able to call given the current game state.
+     * A call can happen at any point during a betting round.
+     * @param table
+     * @type Table
+     * @param clientState
+     * @type ClientTableState
+     * @param action
+     * @type FoldPlayerAction
+     * @returns Either<PokerMoonsError, FoldPlayerAction>
+     */
     canCall(
         table: Table,
         clientState: ClientTableState,
