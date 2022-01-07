@@ -17,6 +17,16 @@
                 "jestConfig": "libs/shared/testing/jest.config.js",
                 "passWithNoTests": true
             }
+        },
+        "build": {
+            "executor": "@nrwl/node:package",
+            "options": {
+                "outputPath": "dist/libs/shared/testing",
+                "tsConfig": "libs/shared/testing/tsconfig.lib.json",
+                "packageJson": "libs/shared/testing/package.json",
+                "main": "libs/shared/testing/src/index.ts",
+                "assets": ["libs/shared/testing/*.md"]
+            }
         }
     },
     "tags": ["scope:shared", "type:testing"]

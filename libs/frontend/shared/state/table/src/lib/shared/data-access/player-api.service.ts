@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { NgEnvironment, NG_ENVIRONMENT } from '@poker-moons/frontend-shared-util-environment';
+import { NgEnvironment, NG_ENVIRONMENT } from '@poker-moons/frontend/shared/util/environment';
 import {
     GetPlayerCardsResponse,
     JoinTableRequest,
