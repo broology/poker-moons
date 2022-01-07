@@ -39,7 +39,7 @@ export class PlayerActionService {
     /**
      * PlayerActionService.fold
      * @description Performs the fold action and returns an action response if the state is valid, else it throws an error describing the invalid state.
-     * Folding means the player is out for the current hand. The player no longer will have any claim to the pot for the current hand and is not required to put any money into the pot for the remainder of the current hand.
+     * Folding means the player is out for the current round. The player no longer will have any claim to the pot for the current round and is not required to put any money into the pot for the remainder of the current round.
      * @param action
      * @type Either<PokerMoonsError, FoldPlayerAction>
      * @returns PerformPlayerActionResponse
@@ -53,7 +53,7 @@ export class PlayerActionService {
     /**
      * PlayerActionService.call
      * @description Performs the call action and returns an action response if the state is valid, else it throws an error describing the invalid state.
-     * Calling means matching a bet or raise. To call is to bet the minimum amount to stay active in the current hand.
+     * Calling means matching a bet or raise. To call is to bet the minimum amount to stay active in the current round.
      * @param action
      * @type Either<PokerMoonsError, CallPlayerAction>
      * @returns PerformPlayerActionResponse
@@ -63,10 +63,30 @@ export class PlayerActionService {
         if (isRight(action)) throw new NotImplementedException(action.right);
         else throw new Error(action.left);
     }
+
+    /**
+     * PlayerActionService.raise
+     * @description Performs the raise action and returns an action response if the state is valid, else it throws an error describing the invalid state.
+     * Raising means increasing the size of an existing bet in the current round.
+     * @param action
+     * @type Either<PokerMoonsError, RaisePlayerAction>
+     * @returns PerformPlayerActionResponse
+     * @throws Error
+     */
     raise(action: Either<PokerMoonsError, RaisePlayerAction>): PerformPlayerActionResponse {
         if (isRight(action)) throw new NotImplementedException(action.right);
         else throw new Error(action.left);
     }
+
+    /**
+     * PlayerActionService.check
+     * @description Performs the check action and returns an action response if the state is valid, else it throws an error describing the invalid state.
+     * Checking is when a player passes the action to the next player while keeping their cards.
+     * @param action
+     * @type Either<PokerMoonsError, CheckPlayerAction>
+     * @returns PerformPlayerActionResponse
+     * @throws Error
+     */
     check(action: Either<PokerMoonsError, CheckPlayerAction>): PerformPlayerActionResponse {
         if (isRight(action)) throw new NotImplementedException(action.right);
         else throw new Error(action.left);
@@ -123,8 +143,8 @@ export class PlayerActionService {
      * @param clientState
      * @type ClientTableState
      * @param action
-     * @type FoldPlayerAction
-     * @returns Either<PokerMoonsError, FoldPlayerAction>
+     * @type CallPlayerAction
+     * @returns Either<PokerMoonsError, CallPlayerAction>
      */
     canCall(
         table: Table,
@@ -135,6 +155,19 @@ export class PlayerActionService {
             .with([], () => left('Cannot perform action.'))
             .otherwise(() => right(action));
     }
+
+    /**
+     * PlayerActionService.canRaise
+     * @description Determines if a player is able to raise given the current game state.
+     * A raise can happen at any time during a betting round.
+     * @param table
+     * @type Table
+     * @param clientState
+     * @type ClientTableState
+     * @param action
+     * @type RaisePlayerAction
+     * @returns Either<PokerMoonsError, RaisePlayerAction>
+     */
     canRaise(
         table: Table,
         clientState: ClientTableState,
@@ -144,6 +177,19 @@ export class PlayerActionService {
             .with([], () => left('Cannot perform action.'))
             .otherwise(() => right(action));
     }
+
+    /**
+     * PlayerActionService.canCheck
+     * @description Determines if a player is able to check given the current game state.
+     * A check can only happen when there is no bet during current round.
+     * @param table
+     * @type Table
+     * @param clientState
+     * @type ClientTableState
+     * @param action
+     * @type CheckPlayerAction
+     * @returns Either<PokerMoonsError, CheckPlayerAction>
+     */
     canCheck(
         table: Table,
         clientState: ClientTableState,
