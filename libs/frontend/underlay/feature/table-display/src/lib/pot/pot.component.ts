@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { SeatId } from '@poker-moons/shared/type';
 
 @Component({
     selector: 'poker-moons-table-display-pot',
@@ -6,4 +7,11 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
     styleUrls: ['./pot.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PotComponent {}
+export class PotComponent {
+    @Input() mainPot!: number;
+
+    /**
+     * The side pots when we have cases of users who all-in and don't have enough to match the pot
+     */
+    @Input() sidePots!: { seatId: SeatId; amount: number }[];
+}

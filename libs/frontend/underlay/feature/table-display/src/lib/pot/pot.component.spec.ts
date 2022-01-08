@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PotComponent } from './pot.component';
+import { potModuleImports } from './pot.module';
 
 describe('PotComponent', () => {
     let component: PotComponent;
@@ -7,6 +8,7 @@ describe('PotComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
+            imports: potModuleImports,
             declarations: [PotComponent],
         }).compileComponents();
     });
