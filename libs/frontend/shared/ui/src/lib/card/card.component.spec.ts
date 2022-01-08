@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MockNgEnvironment } from '@poker-moons/frontend/shared/util/environment';
 import { CardComponent } from './card.component';
+import { cardImports } from './card.module';
 
 describe('CardComponent', () => {
     let component: CardComponent;
@@ -7,7 +9,9 @@ describe('CardComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
+            imports: cardImports,
             declarations: [CardComponent],
+            providers: [MockNgEnvironment],
         }).compileComponents();
     });
 
