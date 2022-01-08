@@ -12,16 +12,12 @@ export class FrontendBuilderFormUiComponent implements OnInit {
 
     @Input() loading!: boolean;
 
-    @Output() createTableEmitter: EventEmitter<CreateTableRequest>;
+    @Output() createTableEmitter = new EventEmitter<CreateTableRequest>();
 
     builderForm!: FormGroup;
 
     get nameControl(): FormControl {
         return this.builderForm.get('name') as FormControl;
-    }
-
-    constructor() {
-        this.createTableEmitter = new EventEmitter();
     }
 
     ngOnInit(): void {
