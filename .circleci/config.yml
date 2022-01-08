@@ -41,8 +41,12 @@ yarn_install: &yarn_install
     name: Install Dependencies
     command: yarn install --frozen-lockfile --non-interactive
 
+build_executors: &build_executors
+    name: Build Nx Executors
+    command: yarn build:executors
+
 jobs:
-    install:
+    setup:
         <<: *defaults
         steps:
             - checkout
@@ -132,6 +136,8 @@ jobs:
                   <<: *yarn_cache
             - restore_cache:
                   key: build-{{ .Environment.CIRCLE_WORKFLOW_ID }}
+            - run:
+                  <<: *build_executors
             - run: yarn affected -- --target deploy ${AFFECTED_ARGS}
             - run: git rev-parse HEAD > dist/last-deploy.txt
             - save_cache:
@@ -143,22 +149,22 @@ workflows:
     version: 2
     pr_check:
         jobs:
-            - install
+            - setup
             - check-formatting:
                   requires:
-                      - install
+                      - setup
             - lint:
                   requires:
-                      - install
+                      - setup
             - test:
                   requires:
-                      - install
+                      - setup
             - build:
                   requires:
-                      - install
+                      - setup
             - e2e:
                   requires:
-                      - install
+                      - setup
             - deploy:
                   filters:
                       branches:
