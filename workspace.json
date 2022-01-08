@@ -3,6 +3,8 @@
     "projects": {
         "backend-feature-table": "libs/backend/feature/table",
         "frontend": "apps/frontend",
+        "frontend-builder-feature-form": "libs/frontend/builder/feature/form",
+        "frontend-builder-shell": "libs/frontend/builder/shell",
         "frontend-e2e": "apps/frontend-e2e",
         "frontend-hud-feature-action-panel": "libs/frontend/hud/feature/action-panel",
         "frontend-hud-feature-bank-panel": "libs/frontend/hud/feature/bank-panel",

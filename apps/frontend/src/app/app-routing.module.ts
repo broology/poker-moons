@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { NG_ENVIRONMENT } from '@poker-moons/frontend/shared/util/environment';
-import { environment } from '../environments/environment';
 
 @NgModule({
     imports: [
@@ -9,10 +7,25 @@ import { environment } from '../environments/environment';
             [
                 {
                     path: '',
+                    pathMatch: 'full',
+                    redirectTo: 'builder',
+                },
+                {
+                    path: 'builder',
+                    loadChildren: () =>
+                        // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
+                        import('@poker-moons/frontend/builder/shell').then((m) => m.FrontendBuilderShellModule),
+                },
+                {
+                    path: 'table/:tableId',
                     loadChildren: () =>
                         import('./underlay-hud-separator/underlay-hud-separator.module').then(
                             (m) => m.UnderlayHudSeparatorModule,
                         ),
+                },
+                {
+                    path: '**',
+                    redirectTo: 'builder',
                 },
             ],
             {

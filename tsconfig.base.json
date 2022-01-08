@@ -17,6 +17,8 @@
         "strict": true,
         "paths": {
             "@poker-moons/backend/feature/table": ["libs/backend/feature/table/src/index.ts"],
+            "@poker-moons/frontend/builder/feature/form": ["libs/frontend/builder/feature/form/src/index.ts"],
+            "@poker-moons/frontend/builder/shell": ["libs/frontend/builder/shell/src/index.ts"],
             "@poker-moons/frontend/hud/feature/action-panel": ["libs/frontend/hud/feature/action-panel/src/index.ts"],
             "@poker-moons/frontend/hud/feature/bank-panel": ["libs/frontend/hud/feature/bank-panel/src/index.ts"],
             "@poker-moons/frontend/hud/shell": ["libs/frontend/hud/shell/src/index.ts"],
