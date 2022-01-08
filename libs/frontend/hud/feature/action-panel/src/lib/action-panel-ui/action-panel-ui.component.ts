@@ -22,11 +22,11 @@ export class ActionPanelUiComponent {
 
     @Input() round!: Round;
 
-    @Output() joinTableEmitter: EventEmitter<JoinTableRequest>;
+    @Output() readonly joinTableEmitter = new EventEmitter<JoinTableRequest>();
 
-    @Output() leaveTableEmitter: EventEmitter<void>;
+    @Output() readonly leaveTableEmitter = new EventEmitter<void>();
 
-    @Output() playerActionEmitter: EventEmitter<PlayerAction>;
+    @Output() readonly playerActionEmitter = new EventEmitter<PlayerAction>();
 
     /**
      * Determines the `ActivePanelDisplayView` for what to render on the UI
@@ -41,11 +41,5 @@ export class ActionPanelUiComponent {
         }
 
         return 'in-active';
-    }
-
-    constructor() {
-        this.joinTableEmitter = new EventEmitter();
-        this.leaveTableEmitter = new EventEmitter();
-        this.playerActionEmitter = new EventEmitter();
     }
 }

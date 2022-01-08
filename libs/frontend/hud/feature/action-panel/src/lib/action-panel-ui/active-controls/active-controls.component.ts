@@ -29,7 +29,7 @@ export class ActiveControlsComponent implements OnInit {
     /**
      * Action emission event that is sent to table state
      */
-    @Output() playerActionEmitter: EventEmitter<PlayerAction>;
+    @Output() readonly playerActionEmitter = new EventEmitter<PlayerAction>();
 
     raiseFormGroup!: FormGroup;
 
@@ -37,9 +37,6 @@ export class ActiveControlsComponent implements OnInit {
         return this.raiseFormGroup.get('amount') as FormControl;
     }
 
-    constructor() {
-        this.playerActionEmitter = new EventEmitter();
-    }
     ngOnInit(): void {
         this.raiseFormGroup = new FormGroup({
             amount: new FormControl(
