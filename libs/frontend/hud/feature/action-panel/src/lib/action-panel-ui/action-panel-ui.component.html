@@ -1,0 +1,14 @@
+<div [ngSwitch]="displayView">
+    <poker-moons-active-controls
+        *ngSwitchCase="'active'"
+        [called]="clientMutablePlayer!.called"
+        [stack]="clientMutablePlayer!.stack"
+        [toCall]="round.toCall"
+        (playerActionEmitter)="playerActionEmitter.emit($event)"
+    ></poker-moons-active-controls>
+    <poker-moons-in-active-controls *ngSwitchCase="'in-active'"></poker-moons-in-active-controls>
+    <poker-moons-spectator-controls
+        *ngSwitchCase="'spectator'"
+        (joinTableEmitter)="joinTableEmitter.emit($event)"
+    ></poker-moons-spectator-controls>
+</div>
