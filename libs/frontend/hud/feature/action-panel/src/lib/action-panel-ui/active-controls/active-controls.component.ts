@@ -64,10 +64,7 @@ export class ActiveControlsComponent implements OnInit {
         }
     }
 
-    /**
-     * @note We might want to make this it's own `PlayerAction` as it's going to require different validation on `frontend` and `backend`
-     */
     allIn(): void {
-        this.playerActionEmitter.emit({ type: 'raise', amount: this.stack });
+        this.playerActionEmitter.emit({ type: 'all-in' });
     }
 }
