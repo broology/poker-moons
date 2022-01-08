@@ -32,3 +32,7 @@ This library is responsible for handling the actions made by the player onto the
 > > > **SpectatorControls**
 > > >
 > > > Responsible for displaying the controls the player has when they haven't joined the game yet.
+> > >
+> > > _Possibilities_
+> > >
+> > > They could also be displayed for players who have run out of chips and want to continue watching the game.
