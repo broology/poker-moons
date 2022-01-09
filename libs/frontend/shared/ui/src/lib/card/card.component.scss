@@ -2,14 +2,4 @@
 .playing-card {
     width: 5em;
     height: 7em;
-    border-radius: 0.25em;
-    border: 2px outset rgba(0, 0, 0, 0.3);
-}
-
-.front {
-    background: white;
-}
-
-.back {
-    filter: invert(33%) sepia(19%) saturate(2889%) hue-rotate(325deg) brightness(104%) contrast(86%) opacity(100%);
 }
