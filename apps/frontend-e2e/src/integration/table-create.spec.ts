@@ -3,7 +3,7 @@ import { emptyTable } from './../data/table';
 describe('table create', () => {
     beforeEach(() => {
         // [Mock] Create table api response
-        cy.intercept('POST', '/table', { body: emptyTable }).as('createTable');
+        cy.intercept('POST', '**/table', { body: emptyTable }).as('createTable');
     });
 
     it('should create a table', () => {
