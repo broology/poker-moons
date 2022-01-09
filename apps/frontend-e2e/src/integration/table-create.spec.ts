@@ -19,6 +19,9 @@ describe('table create', () => {
         // [Action] Click `create`
         cy.get('[data-cy=create-table-button]').click();
 
+        // [Wait] for mock response
+        cy.wait('@createTable');
+
         // [Assert] Redirects to table page
         cy.location('pathname').should('eq', `/table/${emptyTable.id}`);
 
