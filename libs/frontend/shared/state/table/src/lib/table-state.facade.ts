@@ -31,7 +31,7 @@ export class TableStateFacade {
      * - if `null` then the seat is empty and can be joined
      * - if `PlayerId` then the seat contains a player
      */
-    selectSeatMap(): Observable<Record<SeatId, PlayerId | null>> {
+    selectSeatMap(): Observable<Partial<Record<SeatId, PlayerId>>> {
         return this.store.pipe(select(selectSeatMap));
     }
 
