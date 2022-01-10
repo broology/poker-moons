@@ -10,7 +10,7 @@ orbs:
 defaults: &defaults
     working_directory: ~/repo
     docker:
-        - image: cimg/base:stable
+        - image: circleci/node:14-browsers
 
 set_env: &set_env
     name: Setup Environment Variables
@@ -137,13 +137,7 @@ jobs:
             - aws-cli/install:
                   version: '2'
             - setup_remote_docker:
-                  version: 19.03.14
-            - run: |
-                  ssh remote-docker \<<EOF
-                    sudo bash -c 'echo "{\"experimental\": true}" > /etc/docker/daemon.json'
-                    sudo systemctl restart docker
-                    sudo docker info
-                  EOF
+                  version: 20.10.6
             - restore_cache:
                   <<: *yarn_cache
             - run:
