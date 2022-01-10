@@ -1,4 +1,4 @@
-FROM node:16-alpine
+FROM node:16-alpine as backend
 
 RUN set -x && apk update && apk upgrade 
 

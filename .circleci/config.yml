@@ -187,7 +187,7 @@ workflows:
                       - setup
             - dockerize:
                   requires:
-                      - setup
+                      - build
             - deploy:
                   filters:
                       branches:
@@ -197,6 +197,5 @@ workflows:
                       - check-formatting
                       - lint
                       - test
-                      - build
                       - e2e
                       - dockerize
