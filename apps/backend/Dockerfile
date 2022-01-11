@@ -6,11 +6,11 @@ RUN mkdir /app
 WORKDIR /app
 COPY ./dist/apps/backend/package.json ./package.json
 
-ENV PORT=8080
+ENV PORT=4000
 
 RUN yarn install --prod
 COPY ./dist/apps/backend ./dist/apps/backend
 
 
-EXPOSE 8080
+EXPOSE 4000
 CMD ["node", "./dist/apps/backend/main.js"]
