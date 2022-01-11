@@ -113,6 +113,9 @@ jobs:
         <<: *defaults
         steps:
             - setup
+            - run: sudo apt-get update
+            - run: sudo apt-get install libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
+            - run: yarn cypress install
             - run: yarn affected:e2e -- ${AFFECTED_ARGS} --configuration production -- --headless
             - store_artifacts:
                   path: dist/cypress
@@ -167,10 +170,10 @@ workflows:
                   requires:
                       - build
             - deploy:
-                  filters:
-                      branches:
-                          only:
-                              - master
+                  # filters:
+                  #     branches:
+                  #         only:
+                  #             - master
                   requires:
                       - check-formatting
                       - lint

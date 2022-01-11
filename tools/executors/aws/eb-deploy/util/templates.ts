@@ -73,7 +73,7 @@ async function zip(files: { path: string; body: Buffer }[], dest: string): Promi
 /**
  * Builds the `Dockerrunaws.json` file and zips it into a zip as that is what is expected of elastic beanstalk
  *
- * @returns { TemplateBuildOutput } - Containing the build path to the created template zip
+ * @returns path - Containing the build path to the created template zip
  */
 export async function buildDockerRunTemplate(input: TemplateBuildInput): Promise<string> {
     const path = join(cwd(), 'dist', `${input.app}-${input.tag}.zip`);
