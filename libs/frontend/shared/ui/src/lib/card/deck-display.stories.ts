@@ -12,7 +12,7 @@ import { CardModule } from './card.module';
     selector: 'poker-moons-deck-display',
     template: `
         <div *ngFor="let row of CARD_GRID">
-            <span *ngFor="let card of row">
+            <span *ngFor="let card of row" style="margin: .1em;">
                 <poker-moons-card [card]="card"></poker-moons-card>
             </span>
         </div>
