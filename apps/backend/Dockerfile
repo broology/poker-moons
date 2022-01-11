@@ -1,7 +1,5 @@
 FROM node:16-alpine as backend
 
-RUN set -x && apk update && apk upgrade 
-
 RUN yarn --version
 
 RUN mkdir /app
