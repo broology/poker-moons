@@ -56,15 +56,25 @@ build_executors: &build_executors
     name: Build Nx Executors
     command: yarn build:executors
 
-jobs:
+commands:
     setup:
-        <<: *defaults
+        description: Setup necessary frameworks for deploy
         steps:
             - checkout
             - node/install:
                   <<: *node_config
             - restore_cache:
+                  <<: *deploy_cache
+            - run:
+                  <<: *set_env
+            - restore_cache:
                   <<: *yarn_cache
+
+jobs:
+    install:
+        <<: *defaults
+        steps:
+            - setup
             - run:
                   <<: *yarn_install
             - save_cache:
@@ -75,36 +85,18 @@ jobs:
     check-formatting:
         <<: *defaults
         steps:
-            - checkout
-            - restore_cache:
-                  <<: *deploy_cache
-            - run:
-                  <<: *set_env
-            - restore_cache:
-                  <<: *yarn_cache
+            - setup
             - run: yarn format:check ${AFFECTED_ARGS}
     lint:
         <<: *defaults
         steps:
-            - checkout
-            - restore_cache:
-                  <<: *deploy_cache
-            - run:
-                  <<: *set_env
-            - restore_cache:
-                  <<: *yarn_cache
+            - setup
             - run: ./node_modules/.bin/nx workspace-lint
             - run: yarn affected:lint ${AFFECTED_ARGS} --parallel 2
     build:
         <<: *defaults
         steps:
-            - checkout
-            - restore_cache:
-                  <<: *deploy_cache
-            - run:
-                  <<: *set_env
-            - restore_cache:
-                  <<: *yarn_cache
+            - setup
             - run: yarn affected:build -- ${AFFECTED_ARGS} --parallel 2 --configuration production
             - save_cache:
                   key: build-{{ .Environment.CIRCLE_WORKFLOW_ID }}
@@ -115,41 +107,23 @@ jobs:
     test:
         <<: *defaults
         steps:
-            - checkout
-            - restore_cache:
-                  <<: *deploy_cache
-            - run:
-                  <<: *set_env
-            - restore_cache:
-                  <<: *yarn_cache
+            - setup
             - run: yarn affected:test -- ${AFFECTED_ARGS} --parallel 2 -- --ci --code-coverage
     e2e:
         <<: *defaults
         steps:
-            - checkout
-            - restore_cache:
-                  <<: *deploy_cache
-            - run:
-                  <<: *set_env
-            - restore_cache:
-                  <<: *yarn_cache
+            - setup
             - run: yarn affected:e2e -- ${AFFECTED_ARGS} --configuration production -- --headless
             - store_artifacts:
                   path: dist/cypress
     dockerize:
         <<: *defaults
         steps:
-            - checkout
+            - setup
             - restore_cache:
-                  <<: *deploy_cache
-            - run:
-                  <<: *set_env
+                  key: build-{{ .Environment.CIRCLE_WORKFLOW_ID }}
             - aws-cli/install:
                   version: '2'
-            - setup_remote_docker:
-                  version: 20.10.6
-            - restore_cache:
-                  <<: *yarn_cache
             - run:
                   <<: *build_executors
             - run: yarn affected:dockerize -- ${AFFECTED_ARGS} --parallel 2 --tag=${DEPLOYMENT_TAG}
@@ -157,13 +131,7 @@ jobs:
     deploy:
         <<: *defaults
         steps:
-            - checkout
-            - restore_cache:
-                  <<: *deploy_cache
-            - run:
-                  <<: *set_env
-            - restore_cache:
-                  <<: *yarn_cache
+            - setup
             - restore_cache:
                   key: build-{{ .Environment.CIRCLE_WORKFLOW_ID }}
             - run:
@@ -179,22 +147,22 @@ workflows:
     version: 2
     pr_check:
         jobs:
-            - setup
+            - install
             - check-formatting:
                   requires:
-                      - setup
+                      - install
             - lint:
                   requires:
-                      - setup
+                      - install
             - test:
                   requires:
-                      - setup
+                      - install
             - build:
                   requires:
-                      - setup
+                      - install
             - e2e:
                   requires:
-                      - setup
+                      - install
             - dockerize:
                   requires:
                       - build
