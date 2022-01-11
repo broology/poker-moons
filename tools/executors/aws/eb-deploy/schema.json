@@ -15,10 +15,18 @@
             "type": "string",
             "description": "The name of the elastic beanstalk application to deploy too"
         },
+        "ebDeploymentBucket": {
+            "type": "string",
+            "description": "The elastic beanstalk deployment bucket for the region"
+        },
+        "ecrRegistryUrl": {
+            "type": "string",
+            "description": "The url the Elastic Container Registry (just the base url, not including the specific repository)"
+        },
         "tag": {
             "type": "string",
             "description": "The ecr tag to use when building the Dockerrun.aws.json file"
         }
     },
-    "required": ["region", "ebEnvironment", "ebApplication", "tag"]
+    "required": ["region", "ebEnvironment", "ebApplication", "ebDeploymentBucket", "ecrRegistryUrl", "tag"]
 }

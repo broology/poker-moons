@@ -9,6 +9,7 @@ export class S3Facade {
         js: 'text/javascript; charset=UTF-8',
         css: 'text/css; charset=UTF-8',
         json: 'application/json; charset=UTF-8',
+        zip: 'application/zip; charset=UTF-8',
     };
 
     private client: S3Client;
@@ -58,16 +59,18 @@ export class S3Facade {
         const filePaths = S3Facade.getFilePaths(directory);
 
         logger.log(`Starting Upload from ${directory}=>s3://${bucket}`);
-        await Promise.all(filePaths.map((filePath) => this.uploadFileToBucket(bucket, directory, filePath)));
+        await Promise.all(
+            filePaths.map((filePath) =>
+                this.uploadFileToBucket(bucket, filePath.substring(directory.length + 1), filePath),
+            ),
+        );
         logger.log(`Finished Upload from ${directory}=>s3://${bucket}`);
     }
 
-    private async uploadFileToBucket(bucket: string, directory: string, filePath: string): Promise<void> {
-        const fileKey = filePath.substring(directory.length + 1);
-
+    async uploadFileToBucket(bucket: string, key: string, filePath: string): Promise<void> {
         const command = new PutObjectCommand({
             Bucket: bucket,
-            Key: fileKey,
+            Key: key,
             ContentType: S3Facade.getContentType(filePath),
             Body: readFileSync(filePath),
         });
@@ -76,9 +79,9 @@ export class S3Facade {
 
         if (result.$metadata.httpStatusCode !== 200) {
             logger.error(JSON.stringify(result, null, '\t'));
-            throw new Error(`Failed to upload file ${filePath}=>s3://${bucket}/${fileKey}`);
+            throw new Error(`Failed to upload file ${filePath}=>s3://${bucket}/${key}`);
         }
 
-        logger.log(`\tUploaded: ${filePath}=>s3://${bucket}/${fileKey}`);
+        logger.log(`\tUploaded: ${filePath}=>s3://${bucket}/${key}`);
     }
 }
