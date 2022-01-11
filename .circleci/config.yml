@@ -6,11 +6,17 @@ version: 2.1
 
 orbs:
     aws-cli: circleci/aws-cli@1.4.1
+    node: circleci/node@5.0.0
 
 defaults: &defaults
     working_directory: ~/repo
-    docker:
-        - image: circleci/node:14-browsers
+    machine:
+        image: ubuntu-2004:202101-01
+    resource_class: arm.medium
+
+node_config: &node_config
+    install-yarn: true
+    node-version: '14.18'
 
 set_env: &set_env
     name: Setup Environment Variables
@@ -55,6 +61,8 @@ jobs:
         <<: *defaults
         steps:
             - checkout
+            - node/install:
+                  <<: *node_config
             - restore_cache:
                   <<: *yarn_cache
             - run:

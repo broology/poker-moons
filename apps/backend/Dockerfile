@@ -1,4 +1,4 @@
-FROM node:16-alpine as backend
+FROM node:16.3.0-alpine as backend
 
 RUN yarn --version
 
