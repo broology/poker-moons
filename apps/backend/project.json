@@ -52,7 +52,8 @@
             "executor": "./tools/executors/docker:build-and-push",
             "options": {
                 "region": "ca-central-1",
-                "ecrRegistryUrl": "553501565082.dkr.ecr.ca-central-1.amazonaws.com"
+                "ecrRegistryUrl": "553501565082.dkr.ecr.ca-central-1.amazonaws.com",
+                "platform": "linux/arm64"
             }
         }
     },

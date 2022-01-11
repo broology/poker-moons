@@ -4,6 +4,7 @@ import { cli } from '../../util/cli';
 interface AWSDockerBuildAndPush {
     region: string;
     ecrRegistryUrl: string;
+    platform: string;
     tag: string;
 }
 
@@ -19,7 +20,7 @@ export default async function (
 
     //  Build docker image with linux/arm64, as that's what we are using on elastic beanstalk
     cli(
-        `docker buildx build . -t "${context.projectName}:${options.tag}" --target="${context.projectName}" --memory=500m -f ./apps/${context.projectName}/Dockerfile --platform=linux/arm64`,
+        `docker build . -t "${context.projectName}:${options.tag}" --target="${context.projectName}" --memory=500m -f ./apps/${context.projectName}/Dockerfile --platform=${options.platform}`,
     );
 
     // Before we can push to ecr, we need to authenticate with it
