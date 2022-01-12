@@ -6,9 +6,7 @@
     "targets": {
         "test": {
             "executor": "@nrwl/jest:jest",
-            "outputs": [
-                "coverage/libs/backend/feature/state"
-            ],
+            "outputs": ["coverage/libs/backend/feature/state"],
             "options": {
                 "jestConfig": "libs/backend/feature/state/jest.config.js",
                 "passWithNoTests": true
