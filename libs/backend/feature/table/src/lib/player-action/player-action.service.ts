@@ -1,4 +1,5 @@
 import { Injectable, NotImplementedException } from '@nestjs/common';
+import { mockMutablePublicPlayer, mockTable } from '@poker-moons/shared/testing';
 import {
     CallPlayerAction,
     CheckPlayerAction,
@@ -19,104 +20,30 @@ import { match } from 'ts-pattern';
 export class PlayerActionService {
     perform(dto: PerformPlayerActionRequest): PerformPlayerActionResponse {
         //get state and table
-        const table: Table = {
-            id: 'table_temp',
-            name: 'Temp',
-            seatMap: {
-                0: 'player_temp0',
-                1: 'player_temp1',
-                2: 'player_temp2',
-                3: 'player_temp3',
-                4: 'player_temp4',
-                5: 'player_temp5',
-            },
-            playerMap: {
-                player_temp0: {
-                    id: 'player_temp0',
-                    username: 'temp0',
-                    img: 'img',
-                    stack: 1000,
-                    status: 'waiting',
-                    called: 100,
-                    seatId: 0,
-                    cards: [],
-                },
-                player_temp1: {
-                    id: 'player_temp1',
-                    username: 'temp1',
-                    img: 'img',
-                    stack: 1000,
-                    status: 'waiting',
-                    called: 100,
-                    seatId: 0,
-                    cards: [],
-                },
-                player_temp2: {
-                    id: 'player_temp2',
-                    username: 'temp2',
-                    img: 'img',
-                    stack: 1000,
-                    status: 'waiting',
-                    called: 100,
-                    seatId: 0,
-                    cards: [],
-                },
-                player_temp3: {
-                    id: 'player_temp3',
-                    username: 'temp3',
-                    img: 'img',
-                    stack: 1000,
-                    status: 'waiting',
-                    called: 100,
-                    seatId: 0,
-                    cards: [],
-                },
-                player_temp4: {
-                    id: 'player_temp4',
-                    username: 'temp4',
-                    img: 'img',
-                    stack: 1000,
-                    status: 'waiting',
-                    called: 100,
-                    seatId: 0,
-                    cards: [],
-                },
-                player_temp5: {
-                    id: 'player_temp5',
-                    username: 'temp5',
-                    img: 'img',
-                    stack: 1000,
-                    status: 'waiting',
-                    called: 100,
-                    seatId: 0,
-                    cards: [],
-                },
-            },
-            roundCount: 0,
-            activeRound: {
-                pot: 1000,
-                toCall: 100,
-                turnCount: 0,
-                roundStatus: 'deal',
-                activeSeat: 0,
-                dealerSeat: 0,
-                smallBlind: 1,
-                cards: [{ suit: 'diamonds', rank: '01' }],
-            },
+        const table = mockTable();
+        const clientTableState: ClientTableState = {
+            cards: [],
+            playerId: 'player_temp',
+            tableId: table.id,
+            mutablePlayerMap: mockMutablePublicPlayer(),
+            immutablePlayerMap: mockMutablePublicPlayer(),
+            seatMap: table.seatMap,
+            roundCount: table.roundCount,
+            activeRound: table.activeRound,
         };
 
         switch (dto.action.type) {
             case 'fold':
-                pipe(this.canFold(table, dto.action), this.fold);
+                pipe(this.canFold(table, clientTableState, dto.action), this.fold);
                 break;
             case 'call':
-                pipe(this.canCall(table, dto.action), this.call);
+                pipe(this.canCall(table, clientTableState, dto.action), this.call);
                 break;
             case 'raise':
-                pipe(this.canRaise(table, dto.action), this.raise);
+                pipe(this.canRaise(table, clientTableState, dto.action), this.raise);
                 break;
             case 'check':
-                pipe(this.canCheck(table, dto.action), this.check);
+                pipe(this.canCheck(table, clientTableState, dto.action), this.check);
                 break;
         }
     }
