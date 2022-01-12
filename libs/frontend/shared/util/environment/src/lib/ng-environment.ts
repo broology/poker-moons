@@ -1,6 +1,6 @@
 export const NG_ENVIRONMENT = 'ng_environment' as const;
 
-export type EnvType = 'local' | 'production';
+export type EnvType = 'local' | 'production' | 'testing';
 
 export interface NgEnvironment {
     /**

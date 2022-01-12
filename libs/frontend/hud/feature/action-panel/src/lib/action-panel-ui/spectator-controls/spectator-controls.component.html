@@ -1,0 +1,8 @@
+<form [formGroup]="spectatorForm">
+    <label for="username">Enter Username</label>
+    <input id="username" formControlName="username" />
+    <span *ngIf="!spectatorForm.valid"
+        >Must be within length {{ USERNAME_LENGTH.min }} - {{ USERNAME_LENGTH.max }} characters</span
+    >
+    <button (click)="join()">join</button>
+</form>

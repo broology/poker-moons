@@ -1,0 +1,9 @@
+{
+    "builders": {
+        "cf-s3-deploy": {
+            "implementation": "./cf-s3-deploy/impl",
+            "schema": "./cf-s3-deploy/schema.json",
+            "description": "Performs a deployment of a static webapp to the S3 bucket and invalidates the CDN Cache"
+        }
+    }
+}

@@ -1,1 +1,8 @@
-<p>action-panel-feature works!</p>
+<poker-moons-action-panel-ui
+    [clientMutablePlayer]="clientMutablePlayer$ | push"
+    [clientImmutablePlayer]="clientImmutablePlayer$ | push"
+    [round]="round$ | push"
+    (joinTableEmitter)="join($event)"
+    (leaveTableEmitter)="leave()"
+    (playerActionEmitter)="performAction($event)"
+></poker-moons-action-panel-ui>

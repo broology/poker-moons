@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideMockStore } from '@ngrx/store/testing';
 import { TableDisplayFeatureComponent } from './table-display-feature.component';
+import { tableDisplayFeatureImports } from './table-display-feature.module';
 
 describe('TableDisplayFeatureComponent', () => {
     let component: TableDisplayFeatureComponent;
@@ -7,7 +9,9 @@ describe('TableDisplayFeatureComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
+            imports: tableDisplayFeatureImports,
             declarations: [TableDisplayFeatureComponent],
+            providers: [provideMockStore()],
         }).compileComponents();
     });
 

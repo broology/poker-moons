@@ -1,1 +1,7 @@
-<p>table-display works!</p>
+<!-- These can definitely be optimized to not render as often. But it's fine for now -->
+<ng-container *rxLet="round$ as round">
+    <p>table-display works!</p>
+    <poker-moons-table-display-community-cards [cards]="round.cards"></poker-moons-table-display-community-cards>
+    <poker-moons-table-display-pot [mainPot]="round.pot"></poker-moons-table-display-pot>
+    <poker-moons-table-display-status [status]="round.roundStatus"></poker-moons-table-display-status>
+</ng-container>
