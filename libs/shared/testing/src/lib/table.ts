@@ -4,20 +4,20 @@ import { DeepPartial } from 'ts-essentials';
 
 export function mockTable(overrides: DeepPartial<Table> = {}): Table {
     const table: Table = {
-        id: 'table_temp',
-        name: 'Temp',
+        id: 'table_',
+        name: '',
         seatMap: {
-            0: 'player_temp0',
-            1: 'player_temp1',
-            2: 'player_temp2',
-            3: 'player_temp3',
-            4: 'player_temp4',
-            5: 'player_temp5',
+            0: 'player_0',
+            1: 'player_1',
+            2: 'player_2',
+            3: 'player_3',
+            4: 'player_4',
+            5: 'player_5',
         },
         playerMap: {
-            player_temp0: {
-                id: 'player_temp0',
-                username: 'temp0',
+            player_0: {
+                id: 'player_0',
+                username: '0',
                 img: 'img',
                 stack: 1000,
                 status: 'waiting',
@@ -25,9 +25,9 @@ export function mockTable(overrides: DeepPartial<Table> = {}): Table {
                 seatId: 0,
                 cards: [],
             },
-            player_temp1: {
-                id: 'player_temp1',
-                username: 'temp1',
+            player_1: {
+                id: 'player_1',
+                username: '1',
                 img: 'img',
                 stack: 1000,
                 status: 'waiting',
@@ -35,9 +35,9 @@ export function mockTable(overrides: DeepPartial<Table> = {}): Table {
                 seatId: 0,
                 cards: [],
             },
-            player_temp2: {
-                id: 'player_temp2',
-                username: 'temp2',
+            player_2: {
+                id: 'player_2',
+                username: '2',
                 img: 'img',
                 stack: 1000,
                 status: 'waiting',
@@ -45,9 +45,9 @@ export function mockTable(overrides: DeepPartial<Table> = {}): Table {
                 seatId: 0,
                 cards: [],
             },
-            player_temp3: {
-                id: 'player_temp3',
-                username: 'temp3',
+            player_3: {
+                id: 'player_3',
+                username: '3',
                 img: 'img',
                 stack: 1000,
                 status: 'waiting',
@@ -55,9 +55,9 @@ export function mockTable(overrides: DeepPartial<Table> = {}): Table {
                 seatId: 0,
                 cards: [],
             },
-            player_temp4: {
-                id: 'player_temp4',
-                username: 'temp4',
+            player_4: {
+                id: 'player_4',
+                username: '4',
                 img: 'img',
                 stack: 1000,
                 status: 'waiting',
@@ -65,9 +65,9 @@ export function mockTable(overrides: DeepPartial<Table> = {}): Table {
                 seatId: 0,
                 cards: [],
             },
-            player_temp5: {
-                id: 'player_temp5',
-                username: 'temp5',
+            player_5: {
+                id: 'player_5',
+                username: '5',
                 img: 'img',
                 stack: 1000,
                 status: 'waiting',
@@ -95,9 +95,9 @@ export function mockServerTable(overrides: DeepPartial<Table> = {}): ServerTable
     const table = {
         deck: [{ suit: 'diamonds', rank: '01' }],
         playerMap: {
-            player_temp0: {
-                id: 'player_temp0',
-                username: 'temp0',
+            player_0: {
+                id: 'player_0',
+                username: '0',
                 img: 'img',
                 stack: 1000,
                 status: 'waiting',
@@ -105,9 +105,9 @@ export function mockServerTable(overrides: DeepPartial<Table> = {}): ServerTable
                 seatId: 0,
                 cards: [],
             },
-            player_temp1: {
-                id: 'player_temp1',
-                username: 'temp1',
+            player_1: {
+                id: 'player_1',
+                username: '1',
                 img: 'img',
                 stack: 1000,
                 status: 'waiting',
@@ -115,9 +115,9 @@ export function mockServerTable(overrides: DeepPartial<Table> = {}): ServerTable
                 seatId: 0,
                 cards: [],
             },
-            player_temp2: {
-                id: 'player_temp2',
-                username: 'temp2',
+            player_2: {
+                id: 'player_2',
+                username: '2',
                 img: 'img',
                 stack: 1000,
                 status: 'waiting',
@@ -125,9 +125,9 @@ export function mockServerTable(overrides: DeepPartial<Table> = {}): ServerTable
                 seatId: 0,
                 cards: [],
             },
-            player_temp3: {
-                id: 'player_temp3',
-                username: 'temp3',
+            player_3: {
+                id: 'player_3',
+                username: '3',
                 img: 'img',
                 stack: 1000,
                 status: 'waiting',
@@ -135,9 +135,9 @@ export function mockServerTable(overrides: DeepPartial<Table> = {}): ServerTable
                 seatId: 0,
                 cards: [],
             },
-            player_temp4: {
-                id: 'player_temp4',
-                username: 'temp4',
+            player_4: {
+                id: 'player_4',
+                username: '4',
                 img: 'img',
                 stack: 1000,
                 status: 'waiting',
@@ -145,9 +145,9 @@ export function mockServerTable(overrides: DeepPartial<Table> = {}): ServerTable
                 seatId: 0,
                 cards: [],
             },
-            player_temp5: {
-                id: 'player_temp5',
-                username: 'temp5',
+            player_5: {
+                id: 'player_5',
+                username: '5',
                 img: 'img',
                 stack: 1000,
                 status: 'waiting',
@@ -157,12 +157,12 @@ export function mockServerTable(overrides: DeepPartial<Table> = {}): ServerTable
             },
         },
         seatMap: {
-            0: 'player_temp0',
-            1: 'player_temp1',
-            2: 'player_temp2',
-            3: 'player_temp3',
-            4: 'player_temp4',
-            5: 'player_temp5',
+            0: 'player_0',
+            1: 'player_1',
+            2: 'player_2',
+            3: 'player_3',
+            4: 'player_4',
+            5: 'player_5',
         },
         roundCount: 0,
         activeRound: {

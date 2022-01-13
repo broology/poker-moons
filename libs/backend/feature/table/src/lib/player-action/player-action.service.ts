@@ -1,16 +1,16 @@
 import { Injectable, NotImplementedException } from '@nestjs/common';
+import { mockPublicPlayer, mockServerTable } from '@poker-moons/shared/testing';
 import {
     CallPlayerAction,
     CheckPlayerAction,
-    ClientTableState,
     FoldPlayerAction,
     PerformPlayerActionRequest,
     PerformPlayerActionResponse,
     PlayerAction,
     PokerMoonsError,
+    PublicPlayer,
     RaisePlayerAction,
     ServerTableState,
-    Table,
 } from '@poker-moons/shared/type';
 import { Either, isRight, left, right } from 'fp-ts/lib/Either';
 import { pipe } from 'fp-ts/lib/function';
@@ -19,20 +19,21 @@ import { match } from 'ts-pattern';
 @Injectable()
 export class PlayerActionService {
     perform(dto: PerformPlayerActionRequest): PerformPlayerActionResponse {
+        const player: PublicPlayer = mockPublicPlayer();
         const table: ServerTableState = mockServerTable();
 
         switch (dto.action.type) {
             case 'fold':
-                pipe(this.canFold(table, clientTableState, dto.action), this.fold);
+                pipe(this.canFold(table, player, dto.action), this.fold);
                 break;
             case 'call':
-                pipe(this.canCall(table, clientTableState, dto.action), this.call);
+                pipe(this.canCall(table, player, dto.action), this.call);
                 break;
             case 'raise':
-                pipe(this.canRaise(table, clientTableState, dto.action), this.raise);
+                pipe(this.canRaise(table, player, dto.action), this.raise);
                 break;
             case 'check':
-                pipe(this.canCheck(table, clientTableState, dto.action), this.check);
+                pipe(this.canCheck(table, player, dto.action), this.check);
                 break;
         }
     }
@@ -94,14 +95,14 @@ export class PlayerActionService {
     }
 
     validPlayer(
-        table: Table,
-        clientState: ClientTableState,
+        table: ServerTableState,
+        player: PublicPlayer,
         action: PlayerAction,
     ): Either<PokerMoonsError, PlayerAction> {
-        if (clientState.playerId)
+        if (player.id)
             if (table.activeRound.activeSeat) return right(action);
-            else return left('Player not in game');
-        else return left('Player not in game');
+            else return left('PublicPlayer not in game');
+        else return left('PublicPlayer not in game');
     }
 
     /**
@@ -109,22 +110,21 @@ export class PlayerActionService {
      * @description Determines if a player is able to fold given the current game state.
      * A fold can happen at any point in the play when it is the players turn to act.
      * @param table
-     * @type Table
-     * @param clientState
-     * @type ClientTableState
+     * @type ServerTableState
+     * @param player
+     * @type PublicPlayer
      * @param action
      * @type FoldPlayerAction
      * @returns Either<PokerMoonsError, FoldPlayerAction>
      */
     canFold(
-        table: Table,
-        clientState: ClientTableState,
+        table: ServerTableState,
+        player: PublicPlayer,
         action: FoldPlayerAction,
     ): Either<PokerMoonsError, FoldPlayerAction> {
-        const player = this.validPlayer(table, clientState, action);
-        if (isRight(player))
+        if (isRight(this.validPlayer(table, player, action)))
             return match([
-                clientState.playerId,
+                player.id,
                 table.activeRound.activeSeat,
                 table.activeRound.activeSeat
                     ? table.seatMap[table.activeRound.activeSeat]
@@ -132,7 +132,7 @@ export class PlayerActionService {
             ])
                 .with([], () => left('Cannot perform action.'))
                 .otherwise(() => right(action));
-        return player;
+        return right(action);
     }
 
     /**
@@ -140,16 +140,16 @@ export class PlayerActionService {
      * @description Determines if a player is able to call given the current game state.
      * A call can happen at any point during a betting round.
      * @param table
-     * @type Table
-     * @param clientState
-     * @type ClientTableState
+     * @type ServerTableState
+     * @param player
+     * @type PublicPlayer
      * @param action
      * @type CallPlayerAction
      * @returns Either<PokerMoonsError, CallPlayerAction>
      */
     canCall(
-        table: Table,
-        clientState: ClientTableState,
+        table: ServerTableState,
+        player: PublicPlayer,
         action: CallPlayerAction,
     ): Either<PokerMoonsError, CallPlayerAction> {
         return match([])
@@ -162,16 +162,16 @@ export class PlayerActionService {
      * @description Determines if a player is able to raise given the current game state.
      * A raise can happen at any time during a betting round.
      * @param table
-     * @type Table
-     * @param clientState
-     * @type ClientTableState
+     * @type ServerTableState
+     * @param player
+     * @type PublicPlayer
      * @param action
      * @type RaisePlayerAction
      * @returns Either<PokerMoonsError, RaisePlayerAction>
      */
     canRaise(
-        table: Table,
-        clientState: ClientTableState,
+        table: ServerTableState,
+        player: PublicPlayer,
         action: RaisePlayerAction,
     ): Either<PokerMoonsError, RaisePlayerAction> {
         return match([])
@@ -184,16 +184,16 @@ export class PlayerActionService {
      * @description Determines if a player is able to check given the current game state.
      * A check can only happen when there is no bet during current round.
      * @param table
-     * @type Table
-     * @param clientState
-     * @type ClientTableState
+     * @type ServerTableState
+     * @param player
+     * @type PublicPlayer
      * @param action
      * @type CheckPlayerAction
      * @returns Either<PokerMoonsError, CheckPlayerAction>
      */
     canCheck(
-        table: Table,
-        clientState: ClientTableState,
+        table: ServerTableState,
+        player: PublicPlayer,
         action: CheckPlayerAction,
     ): Either<PokerMoonsError, CheckPlayerAction> {
         return match([])
