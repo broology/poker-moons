@@ -1,4 +1,4 @@
-import { ImmutablePublicPlayer, MutablePublicPlayer, PublicPlayer, Table } from '@poker-moons/shared/type';
+import { ImmutablePublicPlayer, MutablePublicPlayer, PublicPlayer } from '@poker-moons/shared/type';
 import { merge } from '@poker-moons/shared/util';
 import { DeepPartial } from 'ts-essentials';
 
@@ -37,93 +37,4 @@ export function mockMutablePublicPlayer(overrides: DeepPartial<MutablePublicPlay
     };
 
     return merge(mutablePublicPlayer, overrides);
-}
-
-export function mockTable(overrides: DeepPartial<Table> = {}): Table {
-    const table: Table = {
-        id: 'table_temp',
-        name: 'Temp',
-        seatMap: {
-            0: 'player_temp0',
-            1: 'player_temp1',
-            2: 'player_temp2',
-            3: 'player_temp3',
-            4: 'player_temp4',
-            5: 'player_temp5',
-        },
-        playerMap: {
-            player_temp0: {
-                id: 'player_temp0',
-                username: 'temp0',
-                img: 'img',
-                stack: 1000,
-                status: 'waiting',
-                called: 100,
-                seatId: 0,
-                cards: [],
-            },
-            player_temp1: {
-                id: 'player_temp1',
-                username: 'temp1',
-                img: 'img',
-                stack: 1000,
-                status: 'waiting',
-                called: 100,
-                seatId: 0,
-                cards: [],
-            },
-            player_temp2: {
-                id: 'player_temp2',
-                username: 'temp2',
-                img: 'img',
-                stack: 1000,
-                status: 'waiting',
-                called: 100,
-                seatId: 0,
-                cards: [],
-            },
-            player_temp3: {
-                id: 'player_temp3',
-                username: 'temp3',
-                img: 'img',
-                stack: 1000,
-                status: 'waiting',
-                called: 100,
-                seatId: 0,
-                cards: [],
-            },
-            player_temp4: {
-                id: 'player_temp4',
-                username: 'temp4',
-                img: 'img',
-                stack: 1000,
-                status: 'waiting',
-                called: 100,
-                seatId: 0,
-                cards: [],
-            },
-            player_temp5: {
-                id: 'player_temp5',
-                username: 'temp5',
-                img: 'img',
-                stack: 1000,
-                status: 'waiting',
-                called: 100,
-                seatId: 0,
-                cards: [],
-            },
-        },
-        roundCount: 0,
-        activeRound: {
-            pot: 1000,
-            toCall: 100,
-            turnCount: 0,
-            roundStatus: 'deal',
-            activeSeat: 0,
-            dealerSeat: 0,
-            smallBlind: 1,
-            cards: [{ suit: 'diamonds', rank: '01' }],
-        },
-    };
-    return merge(table, overrides);
 }

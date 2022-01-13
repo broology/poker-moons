@@ -1,5 +1,4 @@
 import { Injectable, NotImplementedException } from '@nestjs/common';
-import { mockMutablePublicPlayer, mockTable } from '@poker-moons/shared/testing';
 import {
     CallPlayerAction,
     CheckPlayerAction,
@@ -10,6 +9,7 @@ import {
     PlayerAction,
     PokerMoonsError,
     RaisePlayerAction,
+    ServerTableState,
     Table,
 } from '@poker-moons/shared/type';
 import { Either, isRight, left, right } from 'fp-ts/lib/Either';
@@ -19,18 +19,7 @@ import { match } from 'ts-pattern';
 @Injectable()
 export class PlayerActionService {
     perform(dto: PerformPlayerActionRequest): PerformPlayerActionResponse {
-        //get state and table
-        const table = mockTable();
-        const clientTableState: ClientTableState = {
-            cards: [],
-            playerId: 'player_temp',
-            tableId: table.id,
-            mutablePlayerMap: mockMutablePublicPlayer(),
-            immutablePlayerMap: mockMutablePublicPlayer(),
-            seatMap: table.seatMap,
-            roundCount: table.roundCount,
-            activeRound: table.activeRound,
-        };
+        const table: ServerTableState = mockServerTable();
 
         switch (dto.action.type) {
             case 'fold':
