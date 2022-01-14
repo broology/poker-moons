@@ -1,6 +1,7 @@
 {
     "version": 2,
     "projects": {
+        "backend": "apps/backend",
         "backend-feature-table": "libs/backend/feature/table",
         "frontend": "apps/frontend",
         "frontend-builder-feature-form": "libs/frontend/builder/feature/form",

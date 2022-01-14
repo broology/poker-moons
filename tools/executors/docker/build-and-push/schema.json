@@ -1,0 +1,24 @@
+{
+    "$schema": "http://json-schema.org/schema",
+    "type": "object",
+    "cli": "nx",
+    "properties": {
+        "region": {
+            "type": "string",
+            "description": "The region to perform the deployment"
+        },
+        "ecrRegistryUrl": {
+            "type": "string",
+            "description": "The url the Elastic Container Registry (just the base url, not including the specific repository)"
+        },
+        "platform": {
+            "type": "string",
+            "description": "The type of platform the docker build is meant for eg. linux/arm64"
+        },
+        "tag": {
+            "type": "string",
+            "description": "The tag that will be pushed to ecr, so that the deploy step can pull the same tag"
+        }
+    },
+    "required": ["region", "ecrRegistryUrl", "platform", "tag"]
+}

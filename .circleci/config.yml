@@ -2,12 +2,21 @@
 #
 # Check https://circleci.com/docs/2.0/language-javascript/ for more details
 #
-version: 2
+version: 2.1
+
+orbs:
+    aws-cli: circleci/aws-cli@1.4.1
+    node: circleci/node@5.0.0
 
 defaults: &defaults
     working_directory: ~/repo
-    docker:
-        - image: circleci/node:14-browsers
+    machine:
+        image: ubuntu-2004:202101-01
+    resource_class: arm.medium
+
+node_config: &node_config
+    install-yarn: true
+    node-version: '14.18'
 
 set_env: &set_env
     name: Setup Environment Variables
@@ -17,6 +26,7 @@ set_env: &set_env
           echo 'Fetching Base Commit from GitHub'
           echo 'export CIRCLE_PR_BASE_SHA="$(git rev-parse HEAD~1)"' >> $BASH_ENV
           echo 'export AFFECTED_ARGS="--base ${CIRCLE_PR_BASE_SHA}"' >> $BASH_ENV
+          echo 'export DEPLOYMENT_TAG=$(git rev-parse HEAD)' >> $BASH_ENV
         else
           echo 'Fetching Base Commit from Deploy Cache'
           if [[ ! -f dist/last-deploy.txt ]]
@@ -27,6 +37,7 @@ set_env: &set_env
         fi
         source $BASH_ENV
         echo $AFFECTED_ARGS
+        echo $DEPLOYMENT_TAG
 
 yarn_cache: &yarn_cache
     keys:
@@ -45,13 +56,25 @@ build_executors: &build_executors
     name: Build Nx Executors
     command: yarn build:executors
 
-jobs:
+commands:
     setup:
-        <<: *defaults
+        description: Setup necessary frameworks for deploy
         steps:
             - checkout
+            - node/install:
+                  <<: *node_config
+            - restore_cache:
+                  <<: *deploy_cache
+            - run:
+                  <<: *set_env
             - restore_cache:
                   <<: *yarn_cache
+
+jobs:
+    install:
+        <<: *defaults
+        steps:
+            - setup
             - run:
                   <<: *yarn_install
             - save_cache:
@@ -62,36 +85,18 @@ jobs:
     check-formatting:
         <<: *defaults
         steps:
-            - checkout
-            - restore_cache:
-                  <<: *deploy_cache
-            - run:
-                  <<: *set_env
-            - restore_cache:
-                  <<: *yarn_cache
+            - setup
             - run: yarn format:check ${AFFECTED_ARGS}
     lint:
         <<: *defaults
         steps:
-            - checkout
-            - restore_cache:
-                  <<: *deploy_cache
-            - run:
-                  <<: *set_env
-            - restore_cache:
-                  <<: *yarn_cache
+            - setup
             - run: ./node_modules/.bin/nx workspace-lint
             - run: yarn affected:lint ${AFFECTED_ARGS} --parallel 2
     build:
         <<: *defaults
         steps:
-            - checkout
-            - restore_cache:
-                  <<: *deploy_cache
-            - run:
-                  <<: *set_env
-            - restore_cache:
-                  <<: *yarn_cache
+            - setup
             - run: yarn affected:build -- ${AFFECTED_ARGS} --parallel 2 --configuration production
             - save_cache:
                   key: build-{{ .Environment.CIRCLE_WORKFLOW_ID }}
@@ -102,42 +107,45 @@ jobs:
     test:
         <<: *defaults
         steps:
-            - checkout
-            - restore_cache:
-                  <<: *deploy_cache
-            - run:
-                  <<: *set_env
-            - restore_cache:
-                  <<: *yarn_cache
+            - setup
             - run: yarn affected:test -- ${AFFECTED_ARGS} --parallel 2 -- --ci --code-coverage
     e2e:
-        <<: *defaults
+        working_directory: ~/repo
+        docker:
+            - image: circleci/node:14-browsers
         steps:
             - checkout
             - restore_cache:
                   <<: *deploy_cache
             - run:
                   <<: *set_env
-            - restore_cache:
-                  <<: *yarn_cache
+            # Not optimal, but the best we can do for now, until cypress is supported on arm instances
+            - run:
+                  <<: *yarn_install
             - run: yarn affected:e2e -- ${AFFECTED_ARGS} --configuration production -- --headless
             - store_artifacts:
                   path: dist/cypress
+    dockerize:
+        <<: *defaults
+        steps:
+            - setup
+            - restore_cache:
+                  key: build-{{ .Environment.CIRCLE_WORKFLOW_ID }}
+            - aws-cli/install:
+                  version: '2'
+            - run:
+                  <<: *build_executors
+            - run: yarn affected:dockerize -- ${AFFECTED_ARGS} --parallel 2 --tag=${DEPLOYMENT_TAG}
+
     deploy:
         <<: *defaults
         steps:
-            - checkout
-            - restore_cache:
-                  <<: *deploy_cache
-            - run:
-                  <<: *set_env
-            - restore_cache:
-                  <<: *yarn_cache
+            - setup
             - restore_cache:
                   key: build-{{ .Environment.CIRCLE_WORKFLOW_ID }}
             - run:
                   <<: *build_executors
-            - run: yarn affected -- --target deploy ${AFFECTED_ARGS}
+            - run: yarn affected -- --target deploy ${AFFECTED_ARGS} --tag=${DEPLOYMENT_TAG}
             - run: git rev-parse HEAD > dist/last-deploy.txt
             - save_cache:
                   key: last-deploy-sha
@@ -148,22 +156,29 @@ workflows:
     version: 2
     pr_check:
         jobs:
-            - setup
+            - install
             - check-formatting:
                   requires:
-                      - setup
+                      - install
             - lint:
                   requires:
-                      - setup
+                      - install
             - test:
                   requires:
-                      - setup
+                      - install
             - build:
                   requires:
-                      - setup
+                      - install
             - e2e:
                   requires:
-                      - setup
+                      - install
+            - dockerize:
+                  filters:
+                      branches:
+                          only:
+                              - master
+                  requires:
+                      - build
             - deploy:
                   filters:
                       branches:
@@ -173,5 +188,5 @@ workflows:
                       - check-formatting
                       - lint
                       - test
-                      - build
                       - e2e
+                      - dockerize
