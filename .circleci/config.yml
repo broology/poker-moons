@@ -127,6 +127,8 @@ jobs:
         <<: *defaults
         steps:
             - setup
+            - attach_workspace:
+                  at: ~/repo
             - aws-cli/install:
                   version: '2'
             - run:
@@ -137,6 +139,8 @@ jobs:
         <<: *defaults
         steps:
             - setup
+            - attach_workspace:
+                  at: ~/repo
             - run:
                   <<: *build_executors
             - run: yarn affected -- --target deploy ${AFFECTED_ARGS} --tag=${CIRCLE_SHA1}
