@@ -96,10 +96,10 @@ jobs:
         steps:
             - setup
             - run: yarn affected:build -- ${AFFECTED_ARGS} --parallel 2 --configuration production
-            - save_cache:
-                  key: build-{{ .Environment.CIRCLE_WORKFLOW_ID }}
+            - persist_to_workspace:
+                  root: ~/repo
                   paths:
-                      - dist
+                      - dist/
             - store_artifacts:
                   path: dist
     test:
@@ -127,8 +127,6 @@ jobs:
         <<: *defaults
         steps:
             - setup
-            - restore_cache:
-                  key: build-{{ .Environment.CIRCLE_WORKFLOW_ID }}
             - aws-cli/install:
                   version: '2'
             - run:
@@ -139,8 +137,6 @@ jobs:
         <<: *defaults
         steps:
             - setup
-            - restore_cache:
-                  key: build-{{ .Environment.CIRCLE_WORKFLOW_ID }}
             - run:
                   <<: *build_executors
             - run: yarn affected -- --target deploy ${AFFECTED_ARGS} --tag=${CIRCLE_SHA1}
