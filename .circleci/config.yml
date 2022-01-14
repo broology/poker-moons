@@ -26,7 +26,6 @@ set_env: &set_env
           echo 'Fetching Base Commit from GitHub'
           echo 'export CIRCLE_PR_BASE_SHA="$(git rev-parse HEAD~1)"' >> $BASH_ENV
           echo 'export AFFECTED_ARGS="--base ${CIRCLE_PR_BASE_SHA}"' >> $BASH_ENV
-          echo 'export DEPLOYMENT_TAG=$(git rev-parse HEAD)' >> $BASH_ENV
         else
           echo 'Fetching Base Commit from Deploy Cache'
           if [[ ! -f dist/last-deploy.txt ]]
@@ -37,7 +36,6 @@ set_env: &set_env
         fi
         source $BASH_ENV
         echo $AFFECTED_ARGS
-        echo $DEPLOYMENT_TAG
 
 yarn_cache: &yarn_cache
     keys:
@@ -135,7 +133,7 @@ jobs:
                   version: '2'
             - run:
                   <<: *build_executors
-            - run: yarn affected:dockerize -- ${AFFECTED_ARGS} --parallel 2 --tag=${DEPLOYMENT_TAG}
+            - run: yarn affected:dockerize -- ${AFFECTED_ARGS} --parallel 2 --tag=${CIRCLE_SHA1}
 
     deploy:
         <<: *defaults
@@ -145,7 +143,7 @@ jobs:
                   key: build-{{ .Environment.CIRCLE_WORKFLOW_ID }}
             - run:
                   <<: *build_executors
-            - run: yarn affected -- --target deploy ${AFFECTED_ARGS} --tag=${DEPLOYMENT_TAG}
+            - run: yarn affected -- --target deploy ${AFFECTED_ARGS} --tag=${CIRCLE_SHA1}
             - run: git rev-parse HEAD > dist/last-deploy.txt
             - save_cache:
                   key: last-deploy-sha
