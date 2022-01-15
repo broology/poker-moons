@@ -1,3 +1,4 @@
-<p>community-cards works!</p>
-<!-- Use poker-moons-card components when merged -->
-<div>{{ cards | json }}</div>
+<p>Community Cards</p>
+<div class="community-cards-container">
+    <span *ngFor="let card of cards" class="community-card"><poker-moons-card [card]="card"></poker-moons-card></span>
+</div>
