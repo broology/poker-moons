@@ -22,7 +22,7 @@ export interface Table {
      *
      *
      */
-    seatMap: Record<SeatId, PlayerId | null>;
+    seatMap: Partial<Record<SeatId, PlayerId>>;
 
     /**
      * A dictionary of the players sitting at the table
