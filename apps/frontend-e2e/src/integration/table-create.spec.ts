@@ -4,6 +4,7 @@ describe('table create', () => {
     beforeEach(() => {
         // [Mock] Create table api response
         cy.intercept('POST', '**/table', { body: emptyTable }).as('createTable');
+        cy.intercept('GET', '**/table/**', { body: emptyTable }).as('getTable');
     });
 
     it('should create a table', () => {
@@ -21,6 +22,7 @@ describe('table create', () => {
 
         // [Wait] for mock response
         cy.wait('@createTable');
+        cy.wait('@getTable');
 
         // [Assert] Redirects to table page
         cy.location('pathname').should('eq', `/table/${emptyTable.id}`);
