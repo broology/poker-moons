@@ -1,1 +1,45 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* Map the poker-moons theme colours*/
+$poker-moons-colours: (
+    'primary': #d84712,
+    'secondary': #ffffff,
+    'foreground': #104614,
+    'background': #21232c,
+    'success': #1ea966,
+    'warning': #e6bd19,
+    'error': #c6394a,
+);
+
+/* Function to fetch the associated colour from the poker-moons theme */
+@function poker-moons-colour($name: 'primary') {
+    @return map-get($poker-moons-colours, $name);
+}
+
+/* Function to fetch a tinted version of the associated colour from the poker-moons theme */
+@function poker-moons-colour-tinted($name: 'primary') {
+    @return mix(white, poker-moons-colour($name), 10%);
+}
+
+/* Function to fetch a shaded version of the associated colour from the poker-moons theme */
+@function poker-moons-colour-shaded($name: 'primary') {
+    @return mix(black, poker-moons-colour($name), 10%);
+}
+
+/* Function to fetch a alpha version of the associated colour from the poker-moons theme */
+@function poker-moons-colour-alpha($name: 'primary', $opacity: 0) {
+    $color: poker-moons-colour($name);
+
+    @return rgba($color, $opacity);
+}
+
+/* Dynamically builds the list of colours as `css` variables that can be used for eg.`var(--primary)` */
+:root {
+    @each $key in map-keys($poker-moons-colours) {
+        --#{$key}: #{poker-moons-colour($key)};
+        --#{$key}-tinted: #{poker-moons-colour-tinted($key)};
+        --#{$key}-shaded: #{poker-moons-colour-shaded($key)};
+        --#{$key}-alpha-50: #{poker-moons-colour-alpha($key, 0.5)};
+        --#{$key}-alpha-25: #{poker-moons-colour-alpha($key, 0.25)};
+    }
+}
