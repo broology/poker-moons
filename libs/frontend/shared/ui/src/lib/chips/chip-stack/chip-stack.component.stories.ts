@@ -1,5 +1,5 @@
 import { MockNgEnvironment } from '@poker-moons/frontend/shared/util/environment';
-import { Meta, moduleMetadata, Story } from '@storybook/angular';
+import { componentWrapperDecorator, Meta, moduleMetadata, Story } from '@storybook/angular';
 import { ChipStackComponent } from './chip-stack.component';
 import { chipStackImports } from './chip-stack.module';
 
@@ -11,6 +11,7 @@ export default {
             imports: chipStackImports,
             providers: [MockNgEnvironment],
         }),
+        componentWrapperDecorator((story) => `<div style="margin-top: 8em">${story}</div>`),
     ],
 } as Meta<ChipStackComponent>;
 
