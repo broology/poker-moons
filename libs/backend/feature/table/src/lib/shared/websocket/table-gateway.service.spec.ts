@@ -77,7 +77,7 @@ describe('TableGatewayService', () => {
             const roundStatusChangedEvent: RoundStatusChangedEvent = {
                 type: 'roundStatusChanged',
                 status: 'flop',
-                cards: [mockCard(), mockCard({ suit: 'hearts', rank: '12' }), mockCard({ suit: 'spades', rank: '05' })],
+                cards: [mockCard(), mockCard({ suit: 'hearts', rank: '12' }), mockCard({ suit: 'spades', rank: '5' })],
             };
 
             serverSpy.mockReturnValue({
@@ -122,7 +122,7 @@ describe('TableGatewayService', () => {
                 type: 'winner',
                 displayText: `${player.username} has won!`,
                 pot: 10000,
-                playerId: player.id,
+                playerIds: [player.id],
             };
 
             serverSpy.mockReturnValue({

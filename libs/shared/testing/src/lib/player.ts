@@ -1,4 +1,4 @@
-import { ImmutablePublicPlayer, MutablePublicPlayer, PublicPlayer } from '@poker-moons/shared/type';
+import type { ImmutablePublicPlayer, MutablePublicPlayer, PublicPlayer, Player } from '@poker-moons/shared/type';
 import { merge } from '@poker-moons/shared/util';
 import { DeepPartial } from 'ts-essentials';
 
@@ -37,4 +37,19 @@ export function mockMutablePublicPlayer(overrides: DeepPartial<MutablePublicPlay
     };
 
     return merge(mutablePublicPlayer, overrides);
+}
+
+export function mockPlayer(overrides: DeepPartial<Player> = {}): Player {
+    const player: Player = {
+        id: 'player_1',
+        username: 'test',
+        img: '',
+        stack: 1000,
+        status: 'waiting',
+        called: 100,
+        seatId: 1,
+        cards: []
+    };
+
+    return merge(player, overrides);
 }

@@ -56,13 +56,22 @@ export interface PlayerTurnEvent extends GeneralTableEvent<'turn'> {
 
 export interface WinnerWinnerChickenDinnerEvent extends GeneralTableEvent<'winner'> {
     /**
-     * @example "Jimmy won with an three pair"
+     * @example "Jimmy won with a full house"
      */
     displayText: string;
 
+    /**
+     * The amount the winner(s) will receive
+     * 
+     * Note: If there are multiple winners the pot amount emitted will have already been 
+     * divided equally, so this will be the amount each winner will receive
+     */
     pot: number;
 
-    playerId: PlayerId;
+    /**
+     * The winning player ID(s)
+     */
+    playerIds: PlayerId[];
 }
 
 export type TableEvent =

@@ -1,4 +1,4 @@
-import { Round } from '@poker-moons/shared/type';
+import type { Round } from '@poker-moons/shared/type';
 import { merge } from '@poker-moons/shared/util';
 import { DeepPartial } from 'ts-essentials';
 
