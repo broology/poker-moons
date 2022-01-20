@@ -10,5 +10,5 @@ import { TableModule } from './table/table.module';
 	    	}],
 		}],
 	}]),
-]});
+]})
 export class BackendFeatureTableModule {}
