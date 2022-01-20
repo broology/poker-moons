@@ -1,5 +1,5 @@
 import { on, ReducerTypes } from '@ngrx/store';
-import { ClientTableState } from '@poker-moons/shared/type';
+import { ClientTableState, MutablePublicPlayer, PlayerId } from '@poker-moons/shared/type';
 import { connectToWs, tableWsActionMap } from '../actions/ws.actions';
 import { ActionType } from '../shared/util/action-util';
 
@@ -84,16 +84,18 @@ export const wsReducers: ReducerTypes<ClientTableState, [ActionType<any>]>[] = [
      * When a winner is declared at the end of a round. Update the the mutable players pot.
      */
     on(tableWsActionMap.winner, (state, { payload }) => {
-        const mutablePlayer = state.mutablePlayerMap[payload.playerId];
+        const mutablePlayerMap: Record<PlayerId, MutablePublicPlayer> = {};
+
+        for(const playerId of payload.playerIds){
+            const mutablePlayer = state.mutablePlayerMap[playerId];
+            mutablePlayerMap[playerId] = { ...mutablePlayer, stack: mutablePlayer.stack + payload.pot };
+        }
 
         return {
             ...state,
             mutablePlayerMap: {
                 ...state.mutablePlayerMap,
-                [payload.playerId]: {
-                    ...mutablePlayer,
-                    stack: mutablePlayer.stack + payload.pot,
-                },
+                ...mutablePlayerMap,
             },
         };
     }),
