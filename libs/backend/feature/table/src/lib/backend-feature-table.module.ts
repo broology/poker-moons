@@ -7,6 +7,8 @@ import { TableModule } from './table/table.module';
 	    path: ':tableId', children: [{
 		    path: 'player',
 		    module: PlayerModule
-	    }],
-})
+	    	}],
+		}],
+	}]),
+]});
 export class BackendFeatureTableModule {}
