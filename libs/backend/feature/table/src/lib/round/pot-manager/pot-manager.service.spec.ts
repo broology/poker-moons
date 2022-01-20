@@ -26,7 +26,7 @@ describe('PotManagerService', () => {
 
         it('should throw BadRequestException if amount is not an integer', () => {
             expect(() => service.incrementPot(500, 10.5)).toThrow(
-                new BadRequestException('The pot can only be incremented by integer amounts.')
+                new BadRequestException('The pot can only be incremented by integer amounts.'),
             );
         });
     });

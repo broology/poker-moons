@@ -62,8 +62,8 @@ export interface WinnerWinnerChickenDinnerEvent extends GeneralTableEvent<'winne
 
     /**
      * The amount the winner(s) will receive
-     * 
-     * Note: If there are multiple winners the pot amount emitted will have already been 
+     *
+     * Note: If there are multiple winners the pot amount emitted will have already been
      * divided equally, so this will be the amount each winner will receive
      */
     pot: number;

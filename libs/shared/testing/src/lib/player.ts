@@ -48,7 +48,7 @@ export function mockPlayer(overrides: DeepPartial<Player> = {}): Player {
         status: 'waiting',
         called: 100,
         seatId: 1,
-        cards: []
+        cards: [],
     };
 
     return merge(player, overrides);
