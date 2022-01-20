@@ -1,0 +1,14 @@
+// Places elements on top of each other
+.converge-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+// The order of the individual layers being display
+.layer-1 {
+    z-index: 1;
+}
+.layer-2 {
+    z-index: 2;
+}

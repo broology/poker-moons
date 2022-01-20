@@ -1,0 +1,5 @@
+<div>
+    <strong>Seat #{{ playerSeatId + 1 }}</strong>
+</div>
+<poker-moons-seat-player [immutablePlayer]="immutablePlayer$ | push"></poker-moons-seat-player>
+<poker-moons-seat-action [mutablePlayer]="mutablePlayer$ | push"></poker-moons-seat-action>

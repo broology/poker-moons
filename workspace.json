@@ -1,7 +1,23 @@
 {
     "version": 2,
     "projects": {
+        "backend": "apps/backend",
         "backend-feature-table": "libs/backend/feature/table",
-        "shared-type": "libs/shared/type"
+        "frontend": "apps/frontend",
+        "frontend-builder-feature-form": "libs/frontend/builder/feature/form",
+        "frontend-builder-shell": "libs/frontend/builder/shell",
+        "frontend-e2e": "apps/frontend-e2e",
+        "frontend-hud-feature-action-panel": "libs/frontend/hud/feature/action-panel",
+        "frontend-hud-feature-bank-panel": "libs/frontend/hud/feature/bank-panel",
+        "frontend-hud-shell": "libs/frontend/hud/shell",
+        "frontend-shared-state-table": "libs/frontend/shared/state/table",
+        "frontend-shared-ui": "libs/frontend/shared/ui",
+        "frontend-shared-util-environment": "libs/frontend/shared/util/environment",
+        "frontend-underlay-feature-seat-layout": "libs/frontend/underlay/feature/seat-layout",
+        "frontend-underlay-feature-table-display": "libs/frontend/underlay/feature/table-display",
+        "frontend-underlay-shell": "libs/frontend/underlay/shell",
+        "shared-testing": "libs/shared/testing",
+        "shared-type": "libs/shared/type",
+        "shared-util": "libs/shared/util"
     }
 }

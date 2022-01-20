@@ -29,7 +29,7 @@ export interface Round {
     /**
      * The ID the active players turn
      */
-    activeSeat: SeatId;
+    activeSeat: SeatId | null;
 
     /**
      * The seat of the dealer in the player array

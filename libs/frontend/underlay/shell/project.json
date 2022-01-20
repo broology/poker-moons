@@ -1,0 +1,42 @@
+{
+    "projectType": "library",
+    "root": "libs/frontend/underlay/shell",
+    "sourceRoot": "libs/frontend/underlay/shell/src",
+    "prefix": "poker-moons",
+    "targets": {
+        "build": {
+            "executor": "@nrwl/angular:ng-packagr-lite",
+            "outputs": ["dist/libs/frontend/underlay/shell"],
+            "options": {
+                "project": "libs/frontend/underlay/shell/ng-package.json"
+            },
+            "configurations": {
+                "production": {
+                    "tsConfig": "libs/frontend/underlay/shell/tsconfig.lib.prod.json"
+                },
+                "development": {
+                    "tsConfig": "libs/frontend/underlay/shell/tsconfig.lib.json"
+                }
+            },
+            "defaultConfiguration": "production"
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/libs/frontend/underlay/shell"],
+            "options": {
+                "jestConfig": "libs/frontend/underlay/shell/jest.config.js",
+                "passWithNoTests": true
+            }
+        },
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "options": {
+                "lintFilePatterns": [
+                    "libs/frontend/underlay/shell/src/**/*.ts",
+                    "libs/frontend/underlay/shell/src/**/*.html"
+                ]
+            }
+        }
+    },
+    "tags": ["scope:frontend", "scope:underlay", "type:shell"]
+}

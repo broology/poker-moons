@@ -1,0 +1,73 @@
+{
+    "projectType": "library",
+    "root": "libs/frontend/underlay/feature/table-display",
+    "sourceRoot": "libs/frontend/underlay/feature/table-display/src",
+    "prefix": "poker-moons",
+    "targets": {
+        "build": {
+            "executor": "@nrwl/angular:ng-packagr-lite",
+            "outputs": ["dist/libs/frontend/underlay/feature/table-display"],
+            "options": {
+                "project": "libs/frontend/underlay/feature/table-display/ng-package.json"
+            },
+            "configurations": {
+                "production": {
+                    "tsConfig": "libs/frontend/underlay/feature/table-display/tsconfig.lib.prod.json"
+                },
+                "development": {
+                    "tsConfig": "libs/frontend/underlay/feature/table-display/tsconfig.lib.json"
+                }
+            },
+            "defaultConfiguration": "production"
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/libs/frontend/underlay/feature/table-display"],
+            "options": {
+                "jestConfig": "libs/frontend/underlay/feature/table-display/jest.config.js",
+                "passWithNoTests": true
+            }
+        },
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "options": {
+                "lintFilePatterns": [
+                    "libs/frontend/underlay/feature/table-display/src/**/*.ts",
+                    "libs/frontend/underlay/feature/table-display/src/**/*.html"
+                ]
+            }
+        },
+        "storybook": {
+            "executor": "@nrwl/storybook:storybook",
+            "options": {
+                "uiFramework": "@storybook/angular",
+                "port": 4400,
+                "config": {
+                    "configFolder": "libs/frontend/underlay/feature/table-display/.storybook"
+                }
+            },
+            "configurations": {
+                "ci": {
+                    "quiet": true
+                }
+            }
+        },
+        "build-storybook": {
+            "executor": "@nrwl/storybook:build",
+            "outputs": ["{options.outputPath}"],
+            "options": {
+                "uiFramework": "@storybook/angular",
+                "outputPath": "dist/storybook/frontend-underlay-feature-table-display",
+                "config": {
+                    "configFolder": "libs/frontend/underlay/feature/table-display/.storybook"
+                }
+            },
+            "configurations": {
+                "ci": {
+                    "quiet": true
+                }
+            }
+        }
+    },
+    "tags": ["scope:frontend", "scope:underlay", "type:feature"]
+}

@@ -1,0 +1,70 @@
+{
+    "projectType": "library",
+    "root": "libs/frontend/shared/ui",
+    "sourceRoot": "libs/frontend/shared/ui/src",
+    "prefix": "poker-moons",
+    "targets": {
+        "build": {
+            "executor": "@nrwl/angular:ng-packagr-lite",
+            "outputs": ["dist/libs/frontend/shared/ui"],
+            "options": {
+                "project": "libs/frontend/shared/ui/ng-package.json"
+            },
+            "configurations": {
+                "production": {
+                    "tsConfig": "libs/frontend/shared/ui/tsconfig.lib.prod.json"
+                },
+                "development": {
+                    "tsConfig": "libs/frontend/shared/ui/tsconfig.lib.json"
+                }
+            },
+            "defaultConfiguration": "production"
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/libs/frontend/shared/ui"],
+            "options": {
+                "jestConfig": "libs/frontend/shared/ui/jest.config.js",
+                "passWithNoTests": true
+            }
+        },
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "options": {
+                "lintFilePatterns": ["libs/frontend/shared/ui/src/**/*.ts", "libs/frontend/shared/ui/src/**/*.html"]
+            }
+        },
+        "storybook": {
+            "executor": "@nrwl/storybook:storybook",
+            "options": {
+                "uiFramework": "@storybook/angular",
+                "port": 4400,
+                "config": {
+                    "configFolder": "libs/frontend/shared/ui/.storybook"
+                }
+            },
+            "configurations": {
+                "ci": {
+                    "quiet": true
+                }
+            }
+        },
+        "build-storybook": {
+            "executor": "@nrwl/storybook:build",
+            "outputs": ["{options.outputPath}"],
+            "options": {
+                "uiFramework": "@storybook/angular",
+                "outputPath": "dist/storybook/frontend-shared-ui",
+                "config": {
+                    "configFolder": "libs/frontend/shared/ui/.storybook"
+                }
+            },
+            "configurations": {
+                "ci": {
+                    "quiet": true
+                }
+            }
+        }
+    },
+    "tags": []
+}

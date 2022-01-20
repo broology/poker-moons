@@ -1,0 +1,38 @@
+{
+    "projectType": "library",
+    "root": "libs/frontend/shared/util/environment",
+    "sourceRoot": "libs/frontend/shared/util/environment/src",
+    "prefix": "poker-moons",
+    "targets": {
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/libs/frontend/shared/util/environment"],
+            "options": {
+                "jestConfig": "libs/frontend/shared/util/environment/jest.config.js",
+                "passWithNoTests": true
+            }
+        },
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "options": {
+                "lintFilePatterns": [
+                    "libs/frontend/shared/util/environment/src/**/*.ts",
+                    "libs/frontend/shared/util/environment/src/**/*.html"
+                ]
+            }
+        },
+        "build": {
+            "executor": "@nrwl/angular:ng-packagr-lite",
+            "options": {
+                "tsConfig": "libs/frontend/shared/util/environment/tsconfig.lib.json",
+                "project": "libs/frontend/shared/util/environment/ng-package.json"
+            },
+            "configurations": {
+                "": {
+                    "tsConfig": "libs/frontend/shared/util/environment/tsconfig.lib.prod.json"
+                }
+            }
+        }
+    },
+    "tags": ["scope:frontend", "type:util"]
+}

@@ -1,0 +1,73 @@
+{
+    "projectType": "library",
+    "root": "libs/frontend/builder/feature/form",
+    "sourceRoot": "libs/frontend/builder/feature/form/src",
+    "prefix": "poker-moons",
+    "targets": {
+        "build": {
+            "executor": "@nrwl/angular:ng-packagr-lite",
+            "outputs": ["dist/libs/frontend/builder/feature/form"],
+            "options": {
+                "project": "libs/frontend/builder/feature/form/ng-package.json"
+            },
+            "configurations": {
+                "production": {
+                    "tsConfig": "libs/frontend/builder/feature/form/tsconfig.lib.prod.json"
+                },
+                "development": {
+                    "tsConfig": "libs/frontend/builder/feature/form/tsconfig.lib.json"
+                }
+            },
+            "defaultConfiguration": "production"
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/libs/frontend/builder/feature/form"],
+            "options": {
+                "jestConfig": "libs/frontend/builder/feature/form/jest.config.js",
+                "passWithNoTests": true
+            }
+        },
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "options": {
+                "lintFilePatterns": [
+                    "libs/frontend/builder/feature/form/src/**/*.ts",
+                    "libs/frontend/builder/feature/form/src/**/*.html"
+                ]
+            }
+        },
+        "storybook": {
+            "executor": "@nrwl/storybook:storybook",
+            "options": {
+                "uiFramework": "@storybook/angular",
+                "port": 4400,
+                "config": {
+                    "configFolder": "libs/frontend/builder/feature/form/.storybook"
+                }
+            },
+            "configurations": {
+                "ci": {
+                    "quiet": true
+                }
+            }
+        },
+        "build-storybook": {
+            "executor": "@nrwl/storybook:build",
+            "outputs": ["{options.outputPath}"],
+            "options": {
+                "uiFramework": "@storybook/angular",
+                "outputPath": "dist/storybook/frontend-builder-feature-form",
+                "config": {
+                    "configFolder": "libs/frontend/builder/feature/form/.storybook"
+                }
+            },
+            "configurations": {
+                "ci": {
+                    "quiet": true
+                }
+            }
+        }
+    },
+    "tags": ["scope:frontend", "scope:builder", "type:feature"]
+}

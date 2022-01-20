@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "declaration": true,
+        "types": ["node"],
+        "outDir": "../../../dist/out-tsc",
+        "target": "es6"
+    },
+    "exclude": ["**/*.spec.ts", "**/*.test.ts"],
+    "include": ["**/*.ts"],
+    "extends": "./tsconfig.json"
+}

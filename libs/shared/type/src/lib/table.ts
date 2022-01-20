@@ -1,9 +1,12 @@
 import type { Player, PlayerId } from './player';
 import type { Round } from './round';
 
+export const TABLE_PREFIX = 'table' as const;
+
 export type TableId = `table_${string}`;
 
-export type SeatId = 0 | 1 | 2 | 3 | 4 | 5;
+export const seats = [0, 1, 2, 3, 4, 5] as const;
+export type SeatId = typeof seats[number];
 
 export interface Table {
     id: TableId;
@@ -19,7 +22,7 @@ export interface Table {
      *
      *
      */
-    seatMap: Record<SeatId, PlayerId>;
+    seatMap: Partial<Record<SeatId, PlayerId>>;
 
     /**
      * A dictionary of the players sitting at the table
