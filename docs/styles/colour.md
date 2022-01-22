@@ -4,53 +4,59 @@ This guide is to give a basic understanding of the colour scheme followed in thi
 
 ## Base Colours
 
-> **Primary**
+> **primary**
 >
 > > This colour will be used for branding, non-poker game based actions that are essential to click buttons.
 
-> **Secondary**
+> **secondary**
 >
 > > This colour will be used for buttons that don't need to be click and as the term states "Secondary" things that should compliment "Primary" not take the focus away from it.
 
-> **Foreground**
+> **foreground**
 >
 > > Will be the colour between the background and the "Primary" and "Secondary" UI elements.
 
-> **Background**
+> **background**
 >
 > > Used to give contrast to the UI layers above.
 
-> **Success**
+> **success**
 >
 > > Colour that will be displayed in the case of a successful action.
 
-> **Warning**
+> **warning**
 >
 > > Colour that will be displayed when the user should be warned.
 
-> **Error**
+> **error**
 >
 > > Colour that will be displayed when an error has occurred.
 
 ## Transforms
 
-> **Tinted**
+> **tinted**
 >
 > > Used to give a slightly brighter tint to the base colour. This will be used to compliment the default base colour.
 
-> **Shaded**
+> **shaded**
 >
 > > Used to give a slightly darker shade to the base colour. This will be used to compliment the default base colour.
 
-> **Alpha-50**
+> **alpha-50**
 >
 > > This reduces the opacity fo the colour by 50%.
 
-> **Alpha-25**
+> **alpha-25**
+>
+> > This reduces the opacity fo the colour by 75%.
+
+> **text-contrast**
 >
 > > This reduces the opacity fo the colour by 75%.
 
 ## Usage in `scss files`
+
+Colours will be used in a `var(--${primary}(-${transform})?)` format. See examples below.
 
 ```scss
 // base colour
