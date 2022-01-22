@@ -3880,18 +3880,6 @@
     yargs "15.4.1"
     yargs-parser "20.0.0"
 
-"@nrwl/cli@13.4.1":
-  version "13.4.1"
-  resolved "https://registry.yarnpkg.com/@nrwl/cli/-/cli-13.4.1.tgz#f01e3442ce9c22d8d4fc4b55285000561de27f3c"
-  integrity sha512-U0ik9wrumTxg+l0f17xajOLgKPQH2hFFPiDlegOupef7mR3JBxrEzadkTXjRH7wXSOWBdzYyVYsfx+6UwS9Ilw==
-  dependencies:
-    "@nrwl/tao" "13.4.1"
-    chalk "4.1.0"
-    enquirer "~2.3.6"
-    v8-compile-cache "2.3.0"
-    yargs "15.4.1"
-    yargs-parser "20.0.0"
-
 "@nrwl/cypress@13.2.2":
   version "13.2.2"
   resolved "https://registry.yarnpkg.com/@nrwl/cypress/-/cypress-13.2.2.tgz#1fd761e280c15018e7f51407dffe12c797873734"
@@ -4041,25 +4029,6 @@
     fs-extra "^9.1.0"
     jsonc-parser "3.0.0"
     nx "13.2.2"
-    rxjs "^6.5.4"
-    rxjs-for-await "0.0.2"
-    semver "7.3.4"
-    tmp "~0.2.1"
-    tslib "^2.3.0"
-    yargs-parser "20.0.0"
-
-"@nrwl/tao@13.4.1":
-  version "13.4.1"
-  resolved "https://registry.yarnpkg.com/@nrwl/tao/-/tao-13.4.1.tgz#914214bda8d64c61369218e7c53b4dfdcfe756e7"
-  integrity sha512-bgVzHlKfY7TK0ZLlM9+yQxfw8+NGsfl1+612advLYI46NRYAOpY3yOPBWX+69M+W3SwdjKQDyTi57hHbgx1XBA==
-  dependencies:
-    chalk "4.1.0"
-    enquirer "~2.3.6"
-    fast-glob "3.2.7"
-    fs-extra "^9.1.0"
-    ignore "^5.0.4"
-    jsonc-parser "3.0.0"
-    nx "13.4.1"
     rxjs "^6.5.4"
     rxjs-for-await "0.0.2"
     semver "7.3.4"
@@ -8611,7 +8580,7 @@ css-loader@^5.0.1:
     schema-utils "^3.0.0"
     semver "^7.3.5"
 
-css-loader@^6.4.0:
+css-loader@^6.4.0, css-loader@^6.5.1:
   version "6.5.1"
   resolved "https://registry.yarnpkg.com/css-loader/-/css-loader-6.5.1.tgz#0c43d4fbe0d97f699c91e9818cb585759091d1b1"
   integrity sha512-gEy2w9AnJNnD9Kuo4XAP9VflW/ujKoS9c/syO+uWMlm5igc7LysKzPXaDoR2vroROkSwsTS2tGr1yGGEbZOYZQ==
@@ -14541,13 +14510,6 @@ nx@13.4.1:
   dependencies:
     "@nrwl/cli" "13.4.1"
 
-nx@13.4.1:
-  version "13.4.1"
-  resolved "https://registry.yarnpkg.com/nx/-/nx-13.4.1.tgz#e96df3f954fc6c8c67c109c1d773ac3c8195efdf"
-  integrity sha512-x/fbcY/mg6rHhVho2oWDKPk+ZTHCuNvaBSe959BY7OkPiGaP5yydfXfP+tuRdxrEGIL0ZD+UzsjH/1ITdnZP3w==
-  dependencies:
-    "@nrwl/cli" "13.4.1"
-
 object-assign@^4, object-assign@^4.1.0, object-assign@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-4.1.1.tgz#2109adc7965887cfc05cbbd442cac8bfbb360863"
@@ -17308,7 +17270,7 @@ sass-loader@^10.1.0:
     schema-utils "^3.0.0"
     semver "^7.3.2"
 
-sass-loader@^12.2.0:
+sass-loader@^12.2.0, sass-loader@^12.4.0:
   version "12.4.0"
   resolved "https://registry.yarnpkg.com/sass-loader/-/sass-loader-12.4.0.tgz#260b0d51a8a373bb8e88efc11f6ba5583fea0bcf"
   integrity sha512-7xN+8khDIzym1oL9XyS6zP6Ges+Bo2B2xbPrjdMHEYyV3AQYhd/wXeru++3ODHF0zMjYmVadblSKrPrjEkL8mg==
@@ -18243,7 +18205,7 @@ style-loader@^2.0.0:
     loader-utils "^2.0.0"
     schema-utils "^3.0.0"
 
-style-loader@^3.3.0:
+style-loader@^3.3.0, style-loader@^3.3.1:
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/style-loader/-/style-loader-3.3.1.tgz#057dfa6b3d4d7c7064462830f9113ed417d38575"
   integrity sha512-GPcQ+LDJbrcxHORTRes6Jy2sfvK2kS6hpSfI/fXhPt+spVzxF6LJ1dHLN9zIGmVaaP044YKaIatFaufENRiDoQ==

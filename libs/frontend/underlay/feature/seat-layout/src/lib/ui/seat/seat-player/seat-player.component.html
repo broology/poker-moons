@@ -1,7 +1,8 @@
 <div>
-    <div>
-        <strong>Player Display:</strong>
-    </div>
-    <span *ngIf="immutablePlayer; else isEmpty">{{ immutablePlayer | json }}</span>
+    <figure *ngIf="immutablePlayer; else isEmpty">
+        <img alt="profile image" [src]="immutablePlayer.img || (DEFAULT_PLAYER_IMG | assetUrl)" />
+        <figcaption>{{ immutablePlayer.username }}</figcaption>
+    </figure>
+
     <ng-template #isEmpty>Empty Seat</ng-template>
 </div>
