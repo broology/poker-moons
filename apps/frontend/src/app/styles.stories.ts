@@ -15,7 +15,9 @@ import { Meta, moduleMetadata, Story } from '@storybook/angular';
                 <td
                     *ngFor="let transform of transforms"
                     [style]="'background: var(--' + colour + (transform === 'default' ? '' : '-' + transform) + ');'"
-                ></td>
+                >
+                    <p [style]="'color: var(--' + colour + '-text-contrast);'">Text</p>
+                </td>
             </tr>
         </table>
     `,
@@ -24,6 +26,7 @@ import { Meta, moduleMetadata, Story } from '@storybook/angular';
             td {
                 width: 75px;
                 height: 50px;
+                text-align: center;
             }
         `,
     ],
@@ -34,7 +37,7 @@ class ColourDisplayComponent {
 }
 
 export default {
-    title: 'AppComponent',
+    title: 'ColourDisplayComponent',
     component: ColourDisplayComponent,
     decorators: [
         moduleMetadata({

@@ -11,6 +11,16 @@ $poker-moons-colours: (
     'error': #c6394a,
 );
 
+$poker-moons-text-contrasts: (
+    'primary': #ffffff,
+    'secondary': #141414,
+    'foreground': #e6e6e6,
+    'background': #ffffff,
+    'success': #ffffff,
+    'warning': #000000,
+    'error': #ffffff,
+);
+
 /* Function to fetch the associated colour from the poker-moons theme */
 @function poker-moons-colour($name: 'primary') {
     @return map-get($poker-moons-colours, $name);
@@ -33,6 +43,11 @@ $poker-moons-colours: (
     @return rgba($color, $opacity);
 }
 
+/* Function to fetch a text contrast version of the associated colour from the poker-moons theme */
+@function poker-moons-colour-text-contrast($name: 'primary') {
+    @return map-get($poker-moons-text-contrasts, $name);
+}
+
 /* Dynamically builds the list of colours as `css` variables that can be used for eg.`var(--primary)` */
 :root {
     @each $key in map-keys($poker-moons-colours) {
@@ -41,5 +56,6 @@ $poker-moons-colours: (
         --#{$key}-shaded: #{poker-moons-colour-shaded($key)};
         --#{$key}-alpha-50: #{poker-moons-colour-alpha($key, 0.5)};
         --#{$key}-alpha-25: #{poker-moons-colour-alpha($key, 0.25)};
+        --#{$key}-text-contrast: #{poker-moons-colour-text-contrast($key)};
     }
 }
