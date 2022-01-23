@@ -1,11 +1,7 @@
 import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { CreateTableResponse, GetTableResponse, UpdateTableResponse } from '@poker-moons/shared/type';
 import { TableService } from './table.service';
-import {
-    CreateTableRequestValidator,
-    TableIdValidator,
-    UpdateTableRequestValidator,
-} from '@poker-moons/backend/shared/util/validators';
+import { CreateTableRequestValidator, TableIdValidator, UpdateTableRequestValidator } from './table.validator';
 
 @Controller()
 export class TableController {
