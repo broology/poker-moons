@@ -2,8 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { GenericStateServiceImpl, ServerState } from '../generic-state-service.impl';
 import { ServerTableState, TableId } from '@poker-moons/shared/type';
 
+/**
+ * The mock state service. Stores the state in memory, in a mock way to as how redis would store. This class can be used
+ * in the exact same way as the "RedisStateService" would be, allowing for easy flip between using the production state,
+ * and a mock one for testing.
+ */
 @Injectable()
-export class MockStateService extends GenericStateServiceImpl {
+export class MockStateService implements GenericStateServiceImpl {
     private state: ServerState = {};
     private id = 0;
 
