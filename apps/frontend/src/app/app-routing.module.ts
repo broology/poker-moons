@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { TableRoutingGuard } from './guard/table-routing.guard';
 
 @NgModule({
     imports: [
@@ -18,6 +19,7 @@ import { RouterModule } from '@angular/router';
                 },
                 {
                     path: 'table/:tableId',
+                    canActivate: [TableRoutingGuard],
                     loadChildren: () =>
                         import('./underlay-hud-separator/underlay-hud-separator.module').then(
                             (m) => m.UnderlayHudSeparatorModule,

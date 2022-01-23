@@ -1,9 +1,9 @@
 <div>Loading? {{ loading }}</div>
 <form [formGroup]="builderForm">
-    <label for="tableName">Table Name</label>
-    <input id="tableName" formControlName="name" />
+    <label for="table-name">Table Name</label>
+    <input id="table-name" data-cy="create-table-name" formControlName="name" />
     <span *ngIf="!nameControl.valid"
         >Must be within {{ TABLE_NAME_LENGTH.min }} and {{ TABLE_NAME_LENGTH.max }} characters long.</span
     >
-    <button (click)="submit()">Create</button>
+    <button data-cy="create-table-button" (click)="submit()">Create</button>
 </form>

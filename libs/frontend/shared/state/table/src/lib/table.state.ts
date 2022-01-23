@@ -8,14 +8,7 @@ export const TABLE_STATE = 'tableState';
 export const initialState: ClientTableState = {
     immutablePlayerMap: {},
     mutablePlayerMap: {},
-    seatMap: {
-        0: null,
-        1: null,
-        2: null,
-        3: null,
-        4: null,
-        5: null,
-    },
+    seatMap: {},
     roundCount: 0,
     activeRound: {
         pot: 0,

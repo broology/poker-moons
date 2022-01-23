@@ -21,6 +21,12 @@ describe('table action', () => {
         // * Active turn is moved to next player
     });
 
+    it('should perform all in', () => {
+        // * Player clicks `all-in` button
+        // * Correct number of chips are moved into `pot`
+        // * Active turn is moved to next player
+    });
+
     it('should perform fold', () => {
         // * Player clicks `fold` button
         // * The ui updates to display player has folded

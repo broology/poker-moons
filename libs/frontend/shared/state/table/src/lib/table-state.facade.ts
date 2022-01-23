@@ -9,12 +9,15 @@ import {
     PlayerId,
     Round,
     SeatId,
+    TableId,
 } from '@poker-moons/shared/type';
 import { Observable } from 'rxjs';
 import { joinTable, leaveTable, performTableAction } from './actions/api.actions';
+import { connectToWs } from './actions/ws.actions';
 import {
     selectClientImmutablePlayer,
     selectClientMutablePlayer,
+    selectClientSeatId,
     selectImmutablePlayerBySeatId,
     selectMutablePlayerBySeatId,
 } from './table-state.selectors';
@@ -31,7 +34,7 @@ export class TableStateFacade {
      * - if `null` then the seat is empty and can be joined
      * - if `PlayerId` then the seat contains a player
      */
-    selectSeatMap(): Observable<Record<SeatId, PlayerId | null>> {
+    selectSeatMap(): Observable<Partial<Record<SeatId, PlayerId>>> {
         return this.store.pipe(select(selectSeatMap));
     }
 
@@ -77,7 +80,23 @@ export class TableStateFacade {
         return this.store.pipe(select(selectCards));
     }
 
+    /**
+     * Selects the seat the client is sitting in. Otherwise returns undefined
+     */
+    selectClientSeatId(): Observable<SeatId | null | undefined> {
+        return this.store.pipe(select(selectClientSeatId));
+    }
+
     /* Actions */
+
+    /**
+     * Makes a request to the client to load the table state of the given `tableId`.
+     *
+     * - To be used on route into the `/table/:tableId`
+     */
+    initialize(tableId: TableId): void {
+        this.store.dispatch(connectToWs.request({ payload: { tableId } }));
+    }
 
     /**
      * Request the current client to join the game

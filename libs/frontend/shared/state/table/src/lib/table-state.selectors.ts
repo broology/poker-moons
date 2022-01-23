@@ -20,6 +20,11 @@ export const selectClientMutablePlayer = createSelector(selectMutablePlayerMap, 
     playerId === null ? null : playerMap[playerId],
 );
 
+export const selectClientSeatId = createSelector(
+    selectClientImmutablePlayer,
+    (immutablePlayer) => immutablePlayer?.seatId,
+);
+
 export const selectMutablePlayerBySeatId = (props: { seatId: SeatId }) =>
     createSelector(selectSeatMap, selectMutablePlayerMap, (seatMap, mutablePlayerMap) => {
         const playerId = seatMap[props.seatId];

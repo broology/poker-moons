@@ -9,11 +9,23 @@ import { SeatId } from '@poker-moons/shared/type';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SeatComponent {
-    @Input() seatId!: SeatId;
+    /**
+     * The seat which is being displayed.
+     *
+     * Use this seatId to perform styling calculations relative to the table rotation
+     */
+    @Input() displaySeatId!: SeatId;
 
-    readonly mutablePlayer$ = this.tableStateFacade.selectMutablePlayerBySeatId(this.seatId);
+    /**
+     * The player's seat index.
+     *
+     * Use this seatId to pull the player who should be sitting here at the table.
+     */
+    @Input() playerSeatId!: SeatId;
 
-    readonly immutablePlayer$ = this.tableStateFacade.selectImmutablePlayerBySeatId(this.seatId);
+    readonly mutablePlayer$ = this.tableStateFacade.selectMutablePlayerBySeatId(this.playerSeatId);
+
+    readonly immutablePlayer$ = this.tableStateFacade.selectImmutablePlayerBySeatId(this.playerSeatId);
 
     constructor(private readonly tableStateFacade: TableStateFacade) {}
 }
