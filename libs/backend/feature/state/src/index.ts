@@ -1,37 +1,4 @@
-export * from './lib/backend-feature-mock-state.module';
-
-/*
-
-ServerTableState = {
-    name: string
-    seatMap: Record<SeatId, PlayerId> | null,
-    roundCount: number,
-    activeRound: Round
-    deck: Card[],
-    playerMap: Record<Player, Players>
-}
-
-Round= {
-    pot: number,
-    toCall: number,
-    turnCount: number,
-    roundStatus: RoundStatus,
-    activeSeat: SeatId | null;
-    dealerSeat: SeatId,
-    smallBlind: number,
-    cards: Card[]
-}
-
-Player= {
-    id: PlayerId,
-    username: string,
-    img: string,
-    stack: number,
-    status: PlayerStatus,
-    called: number,
-    cards: [Card, Card] | []
-}
-
-
-
- */
+export * from './lib/backend-feature-state.module';
+export * from './lib/redis-state/redis-state-service';
+export * from './lib/generic-state-service.impl';
+export * from './lib/mock-state/mock-state.service';
