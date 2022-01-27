@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { RouterModule } from '@nestjs/core';
 import { TableModule } from './table/table.module';
+import { PlayerModule } from './player/player.module';
 
 @Module({
     imports: [TableModule, RouterModule.register([{ path: "table", module: TableModule, children: [{
