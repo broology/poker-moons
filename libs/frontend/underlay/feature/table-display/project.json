@@ -44,7 +44,8 @@
                 "port": 4400,
                 "config": {
                     "configFolder": "libs/frontend/underlay/feature/table-display/.storybook"
-                }
+                },
+                "projectBuildConfig": "frontend-underlay-feature-table-display"
             },
             "configurations": {
                 "ci": {
@@ -60,7 +61,8 @@
                 "outputPath": "dist/storybook/frontend-underlay-feature-table-display",
                 "config": {
                     "configFolder": "libs/frontend/underlay/feature/table-display/.storybook"
-                }
+                },
+                "projectBuildConfig": "frontend-underlay-feature-table-display"
             },
             "configurations": {
                 "ci": {

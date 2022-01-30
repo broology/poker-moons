@@ -30,6 +30,7 @@ import { Meta, moduleMetadata, Story } from '@storybook/angular';
             }
         `,
     ],
+    styleUrls: ['../styles.scss'],
 })
 class ColourDisplayComponent {
     transforms = ['default', 'shaded', 'tinted', 'alpha-50', 'alpha-25'];

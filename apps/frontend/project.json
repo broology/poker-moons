@@ -103,7 +103,8 @@
                 "port": 4400,
                 "config": {
                     "configFolder": "apps/frontend/.storybook"
-                }
+                },
+                "projectBuildConfig": "frontend:build-storybook"
             },
             "configurations": {
                 "ci": {
@@ -119,7 +120,8 @@
                 "outputPath": "dist/storybook/frontend",
                 "config": {
                     "configFolder": "apps/frontend/.storybook"
-                }
+                },
+                "projectBuildConfig": "frontend:build-storybook"
             },
             "configurations": {
                 "ci": {
