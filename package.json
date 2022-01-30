@@ -91,7 +91,7 @@
         "@nrwl/workspace": "13.2.2",
         "@storybook/addon-docs": "6.4.7",
         "@storybook/addon-essentials": "6.4.7",
-        "@storybook/addon-knobs": "6.4.0",
+        "@storybook/addon-controls": "6.4.7",
         "@storybook/angular": "6.4.7",
         "@storybook/builder-webpack5": "6.4.7",
         "@storybook/manager-webpack5": "6.4.7",
