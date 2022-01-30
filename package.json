@@ -118,7 +118,6 @@
         "postcss-url": "^10.1.1",
         "prettier": "^2.3.1",
         "sass-loader": "^12.4.0",
-        "storybook-addon-angular-ivy": "^0.0.1",
         "style-loader": "^3.3.1",
         "ts-essentials": "^9.0.0",
         "ts-jest": "27.0.7",

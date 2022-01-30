@@ -3,5 +3,5 @@ module.exports = {
         builder: 'webpack5',
     },
     stories: [],
-    addons: ['@storybook/addon-essentials', '@storybook/addon-knobs', 'storybook-addon-angular-ivy'],
+    addons: ['@storybook/addon-essentials', '@storybook/addon-knobs'],
 };
