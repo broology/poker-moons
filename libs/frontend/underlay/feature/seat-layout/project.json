@@ -44,7 +44,8 @@
                 "port": 4400,
                 "config": {
                     "configFolder": "libs/frontend/underlay/feature/seat-layout/.storybook"
-                }
+                },
+                "projectBuildConfig": "frontend-underlay-feature-seat-layout"
             },
             "configurations": {
                 "ci": {
@@ -60,7 +61,8 @@
                 "outputPath": "dist/storybook/frontend-underlay-feature-seat-layout",
                 "config": {
                     "configFolder": "libs/frontend/underlay/feature/seat-layout/.storybook"
-                }
+                },
+                "projectBuildConfig": "frontend-underlay-feature-seat-layout"
             },
             "configurations": {
                 "ci": {
