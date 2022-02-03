@@ -30,49 +30,115 @@ describe('WinnerDeterminerService', () => {
     });
 
     const tableId: TableId = 'table_1';
+
     const round = mockRound({
         pot: 1000,
         cards: [
             mockCard({ suit: 'clubs', rank: '10' }),
             mockCard({ suit: 'diamonds', rank: '10' }),
             mockCard({ suit: 'hearts', rank: '10' }),
-            mockCard({ suit: 'spades', rank: '10' }),
+            mockCard({ suit: 'spades', rank: '7' }),
             mockCard({ suit: 'clubs', rank: '5' }),
         ],
     });
+
     const player1 = mockPlayer({
         id: 'player_1',
         username: 'Levi',
         cards: [mockCard({ suit: 'clubs', rank: '2' }), mockCard({ suit: 'hearts', rank: '3' })],
+        called: 200,
     });
+
     const player2 = mockPlayer({
         id: 'player_2',
         username: 'Bob',
-        cards: [mockCard({ suit: 'spades', rank: '2' }), mockCard({ suit: 'hearts', rank: '5' })],
+        cards: [mockCard({ suit: 'spades', rank: '2' }), mockCard({ suit: 'hearts', rank: '8' })],
+        called: 200,
+    });
+
+    const player3 = mockPlayer({
+        id: 'player_3',
+        username: 'Joe',
+        cards: [mockCard({ suit: 'spades', rank: '10' }), mockCard({ suit: 'hearts', rank: '5' })],
+        called: 200,
+    });
+
+    const player4 = mockPlayer({
+        id: 'player_4',
+        username: 'Sam',
+        cards: [mockCard({ suit: 'spades', rank: '9' }), mockCard({ suit: 'hearts', rank: '5' })],
+        called: 500,
+    });
+
+    const player5 = mockPlayer({
+        id: 'player_5',
+        username: 'Smith',
+        cards: [mockCard({ suit: 'spades', rank: '14' }), mockCard({ suit: 'hearts', rank: '14' })],
+        called: 500,
     });
 
     describe('determineWinner', () => {
         it('should emit single winner', async () => {
-            await service.determineWinner(tableId, [player1], round);
+            potManagerService.buildPot.mockReturnValueOnce(400).mockReturnValue(0);
+            potManagerService.splitPot.mockReturnValueOnce(200);
+
+            await service.determineWinner(tableId, [player1, player3], round);
 
             expect(tableGatewayService.emitTableEvent).toHaveBeenCalledWith(tableId, {
                 type: 'winner',
-                playerIds: [player1.id],
-                pot: round.pot,
-                displayText: `${player1.username} won with a four of a kind`,
+                winners: {
+                    [player3.id]: {
+                        amountWon: 200,
+                        cards: player3.cards,
+                        displayText: `${player3.username} won $200.00 with a four of a kind`,
+                    },
+                },
             });
         });
 
         it('should emit multiple winners if there is a tie', async () => {
-            potManagerService.splitPot.mockReturnValueOnce({ amountToDistribute: 500, amountLeftover: 0 });
+            potManagerService.buildPot.mockReturnValueOnce(400).mockReturnValue(0);
+            potManagerService.splitPot.mockReturnValue(200);
 
             await service.determineWinner(tableId, [player1, player2], round);
 
             expect(tableGatewayService.emitTableEvent).toHaveBeenCalledWith(tableId, {
                 type: 'winner',
-                playerIds: [player1.id, player2.id],
-                pot: round.pot / 2,
-                displayText: `${player1.username} and ${player2.username} won with a four of a kind`,
+                winners: {
+                    [player1.id]: {
+                        amountWon: 200,
+                        cards: player1.cards,
+                        displayText: `${player1.username} won $200.00 with a three of a kind`,
+                    },
+                    [player2.id]: {
+                        amountWon: 200,
+                        cards: player2.cards,
+                        displayText: `${player2.username} won $200.00 with a three of a kind`,
+                    },
+                },
+            });
+        });
+
+        it('should emit multiple winners with varying amounts won if side pots have formed', async () => {
+            potManagerService.buildPot.mockReturnValueOnce(1600).mockReturnValueOnce(600).mockReturnValue(0);
+            potManagerService.splitPot.mockReturnValueOnce(1000).mockReturnValueOnce(600);
+
+            await service.determineWinner(tableId, [player1, player2, player3, player4, player5], round);
+
+            expect(tableGatewayService.emitTableEvent).toHaveBeenCalledWith(tableId, {
+                type: 'winner',
+                winners: {
+                    [player3.id]: {
+                        amountWon: 1000,
+                        cards: player3.cards,
+                        displayText: `${player3.username} won $1,000.00 with a four of a kind`,
+                    },
+                    [player5.id]: {
+                        amountWon: 600,
+                        cards: player5.cards,
+                        displayText: `${player5.username} won $600.00 with a full house`,
+                    },
+                },
             });
         });
 

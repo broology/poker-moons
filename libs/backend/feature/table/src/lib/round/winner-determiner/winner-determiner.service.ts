@@ -1,10 +1,11 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import type { Card, Player, PlayerId, Round, TableId } from '@poker-moons/shared/type';
+import type { Card, Player, PlayerId, Round, TableId, WinnerMap } from '@poker-moons/shared/type';
 import { TableGatewayService } from '../../shared/websocket/table-gateway.service';
 import { PotManagerService } from '../pot-manager/pot-manager.service';
 import { compareHands, playerHasTwoCards, tableHasFiveCards } from './util/rank';
 import { playerMissingCards, roundMissingCards } from './winner-determiner.copy';
 import type { Hand, PlayerWithHand, RankHandReponse } from './winner-determiner.types';
+import currency = require('currency.js');
 
 @Injectable()
 export class WinnerDeterminerService {
@@ -23,7 +24,7 @@ export class WinnerDeterminerService {
      * @returns the winning player ID(s), the amount won, and text that can be displayed that indicates who won with what hand
      */
     async determineWinner(tableId: TableId, players: Player[], round: Round): Promise<void> {
-        const playersWithHands: PlayerWithHand[] = [];
+        const playersWithHand: PlayerWithHand[] = [];
 
         if (!tableHasFiveCards(round.cards)) {
             throw new BadRequestException(roundMissingCards);
@@ -34,36 +35,21 @@ export class WinnerDeterminerService {
                 throw new BadRequestException(playerMissingCards(player.id));
             }
 
-            playersWithHands.push({
+            playersWithHand.push({
                 id: player.id,
                 username: player.username,
-                hand: this.findBestHand(player.id, player.username, player.cards, round.cards).player.hand,
+                cards: player.cards,
+                hand: this.findBestHand(player.id, player.username, player.called, player.cards, round.cards).player
+                    .hand,
+                called: player.called,
             });
         }
 
-        const topHands = compareHands(playersWithHands);
-
-        const winningPlayerIds: PlayerId[] = [];
-        const winningPlayerNames: string[] = [];
-
-        for (const hand of topHands) {
-            winningPlayerIds.push(hand.player.id);
-            winningPlayerNames.push(hand.player.username);
-        }
-
-        let amountToDistribute = round.pot;
-
-        if (winningPlayerIds.length > 1) {
-            amountToDistribute = this.potManagerService.splitPot(round.pot, winningPlayerIds.length).amountToDistribute;
-        }
-
-        // TODO: Update State
+        const winnerMap = this.buildWinnerMap(playersWithHand);
 
         await this.tableGatewayService.emitTableEvent(tableId, {
             type: 'winner',
-            playerIds: winningPlayerIds,
-            pot: amountToDistribute,
-            displayText: `${winningPlayerNames.join(' and ')} won with a ${topHands[0].category}`,
+            winners: winnerMap,
         });
     }
 
@@ -82,13 +68,14 @@ export class WinnerDeterminerService {
     private findBestHand(
         playerId: PlayerId,
         username: string,
+        called: number,
         playerCards: [Card, Card],
         tableCards: [Card, Card, Card, Card, Card],
     ): RankHandReponse {
         const playersWithHands: PlayerWithHand[] = [];
 
         // The table cards are 1 possible hand
-        playersWithHands.push({ id: playerId, username, hand: tableCards });
+        playersWithHands.push({ id: playerId, username, cards: playerCards, hand: tableCards, called });
 
         /*
          * Iterates through each index and replaces it with each player card, producing 10 hands
@@ -98,7 +85,7 @@ export class WinnerDeterminerService {
             for (let y = 0; y < tableCards.length; y += 1) {
                 const newHand: Hand = [...tableCards];
                 newHand[y] = playerCards[x];
-                playersWithHands.push({ id: playerId, username, hand: newHand });
+                playersWithHands.push({ id: playerId, username, cards: playerCards, hand: newHand, called });
             }
         }
 
@@ -110,12 +97,66 @@ export class WinnerDeterminerService {
                 const newHand: Hand = [...tableCards];
                 newHand[i] = playerCards[0];
                 newHand[j] = playerCards[1];
-                playersWithHands.push({ id: playerId, username, hand: newHand });
+                playersWithHands.push({ id: playerId, username, cards: playerCards, hand: newHand, called });
             }
         }
 
         const sortedHands = compareHands(playersWithHands);
 
         return sortedHands[0];
+    }
+
+    /**
+     * Builds a map of the winners and the amount that they have won
+     *
+     * @param playersWithHand - each of the player's and their best hand
+     */
+    private buildWinnerMap(playersWithHand: PlayerWithHand[]): WinnerMap {
+        const winnerMap: WinnerMap = {};
+
+        const sortedHands = compareHands(playersWithHand);
+
+        // Loop through until no unclaimed chips in pot
+        while (this.potManagerService.buildPot(playersWithHand) > 0) {
+            // An array of players that still have a `called` amount left
+            const playersWithCommitment = sortedHands.filter((hand) => hand.player.called > 0);
+
+            // An array of winners that need to be paid out in this iteration
+            const winnersToPay = playersWithCommitment.filter(
+                (player) => player.score === playersWithCommitment[0].score,
+            );
+
+            let collectedSidePot = 0;
+            let currentCommitment = 0;
+            let collectionAmount = 0;
+
+            for (const winner of winnersToPay) {
+                collectedSidePot = 0;
+                currentCommitment = winner.player.called;
+
+                // Collect commitment from all players who have money in pot
+                for (const player of playersWithHand) {
+                    if (player.called > 0) {
+                        collectionAmount = Math.min(currentCommitment, player.called);
+                        player.called -= collectionAmount;
+                        collectedSidePot += collectionAmount;
+                    }
+                }
+
+                // TODO: Update winner's stack in server state
+
+                const amountWon = this.potManagerService.splitPot(collectedSidePot, winnersToPay.length);
+
+                winnerMap[winner.player.id] = {
+                    amountWon,
+                    cards: winner.player.cards,
+                    displayText: `${winner.player.username} won ${currency(amountWon).format()} with a ${
+                        winner.category
+                    }`,
+                };
+            }
+        }
+
+        return winnerMap;
     }
 }

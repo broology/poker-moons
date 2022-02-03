@@ -86,9 +86,12 @@ export const wsReducers: ReducerTypes<ClientTableState, [ActionType<any>]>[] = [
     on(tableWsActionMap.winner, (state, { payload }) => {
         const mutablePlayerMap: Record<PlayerId, MutablePublicPlayer> = {};
 
-        for (const playerId of payload.playerIds) {
-            const mutablePlayer = state.mutablePlayerMap[playerId];
-            mutablePlayerMap[playerId] = { ...mutablePlayer, stack: mutablePlayer.stack + payload.pot };
+        for (const playerId of Object.keys(payload.winners)) {
+            const mutablePlayer = state.mutablePlayerMap[playerId as PlayerId];
+            mutablePlayerMap[playerId as PlayerId] = {
+                ...mutablePlayer,
+                stack: mutablePlayer.stack + payload.winners[playerId as PlayerId].amountWon,
+            };
         }
 
         return {

@@ -1,4 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
+import { Player } from '@poker-moons/shared/type';
 
 @Injectable()
 export class PotManagerService {
@@ -25,25 +26,42 @@ export class PotManagerService {
     /**
      * Splits the pot between the designated number of players
      *
-     * Note: Often a pot cannot be equally split, so this method returns the remainder.
-     * Not sure yet how we should handle the amount leftover.
+     * Note: Often a pot cannot be equally split, but we've decided the
+     * leftover amount will just go to the house and not be distributed
      *
      * @param pot - the value of the pot in the current round
      * @param numPlayers - the number of players to split the pot between
      *
      * @returns the amount to distribute to each player and the amount leftover
      */
-    splitPot(pot: number, numPlayers: number): { amountToDistribute: number; amountLeftover: number } {
+    splitPot(pot: number, numPlayers: number): number {
         let amountToDistribute = 0;
-        let amountLeftover = 0;
 
         if (pot % numPlayers === 0) {
             amountToDistribute = pot / numPlayers;
         } else {
             amountToDistribute = Math.floor(pot / numPlayers);
-            amountLeftover = pot % numPlayers;
         }
 
-        return { amountToDistribute, amountLeftover };
+        return amountToDistribute;
+    }
+
+    /**
+     * Builds the pot amount to distribute to winners at the end of the round based
+     * on the amount each player has called, meaning the amount returned includes the main pot
+     * amount for the round as well as any side pots that may have formed
+     *
+     * @param players - the players that participated in the round
+     *
+     * @returns the pot amount to distribute amongst the winners
+     */
+    buildPot(players: Pick<Player, 'called'>[]): number {
+        let pot = 0;
+
+        for (const player of players) {
+            pot += player.called;
+        }
+
+        return pot;
     }
 }

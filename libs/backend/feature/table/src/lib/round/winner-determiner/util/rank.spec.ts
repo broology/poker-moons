@@ -4,11 +4,12 @@ import { compareHands, rankHand } from './rank';
 
 describe('Rank Utility Functions', () => {
     describe('compareHands', () => {
-        it('should return the hand with the highest score', () => {
+        it('should return the hands in ranking order', () => {
             const players: PlayerWithHand[] = [
                 {
                     id: 'player_1',
                     username: 'Levi',
+                    cards: [mockCard({ suit: 'clubs', rank: '4' }), mockCard({ suit: 'spades', rank: '4' })],
                     hand: [
                         mockCard({ suit: 'clubs', rank: '4' }),
                         mockCard({ suit: 'spades', rank: '4' }),
@@ -16,10 +17,12 @@ describe('Rank Utility Functions', () => {
                         mockCard({ suit: 'diamonds', rank: '2' }),
                         mockCard({ suit: 'spades', rank: '4' }),
                     ],
+                    called: 100,
                 },
                 {
                     id: 'player_2',
                     username: 'Bob',
+                    cards: [mockCard({ suit: 'clubs', rank: '4' }), mockCard({ suit: 'clubs', rank: '5' })],
                     hand: [
                         mockCard({ suit: 'clubs', rank: '4' }),
                         mockCard({ suit: 'clubs', rank: '5' }),
@@ -27,10 +30,12 @@ describe('Rank Utility Functions', () => {
                         mockCard({ suit: 'clubs', rank: '2' }),
                         mockCard({ suit: 'clubs', rank: '11' }),
                     ],
+                    called: 100,
                 },
                 {
                     id: 'player_3',
                     username: 'John',
+                    cards: [mockCard({ suit: 'clubs', rank: '4' }), mockCard({ suit: 'spades', rank: '5' })],
                     hand: [
                         mockCard({ suit: 'clubs', rank: '4' }),
                         mockCard({ suit: 'spades', rank: '5' }),
@@ -38,6 +43,7 @@ describe('Rank Utility Functions', () => {
                         mockCard({ suit: 'diamonds', rank: '14' }),
                         mockCard({ suit: 'clubs', rank: '11' }),
                     ],
+                    called: 100,
                 },
             ];
 
@@ -48,6 +54,7 @@ describe('Rank Utility Functions', () => {
                     player: {
                         id: 'player_2',
                         username: 'Bob',
+                        cards: [mockCard({ suit: 'clubs', rank: '4' }), mockCard({ suit: 'clubs', rank: '5' })],
                         hand: [
                             mockCard({ suit: 'clubs', rank: '4' }),
                             mockCard({ suit: 'clubs', rank: '5' }),
@@ -55,82 +62,44 @@ describe('Rank Utility Functions', () => {
                             mockCard({ suit: 'clubs', rank: '2' }),
                             mockCard({ suit: 'clubs', rank: '11' }),
                         ],
+                        called: 100,
                     },
                     category: 'flush',
                     score: 600 + 4 + 5 + 8 + 2 + 11,
                 },
-            ]);
-        });
-
-        it('should return multiple hands if they have an identical score', () => {
-            const players: PlayerWithHand[] = [
-                {
-                    id: 'player_1',
-                    username: 'Levi',
-                    hand: [
-                        mockCard({ suit: 'clubs', rank: '4' }),
-                        mockCard({ suit: 'spades', rank: '4' }),
-                        mockCard({ suit: 'clubs', rank: '8' }),
-                        mockCard({ suit: 'diamonds', rank: '2' }),
-                        mockCard({ suit: 'spades', rank: '4' }),
-                    ],
-                },
-                {
-                    id: 'player_2',
-                    username: 'Bob',
-                    hand: [
-                        mockCard({ suit: 'clubs', rank: '4' }),
-                        mockCard({ suit: 'clubs', rank: '5' }),
-                        mockCard({ suit: 'clubs', rank: '6' }),
-                        mockCard({ suit: 'clubs', rank: '7' }),
-                        mockCard({ suit: 'diamonds', rank: '8' }),
-                    ],
-                },
-                {
-                    id: 'player_3',
-                    username: 'John',
-                    hand: [
-                        mockCard({ suit: 'diamonds', rank: '4' }),
-                        mockCard({ suit: 'diamonds', rank: '5' }),
-                        mockCard({ suit: 'diamonds', rank: '6' }),
-                        mockCard({ suit: 'diamonds', rank: '7' }),
-                        mockCard({ suit: 'spades', rank: '8' }),
-                    ],
-                },
-            ];
-
-            const result = compareHands(players);
-
-            expect(result).toEqual<RankHandReponse[]>([
                 {
                     player: {
-                        id: 'player_2',
-                        username: 'Bob',
+                        id: 'player_1',
+                        username: 'Levi',
+                        cards: [mockCard({ suit: 'clubs', rank: '4' }), mockCard({ suit: 'spades', rank: '4' })],
                         hand: [
                             mockCard({ suit: 'clubs', rank: '4' }),
-                            mockCard({ suit: 'clubs', rank: '5' }),
-                            mockCard({ suit: 'clubs', rank: '6' }),
-                            mockCard({ suit: 'clubs', rank: '7' }),
-                            mockCard({ suit: 'diamonds', rank: '8' }),
+                            mockCard({ suit: 'spades', rank: '4' }),
+                            mockCard({ suit: 'clubs', rank: '8' }),
+                            mockCard({ suit: 'diamonds', rank: '2' }),
+                            mockCard({ suit: 'spades', rank: '4' }),
                         ],
+                        called: 100,
                     },
-                    category: 'straight',
-                    score: 500 + 4 + 5 + 6 + 7 + 8,
+                    category: 'three of a kind',
+                    score: 400 + 4 + 4 + 4,
                 },
                 {
                     player: {
                         id: 'player_3',
                         username: 'John',
+                        cards: [mockCard({ suit: 'clubs', rank: '4' }), mockCard({ suit: 'spades', rank: '5' })],
                         hand: [
-                            mockCard({ suit: 'diamonds', rank: '4' }),
-                            mockCard({ suit: 'diamonds', rank: '5' }),
-                            mockCard({ suit: 'diamonds', rank: '6' }),
-                            mockCard({ suit: 'diamonds', rank: '7' }),
-                            mockCard({ suit: 'spades', rank: '8' }),
+                            mockCard({ suit: 'clubs', rank: '4' }),
+                            mockCard({ suit: 'spades', rank: '5' }),
+                            mockCard({ suit: 'diamonds', rank: '13' }),
+                            mockCard({ suit: 'diamonds', rank: '14' }),
+                            mockCard({ suit: 'clubs', rank: '11' }),
                         ],
+                        called: 100,
                     },
-                    category: 'straight',
-                    score: 500 + 4 + 5 + 6 + 7 + 8,
+                    category: 'high card',
+                    score: 100 + 14,
                 },
             ]);
         });
@@ -141,6 +110,7 @@ describe('Rank Utility Functions', () => {
             const player: PlayerWithHand = {
                 id: 'player_1',
                 username: 'Levi',
+                cards: [mockCard({ suit: 'clubs', rank: '4' }), mockCard({ suit: 'spades', rank: '7' })],
                 hand: [
                     mockCard({ suit: 'clubs', rank: '4' }),
                     mockCard({ suit: 'spades', rank: '7' }),
@@ -148,6 +118,7 @@ describe('Rank Utility Functions', () => {
                     mockCard({ suit: 'diamonds', rank: '2' }),
                     mockCard({ suit: 'spades', rank: '12' }),
                 ],
+                called: 100,
             };
 
             const result = rankHand(player);
@@ -163,6 +134,7 @@ describe('Rank Utility Functions', () => {
             const player: PlayerWithHand = {
                 id: 'player_1',
                 username: 'Levi',
+                cards: [mockCard({ suit: 'clubs', rank: '4' }), mockCard({ suit: 'spades', rank: '4' })],
                 hand: [
                     mockCard({ suit: 'clubs', rank: '4' }),
                     mockCard({ suit: 'spades', rank: '4' }),
@@ -170,6 +142,7 @@ describe('Rank Utility Functions', () => {
                     mockCard({ suit: 'diamonds', rank: '2' }),
                     mockCard({ suit: 'spades', rank: '12' }),
                 ],
+                called: 100,
             };
 
             const result = rankHand(player);
@@ -177,7 +150,7 @@ describe('Rank Utility Functions', () => {
             expect(result).toEqual<RankHandReponse>({
                 player,
                 category: 'pair',
-                score: 200 + 4 + 4,
+                score: 200 + 4 + 4 + 12,
             });
         });
 
@@ -185,6 +158,7 @@ describe('Rank Utility Functions', () => {
             const player: PlayerWithHand = {
                 id: 'player_1',
                 username: 'Levi',
+                cards: [mockCard({ suit: 'clubs', rank: '4' }), mockCard({ suit: 'spades', rank: '4' })],
                 hand: [
                     mockCard({ suit: 'clubs', rank: '4' }),
                     mockCard({ suit: 'spades', rank: '4' }),
@@ -192,6 +166,7 @@ describe('Rank Utility Functions', () => {
                     mockCard({ suit: 'diamonds', rank: '8' }),
                     mockCard({ suit: 'spades', rank: '12' }),
                 ],
+                called: 100,
             };
 
             const result = rankHand(player);
@@ -199,7 +174,7 @@ describe('Rank Utility Functions', () => {
             expect(result).toEqual<RankHandReponse>({
                 player,
                 category: 'two pairs',
-                score: 300 + 4 + 4 + 8 + 8,
+                score: 300 + 4 + 4 + 8 + 8 + 12,
             });
         });
 
@@ -207,6 +182,7 @@ describe('Rank Utility Functions', () => {
             const player: PlayerWithHand = {
                 id: 'player_1',
                 username: 'Levi',
+                cards: [mockCard({ suit: 'clubs', rank: '4' }), mockCard({ suit: 'spades', rank: '4' })],
                 hand: [
                     mockCard({ suit: 'clubs', rank: '4' }),
                     mockCard({ suit: 'spades', rank: '4' }),
@@ -214,6 +190,7 @@ describe('Rank Utility Functions', () => {
                     mockCard({ suit: 'diamonds', rank: '2' }),
                     mockCard({ suit: 'spades', rank: '4' }),
                 ],
+                called: 100,
             };
 
             const result = rankHand(player);
@@ -229,6 +206,7 @@ describe('Rank Utility Functions', () => {
             const player: PlayerWithHand = {
                 id: 'player_1',
                 username: 'Levi',
+                cards: [mockCard({ suit: 'clubs', rank: '4' }), mockCard({ suit: 'spades', rank: '5' })],
                 hand: [
                     mockCard({ suit: 'clubs', rank: '4' }),
                     mockCard({ suit: 'spades', rank: '5' }),
@@ -236,6 +214,7 @@ describe('Rank Utility Functions', () => {
                     mockCard({ suit: 'diamonds', rank: '7' }),
                     mockCard({ suit: 'spades', rank: '8' }),
                 ],
+                called: 100,
             };
 
             const result = rankHand(player);
@@ -251,6 +230,7 @@ describe('Rank Utility Functions', () => {
             const player: PlayerWithHand = {
                 id: 'player_1',
                 username: 'Levi',
+                cards: [mockCard({ suit: 'clubs', rank: '4' }), mockCard({ suit: 'clubs', rank: '5' })],
                 hand: [
                     mockCard({ suit: 'clubs', rank: '4' }),
                     mockCard({ suit: 'clubs', rank: '5' }),
@@ -258,6 +238,7 @@ describe('Rank Utility Functions', () => {
                     mockCard({ suit: 'clubs', rank: '7' }),
                     mockCard({ suit: 'clubs', rank: '13' }),
                 ],
+                called: 100,
             };
 
             const result = rankHand(player);
@@ -273,6 +254,7 @@ describe('Rank Utility Functions', () => {
             const player: PlayerWithHand = {
                 id: 'player_1',
                 username: 'Levi',
+                cards: [mockCard({ suit: 'clubs', rank: '4' }), mockCard({ suit: 'diamonds', rank: '4' })],
                 hand: [
                     mockCard({ suit: 'clubs', rank: '4' }),
                     mockCard({ suit: 'diamonds', rank: '4' }),
@@ -280,6 +262,7 @@ describe('Rank Utility Functions', () => {
                     mockCard({ suit: 'clubs', rank: '7' }),
                     mockCard({ suit: 'diamonds', rank: '7' }),
                 ],
+                called: 100,
             };
 
             const result = rankHand(player);
@@ -295,6 +278,7 @@ describe('Rank Utility Functions', () => {
             const player: PlayerWithHand = {
                 id: 'player_1',
                 username: 'Levi',
+                cards: [mockCard({ suit: 'clubs', rank: '4' }), mockCard({ suit: 'diamonds', rank: '4' })],
                 hand: [
                     mockCard({ suit: 'clubs', rank: '4' }),
                     mockCard({ suit: 'diamonds', rank: '4' }),
@@ -302,6 +286,7 @@ describe('Rank Utility Functions', () => {
                     mockCard({ suit: 'hearts', rank: '4' }),
                     mockCard({ suit: 'diamonds', rank: '7' }),
                 ],
+                called: 100,
             };
 
             const result = rankHand(player);
@@ -317,6 +302,7 @@ describe('Rank Utility Functions', () => {
             const player: PlayerWithHand = {
                 id: 'player_1',
                 username: 'Levi',
+                cards: [mockCard({ suit: 'clubs', rank: '4' }), mockCard({ suit: 'clubs', rank: '5' })],
                 hand: [
                     mockCard({ suit: 'clubs', rank: '4' }),
                     mockCard({ suit: 'clubs', rank: '5' }),
@@ -324,6 +310,7 @@ describe('Rank Utility Functions', () => {
                     mockCard({ suit: 'clubs', rank: '7' }),
                     mockCard({ suit: 'clubs', rank: '8' }),
                 ],
+                called: 100,
             };
 
             const result = rankHand(player);
@@ -339,6 +326,7 @@ describe('Rank Utility Functions', () => {
             const player: PlayerWithHand = {
                 id: 'player_1',
                 username: 'Levi',
+                cards: [mockCard({ suit: 'clubs', rank: '10' }), mockCard({ suit: 'clubs', rank: '11' })],
                 hand: [
                     mockCard({ suit: 'clubs', rank: '10' }),
                     mockCard({ suit: 'clubs', rank: '11' }),
@@ -346,6 +334,7 @@ describe('Rank Utility Functions', () => {
                     mockCard({ suit: 'clubs', rank: '13' }),
                     mockCard({ suit: 'clubs', rank: '14' }),
                 ],
+                called: 100,
             };
 
             const result = rankHand(player);

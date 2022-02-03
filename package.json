@@ -55,6 +55,7 @@
         "@trellisorg/nest-spectator": "^0.0.13",
         "class-transformer": "^0.4.0",
         "class-validator": "^0.13.1",
+        "currency.js": "^2.0.4",
         "jest-mock-extended": "^2.0.4",
         "reflect-metadata": "^0.1.13",
         "rxjs": "~7.4.0",

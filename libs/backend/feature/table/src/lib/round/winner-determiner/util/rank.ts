@@ -3,7 +3,7 @@ import type { HandCategory, PlayerWithHand, RankHandReponse } from '../winner-de
 
 /**
  * Assigns a score to a hand based on which category it falls under and the value/rank of each card
- * involved in making the category
+ * involved in making the category + the kicker in cases where a tie is possible
  *
  * - Categories -
  * Royal Flush - 1000
@@ -21,14 +21,14 @@ import type { HandCategory, PlayerWithHand, RankHandReponse } from '../winner-de
  * @example
  *
  * Hand1 = 4 of clubs, 4 of diamonds, 7 of hearts, 2 of clubs, and 9 of spades
- * Hand2 = 5 of clubs, 5 of diamonds, 7 of hearts, 2 of clubs, and 9 of spades
+ * Hand2 = 4 of spades, 4 of hearts, 7 of hearts, 2 of clubs, and 11 of spades
  *
  * In this case the category for both hands would be 'Pair' which is given a score of 200
  *
- * Hand1's pair is comprised of 4s whereas Hand2's pair is comprised of 5s
+ * Hand1 and Hand2 both have a pair of 4s, so the winning score comes down to the kicker
  *
- * Score for Hand1 = 200 + 4 + 4 = 208
- * Score for Hand2 = 200 + 5 + 5 = 210
+ * Score for Hand1 = 200 + 4 + 4 + 9 = 217
+ * Score for Hand2 = 200 + 4 + 4 + 11 = 219
  */
 export function rankHand(player: PlayerWithHand): RankHandReponse {
     // Using a zero index, the ten card will be at index 8 (used to check for a royal flush)
@@ -115,7 +115,10 @@ export function rankHand(player: PlayerWithHand): RankHandReponse {
                     .filter((key) => ranks[key as Rank] === 2)
                     .reduce((a, b) => a + b),
             ) * 2;
-    } else {
+    }
+
+    // Add the rank of the highest card to the score, which acts as the kicker to break ties
+    if (category === 'two pairs' || category === 'pair' || category === 'high card') {
         score += Math.max(
             ...Object.keys(ranks)
                 .filter((key) => ranks[key as Rank] === 1)
@@ -127,7 +130,7 @@ export function rankHand(player: PlayerWithHand): RankHandReponse {
 }
 
 /**
- * Sorts the player's hands in ranking order, and returns the hand(s) with the highest score
+ * Sorts the player's hands in ranking order
  *
  * @param players - the players and their hands to compare
  */
@@ -136,9 +139,7 @@ export function compareHands(players: PlayerWithHand[]): RankHandReponse[] {
         .map((player) => rankHand(player))
         .sort((handA, handB) => handB.score - handA.score);
 
-    const topHands = sortedHands.filter((hand) => hand.score === sortedHands[0].score);
-
-    return topHands;
+    return sortedHands;
 }
 
 /**

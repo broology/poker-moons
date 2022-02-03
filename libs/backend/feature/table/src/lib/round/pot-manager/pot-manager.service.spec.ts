@@ -32,10 +32,18 @@ describe('PotManagerService', () => {
     });
 
     describe('splitPot', () => {
-        it('should split the pot equally and return the amount leftover', () => {
+        it('should split the pot equally and return the floored amount', () => {
             const result = service.splitPot(500, 3);
 
-            expect(result).toEqual({ amountToDistribute: 166, amountLeftover: 2 });
+            expect(result).toEqual(166);
+        });
+    });
+
+    describe('buildPot', () => {
+        it('should build the pot amount based on the amount each player has called', () => {
+            const result = service.buildPot([{ called: 100 }, { called: 150 }, { called: 25 }]);
+
+            expect(result).toEqual(275);
         });
     });
 });
