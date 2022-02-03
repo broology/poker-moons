@@ -41,7 +41,8 @@
                 "port": 4400,
                 "config": {
                     "configFolder": "libs/frontend/shared/ui/.storybook"
-                }
+                },
+                "projectBuildConfig": "frontend-shared-ui"
             },
             "configurations": {
                 "ci": {
@@ -57,7 +58,8 @@
                 "outputPath": "dist/storybook/frontend-shared-ui",
                 "config": {
                     "configFolder": "libs/frontend/shared/ui/.storybook"
-                }
+                },
+                "projectBuildConfig": "frontend-shared-ui"
             },
             "configurations": {
                 "ci": {

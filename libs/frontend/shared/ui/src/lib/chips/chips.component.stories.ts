@@ -1,5 +1,5 @@
 import { MockNgEnvironment } from '@poker-moons/frontend/shared/util/environment';
-import { Meta, moduleMetadata, Story } from '@storybook/angular';
+import { componentWrapperDecorator, Meta, moduleMetadata, Story } from '@storybook/angular';
 import { ChipsComponent } from './chips.component';
 import { chipsModuleImports } from './chips.module';
 
@@ -11,6 +11,7 @@ export default {
             imports: chipsModuleImports,
             providers: [MockNgEnvironment],
         }),
+        componentWrapperDecorator((story) => `<div style="margin-top: 8em">${story}</div>`),
     ],
 } as Meta<ChipsComponent>;
 
@@ -21,5 +22,5 @@ const Template: Story<ChipsComponent> = (args: ChipsComponent) => ({
 
 export const Primary = Template.bind({});
 Primary.args = {
-    amount: 100,
+    amount: 500000,
 };

@@ -44,7 +44,8 @@
                 "port": 4400,
                 "config": {
                     "configFolder": "libs/frontend/hud/feature/action-panel/.storybook"
-                }
+                },
+                "projectBuildConfig": "frontend-hud-feature-action-panel"
             },
             "configurations": {
                 "ci": {
@@ -60,7 +61,8 @@
                 "outputPath": "dist/storybook/frontend-hud-feature-action-panel",
                 "config": {
                     "configFolder": "libs/frontend/hud/feature/action-panel/.storybook"
-                }
+                },
+                "projectBuildConfig": "frontend-hud-feature-action-panel"
             },
             "configurations": {
                 "ci": {
