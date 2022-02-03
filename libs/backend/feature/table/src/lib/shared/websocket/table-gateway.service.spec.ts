@@ -1,4 +1,5 @@
 import {
+    Card,
     PlayerJoinedTableEvent,
     PlayerLeftTableEvent,
     PlayerTurnEvent,
@@ -120,9 +121,13 @@ describe('TableGatewayService', () => {
         it('should call server.to with the correct info', () => {
             const winnerEvent: WinnerWinnerChickenDinnerEvent = {
                 type: 'winner',
-                displayText: `${player.username} has won!`,
-                pot: 10000,
-                playerIds: [player.id],
+                winners: {
+                    [player.id]: {
+                        amountWon: 10000,
+                        cards: player.cards as [Card, Card],
+                        displayText: `${player.username} has won $10,000 with a pair!`,
+                    },
+                },
             };
 
             serverSpy.mockReturnValue({
