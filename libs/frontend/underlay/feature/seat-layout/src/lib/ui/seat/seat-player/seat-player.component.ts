@@ -8,5 +8,7 @@ import { ImmutablePublicPlayer } from '@poker-moons/shared/type';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SeatPlayerComponent {
+    DEFAULT_PLAYER_IMG = '/default-profile-img.jpg';
+
     @Input() immutablePlayer!: ImmutablePublicPlayer | null;
 }

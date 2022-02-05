@@ -1,3 +1,3 @@
-<div *ngFor="let seat of seats">
-    <poker-moons-seat [seatId]="seat"></poker-moons-seat>
+<div *ngFor="let displaySeatId of displaySeatIds" class="seat">
+    <poker-moons-seat [displaySeatId]="displaySeatId" [playerSeatId]="playerSeatIds[displaySeatId]"></poker-moons-seat>
 </div>

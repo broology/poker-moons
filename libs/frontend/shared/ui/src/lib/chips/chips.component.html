@@ -1,0 +1,7 @@
+<div
+    *ngFor="let data of chipStacks"
+    class="chip-stack-container"
+    [style]="'left: ' + calculateXPosition(data.col, data.row) + 'px;top: ' + calculateYPosition(data.row) + 'px'"
+>
+    <poker-moons-chip-stack [count]="data.count" [chipAssetPath]="data.assetPath"></poker-moons-chip-stack>
+</div>

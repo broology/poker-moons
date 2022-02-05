@@ -1,0 +1,33 @@
+/*
+ * Positions each seat at it's correct location around the table.
+ * This is highly subject to change when designs are made
+ */
+.seat {
+    position: fixed;
+    text-align: center;
+    transform: translate(-50%, -50%);
+}
+.seat:nth-child(1) {
+    left: 50%;
+    top: 92.5%;
+}
+.seat:nth-child(2) {
+    left: 15%;
+    top: 75%;
+}
+.seat:nth-child(3) {
+    left: 15%;
+    top: 25%;
+}
+.seat:nth-child(4) {
+    left: 50%;
+    top: 7.5%;
+}
+.seat:nth-child(5) {
+    left: 85%;
+    top: 25%;
+}
+.seat:nth-child(6) {
+    left: 85%;
+    top: 75%;
+}

@@ -43,11 +43,9 @@
                 "development": {
                     "buildOptimizer": false,
                     "optimization": false,
-                    "vendorChunk": true,
                     "extractLicenses": false,
                     "sourceMap": true,
-                    "namedChunks": true,
-                    "outputHashing": "all"
+                    "namedChunks": false
                 }
             },
             "dependsOn": [
@@ -59,17 +57,13 @@
             "defaultConfiguration": "development"
         },
         "serve": {
-            "executor": "@nrwl/web:file-server",
-            "options": {
-                "withDeps": false,
-                "maxParallel": 10
-            },
+            "executor": "@angular-devkit/build-angular:dev-server",
             "configurations": {
                 "production": {
-                    "buildTarget": "frontend:build:production"
+                    "browserTarget": "frontend:build:production"
                 },
                 "development": {
-                    "buildTarget": "frontend:build:development"
+                    "browserTarget": "frontend:build:development"
                 }
             },
             "defaultConfiguration": "development"
@@ -101,7 +95,40 @@
                 "bucket": "poker-moons-app-develop",
                 "distributionId": "E3OJZ7MARMED16"
             }
+        },
+        "storybook": {
+            "executor": "@nrwl/storybook:storybook",
+            "options": {
+                "uiFramework": "@storybook/angular",
+                "port": 4400,
+                "config": {
+                    "configFolder": "apps/frontend/.storybook"
+                },
+                "projectBuildConfig": "frontend:build-storybook"
+            },
+            "configurations": {
+                "ci": {
+                    "quiet": true
+                }
+            }
+        },
+        "build-storybook": {
+            "executor": "@nrwl/storybook:build",
+            "outputs": ["{options.outputPath}"],
+            "options": {
+                "uiFramework": "@storybook/angular",
+                "outputPath": "dist/storybook/frontend",
+                "config": {
+                    "configFolder": "apps/frontend/.storybook"
+                },
+                "projectBuildConfig": "frontend:build-storybook"
+            },
+            "configurations": {
+                "ci": {
+                    "quiet": true
+                }
+            }
         }
     },
-    "tags": []
+    "tags": ["app:frontend"]
 }

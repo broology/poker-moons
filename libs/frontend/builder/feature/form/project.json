@@ -44,7 +44,8 @@
                 "port": 4400,
                 "config": {
                     "configFolder": "libs/frontend/builder/feature/form/.storybook"
-                }
+                },
+                "projectBuildConfig": "frontend-builder-feature-form"
             },
             "configurations": {
                 "ci": {
@@ -60,7 +61,8 @@
                 "outputPath": "dist/storybook/frontend-builder-feature-form",
                 "config": {
                     "configFolder": "libs/frontend/builder/feature/form/.storybook"
-                }
+                },
+                "projectBuildConfig": "frontend-builder-feature-form"
             },
             "configurations": {
                 "ci": {

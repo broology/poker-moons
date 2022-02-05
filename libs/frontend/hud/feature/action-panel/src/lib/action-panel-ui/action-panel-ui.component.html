@@ -1,4 +1,4 @@
-<div [ngSwitch]="displayView">
+<div class="action-panel" [ngSwitch]="displayView">
     <poker-moons-active-controls
         *ngSwitchCase="'active'"
         [called]="clientMutablePlayer!.called"

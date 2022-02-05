@@ -1,0 +1,9 @@
+{
+    "builders": {
+        "build-and-push": {
+            "implementation": "./build-and-push/impl",
+            "schema": "./build-and-push/schema.json",
+            "description": "Creates a docker container for the application and pushes it to the Elastic Container Registry"
+        }
+    }
+}

@@ -94,15 +94,15 @@ export class PlayerActionService {
         else throw new Error(action.left);
     }
 
-    validPlayer(
+    playersTurn(
         table: ServerTableState,
         player: PublicPlayer,
         action: PlayerAction,
     ): Either<PokerMoonsError, PlayerAction> {
         if (player.id)
-            if (table.activeRound.activeSeat) return right(action);
-            else return left('PublicPlayer not in game');
-        else return left('PublicPlayer not in game');
+            if (table.activeRound.activeSeat === player.seatId) return right(action);
+            else return left("Not player's turn.");
+        else return left('Player not found.');
     }
 
     /**
@@ -122,7 +122,7 @@ export class PlayerActionService {
         player: PublicPlayer,
         action: FoldPlayerAction,
     ): Either<PokerMoonsError, FoldPlayerAction> {
-        if (isRight(this.validPlayer(table, player, action)))
+        if (isRight(this.playersTurn(table, player, action)))
             return match([
                 player.id,
                 table.activeRound.activeSeat,
