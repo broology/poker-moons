@@ -78,3 +78,8 @@ export type MutablePublicPlayer = Pick<PublicPlayer, 'stack' | 'status' | 'calle
  * Data on the player that will stay the same during the game (mostly)
  */
 export type ImmutablePublicPlayer = StrictOmit<PublicPlayer, keyof MutablePublicPlayer>;
+
+/**
+ * A map of winning player IDs to the amount they won, their cards, and text that indicates the hand they won with
+ */
+export type WinnerMap = Record<PlayerId, { amountWon: number; cards: [Card, Card]; displayText: string }>;

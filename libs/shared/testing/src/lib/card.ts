@@ -5,7 +5,7 @@ import { DeepPartial } from 'ts-essentials';
 export function mockCard(overrides: DeepPartial<Card> = {}): Card {
     const card: Card = {
         suit: 'clubs',
-        rank: '01',
+        rank: '10',
     };
 
     return merge(card, overrides);
