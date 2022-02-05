@@ -45,7 +45,7 @@
                 "config": {
                     "configFolder": "libs/frontend/underlay/feature/table-display/.storybook"
                 },
-                "projectBuildConfig": "frontend-underlay-feature-table-display"
+                "projectBuildConfig": "frontend-underlay-feature-table-display:build-storybook"
             },
             "configurations": {
                 "ci": {
@@ -62,7 +62,7 @@
                 "config": {
                     "configFolder": "libs/frontend/underlay/feature/table-display/.storybook"
                 },
-                "projectBuildConfig": "frontend-underlay-feature-table-display"
+                "projectBuildConfig": "frontend-underlay-feature-table-display:build-storybook"
             },
             "configurations": {
                 "ci": {
