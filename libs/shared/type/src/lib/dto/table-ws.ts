@@ -1,5 +1,5 @@
 import type { Card } from '../card';
-import type { PlayerId, PlayerStatus, PublicPlayer } from '../player';
+import type { PlayerId, PlayerStatus, PublicPlayer, WinnerMap } from '../player';
 import type { RoundStatus } from '../round';
 import type { SharedTableState } from '../state';
 import type { SeatId } from '../table';
@@ -56,13 +56,13 @@ export interface PlayerTurnEvent extends GeneralTableEvent<'turn'> {
 
 export interface WinnerWinnerChickenDinnerEvent extends GeneralTableEvent<'winner'> {
     /**
-     * @example "Jimmy won with an three pair"
+     * A map of winning player IDs to the amount they won, their cards, and text that indicates the hand they won with
+     *
+     * Cases where there could be multiple winners:
+     * - Multiple players have the same hand and have to split the pot equally
+     * - Side pots are introduced and in addition to the main winner there are winners of the side pots
      */
-    displayText: string;
-
-    pot: number;
-
-    playerId: PlayerId;
+    winners: WinnerMap;
 }
 
 export type TableEvent =
