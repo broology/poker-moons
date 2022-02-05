@@ -122,17 +122,9 @@ export class PlayerActionService {
         player: PublicPlayer,
         action: FoldPlayerAction,
     ): Either<PokerMoonsError, FoldPlayerAction> {
-        if (isRight(this.validPlayer(table, player, action)))
-            return match([
-                player.id,
-                table.activeRound.activeSeat,
-                table.activeRound.activeSeat
-                    ? table.seatMap[table.activeRound.activeSeat]
-                    : table.activeRound.activeSeat,
-            ])
-                .with([], () => left('Cannot perform action.'))
-                .otherwise(() => right(action));
-        return right(action);
+        if (isRight(this.playersTurn(table, player, action))) return right(action);
+
+        return left('Not players turn.');
     }
 
     /**
@@ -152,9 +144,12 @@ export class PlayerActionService {
         player: PublicPlayer,
         action: CallPlayerAction,
     ): Either<PokerMoonsError, CallPlayerAction> {
-        return match([])
-            .with([], () => left('Cannot perform action.'))
-            .otherwise(() => right(action));
+        if (isRight(this.playersTurn(table, player, action)))
+            return match([player.stack >= table.activeRound.toCall])
+                .with([false], () => left(`Minimum to call is ${table.activeRound.toCall}.`))
+                .otherwise(() => right(action));
+
+        return left('Not players turn.');
     }
 
     /**
@@ -174,9 +169,12 @@ export class PlayerActionService {
         player: PublicPlayer,
         action: RaisePlayerAction,
     ): Either<PokerMoonsError, RaisePlayerAction> {
-        return match([])
-            .with([], () => left('Cannot perform action.'))
-            .otherwise(() => right(action));
+        if (isRight(this.playersTurn(table, player, action)))
+            return match([player.stack > table.activeRound.toCall])
+                .with([false], () => left(`Minimum to raise is ${table.activeRound.toCall}.`))
+                .otherwise(() => right(action));
+
+        return left('Not players turn.');
     }
 
     /**
