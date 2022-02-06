@@ -17,7 +17,7 @@ import { NgEnvironment, NG_ENVIRONMENT } from '../ng-environment';
  */
 @Pipe({ name: 'assetUrl' })
 export class AssetUrlPipe implements PipeTransform {
-    constructor(@Inject(NG_ENVIRONMENT) private readonly ngEnvironment: NgEnvironment) {}
+    constructor(@Inject(NG_ENVIRONMENT) protected readonly ngEnvironment: NgEnvironment) {}
 
     transform(path: string): string {
         return `${this.ngEnvironment.assets}${path}`;

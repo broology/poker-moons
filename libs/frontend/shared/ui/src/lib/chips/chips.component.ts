@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChipDenomination, chipDenominations, MAX_CHIPS_PER_STACK } from './chip.type';
 
 /**
  * TODO Step 1:
@@ -8,16 +9,9 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
  * - Add animations to make changes to the amount smooth
  */
 
-/**
- * The denominations of poker chips available in reverse order.
- * - It is in reverse order so that we can easily apply the computations to calculate how much the `amount` splits into each denomination
- */
-const denominations = [5000, 2500, 1000, 500, 250, 100, 50, 25, 10, 5, 1] as const;
-type Denomination = typeof denominations[number];
-
 interface ChipStackData {
     count: number;
-    assetPath: string;
+    denomination: ChipDenomination;
     col: number;
     row: number;
 }
@@ -29,28 +23,6 @@ interface ChipStackData {
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChipsComponent {
-    /**
-     * Chip denominations to their matching `.png` asset.
-     */
-    private static readonly chipDenominationAssets: Record<Denomination, string> = {
-        1: '/chips/chip.png', // white
-        5: '/chips/chip.png', // red
-        10: '/chips/chip.png', // blue
-        25: '/chips/chip.png', // green
-        50: '/chips/chip.png', // orange
-        100: '/chips/chip.png', // black
-        250: '/chips/chip.png', // pink
-        500: '/chips/chip.png', // purple
-        1000: '/chips/chip.png', // yellow
-        2500: '/chips/chip.png', // light blue
-        5000: '/chips/chip.png', // brown
-    };
-
-    /**
-     * The max number of chips that will fit on one stack
-     */
-    private static MAX_CHIPS_PER_STACK = 10;
-
     /**
      * The number of stacks in a row before making to an new row
      */
@@ -75,28 +47,28 @@ export class ChipsComponent {
         const getRow = () => Math.floor(chipStacks.length / ChipsComponent.STACKS_PER_ROW);
 
         let total = amount;
-        for (const denomination of denominations) {
+        for (const denomination of chipDenominations) {
             const count = Math.floor(total / denomination);
             const delta = denomination * count;
             total -= delta;
 
             // * Build full stacks
-            const stacks = Math.floor(count / ChipsComponent.MAX_CHIPS_PER_STACK);
+            const stacks = Math.floor(count / MAX_CHIPS_PER_STACK);
             for (let x = 0; x < stacks; x++) {
                 chipStacks.push({
-                    count: ChipsComponent.MAX_CHIPS_PER_STACK,
-                    assetPath: ChipsComponent.chipDenominationAssets[denomination],
+                    count: MAX_CHIPS_PER_STACK,
+                    denomination,
                     col: getColumn(),
                     row: getRow(),
                 });
             }
 
             // * Build the remainder stack
-            const remainder = count % ChipsComponent.MAX_CHIPS_PER_STACK;
+            const remainder = count % MAX_CHIPS_PER_STACK;
             if (remainder > 0) {
                 chipStacks.push({
                     count: remainder,
-                    assetPath: ChipsComponent.chipDenominationAssets[denomination],
+                    denomination,
                     col: getColumn(),
                     row: getRow(),
                 });

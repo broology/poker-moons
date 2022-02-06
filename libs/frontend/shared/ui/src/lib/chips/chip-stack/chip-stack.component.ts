@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChipDenomination } from '../chip.type';
 
 @Component({
     selector: 'poker-moons-chip-stack',
@@ -16,7 +17,7 @@ export class ChipStackComponent {
         this.chips = new Array(value).fill(0).map((_, i) => i);
     }
 
-    @Input() chipAssetPath!: string;
+    @Input() denomination!: ChipDenomination;
 
     /**
      * The amount of numbers in count but into an array, so it can be used in an `ngFor`
