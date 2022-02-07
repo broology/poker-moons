@@ -1,5 +1,5 @@
 <div class="chip-stack">
     <div *ngFor="let chip of chips" class="chip-container" [style]="'bottom:' + chip * SINGLE_CHIP_OFFSET + 'px;'">
-        <div class="rendered-chip" [innerHtml]="denomination | chipRender"></div>
+        <img class="rendered-chip" [src]="denomination | chipRender | assetUrl" />
     </div>
 </div>
