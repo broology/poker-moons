@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TableStateManagerService } from './table-state-manager.service';
-import { BackendFeatureStateModule } from '@poker-moons/backend/feature/state';
+import { BackendDataAccessStateModule } from '@poker-moons/backend-data-access-state';
 
 @Module({
     providers: [TableStateManagerService],
-    imports: [BackendFeatureStateModule],
+    imports: [BackendDataAccessStateModule],
 })
 export class TableStateManagerModule {}

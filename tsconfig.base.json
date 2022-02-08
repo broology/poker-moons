@@ -16,7 +16,7 @@
         "baseUrl": ".",
         "strict": true,
         "paths": {
-            "@poker-moons/backend/feature/state": ["libs/backend/feature/state/src/index.ts"],
+            "@poker-moons/backend-data-access-state": ["libs/backend/data-access/state/src/index.ts"],
             "@poker-moons/backend/feature/table": ["libs/backend/feature/table/src/index.ts"],
             "@poker-moons/backend/shared/util/validators": ["libs/backend/shared/util/validators/src/index.ts"],
             "@poker-moons/frontend/shared/state/table": ["libs/frontend/shared/state/table/src/index.ts"],
