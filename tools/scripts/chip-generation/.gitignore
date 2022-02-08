@@ -1,0 +1,2 @@
+# Ignore generated chip assets, as they shouldn't be stored in repo
+assets/
