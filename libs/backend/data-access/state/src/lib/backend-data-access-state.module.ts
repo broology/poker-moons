@@ -12,4 +12,4 @@ const StateService: Provider = {
     providers: [StateService],
     exports: [StateService],
 })
-export class BackendFeatureStateModule {}
+export class BackendDataAccessStateModule {}
