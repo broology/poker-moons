@@ -5,5 +5,6 @@ import { BackendDataAccessStateModule } from '@poker-moons/backend-data-access-s
 @Module({
     providers: [TableStateManagerService],
     imports: [BackendDataAccessStateModule],
+    exports: [TableStateManagerService],
 })
 export class TableStateManagerModule {}

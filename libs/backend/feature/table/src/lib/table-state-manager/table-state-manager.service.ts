@@ -1,16 +1,16 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { GenericStateServiceImpl, STATE_SERVICE } from '@poker-moons/backend-data-access-state';
 import { ServerTableState, TableId } from '@poker-moons/shared/type';
+import { GenericStateServiceImpl, STATE_SERVICE } from '@poker-moons/backend-data-access-state';
 
 const initialTableState: ServerTableState = {
     name: '',
     seatMap: {
-        0: null,
-        1: null,
-        2: null,
-        3: null,
-        4: null,
-        5: null,
+        0: undefined,
+        1: undefined,
+        2: undefined,
+        3: undefined,
+        4: undefined,
+        5: undefined,
     },
     roundCount: 0,
     activeRound: {
@@ -37,8 +37,8 @@ export class TableStateManagerService {
      * @param newTableName The name of the table/game.
      * @returns The TableId of the new table, as generated.
      */
-    public async createNewTable(newTableName: Partial<ServerTableState>): Promise<TableId> {
-        const newTableState: ServerTableState = { ...initialTableState, ...newTableName };
+    public async createNewTable(newTableName: string): Promise<TableId> {
+        const newTableState: ServerTableState = { ...initialTableState, name: newTableName };
         return this.stateService.create(newTableState);
     }
 
