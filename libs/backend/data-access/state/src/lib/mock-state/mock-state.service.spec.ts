@@ -33,7 +33,7 @@ describe('MockStateService', () => {
             name: 'test',
             deck: [],
             playerMap: { player_1: mockPlayer },
-            seatMap: { 0: null, 1: null, 2: null, 3: null, 4: null, 5: null },
+            seatMap: { 0: undefined, 1: undefined, 2: undefined, 3: undefined, 4: undefined, 5: undefined },
             roundCount: 0,
             activeRound: mockRound,
         };
