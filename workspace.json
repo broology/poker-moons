@@ -3,6 +3,7 @@
     "projects": {
         "backend": "apps/backend",
         "backend-data-access-state": "libs/backend/data-access/state",
+        "backend-feature-state": "libs/backend/feature/state",
         "backend-feature-table": "libs/backend/feature/table",
         "frontend": "apps/frontend",
         "frontend-builder-feature-form": "libs/frontend/builder/feature/form",
