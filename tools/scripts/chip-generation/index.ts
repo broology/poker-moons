@@ -1,3 +1,13 @@
+/**
+ * This script will take a stack list of manually created denomination 1 chips, and the chips for all other denominations.
+ * Applying the new colours, and new price values to the original svg data and creating new files to be uploaded to cloudfront
+ * under s3://poker-moons-assets/chips/`
+ *
+ * @Usage
+ * - Populate `./assets/1/chip-1-{STACK_SIZE}.svg`
+ * - run `yarn ts-node tools/scripts/chip-generation/index.ts`
+ */
+
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
 import { join } from 'path';
 
