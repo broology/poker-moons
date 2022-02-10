@@ -1,6 +1,7 @@
 import type { Card } from '../card';
 import type { Player } from '../player';
 
+
 /**
  * POST /table/:tableId/player
  *
