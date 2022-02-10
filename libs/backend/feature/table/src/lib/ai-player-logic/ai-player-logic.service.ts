@@ -31,6 +31,7 @@ export class AIPlayerLogicService{
         //Higher difficulty AI should have a smaller difficulty factor, leading to more consistently "correct" play
         //const currentSpice = randomInt(-100, 100) * player.difficultyFactor
         //if round.toCall == player.called, then check is an option.
+        //else
         const risk = (round.toCall - player.called / player.stack) * player.riskFactor
         //most of decisionmaking is based off winChance and risk as a cost vs benefit, with additional variance introduced by currentSpice value and ai player profile
         //callUpTo and RaiseUpTo values, and thresholds for fold and all in determined based on winChance, risk, spice, and AI personality factors
