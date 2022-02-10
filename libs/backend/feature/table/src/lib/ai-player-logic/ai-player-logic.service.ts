@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, NotImplementedException } from '@nestjs/common'
 import { Card, PlayerAction, AIPlayer, Table, Round, CheckPlayerAction, CallPlayerAction, FoldPlayerAction, RaisePlayerAction, AllInPlayerAction, playerActions } from "@poker-moons/shared/type";
 //import { AIPlayer } from "@poker-moons/shared/type";
 
@@ -29,13 +29,13 @@ export class AIPlayerLogicService{
         //generate random number as random variance spice value, potentially based off AIPlayer difficulty/personality settings
         //this represents the deviation from what the ai considers "optimal" play that the ai will accept this round.
         //Higher difficulty AI should have a smaller difficulty factor, leading to more consistently "correct" play
-        const currentSpice = randomInt(-100, 100) * player.difficultyFactor
+        //const currentSpice = randomInt(-100, 100) * player.difficultyFactor
         //if round.toCall == player.called, then check is an option.
         const risk = (round.toCall - player.called / player.stack) * player.riskFactor
         //most of decisionmaking is based off winChance and risk as a cost vs benefit, with additional variance introduced by currentSpice value and ai player profile
         //callUpTo and RaiseUpTo values, and thresholds for fold and all in determined based on winChance, risk, spice, and AI personality factors
         //example: a standard
-        return FoldPlayerAction
+        throw new NotImplementedException;
 
     }
 

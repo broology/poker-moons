@@ -1,10 +1,10 @@
 import { Injectable, NotImplementedException } from '@nestjs/common'
-import { Card, AIPlayer, SharedTableState, Table, Round, PersonalityTrait } from "@poker-moons/shared/type";
+import { Card, AIPlayer, SharedTableState, Table, Round, PersonalityTrait, Difficulty } from '@poker-moons/shared/type';
 
 @Injectable
 export class AIPlayerService{
 
-    create(personality: PersonalityTrait[], difficulty: ): AIPlayer {
+    create(personality: PersonalityTrait[], difficulty: Difficulty): AIPlayer {
         throw new NotImplementedException;
         
     }
