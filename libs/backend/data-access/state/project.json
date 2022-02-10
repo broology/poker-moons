@@ -1,0 +1,23 @@
+{
+    "root": "libs/backend/data-access/state",
+    "sourceRoot": "libs/backend/data-access/state/src",
+    "projectType": "library",
+    "targets": {
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "outputs": ["{options.outputFile}"],
+            "options": {
+                "lintFilePatterns": ["libs/backend/data-access/state/**/*.ts"]
+            }
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/libs/backend/data-access/state"],
+            "options": {
+                "jestConfig": "libs/backend/data-access/state/jest.config.js",
+                "passWithNoTests": true
+            }
+        }
+    },
+    "tags": []
+}

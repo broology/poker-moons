@@ -1,6 +1,6 @@
 import { JoinTableRequest, PLAYER_PREFIX, PlayerId, TABLE_PREFIX, TableId } from '@poker-moons/shared/type';
-import { IsEntityId } from '../../../../../../shared/type/src/lib/id.validator';
 import { IsNotEmpty, IsString } from 'class-validator';
+import { IsEntityId } from '@poker-moons/shared/util';
 
 export class JoinTableRequestValidator implements JoinTableRequest {
     @IsString()
@@ -9,17 +9,17 @@ export class JoinTableRequestValidator implements JoinTableRequest {
 }
 
 export class LeaveTableRequestValidator {
-  @IsEntityId(TABLE_PREFIX)
-  tableId!: TableId;
+    @IsEntityId(TABLE_PREFIX)
+    tableId!: TableId;
 
-  @IsEntityId(PLAYER_PREFIX)
-  playerId!: PlayerId
+    @IsEntityId(PLAYER_PREFIX)
+    playerId!: PlayerId;
 }
 
 export class GetPlayerCardsRequestValidator {
-  @IsEntityId(TABLE_PREFIX)
-  tableId!: TableId;
+    @IsEntityId(TABLE_PREFIX)
+    tableId!: TableId;
 
-  @IsEntityId(PLAYER_PREFIX)
-  playerId!: PlayerId
+    @IsEntityId(PLAYER_PREFIX)
+    playerId!: PlayerId;
 }

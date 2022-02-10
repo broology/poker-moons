@@ -6,6 +6,7 @@ import { wsReducers } from './reducers/ws.reducers';
 export const TABLE_STATE = 'tableState';
 
 export const initialState: ClientTableState = {
+    name: '',
     immutablePlayerMap: {},
     mutablePlayerMap: {},
     seatMap: {},
