@@ -10,6 +10,7 @@ export class AIPlayerLogicService{
         //simplest case can just use rank.ts to determine best 5 card hand available, then take (bestHandRank / totalRanks) to find percentage of beating an arbitrary hand
         //remove own pocket cards from ranking system as no other hands that contain them are possible for other players to have
         //then add a small fudge factor because players have 7 cards to choose from as well, so they have more than one hand to choose from, so no player will take their worst hand
+        //ideally, compare bestHandRank to pool of possible hands constructed from available final card pools and check relative standing
         //winChance = (bestHandRank) / (numberofPossibleHandsWithoutOwnCards)
         //if winChance > (1/numPlayersActive), standard AI personality assumes it is favoured to win the round
         return 0;
@@ -19,6 +20,8 @@ export class AIPlayerLogicService{
 
     decideRaiseAmount(player: AIPlayer, round: Round): number {
         //used to determine the amount of chips the ai player will call up to, or raise up to if it performs those actions
+        //if <=0, standard AI will only check if available, or fold otherwise
+        //specific personalities can cause an AI player to bet more/less than the standard raiseUpTo value, after that threshold has been passed and raising initiated (Big Better, Low Stakesetter)
         return 0;
 
     }
