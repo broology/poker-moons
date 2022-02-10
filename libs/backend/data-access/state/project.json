@@ -1,9 +1,15 @@
 {
-    "projectType": "library",
     "root": "libs/backend/data-access/state",
     "sourceRoot": "libs/backend/data-access/state/src",
-    "prefix": "poker-moons",
+    "projectType": "library",
     "targets": {
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "outputs": ["{options.outputFile}"],
+            "options": {
+                "lintFilePatterns": ["libs/backend/data-access/state/**/*.ts"]
+            }
+        },
         "test": {
             "executor": "@nrwl/jest:jest",
             "outputs": ["coverage/libs/backend/data-access/state"],
@@ -11,16 +17,7 @@
                 "jestConfig": "libs/backend/data-access/state/jest.config.js",
                 "passWithNoTests": true
             }
-        },
-        "lint": {
-            "executor": "@nrwl/linter:eslint",
-            "options": {
-                "lintFilePatterns": [
-                    "libs/backend/data-access/state/src/**/*.ts",
-                    "libs/backend/data-access/state/src/**/*.html"
-                ]
-            }
         }
     },
-    "tags": ["platform:backend", "type:data-access"]
+    "tags": []
 }

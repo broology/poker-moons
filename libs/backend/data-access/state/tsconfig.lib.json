@@ -1,12 +1,12 @@
 {
     "extends": "./tsconfig.json",
     "compilerOptions": {
+        "module": "commonjs",
         "outDir": "../../../../dist/out-tsc",
         "declaration": true,
-        "declarationMap": true,
-        "inlineSources": true,
-        "types": []
+        "types": ["node"],
+        "target": "es6"
     },
-    "exclude": ["src/test-setup.ts", "**/*.spec.ts", "**/*.test.ts"],
+    "exclude": ["**/*.spec.ts", "**/*.test.ts"],
     "include": ["**/*.ts"]
 }

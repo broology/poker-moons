@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ServerTableState, TableId } from '@poker-moons/shared/type';
-import { GenericStateServiceImpl, STATE_SERVICE } from '@poker-moons/backend-data-access-state';
+import { GenericStateServiceImpl, STATE_SERVICE } from '@poker-moons/backend/data-access/state';
 
 const initialTableState: ServerTableState = {
     name: '',

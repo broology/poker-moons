@@ -38,5 +38,5 @@ export interface Table {
     /**
      * The active round of the table
      */
-    activeRound: Round | null;
+    activeRound: Round;
 }
