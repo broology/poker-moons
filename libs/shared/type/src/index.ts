@@ -4,6 +4,7 @@ export * from './lib/dto/player-action-ep';
 export * from './lib/dto/table-ep';
 export * from './lib/error';
 export * from './lib/player';
+export * from './lib/ai-player';
 export * from './lib/player-action';
 export * from './lib/round';
 export * from './lib/state';
