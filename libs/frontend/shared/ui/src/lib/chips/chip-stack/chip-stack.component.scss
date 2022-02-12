@@ -1,17 +1,17 @@
-.chip-stack {
+.chip-stack-container {
     position: relative;
     width: 62px;
     height: 0px;
     bottom: 50px;
 }
 
-.chip-container {
+.chip-stack {
     position: relative;
     right: 40px;
     height: 0px;
 }
 
 // TODO Media Filters
-.chip {
-    width: 150px;
+.rendered-chips {
+    width: 84px;
 }
