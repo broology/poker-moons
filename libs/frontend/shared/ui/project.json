@@ -42,7 +42,7 @@
                 "config": {
                     "configFolder": "libs/frontend/shared/ui/.storybook"
                 },
-                "projectBuildConfig": "frontend-shared-ui"
+                "projectBuildConfig": "frontend-shared-ui:build-storybook"
             },
             "configurations": {
                 "ci": {
@@ -59,7 +59,7 @@
                 "config": {
                     "configFolder": "libs/frontend/shared/ui/.storybook"
                 },
-                "projectBuildConfig": "frontend-shared-ui"
+                "projectBuildConfig": "frontend-shared-ui:build-storybook"
             },
             "configurations": {
                 "ci": {

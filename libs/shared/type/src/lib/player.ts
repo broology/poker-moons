@@ -4,6 +4,7 @@ import { SeatId } from './table';
 
 export type PlayerId = `player_${string}`;
 
+export const PLAYER_PREFIX = 'player' as const;
 export const playerStatus = ['waiting', 'checked', 'called', 'folded', 'raised', 'all-in'] as const;
 
 /**
