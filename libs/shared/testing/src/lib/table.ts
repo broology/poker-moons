@@ -93,16 +93,7 @@ export function mockServerTable(overrides: DeepPartial<Table> = {}): ServerTable
             5: 'player_5',
         },
         roundCount: 0,
-        activeRound: {
-            pot: 1000,
-            toCall: 100,
-            turnCount: 0,
-            roundStatus: 'deal',
-            activeSeat: 0,
-            dealerSeat: 0,
-            smallBlind: 1,
-            cards: [{ suit: 'diamonds', rank: '01' }],
-        },
+        activeRound: mockRound(),
     };
     return merge(table, overrides);
 }
