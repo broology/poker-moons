@@ -1,0 +1,13 @@
+{
+    "name": "poker-moons-chips",
+    "version": "0.1.0",
+    "files": [
+        "poker_moons_chips_bg.wasm",
+        "poker_moons_chips.js",
+        "poker_moons_chips_bg.js",
+        "poker_moons_chips.d.ts"
+    ],
+    "module": "poker_moons_chips.js",
+    "types": "poker_moons_chips.d.ts",
+    "sideEffects": false
+}

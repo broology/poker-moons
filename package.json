@@ -57,6 +57,7 @@
         "class-validator": "^0.13.1",
         "currency.js": "^2.0.4",
         "jest-mock-extended": "^2.0.4",
+        "nanoid": "^3.2.0",
         "reflect-metadata": "^0.1.13",
         "rxjs": "~7.4.0",
         "socket.io": "^4.4.0",

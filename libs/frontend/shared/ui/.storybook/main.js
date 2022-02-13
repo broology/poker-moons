@@ -1,3 +1,4 @@
+const path = require('path');
 const rootMain = require('../../../../../.storybook/main');
 
 module.exports = {
@@ -12,6 +13,7 @@ module.exports = {
         if (rootMain.webpackFinal) {
             config = await rootMain.webpackFinal(config, { configType });
         }
+        config.experiments = { ...config.experiments, syncWebAssembly: true };
 
         // add your own webpack tweaks if needed
 
