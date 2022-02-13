@@ -94,7 +94,18 @@ export class PlayerActionService {
         else throw new Error(action.left);
     }
 
-    validPlayer(
+    /**
+     * PlayerActionService.players
+     * @description Determines if its the current players turn.
+     * @param table
+     * @type ServerTableState
+     * @param player
+     * @type PublicPlayer
+     * @param action
+     * @type PlayerAction
+     * @returns Either<PokerMoonsError, PlayerAction>
+     */
+    playersTurn(
         table: ServerTableState,
         player: PublicPlayer,
         action: PlayerAction,
@@ -122,9 +133,10 @@ export class PlayerActionService {
         player: PublicPlayer,
         action: FoldPlayerAction,
     ): Either<PokerMoonsError, FoldPlayerAction> {
-        if (isRight(this.playersTurn(table, player, action))) return right(action);
+        const playersTurn = this.playersTurn(table, player, action);
 
-        return left('Not players turn.');
+        if (isRight(playersTurn)) return right(action);
+        return playersTurn;
     }
 
     /**
@@ -144,12 +156,14 @@ export class PlayerActionService {
         player: PublicPlayer,
         action: CallPlayerAction,
     ): Either<PokerMoonsError, CallPlayerAction> {
-        if (isRight(this.playersTurn(table, player, action)))
+        const playersTurn = this.playersTurn(table, player, action);
+
+        if (isRight(playersTurn))
             return match([player.stack >= table.activeRound.toCall])
                 .with([false], () => left(`Minimum to call is ${table.activeRound.toCall}.`))
                 .otherwise(() => right(action));
 
-        return left('Not players turn.');
+        return playersTurn;
     }
 
     /**
@@ -169,12 +183,13 @@ export class PlayerActionService {
         player: PublicPlayer,
         action: RaisePlayerAction,
     ): Either<PokerMoonsError, RaisePlayerAction> {
-        if (isRight(this.playersTurn(table, player, action)))
+        const playersTurn = this.playersTurn(table, player, action);
+
+        if (isRight(playersTurn))
             return match([player.stack > table.activeRound.toCall])
                 .with([false], () => left(`Minimum to raise is ${table.activeRound.toCall}.`))
                 .otherwise(() => right(action));
-
-        return left('Not players turn.');
+        return playersTurn;
     }
 
     /**
@@ -194,8 +209,12 @@ export class PlayerActionService {
         player: PublicPlayer,
         action: CheckPlayerAction,
     ): Either<PokerMoonsError, CheckPlayerAction> {
-        return match([])
-            .with([], () => left('Cannot perform action.'))
-            .otherwise(() => right(action));
+        const playersTurn = this.playersTurn(table, player, action);
+
+        if (isRight(playersTurn))
+            return match([table.activeRound.toCall === 0])
+                .with([false], () => left(`Must bet a minimum of ${table.activeRound.toCall}.`))
+                .otherwise(() => right(action));
+        return playersTurn;
     }
 }
