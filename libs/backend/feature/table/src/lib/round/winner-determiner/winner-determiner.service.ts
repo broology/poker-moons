@@ -6,11 +6,13 @@ import { compareHands, playerHasTwoCards, tableHasFiveCards } from './util/rank'
 import { playerMissingCards, roundMissingCards } from './winner-determiner.copy';
 import type { Hand, PlayerWithHand, RankHandReponse } from './winner-determiner.types';
 import currency = require('currency.js');
+import { TableStateManagerService } from '../../table-state-manager/table-state-manager.service';
 
 @Injectable()
 export class WinnerDeterminerService {
     constructor(
         private readonly tableGatewayService: TableGatewayService,
+        private readonly tableStateManagerService: TableStateManagerService,
         private readonly potManagerService: PotManagerService,
     ) {}
 
@@ -18,34 +20,36 @@ export class WinnerDeterminerService {
      * Determines the winner at the end of a round of poker
      *
      * @param tableId - the table the round is taking place on
-     * @param players - the players that have not folded at the end of the round
+     * @param playerMap - a map of the players in the current round
      * @param round - the current round
      *
      * @returns the winning player ID(s), the amount won, and text that can be displayed that indicates who won with what hand
      */
-    async determineWinner(tableId: TableId, players: Player[], round: Round): Promise<void> {
+    async determineWinner(tableId: TableId, playerMap: Record<PlayerId, Player>, round: Round): Promise<void> {
         const playersWithHand: PlayerWithHand[] = [];
 
         if (!tableHasFiveCards(round.cards)) {
             throw new BadRequestException(roundMissingCards);
         }
 
-        for (const player of players) {
+        for (const player of Object.values(playerMap)) {
             if (!playerHasTwoCards(player.cards)) {
                 throw new BadRequestException(playerMissingCards(player.id));
             }
 
-            playersWithHand.push({
-                id: player.id,
-                username: player.username,
-                cards: player.cards,
-                hand: this.findBestHand(player.id, player.username, player.called, player.cards, round.cards).player
-                    .hand,
-                called: player.called,
-            });
+            if (player.status !== 'folded') {
+                playersWithHand.push({
+                    id: player.id,
+                    username: player.username,
+                    cards: player.cards,
+                    hand: this.findBestHand(player.id, player.username, player.called, player.cards, round.cards).player
+                        .hand,
+                    called: player.called,
+                });
+            }
         }
 
-        const winnerMap = this.buildWinnerMap(playersWithHand);
+        const winnerMap = await this.buildWinnerMap(tableId, playerMap, playersWithHand);
 
         await this.tableGatewayService.emitTableEvent(tableId, {
             type: 'winner',
@@ -109,9 +113,15 @@ export class WinnerDeterminerService {
     /**
      * Builds a map of the winners and the amount that they have won
      *
-     * @param playersWithHand - each of the player's and their best hand
+     * @param tableId - the table the round is taking place on
+     * @param playerMap - a map of the players in the current round
+     * @param playersWithHand - each of the non-folded player's and their best hand
      */
-    private buildWinnerMap(playersWithHand: PlayerWithHand[]): WinnerMap {
+    private async buildWinnerMap(
+        tableId: TableId,
+        playerMap: Record<PlayerId, Player>,
+        playersWithHand: PlayerWithHand[],
+    ): Promise<WinnerMap> {
         const winnerMap: WinnerMap = {};
 
         const sortedHands = compareHands(playersWithHand);
@@ -143,9 +153,18 @@ export class WinnerDeterminerService {
                     }
                 }
 
-                // TODO: Update winner's stack in server state
-
                 const amountWon = this.potManagerService.splitPot(collectedSidePot, winnersToPay.length);
+
+                // Update winner's stack in server state
+                const updatedPlayerMap: Record<PlayerId, Player> = {
+                    ...playerMap,
+                    [winner.player.id]: {
+                        ...playerMap[winner.player.id],
+                        stack: playerMap[winner.player.id].stack + amountWon,
+                    },
+                };
+
+                await this.tableStateManagerService.updateTable(tableId, { playerMap: updatedPlayerMap });
 
                 winnerMap[winner.player.id] = {
                     amountWon,

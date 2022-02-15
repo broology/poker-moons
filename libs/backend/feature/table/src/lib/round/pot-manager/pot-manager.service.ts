@@ -1,26 +1,28 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { Player } from '@poker-moons/shared/type';
+import { Player, Round, TableId } from '@poker-moons/shared/type';
+import { TableStateManagerService } from '../../table-state-manager/table-state-manager.service';
 
 @Injectable()
 export class PotManagerService {
+    constructor(private readonly tableStateManagerService: TableStateManagerService) {}
+
     /**
-     * Increments the pot the designated amount
+     * Increments the active pot the designated amount
      *
-     * @param pot - the value of the pot in the current round
+     * @param tableId - the table the round is taking place on
+     * @param round - the current round where the pot should be incremented
      * @param amount - the amount to increment the pot by
      *
      * @throws {BadRequestException} if the designated amount is not an integer
-     *
-     * @returns the incremented pot amount
      */
-    incrementPot(pot: number, amount: number): number {
+    async incrementPot(tableId: TableId, round: Round, amount: number): Promise<void> {
         if (!Number.isInteger(amount)) {
             throw new BadRequestException('The pot can only be incremented by integer amounts.');
         }
 
-        // TODO: Update State
-
-        return pot + amount;
+        await this.tableStateManagerService.updateTable(tableId, {
+            activeRound: { ...round, pot: round.pot + amount },
+        });
     }
 
     /**
