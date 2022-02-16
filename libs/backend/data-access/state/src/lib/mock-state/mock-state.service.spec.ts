@@ -42,7 +42,7 @@ describe('MockStateService', () => {
     });
 
     it('should be created', () => {
-        expect(service).toBeTruthy();
+        expect(service).toBeDefined();
     });
 
     describe('create', () => {
