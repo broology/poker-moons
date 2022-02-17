@@ -113,7 +113,7 @@ export class PlayerActionService {
         if (player.id)
             if (table.activeRound.activeSeat === player.seatId) return right(action);
             else return left("Not player's turn.");
-        else return left('Player not in game');
+        else return left('Player not found.');
     }
 
     /**
