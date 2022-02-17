@@ -14,10 +14,12 @@ import {
 } from '@poker-moons/shared/type';
 import { Either, isRight, left, right } from 'fp-ts/lib/Either';
 import { pipe } from 'fp-ts/lib/function';
-import { match } from 'ts-pattern';
+import { match, __ } from 'ts-pattern';
 
 @Injectable()
 export class PlayerActionService {
+    //@mlevi15 These functions and validators can be separated into multiple services for better organization if you see fit.
+
     perform(dto: PerformPlayerActionRequest): PerformPlayerActionResponse {
         const player: PublicPlayer = mockPublicPlayer();
         const table: ServerTableState = mockServerTable();
@@ -186,8 +188,9 @@ export class PlayerActionService {
         const playersTurn = this.playersTurn(table, player, action);
 
         if (isRight(playersTurn))
-            return match([player.stack > table.activeRound.toCall])
-                .with([false], () => left(`Minimum to raise is ${table.activeRound.toCall}.`))
+            return match([player.stack > table.activeRound.toCall, player.stack > action.amount])
+                .with([false, __.boolean], () => left(`Minimum to raise is ${table.activeRound.toCall}.`))
+                .with([__.boolean, false], () => left(`Player does not have ${action.amount} in their stack.`))
                 .otherwise(() => right(action));
         return playersTurn;
     }
