@@ -1,4 +1,4 @@
-import type { ImmutablePublicPlayer, MutablePublicPlayer, PublicPlayer, Player } from '@poker-moons/shared/type';
+import type { ImmutablePublicPlayer, MutablePublicPlayer, Player, PublicPlayer } from '@poker-moons/shared/type';
 import { merge } from '@poker-moons/shared/util';
 import { DeepPartial } from 'ts-essentials';
 
