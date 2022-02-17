@@ -111,9 +111,9 @@ export class PlayerActionService {
         action: PlayerAction,
     ): Either<PokerMoonsError, PlayerAction> {
         if (player.id)
-            if (table.activeRound.activeSeat) return right(action);
-            else return left('PublicPlayer not in game');
-        else return left('PublicPlayer not in game');
+            if (table.activeRound.activeSeat === player.seatId) return right(action);
+            else return left("Not player's turn.");
+        else return left('Player not in game');
     }
 
     /**
