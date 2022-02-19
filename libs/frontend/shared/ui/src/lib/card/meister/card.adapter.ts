@@ -1,4 +1,4 @@
-import { Card } from '@poker-moons/shared/type';
+import { Card, Rank } from '@poker-moons/shared/type';
 import { gen } from './elements.cardmeister.min';
 
 /**
@@ -12,6 +12,23 @@ interface MeisterCardAttr {
     rank?: string;
     backcolour?: string;
     backtext?: string;
+}
+
+/**
+ * Converts the PokerMoons `Rank` to the Meister library rank value.
+ *
+ * @param rank - PokerMoons `Rank` of card
+ *
+ * @returns - Meister `Rank` of card
+ */
+function rankToCartMeisterRank(rank: Rank): string {
+    switch (rank) {
+        // Ace is displayed as '1' in meister
+        case '14':
+            return '1';
+        default:
+            return parseInt(rank).toString();
+    }
 }
 
 /**
@@ -34,7 +51,7 @@ export function cardToCardMeister(card: Card | null): MeisterCardAttr {
 
     return {
         suit: card.suit,
-        rank: parseInt(card.rank).toString(),
+        rank: rankToCartMeisterRank(card.rank),
     };
 }
 

@@ -19,5 +19,5 @@ const Template: Story<CommunityCardsComponent> = (args: CommunityCardsComponent)
 
 export const Primary = Template.bind({});
 Primary.args = {
-    cards: [{ suit: 'clubs', rank: '01' }],
+    cards: [{ suit: 'clubs', rank: '2' }],
 };
