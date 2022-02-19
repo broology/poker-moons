@@ -1,0 +1,90 @@
+$bg: #21232c;
+$primary: #d84712;
+
+@keyframes slideInFromTop {
+    0% {
+        transform: translateY(-100%);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+@keyframes slideInFromBottom {
+    0% {
+        transform: translateY(100%);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+.landing-btn {
+    position: relative;
+    display: inline-block;
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 4rem;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    color: $primary;
+    border: $primary 0.125em solid;
+    border-radius: 0.25em;
+    padding: 0.25em 1em;
+    text-shadow: 0 0 0.125em rgba(255, 255, 255, 20%), 0 0 0.45em $primary;
+    box-shadow: 0 0 0.5em 0 $primary, inset 0 0 0.5em 0 $primary;
+    animation: 0.8s ease-out 0s 1 slideInFromBottom, fadeIn 2s;
+    &::before {
+        pointer-events: none;
+        content: '';
+        position: absolute;
+        background: $primary;
+        top: 120%;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        transform: perspective(1em) rotateX(40deg) scale(1, 0.35);
+        filter: blur(1.5em);
+        opacity: 0.7;
+    }
+    &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        box-shadow: 0 0 2em 0.5em $primary;
+        opacity: 0;
+        background-color: $primary;
+        z-index: -1;
+        transition: opacity 100ms linear;
+    }
+    &:hover {
+        color: $bg;
+        text-shadow: none;
+        &::before {
+            opacity: 1;
+        }
+        &::after {
+            opacity: 1;
+        }
+    }
+    &:focus {
+        color: $bg;
+        text-shadow: none;
+        &::before {
+            opacity: 1;
+        }
+        &::after {
+            opacity: 1;
+        }
+    }
+}
