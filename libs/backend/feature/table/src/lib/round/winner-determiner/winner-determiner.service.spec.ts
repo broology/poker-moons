@@ -12,6 +12,7 @@ describe('WinnerDeterminerService', () => {
     let service: WinnerDeterminerService;
 
     let tableGatewayService: SpyObject<TableGatewayService>;
+    let tableStateManagerService: SpyObject<TableStateManagerService>;
     let potManagerService: SpyObject<PotManagerService>;
 
     beforeEach(async () => {
@@ -23,6 +24,7 @@ describe('WinnerDeterminerService', () => {
         service = module.get<WinnerDeterminerService>(WinnerDeterminerService);
 
         tableGatewayService = module.get(TableGatewayService);
+        tableStateManagerService = module.get(TableStateManagerService);
         potManagerService = module.get(PotManagerService);
     });
 
@@ -79,11 +81,15 @@ describe('WinnerDeterminerService', () => {
     });
 
     describe('determineWinner', () => {
-        it('should emit single winner', async () => {
+        it('should emit single winner and update their stack in the state', async () => {
             potManagerService.buildPot.mockReturnValueOnce(400).mockReturnValue(0);
             potManagerService.splitPot.mockReturnValueOnce(200);
 
             await service.determineWinner(tableId, { [player1.id]: player1, [player3.id]: player3 }, round);
+
+            expect(tableStateManagerService.updateTablePlayer).toHaveBeenCalledWith(tableId, player3.id, {
+                stack: player3.stack + 200,
+            });
 
             expect(tableGatewayService.emitTableEvent).toHaveBeenCalledWith(tableId, {
                 type: 'winner',

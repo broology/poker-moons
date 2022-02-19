@@ -156,15 +156,9 @@ export class WinnerDeterminerService {
                 const amountWon = this.potManagerService.splitPot(collectedSidePot, winnersToPay.length);
 
                 // Update winner's stack in server state
-                const updatedPlayerMap: Record<PlayerId, Player> = {
-                    ...playerMap,
-                    [winner.player.id]: {
-                        ...playerMap[winner.player.id],
-                        stack: playerMap[winner.player.id].stack + amountWon,
-                    },
-                };
-
-                await this.tableStateManagerService.updateTable(tableId, { playerMap: updatedPlayerMap });
+                await this.tableStateManagerService.updateTablePlayer(tableId, winner.player.id, {
+                    stack: playerMap[winner.player.id].stack + amountWon,
+                });
 
                 winnerMap[winner.player.id] = {
                     amountWon,

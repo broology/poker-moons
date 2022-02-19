@@ -1,4 +1,12 @@
-import { TableId, TABLE_NAMESPACE } from '@poker-moons/shared/type';
+import {
+    ClientTableState,
+    ImmutablePublicPlayer,
+    MutablePublicPlayer,
+    PlayerId,
+    ServerTableState,
+    TableId,
+    TABLE_NAMESPACE,
+} from '@poker-moons/shared/type';
 import { Logger } from '@nestjs/common';
 import { OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit, WebSocketGateway } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
@@ -44,9 +52,9 @@ export class TableGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
 
         client.join(tableId);
 
-        // Emit shared table state
-        const { name, seatMap, roundCount, activeRound } = serverTableState;
-        client.emit('connected', { name, seatMap, roundCount, activeRound });
+        // Emit client table state
+        const clientState = this.convertServerStateToClientState(tableId as TableId, serverTableState);
+        client.emit('connected', clientState);
     }
 
     /**
@@ -58,5 +66,31 @@ export class TableGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
         this.logger.log(`${client.handshake.address} disconnected from ${tableId}`);
 
         client.leave(tableId);
+    }
+
+    private convertServerStateToClientState(tableId: TableId, serverState: ServerTableState): ClientTableState {
+        const { name, seatMap, roundCount, activeRound, playerMap } = serverState;
+
+        const mutablePlayerMap: Record<PlayerId, MutablePublicPlayer> = {};
+        const immutablePlayerMap: Record<PlayerId, ImmutablePublicPlayer> = {};
+
+        for (const [playerId, player] of Object.entries(playerMap)) {
+            const { id, username, img, seatId, stack, status, called, cards } = player;
+
+            mutablePlayerMap[playerId as PlayerId] = { stack, status, called, cards };
+            immutablePlayerMap[playerId as PlayerId] = { id, username, img, seatId };
+        }
+
+        return {
+            tableId,
+            name,
+            seatMap,
+            roundCount,
+            activeRound,
+            playerId: null,
+            cards: [],
+            mutablePlayerMap,
+            immutablePlayerMap,
+        };
     }
 }
