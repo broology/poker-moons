@@ -1,4 +1,4 @@
-import { mockRound } from '@poker-moons/shared/testing';
+import { mockRound, mockPlayer } from '@poker-moons/shared/testing';
 import { TableId } from '@poker-moons/shared/type';
 import { mock, mockReset } from 'jest-mock-extended';
 import { Socket } from 'socket.io';
@@ -40,12 +40,15 @@ describe('TableGateway', () => {
         });
 
         it('should connect and emit the state', async () => {
+            const player = mockPlayer();
+            const { id, username, img, seatId, stack, status, called, cards } = player;
+
             tableStateManagerService.getTableById.mockResolvedValue({
                 name: 'Table 1',
                 seatMap: {},
                 roundCount: 1,
                 activeRound: mockRound(),
-                playerMap: {},
+                playerMap: { player_1: player },
                 deck: [],
             });
 
@@ -55,10 +58,15 @@ describe('TableGateway', () => {
 
             expect(mockSocket.join).toHaveBeenCalledWith(tableId);
             expect(mockSocket.emit).toHaveBeenCalledWith('connected', {
+                tableId,
                 name: 'Table 1',
                 seatMap: {},
                 roundCount: 1,
                 activeRound: mockRound(),
+                playerId: null,
+                cards: [],
+                mutablePlayerMap: { player_1: { stack, status, called, cards } },
+                immutablePlayerMap: { player_1: { id, username, img, seatId } },
             });
         });
     });
