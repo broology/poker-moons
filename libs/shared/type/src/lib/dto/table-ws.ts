@@ -11,7 +11,7 @@ interface GeneralTableEvent<Type> {
 }
 
 export interface ConnectedEvent extends GeneralTableEvent<'connected'> {
-    state: ClientTableState;
+    state: Omit<ClientTableState, 'playerId'>;
 }
 
 export interface PlayerJoinedTableEvent extends GeneralTableEvent<'playerJoined'> {

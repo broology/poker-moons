@@ -68,7 +68,10 @@ export class TableGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
         client.leave(tableId);
     }
 
-    private convertServerStateToClientState(tableId: TableId, serverState: ServerTableState): ClientTableState {
+    private convertServerStateToClientState(
+        tableId: TableId,
+        serverState: ServerTableState,
+    ): Omit<ClientTableState, 'playerId'> {
         const { name, seatMap, roundCount, activeRound, playerMap } = serverState;
 
         const mutablePlayerMap: Record<PlayerId, MutablePublicPlayer> = {};
@@ -77,7 +80,12 @@ export class TableGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
         for (const [playerId, player] of Object.entries(playerMap)) {
             const { id, username, img, seatId, stack, status, called, cards } = player;
 
-            mutablePlayerMap[playerId as PlayerId] = { stack, status, called, cards };
+            mutablePlayerMap[playerId as PlayerId] = {
+                stack,
+                status,
+                called,
+                cards: cards.length === 2 ? [null, null] : [],
+            };
             immutablePlayerMap[playerId as PlayerId] = { id, username, img, seatId };
         }
 
@@ -87,7 +95,6 @@ export class TableGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
             seatMap,
             roundCount,
             activeRound,
-            playerId: null,
             cards: [],
             mutablePlayerMap,
             immutablePlayerMap,
