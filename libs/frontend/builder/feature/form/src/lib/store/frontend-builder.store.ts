@@ -14,13 +14,7 @@ interface BuilderState {
 @Injectable()
 export class FrontendBuilderStore extends ComponentStore<BuilderState> {
     readonly loading$: Observable<boolean> = this.select((state) => state.loading);
-
-    constructor(private readonly tableApiService: TableApiService, private readonly router: Router) {
-        super({ loading: false });
-    }
-
     private readonly setLoading = this.updater((state, loading: boolean) => ({ ...state, loading }));
-
     readonly createTable = this.effect((dto: Observable<CreateTableRequest>) =>
         dto.pipe(
             tap(() => {
@@ -29,10 +23,10 @@ export class FrontendBuilderStore extends ComponentStore<BuilderState> {
             switchMap((req) =>
                 this.tableApiService.create(req).pipe(
                     tapResponse(
-                        (table) => {
+                        (tableId) => {
                             // Success
                             this.setLoading(false);
-                            this.router.navigate(['table', table.id]);
+                            this.router.navigate(['table', tableId]);
                         },
                         (error: HttpErrorResponse) => {
                             // Failed
@@ -44,4 +38,8 @@ export class FrontendBuilderStore extends ComponentStore<BuilderState> {
             ),
         ),
     );
+
+    constructor(private readonly tableApiService: TableApiService, private readonly router: Router) {
+        super({ loading: false });
+    }
 }
