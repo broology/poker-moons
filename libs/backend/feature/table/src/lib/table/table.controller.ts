@@ -8,12 +8,12 @@ export class TableController {
     constructor(private readonly tableService: TableService) {}
 
     @Post()
-    async create(@Body() dto: CreateTableRequestValidator): Promise<CreateTableResponse> {
+    create(@Body() dto: CreateTableRequestValidator): Promise<CreateTableResponse> {
         return this.tableService.create(dto);
     }
 
     @Get(':tableId')
-    async get(@Param() { tableId }: TableIdValidator): Promise<GetTableResponse> {
+    get(@Param() { tableId }: TableIdValidator): Promise<GetTableResponse> {
         return this.tableService.get(tableId);
     }
 }
