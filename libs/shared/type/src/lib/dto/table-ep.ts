@@ -1,18 +1,17 @@
-import { Table } from '../table';
+import { Table, TableId } from '../table';
 
 /**
  * POST /table
  */
 export type CreateTableRequest = Pick<Table, 'name'>;
-export type CreateTableResponse = Table;
+export type CreateTableResponse = TableId;
 
 /**
  * GET /table/id
  */
-export type GetTableResponse = Table;
+export type GetTableResponse = Pick<Table, 'id' | 'name'>;
 
 /**
  * PUT /table/id
  */
 export type UpdateTableRequest = Partial<Pick<Table, 'name'>>;
-export type UpdateTableResponse = Table;

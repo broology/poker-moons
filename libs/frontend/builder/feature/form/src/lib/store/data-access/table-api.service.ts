@@ -9,6 +9,8 @@ export class TableApiService {
     constructor(@Inject(NG_ENVIRONMENT) private readonly env: NgEnvironment, private readonly httpClient: HttpClient) {}
 
     create(dto: CreateTableRequest): Observable<CreateTableResponse> {
-        return this.httpClient.post<CreateTableResponse>(`${this.env.api}/table`, dto);
+        return this.httpClient.post<CreateTableResponse>(`${this.env.api}/table`, dto, {
+            responseType: 'text' as never,
+        });
     }
 }
