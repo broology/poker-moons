@@ -1,24 +1,26 @@
-import { Injectable, NotImplementedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import {
     CreateTableRequest,
     CreateTableResponse,
     GetTableResponse,
+    ServerTableState,
     TableId,
-    UpdateTableRequest,
-    UpdateTableResponse,
 } from '@poker-moons/shared/type';
+import { TableStateManagerService } from '../table-state-manager/table-state-manager.service';
 
 @Injectable()
 export class TableService {
-    create(dto: CreateTableRequest): CreateTableResponse {
-        throw new NotImplementedException();
+    constructor(private readonly tableStateManagerService: TableStateManagerService) {}
+
+    async create(dto: CreateTableRequest): Promise<CreateTableResponse> {
+        return await this.tableStateManagerService.createNewTable(dto.name);
     }
 
-    get(id: TableId): GetTableResponse {
-        throw new NotImplementedException();
-    }
-
-    update(id: TableId, dto: UpdateTableRequest): UpdateTableResponse {
-        throw new NotImplementedException();
+    async get(id: TableId): Promise<GetTableResponse> {
+        const serverTableState: ServerTableState = await this.tableStateManagerService.getTableById(id);
+        return {
+            id: id,
+            name: serverTableState.name,
+        };
     }
 }
