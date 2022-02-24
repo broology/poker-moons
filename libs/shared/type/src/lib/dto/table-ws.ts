@@ -1,7 +1,7 @@
 import type { Card } from '../card';
 import type { PlayerId, PlayerStatus, PublicPlayer, WinnerMap } from '../player';
 import type { RoundStatus } from '../round';
-import type { SharedTableState } from '../state';
+import type { ClientTableState } from '../state';
 import type { SeatId } from '../table';
 
 export const TABLE_NAMESPACE = 'table' as const;
@@ -11,7 +11,7 @@ interface GeneralTableEvent<Type> {
 }
 
 export interface ConnectedEvent extends GeneralTableEvent<'connected'> {
-    state: SharedTableState;
+    state: Omit<ClientTableState, 'playerId'>;
 }
 
 export interface PlayerJoinedTableEvent extends GeneralTableEvent<'playerJoined'> {

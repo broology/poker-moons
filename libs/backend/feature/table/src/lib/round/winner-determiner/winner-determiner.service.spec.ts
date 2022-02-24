@@ -6,22 +6,25 @@ import { TableGatewayService } from '../../shared/websocket/table-gateway.servic
 import { PotManagerService } from '../pot-manager/pot-manager.service';
 import { BadRequestException } from '@nestjs/common';
 import { playerMissingCards, roundMissingCards } from './winner-determiner.copy';
+import { TableStateManagerService } from '../../table-state-manager/table-state-manager.service';
 
 describe('WinnerDeterminerService', () => {
     let service: WinnerDeterminerService;
 
     let tableGatewayService: SpyObject<TableGatewayService>;
+    let tableStateManagerService: SpyObject<TableStateManagerService>;
     let potManagerService: SpyObject<PotManagerService>;
 
     beforeEach(async () => {
         const module = await createTestingModuleFactory({
             providers: [WinnerDeterminerService],
-            mocks: [TableGatewayService, PotManagerService],
+            mocks: [TableGatewayService, TableStateManagerService, PotManagerService],
         }).compile();
 
         service = module.get<WinnerDeterminerService>(WinnerDeterminerService);
 
         tableGatewayService = module.get(TableGatewayService);
+        tableStateManagerService = module.get(TableStateManagerService);
         potManagerService = module.get(PotManagerService);
     });
 
@@ -78,11 +81,15 @@ describe('WinnerDeterminerService', () => {
     });
 
     describe('determineWinner', () => {
-        it('should emit single winner', async () => {
+        it('should emit single winner and update their stack in the state', async () => {
             potManagerService.buildPot.mockReturnValueOnce(400).mockReturnValue(0);
             potManagerService.splitPot.mockReturnValueOnce(200);
 
-            await service.determineWinner(tableId, [player1, player3], round);
+            await service.determineWinner(tableId, { [player1.id]: player1, [player3.id]: player3 }, round);
+
+            expect(tableStateManagerService.updateTablePlayer).toHaveBeenCalledWith(tableId, player3.id, {
+                stack: player3.stack + 200,
+            });
 
             expect(tableGatewayService.emitTableEvent).toHaveBeenCalledWith(tableId, {
                 type: 'winner',
@@ -100,7 +107,7 @@ describe('WinnerDeterminerService', () => {
             potManagerService.buildPot.mockReturnValueOnce(400).mockReturnValue(0);
             potManagerService.splitPot.mockReturnValue(200);
 
-            await service.determineWinner(tableId, [player1, player2], round);
+            await service.determineWinner(tableId, { [player1.id]: player1, [player2.id]: player2 }, round);
 
             expect(tableGatewayService.emitTableEvent).toHaveBeenCalledWith(tableId, {
                 type: 'winner',
@@ -123,7 +130,17 @@ describe('WinnerDeterminerService', () => {
             potManagerService.buildPot.mockReturnValueOnce(1600).mockReturnValueOnce(600).mockReturnValue(0);
             potManagerService.splitPot.mockReturnValueOnce(1000).mockReturnValueOnce(600);
 
-            await service.determineWinner(tableId, [player1, player2, player3, player4, player5], round);
+            await service.determineWinner(
+                tableId,
+                {
+                    [player1.id]: player1,
+                    [player2.id]: player2,
+                    [player3.id]: player3,
+                    [player4.id]: player4,
+                    [player5.id]: player5,
+                },
+                round,
+            );
 
             expect(tableGatewayService.emitTableEvent).toHaveBeenCalledWith(tableId, {
                 type: 'winner',
@@ -145,9 +162,9 @@ describe('WinnerDeterminerService', () => {
         it('should throw bad request exception if the table does not have 5 cards', async () => {
             const invalidRound = mockRound({ pot: 1000, cards: [mockCard({ suit: 'clubs', rank: '10' })] });
 
-            await expect(service.determineWinner(tableId, [player1, player2], invalidRound)).rejects.toThrow(
-                new BadRequestException(roundMissingCards),
-            );
+            await expect(
+                service.determineWinner(tableId, { [player1.id]: player1, [player2.id]: player2 }, invalidRound),
+            ).rejects.toThrow(new BadRequestException(roundMissingCards));
         });
 
         it('should throw bad request exception if any player does not have 2 cards', async () => {
@@ -157,9 +174,9 @@ describe('WinnerDeterminerService', () => {
                 cards: [mockCard({ suit: 'clubs', rank: '2' })],
             });
 
-            await expect(service.determineWinner(tableId, [invalidPlayer], round)).rejects.toThrow(
-                new BadRequestException(playerMissingCards(invalidPlayer.id)),
-            );
+            await expect(
+                service.determineWinner(tableId, { [invalidPlayer.id]: invalidPlayer }, round),
+            ).rejects.toThrow(new BadRequestException(playerMissingCards(invalidPlayer.id)));
         });
     });
 });

@@ -1,14 +1,26 @@
-import { TableId, TABLE_NAMESPACE } from '@poker-moons/shared/type';
+import {
+    ClientTableState,
+    ImmutablePublicPlayer,
+    MutablePublicPlayer,
+    PlayerId,
+    ServerTableState,
+    TableId,
+    TABLE_NAMESPACE,
+} from '@poker-moons/shared/type';
 import { Logger } from '@nestjs/common';
 import { OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit, WebSocketGateway } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { TableGatewayService } from './table-gateway.service';
+import { TableStateManagerService } from '../../table-state-manager/table-state-manager.service';
 
 @WebSocketGateway({ namespace: TABLE_NAMESPACE })
 export class TableGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
     private logger = new Logger('Table Gateway');
 
-    constructor(private tableGatewayService: TableGatewayService) {}
+    constructor(
+        private tableGatewayService: TableGatewayService,
+        private readonly tableStateManagerService: TableStateManagerService,
+    ) {}
 
     afterInit(server: Server): void {
         this.tableGatewayService.init(server);
@@ -17,7 +29,7 @@ export class TableGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
     /**
      * Client joins a table's room when they connect to the table websocket
      */
-    handleConnection(client: Socket): void {
+    async handleConnection(client: Socket): Promise<void> {
         const tableId = client.handshake.query.tableId;
 
         // Confirm tableId was sent via socket
@@ -27,14 +39,22 @@ export class TableGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
             return;
         }
 
-        // TODO: Confirm that the tableId given in the socket request actually links to a table
+        const serverTableState = await this.tableStateManagerService.getTableById(tableId as TableId);
+
+        // Confirm that the tableId given in the socket request actually links to a table state
+        if (!serverTableState) {
+            this.logger.error('Table Gateway - attempted to connect to a table that does not exist');
+            client.disconnect();
+            return;
+        }
 
         this.logger.log(`${client.handshake.address} connected to ${tableId}`);
 
         client.join(tableId);
 
-        // TODO: Emit state
-        client.emit('connected', {});
+        // Emit client table state
+        const clientState = this.convertServerStateToClientState(tableId as TableId, serverTableState);
+        client.emit('connected', clientState);
     }
 
     /**
@@ -46,5 +66,38 @@ export class TableGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
         this.logger.log(`${client.handshake.address} disconnected from ${tableId}`);
 
         client.leave(tableId);
+    }
+
+    private convertServerStateToClientState(
+        tableId: TableId,
+        serverState: ServerTableState,
+    ): Omit<ClientTableState, 'playerId'> {
+        const { name, seatMap, roundCount, activeRound, playerMap } = serverState;
+
+        const mutablePlayerMap: Record<PlayerId, MutablePublicPlayer> = {};
+        const immutablePlayerMap: Record<PlayerId, ImmutablePublicPlayer> = {};
+
+        for (const [playerId, player] of Object.entries(playerMap)) {
+            const { id, username, img, seatId, stack, status, called, cards } = player;
+
+            mutablePlayerMap[playerId as PlayerId] = {
+                stack,
+                status,
+                called,
+                cards: cards.length === 2 ? [null, null] : [],
+            };
+            immutablePlayerMap[playerId as PlayerId] = { id, username, img, seatId };
+        }
+
+        return {
+            tableId,
+            name,
+            seatMap,
+            roundCount,
+            activeRound,
+            cards: [],
+            mutablePlayerMap,
+            immutablePlayerMap,
+        };
     }
 }

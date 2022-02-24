@@ -1,9 +1,12 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { Card, Rank } from '@poker-moons/shared/type';
+import { Card, Rank, TableId } from '@poker-moons/shared/type';
+import { TableStateManagerService } from '../../table-state-manager/table-state-manager.service';
 import { generateRandomNumber } from './util/rng';
 
 @Injectable()
 export class DeckManagerService {
+    constructor(private readonly tableStateManagerService: TableStateManagerService) {}
+
     /**
      * Randomly draws a card from the deck
      *
@@ -14,7 +17,7 @@ export class DeckManagerService {
      *
      * @returns the drawn card (which can then be added to the cards on the round or a player's cards)
      */
-    drawCard(tableId: string, deck: Card[]): Card {
+    async drawCard(tableId: TableId, deck: Card[]): Promise<Card> {
         const randomNumber = generateRandomNumber(deck.length);
 
         const card = deck[randomNumber];
@@ -26,7 +29,8 @@ export class DeckManagerService {
         // Remove the selected card from the deck
         deck.splice(randomNumber, 1);
 
-        // TODO: update the table's deck in the server state
+        // Update the table's deck in the server state
+        await this.tableStateManagerService.updateTable(tableId, { deck });
 
         return card;
     }
@@ -36,7 +40,7 @@ export class DeckManagerService {
      *
      * @param tableId - the table to build the deck for
      */
-    buildDeck(tableId: string): Card[] {
+    async buildDeck(tableId: TableId): Promise<Card[]> {
         const deck: Card[] = [];
 
         // We draw from the deck randomly, so it doesn't need to be shuffled
@@ -49,7 +53,8 @@ export class DeckManagerService {
             );
         }
 
-        // TODO: update the table's deck in the server state
+        // Update the table's deck in the server state
+        await this.tableStateManagerService.updateTable(tableId, { deck });
 
         return deck;
     }

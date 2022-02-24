@@ -1,5 +1,5 @@
 import { Injectable, NotImplementedException } from '@nestjs/common';
-import { mockPublicPlayer, mockServerTable } from '@poker-moons/shared/testing';
+import { mockPublicPlayer, mockServerTableState } from '@poker-moons/shared/testing';
 import {
     CallPlayerAction,
     CheckPlayerAction,
@@ -22,7 +22,7 @@ export class PlayerActionService {
 
     perform(dto: PerformPlayerActionRequest): PerformPlayerActionResponse {
         const player: PublicPlayer = mockPublicPlayer();
-        const table: ServerTableState = mockServerTable();
+        const table: ServerTableState = mockServerTableState();
 
         switch (dto.action.type) {
             case 'fold':

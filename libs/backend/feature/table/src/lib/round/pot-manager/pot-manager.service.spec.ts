@@ -1,16 +1,22 @@
 import { BadRequestException } from '@nestjs/common';
-import { Test } from '@nestjs/testing';
+import { createTestingModuleFactory, SpyObject } from '@trellisorg/nest-spectator';
+import { TableStateManagerService } from '../../table-state-manager/table-state-manager.service';
 import { PotManagerService } from './pot-manager.service';
 
 describe('PotManagerService', () => {
     let service: PotManagerService;
 
+    let tableStateManagerService: SpyObject<TableStateManagerService>;
+
     beforeEach(async () => {
-        const module = await Test.createTestingModule({
+        const module = await createTestingModuleFactory({
             providers: [PotManagerService],
+            mocks: [TableStateManagerService],
         }).compile();
 
         service = module.get<PotManagerService>(PotManagerService);
+
+        tableStateManagerService = module.get(TableStateManagerService);
     });
 
     it('should be created', () => {
@@ -18,14 +24,16 @@ describe('PotManagerService', () => {
     });
 
     describe('incrementPot', () => {
-        it('should increment the pot the designated amount', () => {
-            const result = service.incrementPot(500, 10);
+        const tableId = 'table_1';
 
-            expect(result).toEqual(510);
+        it('should increment the pot the designated amount', async () => {
+            await service.incrementPot(tableId, 500, 10);
+
+            expect(tableStateManagerService.updateRound).toHaveBeenCalledWith(tableId, { pot: 500 + 10 });
         });
 
-        it('should throw BadRequestException if amount is not an integer', () => {
-            expect(() => service.incrementPot(500, 10.5)).toThrow(
+        it('should throw BadRequestException if amount is not an integer', async () => {
+            await expect(() => service.incrementPot(tableId, 500, 10.5)).rejects.toThrow(
                 new BadRequestException('The pot can only be incremented by integer amounts.'),
             );
         });

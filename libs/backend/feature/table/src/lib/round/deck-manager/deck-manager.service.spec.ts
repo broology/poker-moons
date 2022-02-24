@@ -1,16 +1,22 @@
 import { InternalServerErrorException } from '@nestjs/common';
-import { Test } from '@nestjs/testing';
 import { DeckManagerService } from './deck-manager.service';
+import { createTestingModuleFactory, SpyObject } from '@trellisorg/nest-spectator';
+import { TableStateManagerService } from '../../table-state-manager/table-state-manager.service';
 
 describe('DeckManagerService', () => {
     let service: DeckManagerService;
 
+    let tableStateManagerService: SpyObject<TableStateManagerService>;
+
     beforeEach(async () => {
-        const module = await Test.createTestingModule({
+        const module = await createTestingModuleFactory({
             providers: [DeckManagerService],
+            mocks: [TableStateManagerService],
         }).compile();
 
         service = module.get<DeckManagerService>(DeckManagerService);
+
+        tableStateManagerService = module.get(TableStateManagerService);
     });
 
     it('should be created', () => {
@@ -18,10 +24,10 @@ describe('DeckManagerService', () => {
     });
 
     describe('drawCard', () => {
-        it('should draw a random card from the deck', () => {
-            const deck = service.buildDeck('tableId');
+        it('should draw a random card from the deck', async () => {
+            const deck = await service.buildDeck('table_1');
 
-            const result = service.drawCard('tableId', deck);
+            const result = await service.drawCard('table_1', deck);
 
             expect(result).toEqual({
                 suit: expect.stringMatching('^clubs$|^spades$|^diamonds$|^hearts$'),
@@ -29,16 +35,24 @@ describe('DeckManagerService', () => {
             });
         });
 
-        it('should throw InternalServerErrorException if the random number generated does not match an index in the deck', () => {
-            expect(() => service.drawCard('tableId', [])).toThrow(
+        it('should update the deck for the table in the server state', async () => {
+            const deck = await service.buildDeck('table_1');
+
+            await service.drawCard('table_1', deck);
+
+            expect(tableStateManagerService.updateTable).toHaveBeenCalled();
+        });
+
+        it('should throw InternalServerErrorException if the random number generated does not match an index in the deck', async () => {
+            await expect(() => service.drawCard('table_1', [])).rejects.toThrow(
                 new InternalServerErrorException('The random number generated does not match an index in the deck.'),
             );
         });
     });
 
     describe('buildDeck', () => {
-        it('should return the deck', () => {
-            const result = service.buildDeck('tableId');
+        it('should return the deck', async () => {
+            const result = await service.buildDeck('table_1');
 
             expect(result).toEqual([
                 { rank: '2', suit: 'clubs' },
@@ -95,5 +109,11 @@ describe('DeckManagerService', () => {
                 { rank: '14', suit: 'spades' },
             ]);
         });
+    });
+
+    it('should update the deck for the table in the server state', async () => {
+        const deck = await service.buildDeck('table_1');
+
+        expect(tableStateManagerService.updateTable).toHaveBeenCalledWith('table_1', { deck });
     });
 });
