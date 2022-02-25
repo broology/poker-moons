@@ -1,11 +1,13 @@
 import { Observable } from 'rxjs';
-import { io, ManagerOptions, Socket, SocketOptions } from 'socket.io-client';
+import { Manager, ManagerOptions, Socket, SocketOptions } from 'socket.io-client';
 
 export class SocketClient {
     private client: Socket;
 
-    constructor(uri: string, options: Partial<SocketOptions & ManagerOptions>) {
-        this.client = io(uri, options);
+    constructor(uri: string, namespace: string, options: Partial<SocketOptions & ManagerOptions>) {
+        const manager = new Manager(uri, options);
+
+        this.client = manager.socket(`/${namespace}`);
     }
 
     connect(): void {

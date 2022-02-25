@@ -45,6 +45,7 @@
         "@nestjs/common": "^8.2.0",
         "@nestjs/core": "^8.2.0",
         "@nestjs/platform-express": "^8.2.0",
+        "@nestjs/platform-socket.io": "^8.3.1",
         "@nestjs/websockets": "^8.2.3",
         "@ngrx/component-store": "^13.0.1",
         "@ngrx/effects": "^13.0.1",
