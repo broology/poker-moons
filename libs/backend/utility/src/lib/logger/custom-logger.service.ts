@@ -31,6 +31,7 @@ const transports = [
         datePattern: 'YYYY-MM-DD',
         zippedArchive: true,
         level: process.env.LOG_LEVEL,
+        maxFiles: '14d',
     }),
 ];
 
