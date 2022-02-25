@@ -12,12 +12,13 @@ export class TableController {
 
     @Post()
     create(@Body() dto: CreateTableRequestValidator): Promise<CreateTableResponse> {
-        this.logger.warn('FUCK YOU');
+        this.logger.debug('Received create table request: ' + dto);
         return this.tableService.create(dto);
     }
 
     @Get(':tableId')
     get(@Param() { tableId }: TableIdValidator): Promise<GetTableResponse> {
+        this.logger.debug('Received get table request for: ' + tableId);
         return this.tableService.get(tableId);
     }
 }

@@ -16,12 +16,14 @@ export class TableService {
     constructor(private readonly tableStateManagerService: TableStateManagerService) {}
 
     async create(dto: CreateTableRequest): Promise<CreateTableResponse> {
-        this.logger.debug('YOUR MOM');
+        this.logger.log('Creating new table');
         return await this.tableStateManagerService.createNewTable(dto.name);
     }
 
     async get(id: TableId): Promise<GetTableResponse> {
         const serverTableState: ServerTableState = await this.tableStateManagerService.getTableById(id);
+        this.logger.log('Got table: ' + id);
+        this.logger.debug('returning: ' + JSON.stringify({ id: id, name: serverTableState.name }, null, 4));
         return {
             id: id,
             name: serverTableState.name,
