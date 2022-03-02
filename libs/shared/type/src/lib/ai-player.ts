@@ -8,12 +8,15 @@ export type PersonalityTrait = typeof personalityTrait[number];
 export const difficulty = ['Easy', 'Normal', 'Hard', 'Chad'];
 export type Difficulty = typeof difficulty[number];
 
+export const difficultyFactor = [10, 5, 2.5, 1] as const;
+export type DifficultyFactor = typeof difficultyFactor[number];
+
 export type BasePlayer = Pick<Player, 'id' | 'cards' | 'stack' | 'status' | 'called'>;
 
 export interface AIPlayer extends BasePlayer {
 
     difficulty: Difficulty;
-    difficultyFactor: number;
+    difficultyFactor: DifficultyFactor;
     riskFactor: number;
     personalityTraits: PersonalityTrait[];
 
