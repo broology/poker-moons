@@ -44,12 +44,6 @@ class CheckPlayerActionValidator implements CheckPlayerAction {
 }
 
 export class PerformPlayerActionRequestValidator implements PerformPlayerActionRequest {
-    @IsEntityId(TABLE_PREFIX)
-    tableId!: TableId;
-
-    @IsEntityId(PLAYER_PREFIX)
-    playerId!: PlayerId;
-
     @IsDefined()
     @ValidateNested()
     @Type(() => BasePlayerActionValidator, {
@@ -65,4 +59,12 @@ export class PerformPlayerActionRequestValidator implements PerformPlayerActionR
         },
     })
     action!: PlayerAction;
+}
+
+export class PerformPlayerActionParamValidator {
+    @IsEntityId(TABLE_PREFIX)
+    tableId!: TableId;
+
+    @IsEntityId(PLAYER_PREFIX)
+    playerId!: PlayerId;
 }

@@ -1,5 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { PerformPlayerActionRequest, PerformPlayerActionResponse, ServerTableState } from '@poker-moons/shared/type';
+import {
+    PerformPlayerActionRequest,
+    PerformPlayerActionResponse,
+    PlayerId,
+    ServerTableState,
+    TableId,
+} from '@poker-moons/shared/type';
 import { pipe } from 'fp-ts/lib/function';
 import { TableStateManagerService } from '../table-state-manager/table-state-manager.service';
 import { CallActionHandlerService } from './handlers/call/call-action-handler.service';
@@ -20,9 +26,13 @@ export class PlayerActionService {
         private readonly tableStateManagerService: TableStateManagerService,
     ) {}
 
-    async perform(dto: PerformPlayerActionRequest): Promise<PerformPlayerActionResponse> {
-        const table: ServerTableState = await this.tableStateManagerService.getTableById(dto.tableId);
-        const player = table.playerMap[dto.playerId];
+    async perform(
+        tableId: TableId,
+        playerId: PlayerId,
+        dto: PerformPlayerActionRequest,
+    ): Promise<PerformPlayerActionResponse> {
+        const table: ServerTableState = await this.tableStateManagerService.getTableById(tableId);
+        const player = table.playerMap[playerId];
 
         switch (dto.action.type) {
             case 'call':
