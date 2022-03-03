@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { RouterModule } from '@nestjs/core';
+import { TableGatewayModule } from './shared/websocket/table-gateway.module';
 import { TableModule } from './table/table.module';
-import { TableStateManagerModule } from './table-state-manager/table-state-manager.module';
 
 @Module({
     imports: [
@@ -12,7 +12,7 @@ import { TableStateManagerModule } from './table-state-manager/table-state-manag
                 module: TableModule,
             },
         ]),
-        TableStateManagerModule,
+        TableGatewayModule,
     ],
 })
 export class BackendFeatureTableModule {}

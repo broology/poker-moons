@@ -1,6 +1,6 @@
 import { Inject, Injectable, OnDestroy } from '@angular/core';
 import { NgEnvironment, NG_ENVIRONMENT } from '@poker-moons/frontend/shared/util/environment';
-import { TableEvent, TableId } from '@poker-moons/shared/type';
+import { TableEvent, TableId, TABLE_NAMESPACE } from '@poker-moons/shared/type';
 import { Observable } from 'rxjs';
 import { SocketClient } from '../util/socket-client';
 
@@ -16,7 +16,7 @@ export class TableSocketService implements OnDestroy {
      * @param tableId - The ID of the table the socket is being connected to
      */
     initialize(tableId: TableId): void {
-        this.socket = new SocketClient(this.env.api, {
+        this.socket = new SocketClient(this.env.api, TABLE_NAMESPACE, {
             query: { tableId },
             reconnection: true,
             transports: ['websocket', 'polling'],

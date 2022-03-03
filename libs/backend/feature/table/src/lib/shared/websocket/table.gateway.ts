@@ -1,3 +1,4 @@
+import { OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit, WebSocketGateway } from '@nestjs/websockets';
 import {
     ClientTableState,
     ImmutablePublicPlayer,
@@ -7,11 +8,10 @@ import {
     TABLE_NAMESPACE,
     TableId,
 } from '@poker-moons/shared/type';
-import { OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit, WebSocketGateway } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
-import { TableGatewayService } from './table-gateway.service';
 import { TableStateManagerService } from '../../table-state-manager/table-state-manager.service';
 import { CustomLoggerService } from '@poker-moons/backend/utility';
+import { TableGatewayService } from './table-gateway.service';
 
 @WebSocketGateway({ namespace: TABLE_NAMESPACE })
 export class TableGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {

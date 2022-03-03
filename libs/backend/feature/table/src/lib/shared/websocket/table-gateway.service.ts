@@ -1,10 +1,10 @@
-import { TableEvent, TableId } from '@poker-moons/shared/type';
 import { Injectable } from '@nestjs/common';
+import { TableEvent, TableId } from '@poker-moons/shared/type';
 import { Server } from 'socket.io';
 
 @Injectable()
 export class TableGatewayService {
-    private server: Server;
+    private server!: Server;
 
     init(server: Server): void {
         this.server = server;
