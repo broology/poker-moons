@@ -5,9 +5,13 @@ import type {
     PerformPlayerActionRequest,
     PlayerAction,
     PlayerActionType,
+    PlayerId,
     RaisePlayerAction,
+    TableId,
 } from '@poker-moons/shared/type';
+import { PLAYER_PREFIX, TABLE_PREFIX } from '@poker-moons/shared/type';
 import { playerActions } from '@poker-moons/shared/type';
+import { IsEntityId } from '@poker-moons/shared/util';
 import { Type } from 'class-transformer';
 import { Equals, IsDefined, IsIn, IsInt, IsPositive, ValidateNested } from 'class-validator';
 
@@ -40,6 +44,12 @@ class CheckPlayerActionValidator implements CheckPlayerAction {
 }
 
 export class PerformPlayerActionRequestValidator implements PerformPlayerActionRequest {
+    @IsEntityId(TABLE_PREFIX)
+    tableId!: TableId;
+
+    @IsEntityId(PLAYER_PREFIX)
+    playerId!: PlayerId;
+
     @IsDefined()
     @ValidateNested()
     @Type(() => BasePlayerActionValidator, {
