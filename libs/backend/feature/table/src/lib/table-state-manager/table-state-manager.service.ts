@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Player, PlayerId, Round, SeatId, ServerTableState, TableId } from '@poker-moons/shared/type';
 import { GenericStateServiceImpl, STATE_SERVICE } from '@poker-moons/backend/data-access/state';
+import { CustomLoggerService } from '@poker-moons/backend/utility';
 
 const initialTableState: ServerTableState = {
     name: '',
@@ -29,6 +30,8 @@ const initialTableState: ServerTableState = {
 
 @Injectable()
 export class TableStateManagerService {
+    private logger = new CustomLoggerService(TableStateManagerService.name);
+
     constructor(@Inject(STATE_SERVICE) private readonly stateService: GenericStateServiceImpl) {}
 
     /**
@@ -39,6 +42,7 @@ export class TableStateManagerService {
      */
     public async createNewTable(newTableName: string): Promise<TableId> {
         const newTableState: ServerTableState = { ...initialTableState, name: newTableName };
+        this.logger.debug('Newly created table state: ' + JSON.stringify(newTableState, null, 4));
         return this.stateService.create(newTableState);
     }
 
@@ -76,6 +80,7 @@ export class TableStateManagerService {
             ...tableToUpdate.playerMap[updatedPlayerId],
             ...updatedPlayer,
         };
+        this.logger.debug('Updated table player (full table): ' + JSON.stringify(tableToUpdate, null, 4));
         await this.stateService.update(id, tableToUpdate);
     }
 
@@ -90,6 +95,7 @@ export class TableStateManagerService {
             ...tableToUpdate.playerMap,
             [newPlayer.id]: newPlayer,
         };
+        this.logger.debug('Newly added player (full table): ' + JSON.stringify(tableToUpdate, null, 4));
         await this.stateService.update(id, tableToUpdate);
     }
 
@@ -104,6 +110,7 @@ export class TableStateManagerService {
             ...tableToUpdate.activeRound,
             ...updatedRound,
         };
+        this.logger.debug('Newly updated round (full table): ' + JSON.stringify(tableToUpdate, null, 4));
         await this.stateService.update(id, tableToUpdate);
     }
 
@@ -118,6 +125,7 @@ export class TableStateManagerService {
             ...tableToUpdate.seatMap,
             ...updatedSeatMap,
         };
+        this.logger.debug('Newly updated seat map (full table): ' + JSON.stringify(tableToUpdate, null, 4));
         await this.stateService.update(id, tableToUpdate);
     }
 

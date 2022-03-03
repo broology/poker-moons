@@ -14,11 +14,13 @@ import {
 } from '@poker-moons/shared/type';
 import { Either, isRight, left, right } from 'fp-ts/lib/Either';
 import { pipe } from 'fp-ts/lib/function';
-import { match, __ } from 'ts-pattern';
+import { __, match } from 'ts-pattern';
+import { CustomLoggerService } from '@poker-moons/backend/utility';
 
 @Injectable()
 export class PlayerActionService {
     //@mlevi15 These functions and validators can be separated into multiple services for better organization if you see fit.
+    private logger = new CustomLoggerService(PlayerActionService.name);
 
     perform(dto: PerformPlayerActionRequest): PerformPlayerActionResponse {
         const player: PublicPlayer = mockPublicPlayer();

@@ -2,11 +2,12 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import helmet from 'helmet';
 import { AppModule } from './app/app.module';
+import { CustomLoggerService } from '@poker-moons/backend/utility';
 
 const logger = new Logger('Bootstrap');
 
 async function bootstrap() {
-    const app = await NestFactory.create(AppModule);
+    const app = await NestFactory.create(AppModule, { logger: new CustomLoggerService() });
 
     // Use helmet to follow general security practices
     app.use(helmet());

@@ -40,3 +40,6 @@ Thumbs.db
 
 # Angular 13 Cache files
 .angular
+
+#logs
+/logs
