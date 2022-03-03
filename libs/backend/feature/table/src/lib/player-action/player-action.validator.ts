@@ -1,4 +1,5 @@
 import type {
+    AllInPlayerAction,
     CallPlayerAction,
     CheckPlayerAction,
     FoldPlayerAction,
@@ -43,6 +44,11 @@ class CheckPlayerActionValidator implements CheckPlayerAction {
     type!: 'check';
 }
 
+class AllInPlayerActionValidator implements AllInPlayerAction {
+    @Equals('all-in')
+    type!: 'all-in';
+}
+
 export class PerformPlayerActionRequestValidator implements PerformPlayerActionRequest {
     @IsDefined()
     @ValidateNested()
@@ -55,6 +61,7 @@ export class PerformPlayerActionRequestValidator implements PerformPlayerActionR
                 { name: 'call', value: CallPlayerActionValidator },
                 { name: 'raise', value: RaisePlayerActionValidator },
                 { name: 'check', value: CheckPlayerActionValidator },
+                { name: 'all-in', value: AllInPlayerActionValidator },
             ],
         },
     })

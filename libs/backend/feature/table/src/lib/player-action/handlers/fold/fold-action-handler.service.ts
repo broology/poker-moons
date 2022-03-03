@@ -45,6 +45,7 @@ export class FoldActionHandlerService {
         const playerTurn = validatePlayerTurn(table, player, action);
 
         if (isRight(playerTurn)) return right(action);
+
         return playerTurn;
     }
 }

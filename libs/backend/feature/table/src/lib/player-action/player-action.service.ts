@@ -13,12 +13,14 @@ import { CheckActionHandlerService } from './handlers/check/check-action-handler
 import { FoldActionHandlerService } from './handlers/fold/fold-action-handler.service';
 import { RaiseActionHandlerService } from './handlers/raise/raiser-action-handler.service';
 import { CustomLoggerService } from '@poker-moons/backend/utility';
+import { AllInActionHandlerService } from './handlers/all-in/all-in-action-handler.service';
 
 @Injectable()
 export class PlayerActionService {
     private logger = new CustomLoggerService(PlayerActionService.name);
 
     constructor(
+        private readonly allInActionHandlerService: AllInActionHandlerService,
         private readonly callActionHandlerService: CallActionHandlerService,
         private readonly checkActionHandlerService: CheckActionHandlerService,
         private readonly foldActionHandlerService: FoldActionHandlerService,
@@ -35,6 +37,12 @@ export class PlayerActionService {
         const player = table.playerMap[playerId];
 
         switch (dto.action.type) {
+            case 'all-in':
+                pipe(
+                    this.allInActionHandlerService.canAllIn(table, player, dto.action),
+                    this.allInActionHandlerService.allIn,
+                );
+                break;
             case 'call':
                 pipe(
                     this.callActionHandlerService.canCall(table, player, dto.action),
