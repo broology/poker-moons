@@ -3,6 +3,10 @@ import { NestFactory } from '@nestjs/core';
 import helmet from 'helmet';
 import { AppModule } from './app/app.module';
 import { CustomLoggerService } from '@poker-moons/backend/utility';
+import { config } from 'dotenv-safe';
+
+//config({ sample: join(__dirname, '.env.sample') });
+config({ sample: process.cwd() + '/apps/backend/.env.sample', allowEmptyValues: true });
 
 const logger = new Logger('Bootstrap');
 
