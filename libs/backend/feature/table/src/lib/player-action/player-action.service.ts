@@ -51,7 +51,7 @@ export class PlayerActionService {
                 break;
             case 'check':
                 pipe(
-                    this.checkActionHandlerService.canCheck(table, player, dto.action),
+                    this.checkActionHandlerService.canCheck({ ...table, id: tableId }, player, dto.action),
                     this.checkActionHandlerService.check,
                 );
                 break;
