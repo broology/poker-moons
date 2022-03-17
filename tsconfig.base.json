@@ -18,6 +18,9 @@
         "paths": {
             "@poker-moons/backend/data-access/state": ["libs/backend/data-access/state/src/index.ts"],
             "@poker-moons/backend/feature/table": ["libs/backend/feature/table/src/index.ts"],
+            "@poker-moons/backend/shared/service/job-scheduler": [
+                "libs/backend/shared/service/job-scheduler/src/index.ts"
+            ],
             "@poker-moons/backend/utility": ["libs/backend/utility/src/index.ts"],
             "@poker-moons/frontend/builder/feature/form": ["libs/frontend/builder/feature/form/src/index.ts"],
             "@poker-moons/frontend/builder/shell": ["libs/frontend/builder/shell/src/index.ts"],
