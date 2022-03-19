@@ -1,8 +1,9 @@
-import { MockStateService } from './mock-state.service';
 import { Test } from '@nestjs/testing';
-import { Player, PlayerId, Round, ServerTableState, TableId } from '@poker-moons/shared/type';
+import { mockPlayer, mockRound, mockServerTableState } from '@poker-moons/shared/testing';
+import { Player, PlayerId, ServerTableState, TableId } from '@poker-moons/shared/type';
+import { MockStateService } from './mock-state.service';
 
-const mockPlayer: Player = {
+const player = mockPlayer({
     id: `player_${'1'}`,
     username: 'test',
     img: 'test',
@@ -11,8 +12,8 @@ const mockPlayer: Player = {
     called: 0,
     seatId: null,
     cards: [],
-};
-const mockRound: Round = {
+});
+const round = mockRound({
     pot: 0,
     toCall: 0,
     turnCount: 0,
@@ -21,16 +22,17 @@ const mockRound: Round = {
     dealerSeat: 0,
     smallBlind: 0,
     cards: [],
-};
-const mockTableState: ServerTableState = {
+});
+
+const mockTableState = mockServerTableState({
     id: 'table_1',
     name: 'test',
     deck: [],
-    playerMap: { player_1: mockPlayer },
+    playerMap: { player_1: player },
     seatMap: { 0: undefined, 1: undefined, 2: undefined, 3: undefined, 4: undefined, 5: undefined },
     roundCount: 0,
-    activeRound: mockRound,
-};
+    activeRound: round,
+});
 
 describe('MockStateService', () => {
     let service: MockStateService;
@@ -63,15 +65,15 @@ describe('MockStateService', () => {
 
         it('should get the correct table when multiple are created', async () => {
             await service.create(mockTableState);
-            const mockState: ServerTableState = {
+            const mockState = mockServerTableState({
                 id: 'table_2',
                 name: 'test2',
                 deck: [],
-                playerMap: { player_1: mockPlayer },
+                playerMap: { player_1: mockPlayer({}) },
                 seatMap: { 0: undefined, 1: undefined, 2: undefined, 3: undefined, 4: undefined, 5: undefined },
                 roundCount: 0,
-                activeRound: mockRound,
-            };
+                activeRound: round,
+            });
             await service.create(mockState);
             const table1: ServerTableState = await service.getState('table_1');
             expect(table1.name).toEqual('test');
@@ -131,7 +133,7 @@ describe('MockStateService', () => {
 
         it('should add a new player to playermap', async () => {
             await service.create(mockTableState);
-            const newPlayer: Player = {
+            const newPlayer = mockPlayer({
                 id: `player_${'2'}`,
                 username: 'Bob',
                 img: 'test',
@@ -140,7 +142,7 @@ describe('MockStateService', () => {
                 called: 0,
                 seatId: null,
                 cards: [],
-            };
+            });
             const table: ServerTableState = await service.getState('table_1');
             const playerMap: Record<PlayerId, Player> = table.playerMap;
             let updatedPlayerMap: Record<PlayerId, Player> = {

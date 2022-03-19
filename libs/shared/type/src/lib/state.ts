@@ -3,7 +3,7 @@ import type { Card } from './card';
 import type { MutablePublicPlayer, PlayerId } from './player';
 import type { Table, TableId } from './table';
 
-export type SharedTableState = Pick<Table, 'name' | 'seatMap' | 'roundCount' | 'activeRound'>;
+export type SharedTableState = Pick<Table, 'name' | 'seatMap' | 'roundCount' | 'activeRound' | 'status' | 'startDate'>;
 
 export interface ClientTableState extends SharedTableState {
     cards: [Card, Card] | [];

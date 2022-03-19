@@ -1,16 +1,16 @@
 import { OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit, WebSocketGateway } from '@nestjs/websockets';
+import { CustomLoggerService } from '@poker-moons/backend/utility';
 import {
     ClientTableState,
     ImmutablePublicPlayer,
     MutablePublicPlayer,
     PlayerId,
     ServerTableState,
-    TABLE_NAMESPACE,
     TableId,
+    TABLE_NAMESPACE,
 } from '@poker-moons/shared/type';
 import { Server, Socket } from 'socket.io';
 import { TableStateManagerService } from '../../table-state-manager/table-state-manager.service';
-import { CustomLoggerService } from '@poker-moons/backend/utility';
 import { TableGatewayService } from './table-gateway.service';
 
 @WebSocketGateway({ namespace: TABLE_NAMESPACE })
@@ -72,19 +72,20 @@ export class TableGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
         tableId: TableId,
         serverState: ServerTableState,
     ): Omit<ClientTableState, 'playerId'> {
-        const { name, seatMap, roundCount, activeRound, playerMap } = serverState;
+        const { name, seatMap, roundCount, activeRound, playerMap, startDate, status } = serverState;
 
         const mutablePlayerMap: Record<PlayerId, MutablePublicPlayer> = {};
         const immutablePlayerMap: Record<PlayerId, ImmutablePublicPlayer> = {};
 
         for (const [playerId, player] of Object.entries(playerMap)) {
-            const { id, username, img, seatId, stack, status, called, cards } = player;
+            const { id, username, img, seatId, stack, status, called, ready, cards } = player;
 
             mutablePlayerMap[playerId as PlayerId] = {
                 stack,
                 status,
                 called,
                 cards: cards.length === 2 ? [null, null] : [],
+                ready,
             };
             immutablePlayerMap[playerId as PlayerId] = { id, username, img, seatId };
         }
@@ -98,6 +99,8 @@ export class TableGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
             cards: [],
             mutablePlayerMap,
             immutablePlayerMap,
+            startDate,
+            status,
         };
     }
 }

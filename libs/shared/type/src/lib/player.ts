@@ -26,6 +26,11 @@ export interface Player {
     username: string;
 
     /**
+     * Whether the player is ready to play or not.
+     */
+    ready: boolean;
+
+    /**
      * The random profile image for player
      */
     img: string;
@@ -73,7 +78,7 @@ export interface PublicPlayer extends StrictOmit<Player, 'cards'> {
 /**
  * Data on the player that is to be frequently updated during the game
  */
-export type MutablePublicPlayer = Pick<PublicPlayer, 'stack' | 'status' | 'called' | 'cards'>;
+export type MutablePublicPlayer = Pick<PublicPlayer, 'stack' | 'status' | 'called' | 'cards' | 'ready'>;
 
 /**
  * Data on the player that will stay the same during the game (mostly)

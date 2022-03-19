@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Player, PlayerId, Round, SeatId, ServerTableState, TableId } from '@poker-moons/shared/type';
 import { GenericStateServiceImpl, STATE_SERVICE } from '@poker-moons/backend/data-access/state';
 import { CustomLoggerService } from '@poker-moons/backend/utility';
+import { Player, PlayerId, Round, SeatId, ServerTableState, TableId } from '@poker-moons/shared/type';
 
 const initialTableState: ServerTableState = {
     id: '' as TableId,
@@ -27,6 +27,8 @@ const initialTableState: ServerTableState = {
     },
     deck: [],
     playerMap: {},
+    startDate: null,
+    status: 'lobby',
 };
 
 @Injectable()

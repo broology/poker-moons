@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { CustomLoggerService } from '@poker-moons/backend/utility';
 import { TableId } from '@poker-moons/shared/type';
 import { Queue } from 'bull';
+import { addSeconds } from 'date-fns';
 import { READY_BULL_QUEUE } from './ready-queue.const';
 
 /**
@@ -14,10 +15,10 @@ export class ReadyQueueService {
     private logger = new CustomLoggerService(ReadyQueueService.name);
 
     /**
-     * @description The number of milliseconds that will occur between, when all players ready up,
+     * @description The duration that will occur between when all players ready up
      *              and the game actually starting
      */
-    private static readonly millisecondsBeforeStart = 3000;
+    private static readonly waitDuration = { seconds: 10 };
 
     constructor(@InjectQueue(READY_BULL_QUEUE) private readonly queue: Queue) {}
 
@@ -37,8 +38,10 @@ export class ReadyQueueService {
      *              when all players have been readied up.
      *
      * @param tableId id of the table
+     *
+     * @returns date of when the job will execute
      */
-    async start(tableId: TableId): Promise<void> {
+    async start(tableId: TableId): Promise<Date> {
         const jobId = ReadyQueueService.getJobId(tableId);
         this.logger.debug(`${jobId}: Starting job`);
 
@@ -48,8 +51,11 @@ export class ReadyQueueService {
             return this.reset(tableId);
         }
 
-        await this.queue.add(jobId, { delay: ReadyQueueService.millisecondsBeforeStart }, { jobId });
-        this.logger.log(`${jobId}: Started job`);
+        const dateOfJob = addSeconds(new Date(), ReadyQueueService.waitDuration.seconds);
+        await this.queue.add(null, { jobId, delay: ReadyQueueService.waitDuration.seconds * 1000 });
+
+        this.logger.log(`${jobId}: Started job to execute at ${dateOfJob}`);
+        return dateOfJob;
     }
 
     /**
@@ -69,22 +75,21 @@ export class ReadyQueueService {
             return;
         }
 
-        await existingJob.discard();
+        await this.queue.removeJobs(jobId);
         this.logger.log(`${jobId}: Stopped job`);
     }
 
     /**
      * @description Resets the ready queue for the table in the event where
+     *              an existing job exists when starting the queue.
      *
      * @param tableId id of the table
      */
-    private async reset(tableId: TableId): Promise<void> {
+    private async reset(tableId: TableId): Promise<Date> {
         const jobId = ReadyQueueService.getJobId(tableId);
         this.logger.debug(`${jobId}: Resetting job`);
 
         await this.stop(tableId);
-        await this.start(tableId);
-
-        this.logger.log(`${jobId}: Reset job`);
+        return this.start(tableId);
     }
 }
