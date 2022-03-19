@@ -1,4 +1,4 @@
-export interface StartScheduledJobArgs {
+export interface StartScheduledJobArgs<T> {
     /**
      * Delay of seconds to wait until the job executes
      */
@@ -15,4 +15,9 @@ export interface StartScheduledJobArgs {
      * - Should be deterministic as you'll use this same id for `start` and `stop`
      */
     jobId: string;
+
+    /**
+     * Data to be stored with the job.
+     */
+    data: T;
 }

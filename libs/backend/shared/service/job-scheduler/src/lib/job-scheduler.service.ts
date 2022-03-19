@@ -33,8 +33,8 @@ export class JobSchedulerService {
      *
      * @returns date of when the job will execute
      */
-    async start(args: StartScheduledJobArgs): Promise<Date> {
-        const { delayInSeconds, name, jobId } = args;
+    async start<T>(args: StartScheduledJobArgs<T>): Promise<Date> {
+        const { data, delayInSeconds, name, jobId } = args;
 
         this.logger.debug(`${jobId}: Starting job`);
 
@@ -47,7 +47,7 @@ export class JobSchedulerService {
         }
 
         const dateOfJob = addSeconds(new Date(), delayInSeconds);
-        await this.queue.add(name, null, { jobId, delay: delayInSeconds * 1000 });
+        await this.queue.add(name, data, { jobId, delay: delayInSeconds * 1000 });
 
         this.logger.log(`${jobId}: Started job to execute at ${dateOfJob}`);
 

@@ -5,6 +5,7 @@ import { TableId } from '@poker-moons/shared/type';
 import { TableStateManagerService } from '../../table-state-manager/table-state-manager.service';
 import { TableGatewayService } from '../websocket/table-gateway.service';
 import { READY_SYSTEM_BULL_JOB } from './ready-system.const';
+import { ReadyQueueJobData } from './ready-system.type';
 
 @Injectable()
 export class ReadySystemService {
@@ -109,7 +110,8 @@ export class ReadySystemService {
         }
         this.logger.log(`${tableId}: All players are ready, triggering queue start`);
 
-        const startDate = await this.jobSchedulerService.start({
+        const startDate = await this.jobSchedulerService.start<ReadyQueueJobData>({
+            data: { tableId },
             delayInSeconds: ReadySystemService.waitDuration.seconds,
             jobId: ReadySystemService.buildJobId(tableId),
             name: READY_SYSTEM_BULL_JOB,
