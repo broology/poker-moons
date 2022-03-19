@@ -2,7 +2,7 @@ import type { Card } from '../card';
 import type { PlayerId, PlayerStatus, PublicPlayer, WinnerMap } from '../player';
 import type { RoundStatus } from '../round';
 import type { ClientTableState } from '../state';
-import type { SeatId } from '../table';
+import type { SeatId, TableStatus } from '../table';
 
 export const TABLE_NAMESPACE = 'table' as const;
 
@@ -27,6 +27,19 @@ export interface RoundStatusChangedEvent extends GeneralTableEvent<'roundStatusC
     status: RoundStatus;
 
     cards: Card[];
+}
+
+export interface TableStatusChangedEvent extends GeneralTableEvent<'tableStatusChanged'> {
+    status: TableStatus;
+
+    /**
+     * Updating the start date of the table.
+     *
+     * `Date`: Applying a new date
+     * `null`: Removing a redacted date
+     * `undefined`: leave date as is
+     */
+    startDate: Date | null | undefined;
 }
 
 export interface PlayerTurnEvent extends GeneralTableEvent<'turn'> {
@@ -70,5 +83,6 @@ export type TableEvent =
     | PlayerJoinedTableEvent
     | PlayerLeftTableEvent
     | RoundStatusChangedEvent
+    | TableStatusChangedEvent
     | PlayerTurnEvent
     | WinnerWinnerChickenDinnerEvent;

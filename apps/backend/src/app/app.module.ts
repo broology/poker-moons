@@ -1,7 +1,9 @@
+import { BullModule } from '@nestjs/bull';
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { BackendFeatureTableModule } from '@poker-moons/backend/feature/table';
-import { JobSchedulerModule } from '@poker-moons/backend/shared/service/job-scheduler';
 import { AppController } from './app.controller';
+import { BullConfigService } from './configs/bull-queue-config';
 
 @Module({
     imports: [
@@ -9,19 +11,8 @@ import { AppController } from './app.controller';
         BackendFeatureTableModule,
 
         // Shared Services
-        JobSchedulerModule.forRoot({
-            useFactory: () => ({
-                redis: {
-                    host: 'localhost',
-                    port: 6379,
-                },
-                limiter: {
-                    duration: 1000,
-                    max: 100,
-                },
-                prefix: 'job-scheduler',
-            }),
-        }),
+        BullModule.forRootAsync({ useClass: BullConfigService }),
+        ConfigModule.forRoot({ isGlobal: true }),
     ],
     controllers: [AppController],
 })

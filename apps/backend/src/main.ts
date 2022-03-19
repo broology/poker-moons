@@ -1,12 +1,12 @@
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import helmet from 'helmet';
-import { AppModule } from './app/app.module';
 import { CustomLoggerService } from '@poker-moons/backend/utility';
 import { config } from 'dotenv-safe';
+import helmet from 'helmet';
+import { join } from 'path';
+import { AppModule } from './app/app.module';
 
-//config({ sample: join(__dirname, '.env.sample') });
-config({ sample: process.cwd() + '/apps/backend/.env.sample', allowEmptyValues: true });
+config({ sample: join(process.cwd(), 'apps/backend/.env.sample'), allowEmptyValues: true });
 
 const logger = new Logger('Bootstrap');
 

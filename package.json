@@ -44,6 +44,7 @@
         "@aws-sdk/client-s3": "^3.45.0",
         "@nestjs/bull": "^0.5.3",
         "@nestjs/common": "^8.2.0",
+        "@nestjs/config": "^2.0.0",
         "@nestjs/core": "^8.2.0",
         "@nestjs/platform-express": "^8.2.0",
         "@nestjs/platform-socket.io": "^8.3.1",
