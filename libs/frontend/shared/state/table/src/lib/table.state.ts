@@ -41,4 +41,6 @@ export const {
     selectImmutablePlayerMap,
     selectMutablePlayerMap,
     selectSeatMap,
+    selectStartDate,
+    selectStatus,
 } = storeFeature;

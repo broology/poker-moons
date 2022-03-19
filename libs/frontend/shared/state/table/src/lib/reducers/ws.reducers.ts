@@ -102,4 +102,15 @@ export const wsReducers: ReducerTypes<ClientTableState, [ActionType<any>]>[] = [
             },
         };
     }),
+
+    /**
+     * When the table status has been updated
+     */
+    on(tableWsActionMap.tableStatusChanged, (state, { payload }) => {
+        return {
+            ...state,
+            startDate: payload.startDate === undefined ? state.startDate : payload.startDate,
+            status: payload.status,
+        };
+    }),
 ];
