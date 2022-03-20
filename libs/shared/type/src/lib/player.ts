@@ -61,6 +61,13 @@ export interface Player {
      * Cards the player has in the active round
      */
     cards: [Card, Card] | [];
+
+    /**
+     * Amount of time remaining in the players time bank
+     *
+     * @unit seconds
+     */
+    timeBank: number;
 }
 
 export interface PublicPlayer extends StrictOmit<Player, 'cards'> {
@@ -78,7 +85,7 @@ export interface PublicPlayer extends StrictOmit<Player, 'cards'> {
 /**
  * Data on the player that is to be frequently updated during the game
  */
-export type MutablePublicPlayer = Pick<PublicPlayer, 'stack' | 'status' | 'called' | 'cards' | 'ready'>;
+export type MutablePublicPlayer = Pick<PublicPlayer, 'stack' | 'status' | 'called' | 'cards' | 'ready' | 'timeBank'>;
 
 /**
  * Data on the player that will stay the same during the game (mostly)

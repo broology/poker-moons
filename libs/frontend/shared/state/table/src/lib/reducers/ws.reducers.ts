@@ -113,4 +113,20 @@ export const wsReducers: ReducerTypes<ClientTableState, [ActionType<any>]>[] = [
             status: payload.status,
         };
     }),
+
+    /**
+     * When the player exceeds default timeout, using their time bank
+     */
+    on(tableWsActionMap.playerTimeBank, (state, { payload }) => {
+        return {
+            ...state,
+            mutablePlayerMap: {
+                ...state.mutablePlayerMap,
+                [payload.playerId]: {
+                    ...state.mutablePlayerMap[payload.playerId],
+                    timeBank: payload.timeBank,
+                },
+            },
+        };
+    }),
 ];
