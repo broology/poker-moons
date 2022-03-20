@@ -65,7 +65,7 @@ export class TurnTimerService {
         const state = await this.tableStateManagerService.getTableById(tableId);
 
         if (state.status !== 'in-progress') {
-            throw new InternalServerErrorException(`Can not trigger onTurn event when table is not in-progress`);
+            throw new InternalServerErrorException(`Can not trigger onStart event when table is not in-progress`);
         }
 
         return this.startTimerForPlayer(tableId, state.playerMap[startingPlayerId]);
