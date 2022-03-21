@@ -39,6 +39,8 @@ export class DeckManagerService {
      * Should be called at the start of each round to build a new deck for the table
      *
      * @param tableId - the table to build the deck for
+     *
+     * @returns the deck
      */
     async buildDeck(tableId: TableId): Promise<Card[]> {
         const deck: Card[] = [];

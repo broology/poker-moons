@@ -34,12 +34,12 @@ export interface PlayerTurnEvent extends GeneralTableEvent<'turn'> {
      * This amount will be added to the `round.pot`, `player.called`, and subtracted from the `player.stack`.
      * And calculate new `toCall` amount.
      *
-     * - In the case of `fold` or `check` value is just hero
+     * - In the case of `fold` or `check` value is just zero
      */
     bidAmount: number;
 
     /**
-     * The status the player who made bid will be at
+     * The status the player who made the action will be at
      */
     newStatus: PlayerStatus;
 

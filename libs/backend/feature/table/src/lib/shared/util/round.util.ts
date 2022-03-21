@@ -1,5 +1,8 @@
 import type { PlayerStatus, RoundStatus, SeatId } from '@poker-moons/shared/type';
 
+/**
+ * Counts the occurrences of a particular player status from an array of statuses
+ */
 const countOccurrences = (playerStatuses: PlayerStatus[], status: PlayerStatus) =>
     playerStatuses.reduce((index, value) => (value === status ? index + 1 : index), 0);
 
@@ -44,9 +47,25 @@ export function incrementSeat(seat: SeatId): SeatId {
 }
 
 /**
+ * Provided the current round status, returns the next status in sequence
+ */
+export function incrementRoundStatus(status: RoundStatus): RoundStatus {
+    switch (status) {
+        case 'deal':
+            return 'flop';
+        case 'flop':
+            return 'turn';
+        case 'turn':
+            return 'river';
+        case 'river':
+            return 'deal';
+    }
+}
+
+/**
  * Provided the statuses of each of the players in a round, returns true if everyone has
- * taken their turn, in which case those who have not folded will need to have ther
- * status reset to waiting
+ * taken their turn, in which case those who have not folded will need to have their
+ * status reset to waiting and the round status will need to change
  */
 export function hasEveryoneTakenTurn(playerStatuses: PlayerStatus[]): boolean {
     if (countOccurrences(playerStatuses, 'waiting') === 0) {

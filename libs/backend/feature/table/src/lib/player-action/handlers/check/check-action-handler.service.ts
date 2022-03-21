@@ -4,16 +4,16 @@ import {
     CheckPlayerAction,
     PerformPlayerActionResponse,
     Player,
-    PlayerId,
     PokerMoonsError,
     ServerTableState,
     TableId,
 } from '@poker-moons/shared/type';
 import { Either, isRight, left, right } from 'fp-ts/lib/Either';
 import { match } from 'ts-pattern';
-import { WinnerDeterminerService } from '../../../round/winner-determiner/winner-determiner.service';
+import { RoundManagerService } from '../../../round/round-manager/round-manager.service';
+import { incrementSeat, isRoundComplete } from '../../../shared/util/round.util';
+import { TableGatewayService } from '../../../shared/websocket/table-gateway.service';
 import { TableStateManagerService } from '../../../table-state-manager/table-state-manager.service';
-import { hasEveryoneTakenTurn, incrementSeat, isRoundComplete } from '../util/round.util';
 import { validatePlayerTurn } from '../util/validate-player-turn';
 
 @Injectable()
@@ -21,8 +21,9 @@ export class CheckActionHandlerService {
     private logger = new CustomLoggerService(CheckActionHandlerService.name);
 
     constructor(
+        private readonly tableGatewayService: TableGatewayService,
         private readonly tableStateManagerService: TableStateManagerService,
-        private readonly winnerDeterminerService: WinnerDeterminerService,
+        private readonly roundManagerService: RoundManagerService,
     ) {}
 
     /**
@@ -30,7 +31,7 @@ export class CheckActionHandlerService {
      * @description Performs the check action and returns an action response if the state is valid, else it throws an error describing the invalid state.
      * Checking is when a player passes the action to the next player while keeping their cards.
      * @param action
-     * @type Either<PokerMoonsError, { table: ServerTableState, player: Player }>
+     * @type Either<PokerMoonsError, { table: ServerTableState & { id: TableId }; player: Player }>
      * @returns PerformPlayerActionResponse
      * @throws Error
      */
@@ -40,51 +41,31 @@ export class CheckActionHandlerService {
         if (isRight(action)) {
             const { table, player } = action.right;
 
+            if (!table.activeRound.activeSeat) {
+                throw new Error('Something went wrong, no active seat is set!');
+            }
+
+            // Update the player's status in the server
             await this.tableStateManagerService.updateTablePlayer(table.id, player.id, { status: 'checked' });
 
-            table.playerMap[player.id] = { ...player, status: 'checked' };
+            // Emit the PlayerTurnEvent to the frontend
+            const newActiveSeat = incrementSeat(table.activeRound.activeSeat);
+            await this.tableGatewayService.emitTableEvent(table.id, {
+                type: 'turn',
+                playerId: player.id,
+                newStatus: 'checked',
+                newActiveSeatId: newActiveSeat,
+                bidAmount: 0,
+            });
 
+            table.playerMap[player.id] = { ...player, status: 'checked' };
             const playerStatuses = Object.values(table.playerMap).map((player) => player.status);
 
+            // Determine if the round is complete, if it isn't, start the next turn
             if (isRoundComplete(table.activeRound.roundStatus, playerStatuses)) {
-                // Determine and emit winner
-                await this.winnerDeterminerService.determineWinner(table.id, table.playerMap, table.activeRound);
-
-                // Reset the round and increment dealer seat
-                const newDealerSeat = incrementSeat(table.activeRound.dealerSeat);
-                await this.tableStateManagerService.updateRound(table.id, {
-                    turnCount: 0,
-                    roundStatus: 'deal',
-                    pot: 0,
-                    toCall: 0,
-                    cards: [],
-                    dealerSeat: newDealerSeat,
-                    activeSeat: incrementSeat(newDealerSeat),
-                });
+                await this.roundManagerService.endRound(table);
             } else {
-                if (!table.activeRound.activeSeat) {
-                    throw new Error('Something went wrong, no active seat is set!');
-                }
-
-                // Increment the turn count and active seat
-                await this.tableStateManagerService.updateRound(table.id, {
-                    turnCount: table.activeRound.turnCount + 1,
-                    activeSeat: incrementSeat(table.activeRound.activeSeat),
-                });
-
-                // Reset every active player to 'waiting' if another iteration of actions is about to begin
-                if (hasEveryoneTakenTurn(playerStatuses)) {
-                    const updatedPlayerMap: Record<PlayerId, Player> = {};
-
-                    for (const player of Object.values(table.playerMap)) {
-                        updatedPlayerMap[player.id] = {
-                            ...player,
-                            status: player.status === 'folded' ? 'folded' : 'waiting',
-                        };
-                    }
-
-                    await this.tableStateManagerService.updateTable(table.id, { playerMap: updatedPlayerMap });
-                }
+                await this.roundManagerService.startNextTurn(table, newActiveSeat, playerStatuses);
             }
         } else {
             this.logger.error(action.left);
