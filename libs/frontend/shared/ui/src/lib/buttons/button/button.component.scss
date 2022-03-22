@@ -1,0 +1,46 @@
+@use '../../../../../../../../apps/frontend/src/styles.scss' as global;
+
+.button {
+    position: relative;
+    display: inline-block;
+
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 4rem;
+    text-decoration: none;
+    text-align: center;
+
+    padding: 16px 8px;
+
+    cursor: pointer;
+}
+
+//Colors
+.colour-primary {
+    color: global.poker-moons-colour-text-contrast('primary');
+    background-color: global.poker-moons-colour('primary');
+}
+.colour-secondary {
+    color: global.poker-moons-colour-text-contrast('primary');
+    background-color: global.poker-moons-colour('primary');
+}
+.colour-foreground {
+    color: global.poker-moons-colour-text-contrast('primary');
+    background-color: global.poker-moons-colour('primary');
+}
+.colour-background {
+    color: global.poker-moons-colour-text-contrast('primary');
+    background-color: global.poker-moons-colour('primary');
+}
+.colour-success {
+    color: global.poker-moons-colour-text-contrast('primary');
+    background-color: global.poker-moons-colour('primary');
+}
+.colour-waring {
+    color: global.poker-moons-colour-text-contrast('primary');
+    background-color: global.poker-moons-colour('primary');
+}
+.colour-error {
+    color: global.poker-moons-colour-text-contrast('primary');
+    background-color: global.poker-moons-colour('primary');
+}
