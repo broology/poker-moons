@@ -1,16 +1,23 @@
-import { Injectable, NotImplementedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import {
     FoldPlayerAction,
     PerformPlayerActionResponse,
     Player,
     PokerMoonsError,
     ServerTableState,
+    TableId,
 } from '@poker-moons/shared/type';
 import { Either, isRight, right } from 'fp-ts/lib/Either';
 import { validatePlayerTurn } from '../util/validate-player-turn';
+import { CustomLoggerService } from '@poker-moons/backend/utility';
+import { TableStateManagerService } from '../../../table-state-manager/table-state-manager.service';
 
 @Injectable()
 export class FoldActionHandlerService {
+    private logger = new CustomLoggerService(FoldActionHandlerService.name);
+
+    constructor(private readonly tableStateManagerService: TableStateManagerService) {}
+
     /**
      * FoldActionHandlerService.fold
      * @description Performs the fold action and returns an action response if the state is valid, else it throws an error describing the invalid state.
@@ -20,9 +27,19 @@ export class FoldActionHandlerService {
      * @returns PerformPlayerActionResponse
      * @throws Error
      */
-    fold(action: Either<PokerMoonsError, FoldPlayerAction>): PerformPlayerActionResponse {
-        if (isRight(action)) throw new NotImplementedException(action.right);
-        else throw new Error(action.left);
+    async fold(
+        action: Either<PokerMoonsError, { table: ServerTableState & { id: TableId }; player: Player }>,
+    ): Promise<PerformPlayerActionResponse> {
+        if (isRight(action)) {
+            const { table, player } = action.right;
+
+            await this.tableStateManagerService.updateTablePlayer(table.id, player.id, { status: 'folded' });
+
+            table.playerMap[player.id] = { ...player, status: 'folded' };
+        } else {
+            this.logger.error(action.left);
+            throw new Error(action.left);
+        }
     }
 
     /**
@@ -38,13 +55,13 @@ export class FoldActionHandlerService {
      * @returns Either<PokerMoonsError, FoldPlayerAction>
      */
     canFold(
-        table: ServerTableState,
+        table: ServerTableState & { id: TableId },
         player: Player,
         action: FoldPlayerAction,
-    ): Either<PokerMoonsError, FoldPlayerAction> {
+    ): Either<PokerMoonsError, { table: ServerTableState & { id: TableId }; player: Player }> {
         const playerTurn = validatePlayerTurn(table, player, action);
 
-        if (isRight(playerTurn)) return right(action);
+        if (isRight(playerTurn)) return right({ table, player, action });
 
         return playerTurn;
     }
