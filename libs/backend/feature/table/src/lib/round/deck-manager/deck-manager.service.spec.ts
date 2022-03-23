@@ -30,8 +30,11 @@ describe('DeckManagerService', () => {
             const result = await service.drawCard('table_1', deck);
 
             expect(result).toEqual({
-                suit: expect.stringMatching('^clubs$|^spades$|^diamonds$|^hearts$'),
-                rank: expect.stringMatching('^2$|^3$|^4$|^5$|^6$|^7$|^8$|^9$|^10$|^11$|^12$|^13$|^14$'),
+                card: {
+                    suit: expect.stringMatching('^clubs$|^spades$|^diamonds$|^hearts$'),
+                    rank: expect.stringMatching('^2$|^3$|^4$|^5$|^6$|^7$|^8$|^9$|^10$|^11$|^12$|^13$|^14$'),
+                },
+                deck: result.deck,
             });
         });
 

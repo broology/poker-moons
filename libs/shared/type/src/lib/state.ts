@@ -30,6 +30,8 @@ export interface ClientTableState extends SharedTableState {
 }
 
 export interface ServerTableState extends SharedTableState {
+    id: TableId;
+
     deck: Card[];
 
     playerMap: Record<PlayerId, Player>;

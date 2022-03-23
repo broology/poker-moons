@@ -51,7 +51,7 @@ export class WinnerDeterminerService {
 
         const winnerMap = await this.buildWinnerMap(tableId, playerMap, playersWithHand);
 
-        await this.tableGatewayService.emitTableEvent(tableId, {
+        this.tableGatewayService.emitTableEvent(tableId, {
             type: 'winner',
             winners: winnerMap,
         });

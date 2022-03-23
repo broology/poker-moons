@@ -31,6 +31,7 @@ describe('TableStateManagerService', () => {
         it('should properly retrieve a table', async () => {
             await service.createNewTable('testTable');
             expect(await service.getTableById('table_1')).toEqual({
+                id: 'table_1',
                 name: 'testTable',
                 seatMap: {
                     0: undefined,

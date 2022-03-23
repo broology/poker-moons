@@ -23,6 +23,7 @@ const mockRound: Round = {
     cards: [],
 };
 const mockTableState: ServerTableState = {
+    id: 'table_1',
     name: 'test',
     deck: [],
     playerMap: { player_1: mockPlayer },
@@ -63,6 +64,7 @@ describe('MockStateService', () => {
         it('should get the correct table when multiple are created', async () => {
             await service.create(mockTableState);
             const mockState: ServerTableState = {
+                id: 'table_2',
                 name: 'test2',
                 deck: [],
                 playerMap: { player_1: mockPlayer },
