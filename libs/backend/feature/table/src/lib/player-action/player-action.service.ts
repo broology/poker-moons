@@ -46,13 +46,13 @@ export class PlayerActionService {
             case 'call':
                 pipe(
                     this.callActionHandlerService.canCall(table, player, dto.action),
-                    this.callActionHandlerService.call,
+                    await this.callActionHandlerService.call,
                 );
                 break;
             case 'check':
                 pipe(
                     this.checkActionHandlerService.canCheck(table, player, dto.action),
-                    this.checkActionHandlerService.check,
+                    await this.checkActionHandlerService.check,
                 );
                 break;
             case 'fold':
