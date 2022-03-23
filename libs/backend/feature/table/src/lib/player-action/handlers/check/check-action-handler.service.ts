@@ -49,7 +49,7 @@ export class CheckActionHandlerService {
 
             // Emit the PlayerTurnEvent to the frontend
             const newActiveSeat = incrementSeat(table.activeRound.activeSeat);
-            await this.tableGatewayService.emitTableEvent(table.id, {
+            this.tableGatewayService.emitTableEvent(table.id, {
                 type: 'turn',
                 playerId: player.id,
                 newStatus: 'checked',

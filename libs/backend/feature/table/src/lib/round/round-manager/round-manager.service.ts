@@ -64,7 +64,7 @@ export class RoundManagerService {
                 table.activeRound.cards.push(card);
             }
 
-            await this.tableGatewayService.emitTableEvent(table.id, {
+            this.tableGatewayService.emitTableEvent(table.id, {
                 type: 'roundStatusChanged',
                 status: incrementRoundStatus(table.activeRound.roundStatus),
                 cards: table.activeRound.cards,
@@ -99,7 +99,7 @@ export class RoundManagerService {
          *
          * This also triggers each player to fetch their cards from the server
          */
-        await this.tableGatewayService.emitTableEvent(table.id, {
+        this.tableGatewayService.emitTableEvent(table.id, {
             type: 'roundStatusChanged',
             status: 'deal',
             cards: [],
