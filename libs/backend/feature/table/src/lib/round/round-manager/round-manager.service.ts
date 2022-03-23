@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Player, PlayerId, PlayerStatus, SeatId, ServerTableState, TableId } from '@poker-moons/shared/type';
+import { Player, PlayerId, PlayerStatus, SeatId, ServerTableState } from '@poker-moons/shared/type';
 import { hasEveryoneTakenTurn, incrementRoundStatus, incrementSeat } from '../../shared/util/round.util';
 import { TableGatewayService } from '../../shared/websocket/table-gateway.service';
 import { TableStateManagerService } from '../../table-state-manager/table-state-manager.service';
@@ -29,11 +29,7 @@ export class RoundManagerService {
      * @param status - the new status of the player that just took their turn
      * @param playerStatuses - the status of each player in the round
      */
-    async startNextTurn(
-        table: ServerTableState & { id: TableId },
-        newActiveSeat: SeatId,
-        playerStatuses: PlayerStatus[],
-    ): Promise<void> {
+    async startNextTurn(table: ServerTableState, newActiveSeat: SeatId, playerStatuses: PlayerStatus[]): Promise<void> {
         // Increment the turn count and active seat
         await this.tableStateManagerService.updateRound(table.id, {
             turnCount: table.activeRound.turnCount + 1,
@@ -82,7 +78,7 @@ export class RoundManagerService {
      *
      * @param table - the ServerTableState and table ID
      */
-    async startRound(table: ServerTableState & { id: TableId }): Promise<void> {
+    async startRound(table: ServerTableState): Promise<void> {
         // Build a new deck for the table
         let deck = await this.deckManagerService.buildDeck(table.id);
 
@@ -120,7 +116,7 @@ export class RoundManagerService {
      *
      * @param table - the ServerTableState and table ID
      */
-    async endRound(table: ServerTableState & { id: TableId }): Promise<void> {
+    async endRound(table: ServerTableState): Promise<void> {
         // Determine and emit winner of round and update player's stacks
         await this.winnerDeterminerService.determineWinner(table.id, table.playerMap, table.activeRound);
 

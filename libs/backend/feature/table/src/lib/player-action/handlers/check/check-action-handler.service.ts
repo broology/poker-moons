@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CustomLoggerService } from '@poker-moons/backend/utility';
 import {
     CheckPlayerAction,
@@ -68,7 +68,7 @@ export class CheckActionHandlerService {
             }
         } else {
             this.logger.error(action.left);
-            throw new Error(action.left);
+            throw new BadRequestException(action.left);
         }
     }
 

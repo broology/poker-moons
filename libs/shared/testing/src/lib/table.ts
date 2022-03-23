@@ -21,6 +21,7 @@ export function mockTable(overrides: DeepPartial<Table> = {}): Table {
 
 export function mockServerTableState(overrides: DeepPartial<ServerTableState> = {}): ServerTableState {
     const table: ServerTableState = {
+        id: 'table_1',
         name: 'Table 1',
         deck: [{ suit: 'diamonds', rank: '2' }],
         playerMap: {
