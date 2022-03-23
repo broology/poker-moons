@@ -44,6 +44,7 @@ describe('TableGateway', () => {
             const { id, username, img, seatId, stack, status, called } = player;
 
             tableStateManagerService.getTableById.mockResolvedValue({
+                id: 'table_1',
                 name: 'Table 1',
                 seatMap: {},
                 roundCount: 1,
