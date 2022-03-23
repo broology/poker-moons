@@ -8,6 +8,11 @@ export class JoinTableRequestValidator implements JoinTableRequest {
     username!: string;
 }
 
+export class JoinTableParamValidator {
+    @IsEntityId(TABLE_PREFIX)
+    tableId!: TableId;
+}
+
 export class LeaveTableRequestValidator {
     @IsEntityId(TABLE_PREFIX)
     tableId!: TableId;

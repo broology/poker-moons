@@ -3,10 +3,12 @@ import type { GetPlayerCardsResponse, JoinTableResponse, LeaveTableResponse } fr
 import { PlayerService } from './player.service';
 import {
     GetPlayerCardsRequestValidator,
+    JoinTableParamValidator,
     JoinTableRequestValidator,
     LeaveTableRequestValidator,
 } from './player.validator';
 import { CustomLoggerService } from '@poker-moons/backend/utility';
+import { TableIdValidator } from '../table/table.validator';
 
 @Controller()
 export class PlayerController {
@@ -15,19 +17,22 @@ export class PlayerController {
     constructor(private readonly playerService: PlayerService) {}
 
     @Post()
-    create(@Body() dto: JoinTableRequestValidator): JoinTableResponse {
-        this.logger.debug('Received create table request: ' + dto);
-        return this.playerService.create(dto);
+    create(
+        @Body() dto: JoinTableRequestValidator,
+        @Param() { tableId }: JoinTableParamValidator
+    ): Promise<JoinTableResponse> {
+        this.logger.debug('Received create player request: ' + dto);
+        return this.playerService.create(dto, tableId);
     }
 
     @Put(':playerId')
-    leave(@Param() { tableId, playerId }: LeaveTableRequestValidator): LeaveTableResponse {
+    leave(@Param() { tableId, playerId }: LeaveTableRequestValidator): Promise<LeaveTableResponse> {
         this.logger.debug('Received leave table request: ' + tableId + ', ' + playerId);
         return this.playerService.delete(tableId, playerId);
     }
 
     @Get(':playerId/cards')
-    getCards(@Param() { tableId, playerId }: GetPlayerCardsRequestValidator): GetPlayerCardsResponse {
+    getCards(@Param() { tableId, playerId }: GetPlayerCardsRequestValidator): Promise<GetPlayerCardsResponse> {
         this.logger.debug('Received get cards request: ' + tableId + ', ' + playerId);
         return this.playerService.getCards(tableId, playerId);
     }
