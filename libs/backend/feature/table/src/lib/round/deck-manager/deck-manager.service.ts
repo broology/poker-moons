@@ -15,9 +15,9 @@ export class DeckManagerService {
      *
      * @throws {InternalServerErrorException} if the random number generated is outside
      *
-     * @returns the drawn card (which can then be added to the cards on the round or a player's cards)
+     * @returns the drawn card and the updated deck
      */
-    async drawCard(tableId: TableId, deck: Card[]): Promise<Card> {
+    async drawCard(tableId: TableId, deck: Card[]): Promise<{ card: Card; deck: Card[] }> {
         const randomNumber = generateRandomNumber(deck.length);
 
         const card = deck[randomNumber];
@@ -32,7 +32,7 @@ export class DeckManagerService {
         // Update the table's deck in the server state
         await this.tableStateManagerService.updateTable(tableId, { deck });
 
-        return card;
+        return { card, deck };
     }
 
     /**

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CustomLoggerService } from '@poker-moons/backend/utility';
 import {
     CheckPlayerAction,
@@ -6,7 +6,6 @@ import {
     Player,
     PokerMoonsError,
     ServerTableState,
-    TableId,
 } from '@poker-moons/shared/type';
 import { Either, isRight, left, right } from 'fp-ts/lib/Either';
 import { match } from 'ts-pattern';
@@ -31,18 +30,18 @@ export class CheckActionHandlerService {
      * @description Performs the check action and returns an action response if the state is valid, else it throws an error describing the invalid state.
      * Checking is when a player passes the action to the next player while keeping their cards.
      * @param action
-     * @type Either<PokerMoonsError, { table: ServerTableState & { id: TableId }; player: Player }>
+     * @type Either<PokerMoonsError, { table: ServerTableState; player: Player }>
      * @returns PerformPlayerActionResponse
      * @throws Error
      */
     async check(
-        action: Either<PokerMoonsError, { table: ServerTableState & { id: TableId }; player: Player }>,
+        action: Either<PokerMoonsError, { table: ServerTableState; player: Player }>,
     ): Promise<PerformPlayerActionResponse> {
         if (isRight(action)) {
             const { table, player } = action.right;
 
             if (!table.activeRound.activeSeat) {
-                throw new Error('Something went wrong, no active seat is set!');
+                throw new InternalServerErrorException('Something went wrong, no active seat is set!');
             }
 
             // Update the player's status in the server
@@ -86,10 +85,10 @@ export class CheckActionHandlerService {
      * @returns Either<PokerMoonsError, CheckPlayerAction>
      */
     canCheck(
-        table: ServerTableState & { id: TableId },
+        table: ServerTableState,
         player: Player,
         action: CheckPlayerAction,
-    ): Either<PokerMoonsError, { table: ServerTableState & { id: TableId }; player: Player }> {
+    ): Either<PokerMoonsError, { table: ServerTableState; player: Player }> {
         const playerTurn = validatePlayerTurn(table, player, action);
 
         if (isRight(playerTurn))

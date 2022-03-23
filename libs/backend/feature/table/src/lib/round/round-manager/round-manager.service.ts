@@ -56,8 +56,17 @@ export class RoundManagerService {
 
             await this.tableStateManagerService.updateTable(table.id, { playerMap: updatedPlayerMap });
 
-            const card = await this.deckManagerService.drawCard(table.id, table.deck);
-            table.activeRound.cards.push(card);
+            // If transitioning from deal -> flop, draw 3 cards, otherwise draw only 1
+            if (table.activeRound.roundStatus === 'deal') {
+                const draw1 = await this.deckManagerService.drawCard(table.id, table.deck);
+                const draw2 = await this.deckManagerService.drawCard(table.id, draw1.deck);
+                const draw3 = await this.deckManagerService.drawCard(table.id, draw2.deck);
+
+                table.activeRound.cards.push(draw1.card, draw2.card, draw3.card);
+            } else {
+                const { card } = await this.deckManagerService.drawCard(table.id, table.deck);
+                table.activeRound.cards.push(card);
+            }
 
             await this.tableGatewayService.emitTableEvent(table.id, {
                 type: 'roundStatusChanged',
@@ -75,9 +84,30 @@ export class RoundManagerService {
      */
     async startRound(table: ServerTableState & { id: TableId }): Promise<void> {
         // Build a new deck for the table
-        await this.deckManagerService.buildDeck(table.id);
+        let deck = await this.deckManagerService.buildDeck(table.id);
 
-        // TODO: Deal cards to players
+        // Deal cards to players
+        for (const player of Object.values(table.playerMap)) {
+            const draw1 = await this.deckManagerService.drawCard(table.id, deck);
+            const draw2 = await this.deckManagerService.drawCard(table.id, draw1.deck);
+
+            await this.tableStateManagerService.updateTablePlayer(table.id, player.id, {
+                cards: [draw1.card, draw2.card],
+            });
+
+            deck = draw2.deck;
+        }
+
+        /*
+         * Emit the RoundStatusChanged event to the frontend to reset back to 'deal'
+         *
+         * This also triggers each player to fetch their cards from the server
+         */
+        await this.tableGatewayService.emitTableEvent(table.id, {
+            type: 'roundStatusChanged',
+            status: 'deal',
+            cards: [],
+        });
     }
 
     /**
@@ -107,19 +137,12 @@ export class RoundManagerService {
             activeSeat: incrementSeat(newDealerSeat),
         });
 
-        // Emit the RoundStatusChanged event to the frontend to reset back to 'deal'
-        await this.tableGatewayService.emitTableEvent(table.id, {
-            type: 'roundStatusChanged',
-            status: 'deal',
-            cards: [],
-        });
-
         // Determine if the game can continue (i.e. two or more players still have chips)
         const playerStacks = Object.values(table.playerMap).map((player) => player.stack);
         const numPlayersWithNoChipsLeft = playerStacks.reduce((index, value) => (value === 0 ? index + 1 : index), 0);
 
         if (numPlayersWithNoChipsLeft === playerStacks.length - 1) {
-            // TODO: How do we want to handle the end game state?
+            // TODO: Update table status to ended after https://github.com/broology/poker-moons/pull/139 is merged in
         } else {
             // If the game can continue, start a new round
             await this.startRound(table);

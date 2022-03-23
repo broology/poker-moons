@@ -4,6 +4,7 @@ import { GenericStateServiceImpl, STATE_SERVICE } from '@poker-moons/backend/dat
 import { CustomLoggerService } from '@poker-moons/backend/utility';
 
 const initialTableState: ServerTableState = {
+    id: '' as TableId,
     name: '',
     seatMap: {
         0: undefined,

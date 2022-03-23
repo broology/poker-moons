@@ -22,7 +22,7 @@ export class MockStateService implements GenericStateServiceImpl {
     async create(serverTableState: ServerTableState): Promise<TableId> {
         const id: number = this.generateNewId();
         const tableId: TableId = `table_${id}`;
-        this.state[tableId] = serverTableState;
+        this.state[tableId] = { ...serverTableState, id: tableId };
         this.logger.log('Created new table with id: ' + tableId);
         this.logger.debug('New table: ' + JSON.stringify(serverTableState, null, 4));
         return tableId;
