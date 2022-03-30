@@ -11,7 +11,7 @@ import { TableStateManagerService } from '../table-state-manager/table-state-man
 import { CallActionHandlerService } from './handlers/call/call-action-handler.service';
 import { CheckActionHandlerService } from './handlers/check/check-action-handler.service';
 import { FoldActionHandlerService } from './handlers/fold/fold-action-handler.service';
-import { RaiseActionHandlerService } from './handlers/raise/raiser-action-handler.service';
+import { RaiseActionHandlerService } from './handlers/raise/raise-action-handler.service';
 import { CustomLoggerService } from '@poker-moons/backend/utility';
 import { AllInActionHandlerService } from './handlers/all-in/all-in-action-handler.service';
 
@@ -64,7 +64,7 @@ export class PlayerActionService {
             case 'raise':
                 pipe(
                     this.raiseActionHandlerService.canRaise(table, player, dto.action),
-                    this.raiseActionHandlerService.raise,
+                    await this.raiseActionHandlerService.raise,
                 );
                 break;
         }
