@@ -62,7 +62,7 @@ export class PlayerService {
     async getCards(tableId: TableId, playerId: PlayerId): Promise<GetPlayerCardsResponse> {
         this.logger.log("Player " + playerId + " has drawn their pocket cards");
         //TODO: Is there a reason to pass deck explicitly when we already assume that the deck is associated with the tableID in the drawCard function?
-        let currentDeck: Card[] = (await this.tableStateManagerService.getTableById(tableId)).deck;
+        const currentDeck: Card[] = (await this.tableStateManagerService.getTableById(tableId)).deck;
         const drawFirstCardResponse = (await this.deckManagerService.drawCard(tableId, currentDeck));
         const card1: Card = drawFirstCardResponse.card;
         const card2: Card = (await this.deckManagerService.drawCard(tableId, drawFirstCardResponse.deck)).card;
