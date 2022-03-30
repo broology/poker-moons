@@ -37,7 +37,7 @@ export class PlayerService {
         ) {}
 
     async create(dto: JoinTableRequest, tableId: TableId): Promise<JoinTableResponse> {
-        this.logger.log("New player has joined table " + tableId)
+        this.logger.log("New player has joined table " + tableId);
         //TODO: This method of finding first open seat feels big-time jankerino
         const currentSeatMap = (await this.tableStateManagerService.getTableById(tableId)).seatMap;
         const seatArray = Object.keys(currentSeatMap) as Array<unknown> as Array<SeatId>;
@@ -49,6 +49,7 @@ export class PlayerService {
     }
 
     async delete(tableId: TableId, playerId: PlayerId): Promise<LeaveTableResponse> {
+        this.logger.log("Player " + playerId + " has left table " + tableId);
         const playerUpdate: Partial<Player> = {
             //TODO: OK with adding new status for left/out of game?
             status : 'out'
@@ -59,6 +60,7 @@ export class PlayerService {
     }
 
     async getCards(tableId: TableId, playerId: PlayerId): Promise<GetPlayerCardsResponse> {
+        this.logger.log("Player " + playerId + " has drawn their pocket cards");
         //TODO: Is there a reason to pass deck explicitly when we already assume that the deck is associated with the tableID in the drawCard function?
         let currentDeck: Card[] = (await this.tableStateManagerService.getTableById(tableId)).deck;
         const drawFirstCardResponse = (await this.deckManagerService.drawCard(tableId, currentDeck));
