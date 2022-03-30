@@ -39,8 +39,8 @@ export class PlayerService {
     async create(dto: JoinTableRequest, tableId: TableId): Promise<JoinTableResponse> {
         this.logger.log("New player has joined table " + tableId);
         //TODO: This method of finding first open seat feels big-time jankerino
-        const currentSeatMap = (await this.tableStateManagerService.getTableById(tableId)).seatMap;
-        const seatArray = Object.keys(currentSeatMap) as Array<unknown> as Array<SeatId>;
+        const currentSeatMap: Partial<Record<SeatId, PlayerId>> = (await this.tableStateManagerService.getTableById(tableId)).seatMap;
+        const seatArray: Array<SeatId> = Object.keys(currentSeatMap) as Array<unknown> as Array<SeatId>;
         let firstAvailableSeat = seatArray.find(key => currentSeatMap[key] === undefined);
         firstAvailableSeat = firstAvailableSeat as SeatId;
         const newPlayer:Player = {...initialPlayerState, username: dto.username, seatId: firstAvailableSeat};
