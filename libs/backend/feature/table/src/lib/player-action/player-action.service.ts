@@ -57,7 +57,7 @@ export class PlayerActionService {
                 break;
             case 'fold':
                 pipe(
-                    this.foldActionHandlerService.canFold({ ...table, id: tableId }, player, dto.action),
+                    this.foldActionHandlerService.canFold(table, player, dto.action),
                     this.foldActionHandlerService.fold,
                 );
                 break;

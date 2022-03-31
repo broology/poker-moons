@@ -5,7 +5,6 @@ import {
     Player,
     PokerMoonsError,
     ServerTableState,
-    TableId,
 } from '@poker-moons/shared/type';
 import { Either, isRight, right } from 'fp-ts/lib/Either';
 import { validatePlayerTurn } from '../util/validate-player-turn';
@@ -35,7 +34,7 @@ export class FoldActionHandlerService {
      * @throws Error
      */
     async fold(
-        action: Either<PokerMoonsError, { table: ServerTableState & { id: TableId }; player: Player }>,
+        action: Either<PokerMoonsError, { table: ServerTableState; player: Player }>,
     ): Promise<PerformPlayerActionResponse> {
         if (isRight(action)) {
             const { table, player } = action.right;
@@ -84,10 +83,10 @@ export class FoldActionHandlerService {
      * @returns Either<PokerMoonsError, FoldPlayerAction>
      */
     canFold(
-        table: ServerTableState & { id: TableId },
+        table: ServerTableState,
         player: Player,
         action: FoldPlayerAction,
-    ): Either<PokerMoonsError, { table: ServerTableState & { id: TableId }; player: Player }> {
+    ): Either<PokerMoonsError, { table: ServerTableState; player: Player }> {
         const playerTurn = validatePlayerTurn(table, player, action);
 
         if (isRight(playerTurn)) return right({ table, player, action });
