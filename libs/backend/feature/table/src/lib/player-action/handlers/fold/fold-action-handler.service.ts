@@ -1,4 +1,4 @@
-import { Injectable, NotImplementedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import {
     FoldPlayerAction,
     PerformPlayerActionResponse,
@@ -8,9 +8,22 @@ import {
 } from '@poker-moons/shared/type';
 import { Either, isRight, right } from 'fp-ts/lib/Either';
 import { validatePlayerTurn } from '../util/validate-player-turn';
+import { CustomLoggerService } from '@poker-moons/backend/utility';
+import { TableStateManagerService } from '../../../table-state-manager/table-state-manager.service';
+import { incrementSeat, isRoundComplete } from '../../../shared/util/round.util';
+import { TableGatewayService } from '../../../shared/websocket/table-gateway.service';
+import { RoundManagerService } from '../../../round/round-manager/round-manager.service';
 
 @Injectable()
 export class FoldActionHandlerService {
+    private logger = new CustomLoggerService(FoldActionHandlerService.name);
+
+    constructor(
+        private readonly tableStateManagerService: TableStateManagerService,
+        private readonly tableGatewayService: TableGatewayService,
+        private readonly roundManagerService: RoundManagerService,
+    ) {}
+
     /**
      * FoldActionHandlerService.fold
      * @description Performs the fold action and returns an action response if the state is valid, else it throws an error describing the invalid state.
@@ -20,9 +33,41 @@ export class FoldActionHandlerService {
      * @returns PerformPlayerActionResponse
      * @throws Error
      */
-    fold(action: Either<PokerMoonsError, FoldPlayerAction>): PerformPlayerActionResponse {
-        if (isRight(action)) throw new NotImplementedException(action.right);
-        else throw new Error(action.left);
+    async fold(
+        action: Either<PokerMoonsError, { table: ServerTableState; player: Player }>,
+    ): Promise<PerformPlayerActionResponse> {
+        if (isRight(action)) {
+            const { table, player } = action.right;
+
+            if (!table.activeRound.activeSeat) {
+                throw new Error('Something went wrong, no active seat is set!');
+            }
+
+            await this.tableStateManagerService.updateTablePlayer(table.id, player.id, { status: 'folded' });
+
+            // Emit the PlayerTurnEvent to the frontend
+            const newActiveSeat = incrementSeat(table.activeRound.activeSeat);
+            await this.tableGatewayService.emitTableEvent(table.id, {
+                type: 'turn',
+                playerId: player.id,
+                newStatus: 'folded',
+                newActiveSeatId: newActiveSeat,
+                bidAmount: 0,
+            });
+
+            table.playerMap[player.id] = { ...player, status: 'folded' };
+            const playerStatuses = Object.values(table.playerMap).map((player) => player.status);
+
+            // Determine if the round is complete, if it isn't, start the next turn
+            if (isRoundComplete(table.activeRound.roundStatus, playerStatuses)) {
+                await this.roundManagerService.endRound(table);
+            } else {
+                await this.roundManagerService.startNextTurn(table, newActiveSeat, playerStatuses);
+            }
+        } else {
+            this.logger.error(action.left);
+            throw new Error(action.left);
+        }
     }
 
     /**
@@ -41,10 +86,10 @@ export class FoldActionHandlerService {
         table: ServerTableState,
         player: Player,
         action: FoldPlayerAction,
-    ): Either<PokerMoonsError, FoldPlayerAction> {
+    ): Either<PokerMoonsError, { table: ServerTableState; player: Player }> {
         const playerTurn = validatePlayerTurn(table, player, action);
 
-        if (isRight(playerTurn)) return right(action);
+        if (isRight(playerTurn)) return right({ table, player, action });
 
         return playerTurn;
     }
