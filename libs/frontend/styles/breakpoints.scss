@@ -6,7 +6,7 @@ $breakpoints: (
     xl: 1536px,
 );
 
-@function breakpoints($bp: 'md') {
+@function breakpoint($bp: 'md') {
     @return map-get($breakpoints, $bp);
 }
 
