@@ -1,4 +1,4 @@
-$poker-moons-colours: (
+$colors: (
     'primary': #d84712,
     'secondary': #ffffff,
     'foreground': #104614,
@@ -8,7 +8,7 @@ $poker-moons-colours: (
     'error': #c6394a,
 );
 
-$poker-moons-text-contrasts: (
+$text-contrasts: (
     'primary': #ffffff,
     'secondary': #141414,
     'foreground': #e6e6e6,
@@ -19,29 +19,29 @@ $poker-moons-text-contrasts: (
 );
 
 /* Function to fetch the associated colour from the poker-moons theme */
-@function poker-moons-colour($name: 'primary') {
+@function color($name: 'primary') {
     @return map-get($poker-moons-colours, $name);
 }
 
 /* Function to fetch a tinted version of the associated colour from the poker-moons theme */
-@function poker-moons-colour-tinted($name: 'primary') {
-    @return mix(white, poker-moons-colour($name), 10%);
+@function color-tinted($name: 'primary') {
+    @return mix(white, color($name), 10%);
 }
 
 /* Function to fetch a shaded version of the associated colour from the poker-moons theme */
-@function poker-moons-colour-shaded($name: 'primary') {
-    @return mix(black, poker-moons-colour($name), 10%);
+@function color-shaded($name: 'primary') {
+    @return mix(black, color($name), 10%);
 }
 
 /* Function to fetch a alpha version of the associated colour from the poker-moons theme */
-@function poker-moons-colour-alpha($name: 'primary', $opacity: 0) {
-    $color: poker-moons-colour($name);
+@function color-alpha($name: 'primary', $opacity: 0) {
+    $color: color($name);
 
     @return rgba($color, $opacity);
 }
 
 /* Function to fetch a text contrast version of the associated colour from the poker-moons theme */
-@function poker-moons-colour-text-contrast($name: 'primary') {
+@function color-text-contrast($name: 'primary') {
     @return map-get($poker-moons-text-contrasts, $name);
 }
 
