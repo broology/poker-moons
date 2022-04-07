@@ -1,11 +1,11 @@
 $zIndexes: (
-    hud: 1000,
-    appbar: 1100,
-    drawer: 1200,
-    modal: 1300,
-    popper: 1400,
-    tooltip: 1500,
-    snackbar: 1600,
+    'hud': 1000,
+    'appbar': 1100,
+    'drawer': 1200,
+    'modal': 1300,
+    'popper': 1400,
+    'tooltip': 1500,
+    'snackbar': 1600,
 );
 
 @function zIndex($z: 'hud') {
