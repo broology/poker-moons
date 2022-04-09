@@ -1,0 +1,18 @@
+$shadows: (
+    'top': 0px -4px 10px rgba(31, 43, 61, 0.16),
+    'top-hover': 0px -2px 10px rgba(31, 43, 61, 0.12),
+    'bottom': 0px 8px 12px 0px rgba(31, 43, 61, 0.04),
+    'bottom-hover': 0px 2px 2px 0px rgba(31, 43, 61, 0.12),
+    'allAround': 0px 4px 8px rgba(31, 43, 61, 0.04),
+    'allAround-hover': 0px 2px 4px rgba(31, 43, 61, 0.12),
+);
+
+@function shadow($s: 'bottom') {
+    @return box-shadow(map-get($shadows, $s));
+}
+
+@mixin box-shadow($args...) {
+    -webkit-box-shadow: $args;
+    -moz-box-shadow: $args;
+    box-shadow: $args;
+}
