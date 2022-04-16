@@ -5,9 +5,10 @@ import {
     MutablePublicPlayer,
     PlayerAction,
     Round,
+    TableStatus,
 } from '@poker-moons/shared/type';
 
-type ActionPanelDisplayView = 'active' | 'in-active' | 'spectator';
+type ActionPanelDisplayView = 'active' | 'in-active' | 'lobby' | 'spectator';
 
 @Component({
     selector: 'poker-moons-action-panel-ui',
@@ -22,11 +23,17 @@ export class ActionPanelUiComponent {
 
     @Input() round!: Round;
 
+    @Input() tableStartDate!: Date | null;
+
+    @Input() tableStatus!: TableStatus;
+
     @Output() readonly joinTableEmitter = new EventEmitter<JoinTableRequest>();
 
     @Output() readonly leaveTableEmitter = new EventEmitter<void>();
 
     @Output() readonly playerActionEmitter = new EventEmitter<PlayerAction>();
+
+    @Output() readonly toggleReadyStatusEmitter = new EventEmitter<void>();
 
     /**
      * Determines the `ActivePanelDisplayView` for what to render on the UI
@@ -38,6 +45,10 @@ export class ActionPanelUiComponent {
 
         if (this.round.activeSeat === this.clientImmutablePlayer.seatId) {
             return 'active';
+        }
+
+        if (this.tableStatus === 'lobby') {
+            return 'lobby';
         }
 
         return 'in-active';

@@ -35,6 +35,13 @@ export const joinTable = buildAsyncRequestActions<JoinTableRequest, JoinTableRes
 export const leaveTable = buildAsyncRequestActions<undefined, LeaveTableResponse, PokerMoonsError>('leave the table');
 
 /**
+ * Toggle players ready status
+ */
+export const toggleReadyStatus = buildAsyncRequestActions<undefined, LeaveTableResponse, PokerMoonsError>(
+    'toggles a players ready status',
+);
+
+/**
  *  Actions used when the client player attempts to perform an action
  */
 export const performTableAction = buildAsyncRequestActions<

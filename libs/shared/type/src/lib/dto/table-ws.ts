@@ -23,6 +23,12 @@ export interface PlayerLeftTableEvent extends GeneralTableEvent<'playerLeft'> {
     seatId: SeatId;
 }
 
+export interface PlayerReadyStatusEvent extends GeneralTableEvent<'playerReadyStatus'> {
+    playerId: PlayerId;
+
+    ready: boolean;
+}
+
 /**
  * @description Event that occurs when a player runs past their 30 second timeout and start using their
  *              time bank. Update the time bank for the client.
@@ -95,8 +101,9 @@ export type TableEvent =
     | ConnectedEvent
     | PlayerJoinedTableEvent
     | PlayerLeftTableEvent
+    | PlayerReadyStatusEvent
     | PlayerTimeBankEvent
+    | PlayerTurnEvent
     | RoundStatusChangedEvent
     | TableStatusChangedEvent
-    | PlayerTurnEvent
     | WinnerWinnerChickenDinnerEvent;

@@ -1,4 +1,4 @@
-<form [formGroup]="spectatorForm">
+<form *ngIf="tableStatus === 'lobby'" [formGroup]="spectatorForm">
     <label for="username">Enter Username</label>
     <input id="username" formControlName="username" />
     <span *ngIf="!spectatorForm.valid"

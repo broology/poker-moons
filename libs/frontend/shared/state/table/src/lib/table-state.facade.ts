@@ -10,9 +10,10 @@ import {
     Round,
     SeatId,
     TableId,
+    TableStatus,
 } from '@poker-moons/shared/type';
 import { Observable } from 'rxjs';
-import { joinTable, leaveTable, performTableAction } from './actions/api.actions';
+import { joinTable, leaveTable, performTableAction, toggleReadyStatus } from './actions/api.actions';
 import { connectToWs } from './actions/ws.actions';
 import {
     selectClientImmutablePlayer,
@@ -21,7 +22,7 @@ import {
     selectImmutablePlayerBySeatId,
     selectMutablePlayerBySeatId,
 } from './table-state.selectors';
-import { selectActiveRound, selectCards, selectSeatMap } from './table.state';
+import { selectActiveRound, selectCards, selectSeatMap, selectStartDate, selectStatus } from './table.state';
 
 @Injectable({ providedIn: 'root' })
 export class TableStateFacade {
@@ -36,6 +37,21 @@ export class TableStateFacade {
      */
     selectSeatMap(): Observable<Partial<Record<SeatId, PlayerId>>> {
         return this.store.pipe(select(selectSeatMap));
+    }
+
+    /**
+     * The status of the table
+     */
+    selectStatus(): Observable<TableStatus> {
+        return this.store.pipe(select(selectStatus));
+    }
+
+    /**
+     * The start date of the table.
+     * - `null`: in the case where still in lobby and not all players are ready
+     */
+    selectStartDate(): Observable<Date | null> {
+        return this.store.pipe(select(selectStartDate));
     }
 
     /**
@@ -110,6 +126,13 @@ export class TableStateFacade {
      */
     leave(): void {
         this.store.dispatch(leaveTable.request({ payload: undefined }));
+    }
+
+    /**
+     * Request the current client to toggle their ready status
+     */
+    toggleReadyStatus(): void {
+        this.store.dispatch(toggleReadyStatus.request({ payload: undefined }));
     }
 
     /**

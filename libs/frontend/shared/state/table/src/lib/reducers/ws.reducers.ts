@@ -129,4 +129,20 @@ export const wsReducers: ReducerTypes<ClientTableState, [ActionType<any>]>[] = [
             },
         };
     }),
+
+    /**
+     * When the player changes their ready status
+     */
+    on(tableWsActionMap.playerReadyStatus, (state, { payload }) => {
+        return {
+            ...state,
+            mutablePlayerMap: {
+                ...state.mutablePlayerMap,
+                [payload.playerId]: {
+                    ...state.mutablePlayerMap[payload.playerId],
+                    ready: payload.ready,
+                },
+            },
+        };
+    }),
 ];

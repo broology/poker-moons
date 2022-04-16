@@ -17,6 +17,13 @@ export type JoinTableResponse = Player;
 export type LeaveTableResponse = Player;
 
 /**
+ * PUT /table/:tableId/player/:playerId/ready-status
+ *
+ * Toggles the players ready status from what ever it currently is
+ */
+export type ToggleReadyStatusResponse = Player;
+
+/**
  * GET /table/:tableId/player/:playerId/cards
  *
  * Gets the players cards for the round. This is to avoid sending cards via websocket

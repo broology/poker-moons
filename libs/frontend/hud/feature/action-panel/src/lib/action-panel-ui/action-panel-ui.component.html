@@ -7,8 +7,15 @@
         (playerActionEmitter)="playerActionEmitter.emit($event)"
     ></poker-moons-active-controls>
     <poker-moons-in-active-controls *ngSwitchCase="'in-active'"></poker-moons-in-active-controls>
+    <poker-moons-lobby-controls
+        *ngSwitchCase="'lobby'"
+        [ready]="clientMutablePlayer!.ready"
+        [startDate]="tableStartDate"
+        (toggleReadyStatusEmitter)="toggleReadyStatusEmitter.emit()"
+    ></poker-moons-lobby-controls>
     <poker-moons-spectator-controls
         *ngSwitchCase="'spectator'"
+        [tableStatus]="tableStatus"
         (joinTableEmitter)="joinTableEmitter.emit($event)"
     ></poker-moons-spectator-controls>
 </div>

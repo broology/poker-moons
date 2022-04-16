@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { catchError, concatMap, Observable, of, switchMap, take, tap, withLatestFrom } from 'rxjs';
-import { getCards, joinTable, leaveTable, performTableAction } from '../actions/api.actions';
+import { getCards, joinTable, leaveTable, performTableAction, toggleReadyStatus } from '../actions/api.actions';
 import { PlayerApiService } from '../shared/data-access/player-api.service';
 import { AsyncRequestActions } from '../shared/util/action-util';
 import { selectPlayerId, selectTableId } from '../table.state';
@@ -37,6 +37,26 @@ export class TableStateApiEffects {
                 }
 
                 return this.performApiRequest(leaveTable, () => this.playerApiService.leave(tableId, playerId));
+            }),
+        ),
+    );
+
+    requestToggleReadyStatus$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(toggleReadyStatus.request),
+            concatMap((action) =>
+                of(action).pipe(
+                    withLatestFrom(this.store.pipe(select(selectTableId)), this.store.pipe(select(selectPlayerId))),
+                ),
+            ),
+            switchMap(([, tableId, playerId]) => {
+                if (tableId === null || playerId === null) {
+                    throw new Error('Missing required params');
+                }
+
+                return this.performApiRequest(toggleReadyStatus, () =>
+                    this.playerApiService.toggleReadyStatus(tableId, playerId),
+                );
             }),
         ),
     );

@@ -28,8 +28,10 @@ const Template: Story<ActionPanelUiComponent> = (args: ActionPanelUiComponent) =
 
 const defaultArgs = {
     clientImmutablePlayer: mockImmutablePublicPlayer({ seatId: 0 }),
-    clientMutablePlayer: mockMutablePublicPlayer({ stack: 1000, called: 0 }),
+    clientMutablePlayer: mockMutablePublicPlayer({ stack: 1000, called: 0, ready: false }),
     round: mockRound({ activeSeat: 0, toCall: 100 }),
+    tableStatus: 'lobby' as const,
+    startDate: null,
 };
 
 export const primary = Template.bind({});
@@ -41,6 +43,7 @@ active.args = defaultArgs;
 export const inActive = Template.bind({});
 inActive.args = {
     ...defaultArgs,
+    tableStatus: 'in-progress',
     round: mockRound({ activeSeat: 1 }),
 };
 
@@ -49,4 +52,11 @@ spectator.args = {
     ...defaultArgs,
     clientImmutablePlayer: null,
     clientMutablePlayer: null,
+};
+
+export const lobby = Template.bind({});
+lobby.args = {
+    ...defaultArgs,
+    tableStatus: 'lobby',
+    round: mockRound({ activeSeat: 1 }),
 };
