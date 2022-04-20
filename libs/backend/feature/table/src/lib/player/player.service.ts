@@ -38,7 +38,6 @@ export class PlayerService {
 
     async create(dto: JoinTableRequest, tableId: TableId): Promise<JoinTableResponse> {
         this.logger.log("New player has joined table " + tableId);
-        //TODO: This method of finding first open seat feels big-time jankerino
         const currentSeatMap: Partial<Record<SeatId, PlayerId>> = (await this.tableStateManagerService.getTableById(tableId)).seatMap;
         const seatArray: Array<SeatId> = Object.keys(currentSeatMap) as Array<unknown> as Array<SeatId>;
         let firstAvailableSeat = seatArray.find(key => currentSeatMap[key] === undefined);
@@ -61,12 +60,7 @@ export class PlayerService {
 
     async getCards(tableId: TableId, playerId: PlayerId): Promise<GetPlayerCardsResponse> {
         this.logger.log("Player " + playerId + " has drawn their pocket cards");
-        //TODO: Is there a reason to pass deck explicitly when we already assume that the deck is associated with the tableID in the drawCard function?
-        const currentDeck: Card[] = (await this.tableStateManagerService.getTableById(tableId)).deck;
-        const drawFirstCardResponse = (await this.deckManagerService.drawCard(tableId, currentDeck));
-        const card1: Card = drawFirstCardResponse.card;
-        const card2: Card = (await this.deckManagerService.drawCard(tableId, drawFirstCardResponse.deck)).card;
-        await this.tableStateManagerService.updateTablePlayer(tableId, playerId, {cards: [card1, card2]})
-        return [card1, card2];
+        const currentPlayerState: Player = (await this.tableStateManagerService.getTableById(tableId)).playerMap[playerId];
+        return currentPlayerState.cards;
     }
 }
