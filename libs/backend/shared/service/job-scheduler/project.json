@@ -14,7 +14,7 @@
             "executor": "@nrwl/jest:jest",
             "outputs": ["coverage/libs/backend/shared/service/job-scheduler"],
             "options": {
-                "jestConfig": "libs/backend/shared/service/job-scheduler/jest.config.js",
+                "jestConfig": "libs/backend/shared/service/job-scheduler/jest.config.ts",
                 "passWithNoTests": true
             }
         }

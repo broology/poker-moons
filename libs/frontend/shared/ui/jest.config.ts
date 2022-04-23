@@ -1,6 +1,6 @@
 module.exports = {
-    displayName: 'frontend',
-    preset: '../../jest.preset.js',
+    displayName: 'frontend-shared-ui',
+
     setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
     globals: {
         'ts-jest': {
@@ -8,13 +8,15 @@ module.exports = {
             stringifyContentPathRegex: '\\.(html|svg)$',
         },
     },
-    coverageDirectory: '../../coverage/apps/frontend',
+    coverageDirectory: '../../../../coverage/libs/frontend/shared/ui',
     transform: {
-        '^.+\\.(ts|js|html)$': 'jest-preset-angular',
+        '^.+\\.(ts|mjs|js|html)$': 'jest-preset-angular',
     },
+    transformIgnorePatterns: ['node_modules/(?!.*\\.mjs$)'],
     snapshotSerializers: [
         'jest-preset-angular/build/serializers/no-ng-attributes',
         'jest-preset-angular/build/serializers/ng-snapshot',
         'jest-preset-angular/build/serializers/html-comment',
     ],
+    preset: '../../../../jest.preset.ts',
 };

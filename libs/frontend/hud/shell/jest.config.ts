@@ -1,6 +1,6 @@
 module.exports = {
-    displayName: 'frontend-shared-ui',
-    preset: '../../../../jest.preset.js',
+    displayName: 'frontend-hud-shell',
+
     setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
     globals: {
         'ts-jest': {
@@ -8,7 +8,7 @@ module.exports = {
             stringifyContentPathRegex: '\\.(html|svg)$',
         },
     },
-    coverageDirectory: '../../../../coverage/libs/frontend/shared/ui',
+    coverageDirectory: '../../../../coverage/libs/frontend/hud/shell',
     transform: {
         '^.+\\.(ts|mjs|js|html)$': 'jest-preset-angular',
     },
@@ -18,4 +18,5 @@ module.exports = {
         'jest-preset-angular/build/serializers/ng-snapshot',
         'jest-preset-angular/build/serializers/html-comment',
     ],
+    preset: '../../../../jest.preset.ts',
 };

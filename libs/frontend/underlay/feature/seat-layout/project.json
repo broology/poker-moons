@@ -24,7 +24,7 @@
             "executor": "@nrwl/jest:jest",
             "outputs": ["coverage/libs/frontend/underlay/feature/seat-layout"],
             "options": {
-                "jestConfig": "libs/frontend/underlay/feature/seat-layout/jest.config.js",
+                "jestConfig": "libs/frontend/underlay/feature/seat-layout/jest.config.ts",
                 "passWithNoTests": true
             }
         },

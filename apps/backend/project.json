@@ -4,7 +4,7 @@
     "projectType": "application",
     "targets": {
         "build": {
-            "executor": "@nrwl/node:build",
+            "executor": "@nrwl/node:webpack",
             "outputs": ["{options.outputPath}"],
             "options": {
                 "outputPath": "dist/apps/backend",
@@ -35,7 +35,7 @@
             }
         },
         "serve": {
-            "executor": "@nrwl/node:execute",
+            "executor": "@nrwl/node:node",
             "options": {
                 "buildTarget": "backend:build"
             }
@@ -51,7 +51,7 @@
             "executor": "@nrwl/jest:jest",
             "outputs": ["coverage/apps/backend"],
             "options": {
-                "jestConfig": "apps/backend/jest.config.js",
+                "jestConfig": "apps/backend/jest.config.ts",
                 "passWithNoTests": true
             }
         },

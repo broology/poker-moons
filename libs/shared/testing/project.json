@@ -14,12 +14,12 @@
             "executor": "@nrwl/jest:jest",
             "outputs": ["coverage/libs/shared/testing"],
             "options": {
-                "jestConfig": "libs/shared/testing/jest.config.js",
+                "jestConfig": "libs/shared/testing/jest.config.ts",
                 "passWithNoTests": true
             }
         },
         "build": {
-            "executor": "@nrwl/node:package",
+            "executor": "@nrwl/js:tsc",
             "options": {
                 "outputPath": "dist/libs/shared/testing",
                 "tsConfig": "libs/shared/testing/tsconfig.lib.json",

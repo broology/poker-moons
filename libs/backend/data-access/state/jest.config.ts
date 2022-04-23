@@ -1,6 +1,6 @@
 module.exports = {
-    displayName: 'shared-testing',
-    preset: '../../../jest.preset.js',
+    displayName: 'backend-data-access-state',
+
     globals: {
         'ts-jest': {
             tsconfig: '<rootDir>/tsconfig.spec.json',
@@ -11,5 +11,6 @@ module.exports = {
         '^.+\\.[tj]sx?$': 'ts-jest',
     },
     moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-    coverageDirectory: '../../../coverage/libs/shared/testing',
+    coverageDirectory: '../../../../coverage/libs/backend/data-access/state',
+    preset: '../../../../jest.preset.ts',
 };
