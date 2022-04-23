@@ -109,6 +109,7 @@ jobs:
             - run: yarn affected:test -- ${AFFECTED_ARGS} --parallel 2 -- --ci --code-coverage
     e2e:
         working_directory: ~/repo
+        resource_class: large
         docker:
             - image: circleci/node:14-browsers
         steps:
