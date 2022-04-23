@@ -1,6 +1,6 @@
 module.exports = {
-    displayName: 'backend-utility',
-    preset: '../../../jest.preset.js',
+    displayName: 'backend-shared-service-job-scheduler',
+
     globals: {
         'ts-jest': {
             tsconfig: '<rootDir>/tsconfig.spec.json',
@@ -11,5 +11,6 @@ module.exports = {
         '^.+\\.[tj]sx?$': 'ts-jest',
     },
     moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-    coverageDirectory: '../../../coverage/libs/backend/utility',
+    coverageDirectory: '../../../../../coverage/libs/backend/shared/service/job-scheduler',
+    preset: '../../../../../jest.preset.ts',
 };

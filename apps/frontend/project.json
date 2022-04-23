@@ -16,7 +16,8 @@
                 "inlineStyleLanguage": "scss",
                 "assets": ["apps/frontend/src/favicon.ico", "apps/frontend/src/assets"],
                 "styles": ["apps/frontend/src/styles.scss"],
-                "scripts": []
+                "scripts": [],
+                "buildLibsFromSource": false
             },
             "configurations": {
                 "production": {
@@ -84,7 +85,7 @@
             "executor": "@nrwl/jest:jest",
             "outputs": ["coverage/apps/frontend"],
             "options": {
-                "jestConfig": "apps/frontend/jest.config.js",
+                "jestConfig": "apps/frontend/jest.config.ts",
                 "passWithNoTests": true
             }
         },

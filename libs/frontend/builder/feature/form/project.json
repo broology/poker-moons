@@ -24,7 +24,7 @@
             "executor": "@nrwl/jest:jest",
             "outputs": ["coverage/libs/frontend/builder/feature/form"],
             "options": {
-                "jestConfig": "libs/frontend/builder/feature/form/jest.config.js",
+                "jestConfig": "libs/frontend/builder/feature/form/jest.config.ts",
                 "passWithNoTests": true
             }
         },

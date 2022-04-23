@@ -1,6 +1,6 @@
 module.exports = {
-    displayName: 'shared-type',
-    preset: '../../../jest.preset.js',
+    displayName: 'backend-utility',
+
     globals: {
         'ts-jest': {
             tsconfig: '<rootDir>/tsconfig.spec.json',
@@ -11,5 +11,6 @@ module.exports = {
         '^.+\\.[tj]sx?$': 'ts-jest',
     },
     moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-    coverageDirectory: '../../../coverage/libs/shared/type',
+    coverageDirectory: '../../../coverage/libs/backend/utility',
+    preset: '../../../jest.preset.ts',
 };

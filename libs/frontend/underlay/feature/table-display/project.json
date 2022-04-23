@@ -24,7 +24,7 @@
             "executor": "@nrwl/jest:jest",
             "outputs": ["coverage/libs/frontend/underlay/feature/table-display"],
             "options": {
-                "jestConfig": "libs/frontend/underlay/feature/table-display/jest.config.js",
+                "jestConfig": "libs/frontend/underlay/feature/table-display/jest.config.ts",
                 "passWithNoTests": true
             }
         },

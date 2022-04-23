@@ -24,7 +24,7 @@
             "executor": "@nrwl/jest:jest",
             "outputs": ["coverage/libs/frontend/hud/feature/bank-panel"],
             "options": {
-                "jestConfig": "libs/frontend/hud/feature/bank-panel/jest.config.js",
+                "jestConfig": "libs/frontend/hud/feature/bank-panel/jest.config.ts",
                 "passWithNoTests": true
             }
         },

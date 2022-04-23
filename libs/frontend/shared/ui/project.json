@@ -24,7 +24,7 @@
             "executor": "@nrwl/jest:jest",
             "outputs": ["coverage/libs/frontend/shared/ui"],
             "options": {
-                "jestConfig": "libs/frontend/shared/ui/jest.config.js",
+                "jestConfig": "libs/frontend/shared/ui/jest.config.ts",
                 "passWithNoTests": true
             }
         },

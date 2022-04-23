@@ -1,6 +1,6 @@
 module.exports = {
-    displayName: 'frontend-hud-feature-action-panel',
-    preset: '../../../../../jest.preset.js',
+    displayName: 'frontend-builder-feature-form',
+
     setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
     globals: {
         'ts-jest': {
@@ -8,7 +8,7 @@ module.exports = {
             stringifyContentPathRegex: '\\.(html|svg)$',
         },
     },
-    coverageDirectory: '../../../../../coverage/libs/frontend/hud/feature/action-panel',
+    coverageDirectory: '../../../../../coverage/libs/frontend/builder/feature/form',
     transform: {
         '^.+\\.(ts|mjs|js|html)$': 'jest-preset-angular',
     },
@@ -18,4 +18,5 @@ module.exports = {
         'jest-preset-angular/build/serializers/ng-snapshot',
         'jest-preset-angular/build/serializers/html-comment',
     ],
+    preset: '../../../../../jest.preset.ts',
 };
