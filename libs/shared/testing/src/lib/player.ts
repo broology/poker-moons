@@ -13,6 +13,7 @@ export function mockPublicPlayer(overrides: DeepPartial<PublicPlayer> = {}): Pub
         seatId: 1,
         cards: [],
         ready: false,
+        timeBank: 120,
     };
 
     return merge(publicPlayer, overrides);
@@ -36,6 +37,7 @@ export function mockMutablePublicPlayer(overrides: DeepPartial<MutablePublicPlay
         called: 10,
         cards: [],
         ready: false,
+        timeBank: 120,
     };
 
     return merge(mutablePublicPlayer, overrides);
@@ -52,6 +54,7 @@ export function mockPlayer(overrides: DeepPartial<Player> = {}): Player {
         seatId: 1,
         cards: [],
         ready: false,
+        timeBank: 120,
     };
 
     return merge(player, overrides);

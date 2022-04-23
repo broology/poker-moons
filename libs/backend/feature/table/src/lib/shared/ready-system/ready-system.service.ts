@@ -9,13 +9,13 @@ import { ReadyQueueJobData } from './ready-system.type';
 
 @Injectable()
 export class ReadySystemService {
-    private readonly logger = new CustomLoggerService(ReadySystemService.name);
-
     /**
      * @description The duration that will occur between when all players ready up
      *              and the game actually starting
      */
     private static readonly waitDuration = { seconds: 10 };
+
+    private readonly logger = new CustomLoggerService(ReadySystemService.name);
 
     constructor(
         private readonly jobSchedulerService: JobSchedulerService,
@@ -58,16 +58,16 @@ export class ReadySystemService {
         const table = await this.tableStateManager.getTableById(tableId);
 
         if (table.status !== 'lobby') {
-            this.logger.debug(`${tableId}: Table status ${table.status}, thus do nothing`);
+            this.logger.debug(`${tableId}: Table status ${table.status}, thus did nothing`);
             return;
         }
 
         const jobId = ReadySystemService.buildJobId(tableId);
 
-        const exists = await this.jobSchedulerService.exists(jobId);
+        const job = await this.jobSchedulerService.get(jobId);
 
-        if (!exists) {
-            this.logger.debug(`${tableId}: No active ready queue, do nothing`);
+        if (job == null) {
+            this.logger.debug(`${tableId}: No active ready queue, did nothing`);
             return;
         }
 
@@ -105,7 +105,7 @@ export class ReadySystemService {
         const canStart = await this.canStartQueue(tableId);
 
         if (!canStart) {
-            this.logger.debug(`${tableId}: Not all players ready, thus doing nothing`);
+            this.logger.debug(`${tableId}: Lobby is in a state where it can not start`);
             return;
         }
         this.logger.log(`${tableId}: All players are ready, triggering queue start`);

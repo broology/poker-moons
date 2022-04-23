@@ -1,10 +1,12 @@
 import { JobSchedulerService } from '@poker-moons/backend/shared/service/job-scheduler';
 import { mockPlayer, mockServerTableState } from '@poker-moons/shared/testing';
+import { Job } from 'bull';
 import type { MockProxy } from 'jest-mock-extended';
 import { mock, mockReset } from 'jest-mock-extended';
 import { TableStateManagerService } from '../../table-state-manager/table-state-manager.service';
 import { TableGatewayService } from '../websocket/table-gateway.service';
 import { ReadySystemService } from './ready-system.service';
+import { ReadyQueueJobData } from './ready-system.type';
 
 describe('ReadySystemService', () => {
     const jobSchedulerService = mock<JobSchedulerService>();
@@ -29,6 +31,8 @@ describe('ReadySystemService', () => {
         expect(service).toBeDefined();
     });
 
+    const tableId = `table_1`;
+
     function mockFindTableState(args: Parameters<typeof mockServerTableState>[0] = {}) {
         tableStateManager.getTableById.mockResolvedValueOnce(mockServerTableState(args));
     }
@@ -37,16 +41,22 @@ describe('ReadySystemService', () => {
         jobSchedulerService.start.mockResolvedValueOnce(date);
     }
 
-    function mockJobExists(exists = true) {
-        jobSchedulerService.exists.mockResolvedValueOnce(exists);
+    function mockGetJob(exists = true) {
+        if (exists) {
+            jobSchedulerService.get.mockResolvedValueOnce({
+                data: {
+                    tableId,
+                },
+            } as unknown as Job<ReadyQueueJobData>);
+        } else {
+            jobSchedulerService.get.mockResolvedValueOnce(null);
+        }
     }
 
     /**
      * Both `onPlayerReadied` and `onPlayerLeft` can be tested the same way, as their functionality is the same.
      */
     describe.each(['onPlayerReadied', 'onPlayerLeft'] as const)('%s', (fn) => {
-        const tableId = `table_1`;
-
         it('should start queue if two or more players are in the table, and all players are ready', async () => {
             const startDate = new Date();
             const [player1, player2] = new Array(2).fill(0).map(() => mockPlayer({ ready: true }));
@@ -163,8 +173,6 @@ describe('ReadySystemService', () => {
     });
 
     describe('onPlayerJoined', () => {
-        const tableId = `table_1`;
-
         it('should stop queue if player joins active lobby', async () => {
             const [player1, player2] = new Array(2).fill(0).map(() => mockPlayer({ ready: true }));
 
@@ -183,7 +191,7 @@ describe('ReadySystemService', () => {
                 },
                 status: 'lobby',
             });
-            mockJobExists(true);
+            mockGetJob(true);
 
             await service.onPlayerJoined(tableId);
 
@@ -210,7 +218,7 @@ describe('ReadySystemService', () => {
                 },
                 status: 'in-progress',
             });
-            mockJobExists(true);
+            mockGetJob(true);
 
             await service.onPlayerJoined(tableId);
 

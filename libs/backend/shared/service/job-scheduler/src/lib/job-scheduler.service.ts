@@ -1,7 +1,7 @@
 import { InjectQueue } from '@nestjs/bull';
 import { Injectable } from '@nestjs/common';
 import { CustomLoggerService } from '@poker-moons/backend/utility';
-import { Queue } from 'bull';
+import { Job, Queue } from 'bull';
 import { addSeconds } from 'date-fns';
 import { JOB_SCHEDULER_BULL_QUEUE } from './job-scheduler.const';
 import { StartScheduledJobArgs } from './job-scheduler.type';
@@ -17,13 +17,13 @@ export class JobSchedulerService {
     constructor(@InjectQueue(JOB_SCHEDULER_BULL_QUEUE) private readonly queue: Queue) {}
 
     /**
-     * @description Returns whether or not the a job with `jobId` exists.
+     * @description Returns the job if it exists
      *
      * @param jobId id of job to find
-     * @returns if the job exists
+     * @returns job found, or null
      */
-    async exists(jobId: string): Promise<boolean> {
-        return !!(await this.queue.getJob(jobId));
+    get<T>(jobId: string): Promise<Job<T> | null> {
+        return this.queue.getJob(jobId);
     }
 
     /**
@@ -58,18 +58,20 @@ export class JobSchedulerService {
      * @description Finds the active job with the given `jobId` and stops stops/removes it
      *
      * @param jobId id of the job being stopped
+     * @returns the removed job if found
      */
-    async stop(jobId: string): Promise<void> {
+    async stop<T>(jobId: string): Promise<Job<T> | null> {
         this.logger.debug(`${jobId}: Stopping job`);
 
-        const existingJob = await this.queue.getJob(jobId);
+        const job = await this.queue.getJob(jobId);
 
-        if (!existingJob) {
+        if (!job) {
             this.logger.warn(`${jobId}: Stopping job when this job does not exists`);
-            return;
+            return null;
         }
 
         await this.queue.removeJobs(jobId);
         this.logger.log(`${jobId}: Stopped job`);
+        return job;
     }
 }

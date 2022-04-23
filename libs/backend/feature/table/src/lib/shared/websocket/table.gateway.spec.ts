@@ -41,7 +41,7 @@ describe('TableGateway', () => {
 
         it('should connect and emit the state', async () => {
             const player = mockPlayer({ cards: [mockCard(), mockCard()] });
-            const { id, username, img, seatId, stack, status, called, ready } = player;
+            const { id, username, img, seatId, stack, status, called, ready, timeBank } = player;
 
             tableStateManagerService.getTableById.mockResolvedValue({
                 id: 'table_1',
@@ -67,7 +67,7 @@ describe('TableGateway', () => {
                 roundCount: 1,
                 activeRound: mockRound(),
                 cards: [],
-                mutablePlayerMap: { player_1: { stack, status, called, cards: [null, null], ready } },
+                mutablePlayerMap: { player_1: { stack, status, called, cards: [null, null], ready, timeBank } },
                 immutablePlayerMap: { player_1: { id, username, img, seatId } },
                 startDate: null,
                 status: 'lobby',

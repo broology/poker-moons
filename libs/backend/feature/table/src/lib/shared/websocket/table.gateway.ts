@@ -78,7 +78,7 @@ export class TableGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
         const immutablePlayerMap: Record<PlayerId, ImmutablePublicPlayer> = {};
 
         for (const [playerId, player] of Object.entries(playerMap)) {
-            const { id, username, img, seatId, stack, status, called, ready, cards } = player;
+            const { id, username, img, seatId, stack, status, called, ready, cards, timeBank } = player;
 
             mutablePlayerMap[playerId as PlayerId] = {
                 stack,
@@ -86,6 +86,7 @@ export class TableGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
                 called,
                 cards: cards.length === 2 ? [null, null] : [],
                 ready,
+                timeBank,
             };
             immutablePlayerMap[playerId as PlayerId] = { id, username, img, seatId };
         }

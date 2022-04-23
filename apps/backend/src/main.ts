@@ -6,7 +6,7 @@ import helmet from 'helmet';
 import { join } from 'path';
 import { AppModule } from './app/app.module';
 
-config({ sample: join(process.cwd(), 'apps/backend/.env.sample'), allowEmptyValues: true });
+config({ sample: join(__dirname, './.env.sample') });
 
 const logger = new Logger('Bootstrap');
 
