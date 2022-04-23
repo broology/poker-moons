@@ -8,11 +8,15 @@ import { JoinTableRequest, PlayerAction } from '@poker-moons/shared/type';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ActionPanelFeatureComponent {
-    readonly round$ = this.tableStateFacade.selectRound();
-
     readonly clientMutablePlayer$ = this.tableStateFacade.selectClientMutablePlayer();
 
     readonly clientImmutablePlayer$ = this.tableStateFacade.selectClientImmutablePlayer();
+
+    readonly round$ = this.tableStateFacade.selectRound();
+
+    readonly tableStartDate$ = this.tableStateFacade.selectStartDate();
+
+    readonly tableStatus$ = this.tableStateFacade.selectStatus();
 
     constructor(private readonly tableStateFacade: TableStateFacade) {}
 
@@ -26,5 +30,9 @@ export class ActionPanelFeatureComponent {
 
     leave(): void {
         this.tableStateFacade.leave();
+    }
+
+    toggleReadyStatus(): void {
+        this.tableStateFacade.toggleReadyStatus();
     }
 }

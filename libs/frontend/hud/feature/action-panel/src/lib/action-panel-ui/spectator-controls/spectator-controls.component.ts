@@ -1,6 +1,6 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { JoinTableRequest } from '@poker-moons/shared/type';
+import { JoinTableRequest, TableStatus } from '@poker-moons/shared/type';
 
 @Component({
     selector: 'poker-moons-spectator-controls',
@@ -9,6 +9,8 @@ import { JoinTableRequest } from '@poker-moons/shared/type';
 })
 export class SpectatorControlsComponent implements OnInit {
     USERNAME_LENGTH = { min: 2, max: 15 };
+
+    @Input() tableStatus!: TableStatus;
 
     @Output() joinTableEmitter: EventEmitter<JoinTableRequest>;
 

@@ -10,6 +10,7 @@ import {
     PerformPlayerActionResponse,
     PlayerId,
     TableId,
+    ToggleReadyStatusResponse,
 } from '@poker-moons/shared/type';
 import { Observable } from 'rxjs';
 
@@ -28,6 +29,13 @@ export class PlayerApiService {
 
     leave(tableId: TableId, playerId: PlayerId): Observable<LeaveTableResponse> {
         return this.httpClient.put<LeaveTableResponse>(`${this.env.api}/table/${tableId}/player/${playerId}`, {});
+    }
+
+    toggleReadyStatus(tableId: TableId, playerId: PlayerId): Observable<ToggleReadyStatusResponse> {
+        return this.httpClient.put<ToggleReadyStatusResponse>(
+            `${this.env.api}/table/${tableId}/player/${playerId}/ready-status`,
+            {},
+        );
     }
 
     getCards(tableId: TableId, playerId: PlayerId): Observable<GetPlayerCardsResponse> {

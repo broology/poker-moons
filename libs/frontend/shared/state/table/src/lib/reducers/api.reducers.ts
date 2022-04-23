@@ -18,6 +18,7 @@ export const apiReducers: ReducerTypes<ClientTableState, [ActionType<any>]>[] = 
 
     // Does nothing currently
     //on(preformTableAction.success, (state, { payload }) => state),
+    //on(toggleReadyStatus.success, (state, { payload }) => state),
 
     on(getCards.success, (state, { payload }) => ({ ...state, cards: payload })),
 ];
