@@ -13,7 +13,7 @@ const logger = new Logger('Bootstrap');
 async function bootstrap() {
     const app = await NestFactory.create(AppModule, { logger: new CustomLoggerService() });
 
-    // Use helmet to follow general security practices
+    // Using helmet to follow general security practices
     app.use(helmet());
 
     // Enable CORS for client to server requests
