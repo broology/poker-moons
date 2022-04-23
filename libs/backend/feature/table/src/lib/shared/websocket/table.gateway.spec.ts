@@ -1,5 +1,5 @@
-import { mockRound, mockPlayer, mockCard } from '@poker-moons/shared/testing';
-import { TableId } from '@poker-moons/shared/type';
+import { mockCard, mockPlayer, mockRound } from '@poker-moons/shared/testing';
+import { ConnectedEvent, TableId } from '@poker-moons/shared/type';
 import { mock, mockReset } from 'jest-mock-extended';
 import { Socket } from 'socket.io';
 import { TableStateManagerService } from '../../table-state-manager/table-state-manager.service';
@@ -41,7 +41,7 @@ describe('TableGateway', () => {
 
         it('should connect and emit the state', async () => {
             const player = mockPlayer({ cards: [mockCard(), mockCard()] });
-            const { id, username, img, seatId, stack, status, called } = player;
+            const { id, username, img, seatId, stack, status, called, ready } = player;
 
             tableStateManagerService.getTableById.mockResolvedValue({
                 id: 'table_1',
@@ -51,6 +51,8 @@ describe('TableGateway', () => {
                 activeRound: mockRound(),
                 playerMap: { player_1: player },
                 deck: [],
+                startDate: null,
+                status: 'lobby',
             });
 
             mockSocket.handshake.query = { tableId };
@@ -58,15 +60,17 @@ describe('TableGateway', () => {
             await gateway.handleConnection(mockSocket);
 
             expect(mockSocket.join).toHaveBeenCalledWith(tableId);
-            expect(mockSocket.emit).toHaveBeenCalledWith('connected', {
+            expect(mockSocket.emit).toHaveBeenCalledWith<[string, ConnectedEvent['state']]>('connected', {
                 tableId,
                 name: 'Table 1',
                 seatMap: {},
                 roundCount: 1,
                 activeRound: mockRound(),
                 cards: [],
-                mutablePlayerMap: { player_1: { stack, status, called, cards: [null, null] } },
+                mutablePlayerMap: { player_1: { stack, status, called, cards: [null, null], ready } },
                 immutablePlayerMap: { player_1: { id, username, img, seatId } },
+                startDate: null,
+                status: 'lobby',
             });
         });
     });

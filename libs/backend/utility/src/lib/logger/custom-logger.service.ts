@@ -1,6 +1,5 @@
 import { ConsoleLogger } from '@nestjs/common';
 import * as winston from 'winston';
-import * as DailyRotateFile from 'winston-daily-rotate-file';
 
 const levels = {
     error: 0,
@@ -25,13 +24,6 @@ const transports = [
     new winston.transports.Console({
         format: formatC,
         level: process.env.LOG_LEVEL,
-    }),
-    new DailyRotateFile({
-        filename: 'logs/poker-moons-backend-%DATE%.log',
-        datePattern: 'YYYY-MM-DD',
-        zippedArchive: true,
-        level: process.env.LOG_LEVEL,
-        maxFiles: '14d',
     }),
 ];
 

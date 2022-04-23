@@ -24,6 +24,8 @@ export const initialState: ClientTableState = {
     cards: [],
     playerId: null,
     tableId: null,
+    startDate: null,
+    status: 'lobby',
 };
 
 export const storeFeature = createFeature({
@@ -39,4 +41,6 @@ export const {
     selectImmutablePlayerMap,
     selectMutablePlayerMap,
     selectSeatMap,
+    selectStartDate,
+    selectStatus,
 } = storeFeature;

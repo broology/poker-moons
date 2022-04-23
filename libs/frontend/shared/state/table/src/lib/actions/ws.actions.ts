@@ -19,6 +19,7 @@ export type TableWsActionMap = {
  * Websocket actions that are pushed to the client
  */
 export const tableWsActionMap: TableWsActionMap = {
+    tableStatusChanged: createActionType('table status has been changed'),
     playerJoined: createActionType('player has joined the table'),
     playerLeft: createActionType('player has left the table'),
     roundStatusChanged: createActionType('round status has changed'),

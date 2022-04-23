@@ -39,7 +39,7 @@ export default async function (
     const eb = new ElasticBeanstalkFacade(options.region);
 
     logger.log('Creating eb application version');
-    await eb.createApplicationVersion({
+    await eb.findOrCreateApplicationVersion({
         applicationName: options.ebApplication,
         versionLabel: options.tag,
         sourceBundle: {

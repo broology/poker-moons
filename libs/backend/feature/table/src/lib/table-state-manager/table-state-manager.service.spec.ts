@@ -1,7 +1,8 @@
 import { Test } from '@nestjs/testing';
-import { TableStateManagerService } from './table-state-manager.service';
 import { BackendDataAccessStateModule } from '@poker-moons/backend/data-access/state';
-import { Player, ServerTableState, TableId } from '@poker-moons/shared/type';
+import { mockPlayer } from '@poker-moons/shared/testing';
+import { ServerTableState, TableId } from '@poker-moons/shared/type';
+import { TableStateManagerService } from './table-state-manager.service';
 
 describe('TableStateManagerService', () => {
     let service: TableStateManagerService;
@@ -30,7 +31,9 @@ describe('TableStateManagerService', () => {
     describe('getState', () => {
         it('should properly retrieve a table', async () => {
             await service.createNewTable('testTable');
-            expect(await service.getTableById('table_1')).toEqual({
+
+            const actual = await service.getTableById('table_1');
+            expect(actual).toEqual<typeof actual>({
                 id: 'table_1',
                 name: 'testTable',
                 seatMap: {
@@ -54,6 +57,8 @@ describe('TableStateManagerService', () => {
                 },
                 deck: [],
                 playerMap: {},
+                startDate: null,
+                status: 'lobby',
             });
         });
 
@@ -85,7 +90,7 @@ describe('TableStateManagerService', () => {
 
         it('should update a table - addNewPlayerToTable', async () => {
             await service.createNewTable('testTable');
-            const newPlayer: Player = {
+            const newPlayer = mockPlayer({
                 id: `player_${'1'}`,
                 username: 'test',
                 img: 'test',
@@ -94,7 +99,7 @@ describe('TableStateManagerService', () => {
                 called: 0,
                 seatId: null,
                 cards: [],
-            };
+            });
             await service.addNewPlayerToTable('table_1', newPlayer);
             const table = await service.getTableById('table_1');
             expect(table.playerMap['player_1']).toBeDefined();
@@ -103,7 +108,7 @@ describe('TableStateManagerService', () => {
 
         it('should update a table - updateTablePlayer', async () => {
             await service.createNewTable('testTable');
-            const newPlayer: Player = {
+            const newPlayer = mockPlayer({
                 id: `player_${'1'}`,
                 username: 'test',
                 img: 'test',
@@ -112,7 +117,7 @@ describe('TableStateManagerService', () => {
                 called: 0,
                 seatId: null,
                 cards: [],
-            };
+            });
             await service.addNewPlayerToTable('table_1', newPlayer);
             await service.updateTablePlayer('table_1', 'player_1', { username: 'Jordan' });
             const table: ServerTableState = await service.getTableById('table_1');

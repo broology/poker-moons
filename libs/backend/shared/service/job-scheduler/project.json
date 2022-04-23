@@ -1,0 +1,23 @@
+{
+    "root": "libs/backend/shared/service/job-scheduler",
+    "sourceRoot": "libs/backend/shared/service/job-scheduler/src",
+    "projectType": "library",
+    "targets": {
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "outputs": ["{options.outputFile}"],
+            "options": {
+                "lintFilePatterns": ["libs/backend/shared/service/job-scheduler/**/*.ts"]
+            }
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/libs/backend/shared/service/job-scheduler"],
+            "options": {
+                "jestConfig": "libs/backend/shared/service/job-scheduler/jest.config.js",
+                "passWithNoTests": true
+            }
+        }
+    },
+    "tags": []
+}

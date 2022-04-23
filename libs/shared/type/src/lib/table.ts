@@ -8,6 +8,14 @@ export type TableId = `table_${string}`;
 export const seats = [0, 1, 2, 3, 4, 5] as const;
 export type SeatId = typeof seats[number];
 
+/**
+ * Status of the table
+ * - `lobby`: Players are not ready yet
+ * - `in-progress`: Game is in progress
+ * - `ended`: Game has finished
+ */
+export type TableStatus = 'lobby' | 'in-progress' | 'ended';
+
 export interface Table {
     id: TableId;
 
@@ -39,4 +47,15 @@ export interface Table {
      * The active round of the table
      */
     activeRound: Round;
+
+    /**
+     * Status of the table
+     */
+    status: TableStatus;
+
+    /**
+     * Date when the table is to start. This is initially `null`,
+     * and is set at when
+     */
+    startDate: Date | null;
 }

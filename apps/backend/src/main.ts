@@ -1,19 +1,19 @@
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import helmet from 'helmet';
-import { AppModule } from './app/app.module';
 import { CustomLoggerService } from '@poker-moons/backend/utility';
 import { config } from 'dotenv-safe';
+import helmet from 'helmet';
+import { join } from 'path';
+import { AppModule } from './app/app.module';
 
-//config({ sample: join(__dirname, '.env.sample') });
-config({ sample: process.cwd() + '/apps/backend/.env.sample', allowEmptyValues: true });
+config({ sample: join(process.cwd(), 'apps/backend/.env.sample'), allowEmptyValues: true });
 
 const logger = new Logger('Bootstrap');
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule, { logger: new CustomLoggerService() });
 
-    // Use helmet to follow general security practices
+    // Using helmet to follow general security practices
     app.use(helmet());
 
     // Enable CORS for client to server requests
