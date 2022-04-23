@@ -40,7 +40,7 @@ export class PlayerActionService {
             case 'all-in':
                 pipe(
                     this.allInActionHandlerService.canAllIn(table, player, dto.action),
-                    this.allInActionHandlerService.allIn,
+                    await this.allInActionHandlerService.allIn,
                 );
                 break;
             case 'call':
@@ -58,7 +58,7 @@ export class PlayerActionService {
             case 'fold':
                 pipe(
                     this.foldActionHandlerService.canFold(table, player, dto.action),
-                    this.foldActionHandlerService.fold,
+                    await this.foldActionHandlerService.fold,
                 );
                 break;
             case 'raise':
