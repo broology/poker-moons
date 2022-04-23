@@ -1,5 +1,6 @@
 import {
     CreateApplicationVersionCommand,
+    DescribeApplicationVersionsCommand,
     DescribeEnvironmentsCommand,
     ElasticBeanstalkClient,
     UpdateEnvironmentCommand,
@@ -37,18 +38,33 @@ export class ElasticBeanstalkFacade {
     constructor(region: string) {
         this.client = new ElasticBeanstalkClient(region);
     }
+
     /**
-     * Creates an ApplicationVersion in elastic beanstalk for the application. This application version
-     * will automatically be applied to the application.
+     * Finds an existing ApplicationVersion for the deployment workflow,
+     * or creates an ApplicationVersion in elastic beanstalk for the application.
+     * Creating the application version, does not automatically update the environment.
      *
-     * Keep in mind this method does not wait for the application version to be deployed onto the instance,
-     * it pushes the request to aws.
      *
      * @param input - Application name, version label,
      * @throws { Error } - If the application version fails to be created
      */
-    async createApplicationVersion(input: CreateApplicationVersionInput): Promise<void> {
-        const command = new CreateApplicationVersionCommand({
+    async findOrCreateApplicationVersion(input: CreateApplicationVersionInput): Promise<void> {
+        const findCommand = new DescribeApplicationVersionsCommand({
+            ApplicationName: input.applicationName,
+            VersionLabels: [input.versionLabel],
+        });
+
+        try {
+            const result = await this.client.send(findCommand);
+
+            if (result.ApplicationVersions && result.ApplicationVersions.length > 0) {
+                logger.warn('Found existing application version from previous workflow, reusing it');
+                return;
+            }
+        } catch (e) {}
+
+        logger.log('Creating new application version');
+        const createCommand = new CreateApplicationVersionCommand({
             ApplicationName: input.applicationName,
             SourceBundle: {
                 S3Bucket: input.sourceBundle.bucket,
@@ -58,10 +74,14 @@ export class ElasticBeanstalkFacade {
             Process: true,
         });
 
-        const result = await this.client.send(command);
+        try {
+            const result = await this.client.send(createCommand);
 
-        if (result.$metadata.httpStatusCode !== 200) {
-            logger.error(result);
+            if (result.$metadata.httpStatusCode !== 200) {
+                throw result;
+            }
+        } catch (e) {
+            logger.error(JSON.stringify(e, null, '\t'));
             throw new Error(`Failed to create application version ${input.versionLabel}`);
         }
     }
