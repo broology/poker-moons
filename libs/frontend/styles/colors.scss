@@ -8,23 +8,21 @@ $colors: (
     'warning': #e6bd19,
     'error': #c6394a,
     'text': #ffffff,
-);
-
-$text-contrasts: (
-    'background': #ffffff,
-    'shaded': #ffffff,
-    'tinted': #ffffff,
-    'primary': #000000,
-    'secondary': #ffffff,
-    'success': #000000,
-    'warning': #000000,
-    'error': #ffffff,
-    'text': #000000,
+    'text-contrast': #000000,
 );
 
 /* Function to fetch the associated color from the poker-moons theme */
 @function color($name: 'primary') {
     @return map-get($colors, $name);
+}
+
+/* Function to fetch a text contrast version of the associated color from the poker-moons theme */
+@function color-text-contrast($name: 'primary') {
+    @if ($name == 'success' or $name == 'warning') {
+        @return map-get($colors, 'text');
+    } @else {
+        @return map-get($colors, 'text-contrast');
+    }
 }
 
 /* Function to fetch a tinted version of the associated color from the poker-moons theme */
@@ -42,11 +40,6 @@ $text-contrasts: (
     $color: color($name);
 
     @return rgba($color, $opacity);
-}
-
-/* Function to fetch a text contrast version of the associated color from the poker-moons theme */
-@function color-text-contrast($name: 'primary') {
-    @return map-get($text-contrast, $name);
 }
 
 /* Dynamically builds the list of colors as `css` variables that can be used for eg.`var(--primary)` */
