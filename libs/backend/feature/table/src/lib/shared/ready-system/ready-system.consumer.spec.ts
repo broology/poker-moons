@@ -1,6 +1,7 @@
 import { Job } from 'bull';
 import type { MockProxy } from 'jest-mock-extended';
 import { mock, mockReset } from 'jest-mock-extended';
+import { RoundManagerService } from '../../round/round-manager/round-manager.service';
 import { TableStateManagerService } from '../../table-state-manager/table-state-manager.service';
 import { TableGatewayService } from '../websocket/table-gateway.service';
 import { ReadySystemConsumer } from './ready-system.consumer';
@@ -9,10 +10,12 @@ import { ReadyQueueJobData } from './ready-system.type';
 describe('ReadySystemConsumer', () => {
     const tableGatewayService = mock<TableGatewayService>();
     const tableStateManager = mock<TableStateManagerService>();
+    const roundManagerService = mock<RoundManagerService>();
 
     const params: [...MockProxy<ConstructorParameters<typeof ReadySystemConsumer>>] = [
         tableGatewayService,
         tableStateManager,
+        roundManagerService,
     ];
 
     const service = new ReadySystemConsumer(...params);
@@ -37,7 +40,7 @@ describe('ReadySystemConsumer', () => {
             } as unknown as Job<ReadyQueueJobData>;
         }
 
-        it('should update table state and emit event changing tables status to in-progress', async () => {
+        it('should update table state, emit event changing tables status to in-progress, and start round', async () => {
             await service.onComplete(mockJob());
 
             expect(tableStateManager.updateTable).toHaveBeenCalledWith<
@@ -46,7 +49,10 @@ describe('ReadySystemConsumer', () => {
                 startDate: expect.any(Date),
                 status: 'in-progress',
             });
+
             expect(tableGatewayService.emitTableEvent).toHaveBeenCalled();
+
+            expect(roundManagerService.startRound).toHaveBeenCalledWith(tableId);
         });
     });
 });

@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { JOB_SCHEDULER_BULL_QUEUE } from '@poker-moons/backend/shared/service/job-scheduler';
 import { CustomLoggerService } from '@poker-moons/backend/utility';
 import { Job } from 'bull';
+import { RoundManagerService } from '../../round/round-manager/round-manager.service';
 import { TableStateManagerService } from '../../table-state-manager/table-state-manager.service';
 import { TableGatewayService } from '../websocket/table-gateway.service';
 import { READY_SYSTEM_BULL_JOB } from './ready-system.const';
@@ -20,6 +21,7 @@ export class ReadySystemConsumer {
     constructor(
         private readonly tableGatewayService: TableGatewayService,
         private readonly tableStateManagerService: TableStateManagerService,
+        private readonly roundManagerService: RoundManagerService,
     ) {}
 
     /**
@@ -39,6 +41,7 @@ export class ReadySystemConsumer {
             startDate,
             status: 'in-progress',
         });
+
         this.tableGatewayService.emitTableEvent(job.data.tableId, {
             startDate,
             status: 'in-progress',
@@ -46,5 +49,7 @@ export class ReadySystemConsumer {
         });
 
         this.logger.log(`${job.id}: Table started`);
+
+        await this.roundManagerService.startRound(job.data.tableId);
     }
 }

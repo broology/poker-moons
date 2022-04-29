@@ -164,6 +164,12 @@ describe('RoundManagerService', () => {
             expect(tableStateManagerService.updateTable).toHaveBeenCalledWith(table.id, {
                 status: 'ended',
             });
+
+            expect(tableGatewayService.emitTableEvent).toHaveBeenCalledWith(table.id, {
+                type: 'tableStatusChanged',
+                status: 'ended',
+                startDate: undefined,
+            });
         });
 
         it('should stop player timer, call winner determiner, and start new round if two or more players still have chips', async () => {

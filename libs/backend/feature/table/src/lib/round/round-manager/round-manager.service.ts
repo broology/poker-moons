@@ -176,6 +176,12 @@ export class RoundManagerService {
         if (numPlayersWithNoChipsLeft === playerStacks.length - 1) {
             // If only one player has chips left in their stack, update the table status to 'ended'
             await this.tableStateManagerService.updateTable(table.id, { status: 'ended' });
+
+            this.tableGatewayService.emitTableEvent(table.id, {
+                type: 'tableStatusChanged',
+                status: 'ended',
+                startDate: undefined,
+            });
         } else {
             /*
              * If the game can continue, set the next dealer/active seat, reset the round in state,
