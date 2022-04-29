@@ -21,7 +21,7 @@ export interface TurnTimerQueueJobData {
 }
 
 /**
- * @description Arguments passed into the `TurnTimerService` when a table game is started.
+ * @description Arguments passed into the `TurnTimerService` when a table round is started.
  */
 export interface OnStartArgs {
     /**
@@ -53,4 +53,19 @@ export interface OnTurnArgs {
      * id of the player who is after the `currentPlayerId`, who is about to start
      */
     nextPlayerId: PlayerId;
+}
+
+/**
+ * @description Arguments passed into the `TurnTimerService` when a table round is ended.
+ */
+export interface OnEndArgs {
+    /**
+     * id of the table that started
+     */
+    tableId: TableId;
+
+    /**
+     * id of player that took the last turn
+     */
+    finalPlayerId: PlayerId;
 }

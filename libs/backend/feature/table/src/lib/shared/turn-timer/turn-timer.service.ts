@@ -6,7 +6,7 @@ import { differenceInSeconds } from 'date-fns';
 import { TableStateManagerService } from '../../table-state-manager/table-state-manager.service';
 import { TableGatewayService } from '../websocket/table-gateway.service';
 import { TURN_TIMER_BULL_JOB } from './turn-timer.const';
-import { OnStartArgs, OnTurnArgs, TurnTimerQueueJobData } from './turn-timer.type';
+import { OnEndArgs, OnStartArgs, OnTurnArgs, TurnTimerQueueJobData } from './turn-timer.type';
 
 @Injectable()
 export class TurnTimerService {
@@ -68,6 +68,8 @@ export class TurnTimerService {
             throw new InternalServerErrorException(`Can not trigger onStart event when table is not in-progress`);
         }
 
+        this.logger.debug(`${tableId}: A new round is starting. Timer will be started for ${startingPlayerId}.`);
+
         return this.startTimerForPlayer(tableId, state.playerMap[startingPlayerId]);
     }
 
@@ -96,6 +98,29 @@ export class TurnTimerService {
         await this.stopTimerForPlayer(tableId, state.playerMap[currentPlayerId]);
 
         return this.startTimerForPlayer(tableId, state.playerMap[nextPlayerId]);
+    }
+
+    /**
+     * @description Called after a player performs the final action of a round.
+     *              If the player ran past their default timeout period, then
+     *              it will be subtracted from their `timeBank`.
+     *
+     * @param args id of the table and id of the final player to take their turn
+     *
+     * @throws {InternalServerErrorException} if table status is not `in-progress`
+     */
+    async onEnd(args: OnEndArgs): Promise<void> {
+        const { tableId, finalPlayerId } = args;
+
+        const state = await this.tableStateManagerService.getTableById(tableId);
+
+        if (state.status !== 'in-progress') {
+            throw new InternalServerErrorException(`Can not trigger onEnd event when table is not in-progress`);
+        }
+
+        this.logger.debug(`${tableId}: Final turn of round is ending. Timer will be stopped for ${finalPlayerId}.`);
+
+        await this.stopTimerForPlayer(tableId, state.playerMap[finalPlayerId]);
     }
 
     /**

@@ -46,7 +46,7 @@ export class FoldActionHandlerService {
             await this.tableStateManagerService.updateTablePlayer(table.id, player.id, { status: 'folded' });
 
             // Emit the PlayerTurnEvent to the frontend
-            const newActiveSeat = incrementSeat(table.activeRound.activeSeat);
+            const newActiveSeat = incrementSeat(table.activeRound.activeSeat, table.seatMap);
             await this.tableGatewayService.emitTableEvent(table.id, {
                 type: 'turn',
                 playerId: player.id,

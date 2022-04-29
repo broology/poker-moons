@@ -1,10 +1,12 @@
-import { Injectable } from '@nestjs/common';
-import { Player, PlayerId, PlayerStatus, SeatId, ServerTableState } from '@poker-moons/shared/type';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Player, PlayerId, PlayerStatus, SeatId, ServerTableState, TableId } from '@poker-moons/shared/type';
+import { TurnTimerService } from '../../shared/turn-timer/turn-timer.service';
 import { hasEveryoneTakenTurn, incrementRoundStatus, incrementSeat } from '../../shared/util/round.util';
 import { TableGatewayService } from '../../shared/websocket/table-gateway.service';
 import { TableStateManagerService } from '../../table-state-manager/table-state-manager.service';
 import { DeckManagerService } from '../deck-manager/deck-manager.service';
 import { WinnerDeterminerService } from '../winner-determiner/winner-determiner.service';
+import { noStartingPlayer } from './round-manager.copy';
 
 @Injectable()
 export class RoundManagerService {
@@ -12,30 +14,28 @@ export class RoundManagerService {
         private readonly deckManagerService: DeckManagerService,
         private readonly tableGatewayService: TableGatewayService,
         private readonly tableStateManagerService: TableStateManagerService,
+        private readonly turnTimeService: TurnTimerService,
         private readonly winnerDeterminerService: WinnerDeterminerService,
     ) {}
 
     /**
-     * Initiates the next turn during a round of poker by incrementing the turn count
-     * and active seat. Also handles resetting player statuses to 'waiting' once everyone has
-     * taken a turn and drawing a new card for the next part of the round.
+     * @description Initiates the next turn during a round of poker.
      *
-     * TODO: Should update the turn timer to the next player utilizing the TurnTimerService
-     * @jordems developed.
+     * - Handles incrementing the turn count and active seat
+     * - Handles advancing the to the next stage of a round
+     * - Handles transitioning the turn timer from one player to the next
      *
-     * Should be called in the player action handlers at the end of every turn.
+     * This method should be called in the player action handlers at the end of every turn.
      *
      * @param table - the ServerTableState and table ID
-     * @param status - the new status of the player that just took their turn
+     * @param nextActiveSeat - the seat ID of the player whose turn is next
      * @param playerStatuses - the status of each player in the round
      */
-    async startNextTurn(table: ServerTableState, newActiveSeat: SeatId, playerStatuses: PlayerStatus[]): Promise<void> {
-        // Increment the turn count and active seat
-        await this.tableStateManagerService.updateRound(table.id, {
-            turnCount: table.activeRound.turnCount + 1,
-            activeSeat: newActiveSeat,
-        });
-
+    async startNextTurn(
+        table: ServerTableState,
+        nextActiveSeat: SeatId,
+        playerStatuses: PlayerStatus[],
+    ): Promise<void> {
         /*
          * If everyone has taken their turn, set every active player back to 'waiting',
          * draw a new card for the table, and update the round status
@@ -64,21 +64,59 @@ export class RoundManagerService {
                 table.activeRound.cards.push(card);
             }
 
+            await this.tableStateManagerService.updateRound(table.id, { cards: table.activeRound.cards });
+
             this.tableGatewayService.emitTableEvent(table.id, {
                 type: 'roundStatusChanged',
                 status: incrementRoundStatus(table.activeRound.roundStatus),
                 cards: table.activeRound.cards,
             });
         }
+
+        // Increment the turn count and active seat and trigger the turn timer for the next player
+        await Promise.all([
+            this.tableStateManagerService.updateRound(table.id, {
+                turnCount: table.activeRound.turnCount + 1,
+                activeSeat: nextActiveSeat,
+            }),
+            this.turnTimeService.onTurn({
+                tableId: table.id,
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                currentPlayerId: table.seatMap[table.activeRound.activeSeat!]!,
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                nextPlayerId: table.seatMap[nextActiveSeat]!,
+            }),
+        ]);
     }
 
     /**
-     * Starts a new round of poker by building a new deck and dealing out
-     * cards to the players.
+     * @description Starts a new round of poker.
      *
-     * @param table - the ServerTableState and table ID
+     * - Handles setting the first active seat if it hasn't already been set
+     * - Handles building a new deck and dealing out cards to the players
+     * - Handles initiating the first player's turn timer
+     *
+     * @throws {InternalServerErrorException} if there's no player in the seat next to the dealer
+     *
+     * @param tableId - the ID of the table the round is starting on
      */
-    async startRound(table: ServerTableState): Promise<void> {
+    async startRound(tableId: TableId): Promise<void> {
+        const table = await this.tableStateManagerService.getTableById(tableId);
+
+        let activeSeat = table.activeRound.activeSeat;
+
+        if (activeSeat == null) {
+            activeSeat = incrementSeat(table.activeRound.dealerSeat, table.seatMap);
+
+            await this.tableStateManagerService.updateRound(table.id, { activeSeat });
+        }
+
+        const startingPlayerId = table.seatMap[activeSeat];
+
+        if (startingPlayerId == null) {
+            throw new InternalServerErrorException(noStartingPlayer);
+        }
+
         // Build a new deck for the table
         let deck = await this.deckManagerService.buildDeck(table.id);
 
@@ -104,44 +142,59 @@ export class RoundManagerService {
             status: 'deal',
             cards: [],
         });
+
+        // Start the turn timer for the first player
+        await this.turnTimeService.onStart({ tableId: table.id, startingPlayerId });
     }
 
     /**
-     * Ends a round of poker by calling the WinnerDeterminerService and resetting
-     * the round in the server state. Also handles incrementing the dealer seat
-     * for the next round.
+     * @description Ends a round of poker.
      *
-     * If the game is over (i.e. one player has all the chips) this method will... (TODO)
-     * Otherwise, a new round is started.
+     * This method stops the final player's timer, handles calling the WinnerDeterminerService, and
+     * then determines if the game should continue to another round.
      *
-     * @param table - the ServerTableState and table ID
+     * If the game is over (i.e. one player has all the chips) this method will update the
+     * table status to ended. Otherwise, a new round is started.
+     *
+     * @param table - the ServerTableState
      */
     async endRound(table: ServerTableState): Promise<void> {
+        // Stop the final player's timer
+        await this.turnTimeService.onEnd({
+            tableId: table.id,
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            finalPlayerId: table.seatMap[table.activeRound.activeSeat!]!,
+        });
+
         // Determine and emit winner of round and update player's stacks
         await this.winnerDeterminerService.determineWinner(table.id, table.playerMap, table.activeRound);
-
-        // Reset the round and increment dealer seat
-        const newDealerSeat = incrementSeat(table.activeRound.dealerSeat);
-
-        await this.tableStateManagerService.updateRound(table.id, {
-            turnCount: 0,
-            roundStatus: 'deal',
-            pot: 0,
-            toCall: 0,
-            cards: [],
-            dealerSeat: newDealerSeat,
-            activeSeat: incrementSeat(newDealerSeat),
-        });
 
         // Determine if the game can continue (i.e. two or more players still have chips)
         const playerStacks = Object.values(table.playerMap).map((player) => player.stack);
         const numPlayersWithNoChipsLeft = playerStacks.reduce((index, value) => (value === 0 ? index + 1 : index), 0);
 
         if (numPlayersWithNoChipsLeft === playerStacks.length - 1) {
-            // TODO: Update table status to ended after https://github.com/broology/poker-moons/pull/139 is merged in
+            // If only one player has chips left in their stack, update the table status to 'ended'
+            await this.tableStateManagerService.updateTable(table.id, { status: 'ended' });
         } else {
-            // If the game can continue, start a new round
-            await this.startRound(table);
+            /*
+             * If the game can continue, set the next dealer/active seat, reset the round in state,
+             * and call `startRound` to initiate the next round.
+             */
+            const nextDealerSeat = incrementSeat(table.activeRound.dealerSeat, table.seatMap);
+            const nextActiveSeat = incrementSeat(nextDealerSeat, table.seatMap);
+
+            await this.tableStateManagerService.updateRound(table.id, {
+                turnCount: 0,
+                roundStatus: 'deal',
+                pot: 0,
+                toCall: 0,
+                cards: [],
+                dealerSeat: nextDealerSeat,
+                activeSeat: nextActiveSeat,
+            });
+
+            await this.startRound(table.id);
         }
     }
 }
