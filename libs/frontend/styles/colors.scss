@@ -1,0 +1,55 @@
+$colors: (
+    'background': #21232c,
+    'shaded': #1e2028,
+    'tinted': #2c2e37,
+    'primary': #d84712,
+    'secondary': #104614,
+    'success': #1ea966,
+    'warning': #e6bd19,
+    'error': #c6394a,
+    'text': #ffffff,
+    'text-contrast': #000000,
+);
+
+/* Function to fetch the associated color from the poker-moons theme */
+@function color($name: 'primary') {
+    @return map-get($colors, $name);
+}
+
+/* Function to fetch a text contrast version of the associated color from the poker-moons theme */
+@function color-text-contrast($name: 'primary') {
+    @if ($name == 'success' or $name == 'warning') {
+        @return map-get($colors, 'text');
+    } @else {
+        @return map-get($colors, 'text-contrast');
+    }
+}
+
+/* Function to fetch a tinted version of the associated color from the poker-moons theme */
+@function color-tinted($name: 'primary') {
+    @return mix(white, color($name), 10%);
+}
+
+/* Function to fetch a shaded version of the associated color from the poker-moons theme */
+@function color-shaded($name: 'primary') {
+    @return mix(black, color($name), 10%);
+}
+
+/* Function to fetch a alpha version of the associated color from the poker-moons theme */
+@function color-alpha($name: 'primary', $opacity: 0) {
+    $color: color($name);
+
+    @return rgba($color, $opacity);
+}
+
+/* Dynamically builds the list of colors as `css` variables that can be used for eg.`var(--primary)` */
+:root {
+    @each $key in map-keys($colors) {
+        --#{$key}: #{color($key)};
+        --#{$key}-tinted: #{color-tinted($key)};
+        --#{$key}-shaded: #{color-shaded($key)};
+        --#{$key}-alpha-50: #{color-alpha($key, 0.5)};
+        --#{$key}-alpha-25: #{color-alpha($key, 0.25)};
+        --#{$key}-text-contrast: #{color-text-contrast($key)};
+    }
+}

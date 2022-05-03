@@ -1,0 +1,9 @@
+$scaling-factor: 0.5rem;
+
+@function spacing($s: 1) {
+    @if ($s % 0.5 == 0) {
+        @return $s * $scaling-factor;
+    } @else {
+        @error 'spacing() expects a number that is divisible by 0.5';
+    }
+}

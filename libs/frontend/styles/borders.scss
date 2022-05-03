@@ -1,0 +1,26 @@
+@use './spacing.scss';
+@use './colors.scss';
+
+$border-radii: (
+    'default': spacing(1),
+    'button': spacing(0.5),
+    'card': spacing(1),
+    'popper': spacing(1),
+);
+
+@function border-radius($b: 'default') {
+    @return map-get($border-radii, $b);
+}
+
+$border: (
+    'button': (
+        border-color: color('shaded'),
+        border-width: 1px,
+        border-style: solid,
+    ),
+    'card': (
+        border-color: color('tinted'),
+        border-width: 1px,
+        border-style: solid,
+    ),
+);
