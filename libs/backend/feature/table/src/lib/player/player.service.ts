@@ -47,6 +47,7 @@ export class PlayerService {
         const firstAvailableSeat = seatArray.find(key => currentSeatMap[key] === undefined);
         const newPlayer:Player = {...initialPlayerState, username: dto.username, seatId: firstAvailableSeat as SeatId};
         await this.tableStateManagerService.addNewPlayerToTable(tableId, newPlayer);
+        this.readySystemService.onPlayerJoined(tableId);
         return newPlayer;
     }
 
@@ -57,6 +58,7 @@ export class PlayerService {
             status : 'out'
         };
         await this.tableStateManagerService.updateTablePlayer(tableId, playerId, playerUpdate);
+        this.readySystemService.onPlayerLeft(tableId);
         return (await this.tableStateManagerService.getTableById(tableId)).playerMap[playerId];
     }
 
@@ -83,7 +85,7 @@ export class PlayerService {
         else {
             this.readySystemService.onPlayerLeft(tableId);
         }
-        //emit readystatusevent here
+        //emit readystatusevent here?
         return currentPlayerState;
     }
 }
