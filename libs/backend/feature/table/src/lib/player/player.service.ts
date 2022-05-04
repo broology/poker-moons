@@ -8,11 +8,14 @@ import {
     TableId,
     Player,
     Card,
-    SeatId
+    SeatId,
+    PlayerReadyStatusEvent,
+    ToggleReadyStatusResponse
 } from '@poker-moons/shared/type';
 import { TableStateManagerService } from '../table-state-manager/table-state-manager.service';
 import { CustomLoggerService } from '@poker-moons/backend/utility';
 import { DeckManagerService } from '../round/deck-manager/deck-manager.service';
+import { ReadySystemService } from '../shared/ready-system/ready-system.service';
 
 const initialPlayerState: Player = {
     id: '' as PlayerId,
@@ -33,7 +36,8 @@ export class PlayerService {
 
     constructor(
         private readonly tableStateManagerService: TableStateManagerService,
-        private readonly deckManagerService: DeckManagerService
+        private readonly deckManagerService: DeckManagerService,
+        private readonly readySystemService: ReadySystemService
         ) {}
 
     async create(dto: JoinTableRequest, tableId: TableId): Promise<JoinTableResponse> {
@@ -60,5 +64,26 @@ export class PlayerService {
         this.logger.log("Player " + playerId + " has drawn their pocket cards");
         const currentPlayerState: Player = (await this.tableStateManagerService.getTableById(tableId)).playerMap[playerId];
         return currentPlayerState.cards;
+    }
+
+    async ready(tableId: TableId, playerId: PlayerId): Promise<ToggleReadyStatusResponse> {
+        this.logger.log("Player " + playerId + " has updated ready status");
+        //fetch current ready status
+        const currentPlayerState: Player = (await this.tableStateManagerService.getTableById(tableId)).playerMap[playerId];
+        currentPlayerState.ready = !currentPlayerState.ready
+        //update table state with inverted ready status
+        const playerUpdate: Partial<Player> = {
+            ready: currentPlayerState.ready
+        }
+        const response = await this.tableStateManagerService.updateTablePlayer(tableId, playerId, playerUpdate);
+        //trigger event in ready system to check if the table is ready to start
+        if(currentPlayerState.ready) {
+            this.readySystemService.onPlayerReadied(tableId);
+        }
+        else {
+            this.readySystemService.onPlayerLeft(tableId);
+        }
+        //emit readystatusevent here
+        return currentPlayerState;
     }
 }
