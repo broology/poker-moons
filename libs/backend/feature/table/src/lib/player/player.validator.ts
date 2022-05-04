@@ -13,6 +13,7 @@ export class JoinTableParamValidator {
     tableId!: TableId;
 }
 
+//TODO: Maybe just make one validator class for all put/get to extend
 export class LeaveTableRequestValidator {
     @IsEntityId(TABLE_PREFIX)
     tableId!: TableId;
@@ -22,6 +23,14 @@ export class LeaveTableRequestValidator {
 }
 
 export class GetPlayerCardsRequestValidator {
+    @IsEntityId(TABLE_PREFIX)
+    tableId!: TableId;
+
+    @IsEntityId(PLAYER_PREFIX)
+    playerId!: PlayerId;
+}
+
+export class ToggleReadyStatusTableRequestValidator {
     @IsEntityId(TABLE_PREFIX)
     tableId!: TableId;
 

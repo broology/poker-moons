@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
-import type { GetPlayerCardsResponse, JoinTableResponse, LeaveTableResponse } from '@poker-moons/shared/type';
+import type { GetPlayerCardsResponse, JoinTableResponse, LeaveTableResponse, ToggleReadyStatusResponse } from '@poker-moons/shared/type';
 import { PlayerService } from './player.service';
 import {
     GetPlayerCardsRequestValidator,
@@ -35,5 +35,11 @@ export class PlayerController {
     getCards(@Param() { tableId, playerId }: GetPlayerCardsRequestValidator): Promise<GetPlayerCardsResponse> {
         this.logger.debug('Received get cards request: ' + tableId + ', ' + playerId);
         return this.playerService.getCards(tableId, playerId);
+    }
+
+    @Put(':playerId/ready-status')
+    ready(@Param() { tableId, playerId }: ToggleReadyStatusRequestValidator): Promise<ToggleReadyStatusResponse> {
+        this.logger.debug('Received player ready update request: ' + tableId + ', ' + playerId);
+        return this.playerService.ready(tableId, playerId);
     }
 }
