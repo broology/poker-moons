@@ -6,6 +6,7 @@ import {
     JoinTableParamValidator,
     JoinTableRequestValidator,
     LeaveTableRequestValidator,
+    ToggleReadyStatusRequestValidator
 } from './player.validator';
 import { CustomLoggerService } from '@poker-moons/backend/utility';
 import { TableIdValidator } from '../table/table.validator';

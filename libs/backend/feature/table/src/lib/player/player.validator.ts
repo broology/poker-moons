@@ -30,7 +30,7 @@ export class GetPlayerCardsRequestValidator {
     playerId!: PlayerId;
 }
 
-export class ToggleReadyStatusTableRequestValidator {
+export class ToggleReadyStatusRequestValidator {
     @IsEntityId(TABLE_PREFIX)
     tableId!: TableId;
 
