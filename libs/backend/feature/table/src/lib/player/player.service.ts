@@ -16,6 +16,7 @@ import { TableStateManagerService } from '../table-state-manager/table-state-man
 import { CustomLoggerService } from '@poker-moons/backend/utility';
 import { DeckManagerService } from '../round/deck-manager/deck-manager.service';
 import { ReadySystemService } from '../shared/ready-system/ready-system.service';
+import { TableGatewayService } from '../shared/websocket/table-gateway.service';
 
 const initialPlayerState: Player = {
     id: '' as PlayerId,
@@ -37,7 +38,8 @@ export class PlayerService {
     constructor(
         private readonly tableStateManagerService: TableStateManagerService,
         private readonly deckManagerService: DeckManagerService,
-        private readonly readySystemService: ReadySystemService
+        private readonly readySystemService: ReadySystemService,
+        private readonly tableGatewayService: TableGatewayService
         ) {}
 
     async create(dto: JoinTableRequest, tableId: TableId): Promise<JoinTableResponse> {
@@ -85,7 +87,12 @@ export class PlayerService {
         else {
             this.readySystemService.onPlayerLeft(tableId);
         }
-        //emit readystatusevent here?
+        //emit playerreadystatus event here
+        this.tableGatewayService.emitTableEvent(tableId, {
+            type: 'playerReadyStatus',
+            playerId: playerId,
+            ready: currentPlayerState.ready
+        });
         return currentPlayerState;
     }
 }
