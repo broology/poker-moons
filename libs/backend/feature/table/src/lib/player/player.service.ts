@@ -42,7 +42,7 @@ export class PlayerService {
 
     async create(dto: JoinTableRequest, tableId: TableId): Promise<JoinTableResponse> {
         this.logger.log("New player has joined table " + tableId);
-        const currentSeatMap: Partial<Record<SeatId, PlayerId>> = (await this.tableStateManagerService.getTableById(tableId)).seatMap;
+        const {seatMap : currentSeatMap} = await this.tableStateManagerService.getTableById(tableId);
         const seatArray: SeatId[] = Object.keys(currentSeatMap) as Array<unknown> as Array<SeatId>;
         const firstAvailableSeat = seatArray.find(key => currentSeatMap[key] === undefined);
         const newPlayer:Player = {...initialPlayerState, username: dto.username, seatId: firstAvailableSeat as SeatId};
