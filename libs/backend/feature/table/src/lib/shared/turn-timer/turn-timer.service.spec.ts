@@ -165,4 +165,66 @@ describe('TurnTimerService', () => {
             ).rejects.toThrow();
         });
     });
+
+    describe('onEnd', () => {
+        it('should stop the given players timer', async () => {
+            const player = mockPlayer({ timeBank: 10 });
+
+            mockFindTableState({
+                status: 'in-progress',
+                playerMap: {
+                    [player.id]: player,
+                },
+            });
+            mockStopJob(player.id);
+
+            await service.onEnd({
+                tableId,
+                finalPlayerId: player.id,
+            });
+
+            expect(jobSchedulerService.stop).toHaveBeenCalled();
+        });
+
+        it('should update time bank of player', async () => {
+            const player = mockPlayer({ timeBank: 10 });
+
+            mockFindTableState({
+                status: 'in-progress',
+                playerMap: {
+                    [player.id]: player,
+                },
+            });
+            mockStopJob(player.id, subSeconds(new Date(), 35));
+
+            await service.onEnd({
+                tableId,
+                finalPlayerId: player.id,
+            });
+
+            expect(tableStateManagerService.updateTablePlayer).toHaveBeenCalledWith(tableId, player.id, {
+                timeBank: expect.any(Number),
+            });
+
+            expect(tableGatewayService.emitTableEvent).toHaveBeenCalledWith(tableId, {
+                type: 'playerTimeBank',
+                playerId: player.id,
+                timeBank: expect.any(Number),
+            });
+        });
+
+        it('should throw error if table is not in-progress', async () => {
+            mockFindTableState({ status: 'ended' });
+            mockStopJob(playerId);
+
+            expect(async () => await service.onEnd({ tableId, finalPlayerId: playerId })).rejects.toThrow();
+        });
+
+        it('should throw error turn timer queue returns a player id not matching the current player', async () => {
+            mockFindTableState({ status: 'in-progress' });
+            mockStopJob('player_notCurrent');
+
+            expect(async () => await service.onEnd({ tableId, finalPlayerId: playerId })).rejects.toThrow();
+        });
+    });
 });

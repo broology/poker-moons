@@ -54,8 +54,8 @@ export interface Table {
     status: TableStatus;
 
     /**
-     * Date when the table is to start. This is initially `null`,
-     * and is set at when
+     * Date when the table is started. This is initially `null` and is set
+     * when the ready system queue job is completed for the table
      */
     startDate: Date | null;
 }

@@ -1,15 +1,15 @@
-import type { PlayerStatus, RoundStatus, SeatId } from '@poker-moons/shared/type';
+import type { PlayerId, PlayerStatus, RoundStatus, SeatId } from '@poker-moons/shared/type';
 
 /**
- * Counts the occurrences of a particular player status from an array of statuses
+ * @description Counts the occurrences of a particular player status from an array of statuses
  */
 const countOccurrences = (playerStatuses: PlayerStatus[], status: PlayerStatus) =>
     playerStatuses.reduce((index, value) => (value === status ? index + 1 : index), 0);
 
 /**
- * Provided the status of the round and statuses of each of the players in a round,
- * returns true if the round is complete and the winner determiner should be
- * called or false if the round should continue
+ * @description Provided the status of the round and statuses of each of the players in a round,
+ *              returns true if the round is complete and the winner determiner should be
+ *              called or false if the round should continue
  */
 export function isRoundComplete(roundStatus: RoundStatus, playerStatuses: PlayerStatus[]): boolean {
     // Handles the case where everyone except for 1 player folds, resulting in the end of the round
@@ -36,18 +36,33 @@ export function isRoundComplete(roundStatus: RoundStatus, playerStatuses: Player
 }
 
 /**
- * Provided the current seat, returns the next seat in sequence
+ * @description A recursive function that, provided the current seat and seat map,
+ *              returns the next seat in sequence that has a player associated with it.
  */
-export function incrementSeat(seat: SeatId): SeatId {
+export function incrementSeat(seat: SeatId, seatMap: Partial<Record<SeatId, PlayerId>>): SeatId {
     if (seat === 5) {
-        return 0;
+        const nextSeat = 0;
+        const nextPlayer = seatMap[nextSeat];
+
+        if (nextPlayer) {
+            return nextSeat;
+        } else {
+            return incrementSeat(nextSeat, seatMap);
+        }
     }
 
-    return (seat + 1) as SeatId;
+    const nextSeat = (seat + 1) as SeatId;
+    const nextPlayer = seatMap[nextSeat];
+
+    if (nextPlayer) {
+        return nextSeat;
+    } else {
+        return incrementSeat(nextSeat, seatMap);
+    }
 }
 
 /**
- * Provided the current round status, returns the next status in sequence
+ * @description Provided the current round status, returns the next status in sequence
  */
 export function incrementRoundStatus(status: RoundStatus): RoundStatus {
     switch (status) {
@@ -63,9 +78,9 @@ export function incrementRoundStatus(status: RoundStatus): RoundStatus {
 }
 
 /**
- * Provided the statuses of each of the players in a round, returns true if everyone has
- * taken their turn, in which case those who have not folded will need to have their
- * status reset to waiting and the round status will need to change
+ * @description Provided the statuses of each of the players in a round, returns true if everyone has
+ *              taken their turn, in which case those who have not folded will need to have their
+ *              status reset to waiting and the round status will need to change
  */
 export function hasEveryoneTakenTurn(playerStatuses: PlayerStatus[]): boolean {
     if (countOccurrences(playerStatuses, 'waiting') === 0) {

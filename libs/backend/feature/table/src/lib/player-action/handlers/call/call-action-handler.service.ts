@@ -57,7 +57,7 @@ export class CallActionHandlerService {
             await this.potManagerService.incrementPot(table.id, table.activeRound.pot, table.activeRound.toCall);
 
             // Emit the PlayerTurnEvent to the frontend
-            const newActiveSeat = incrementSeat(table.activeRound.activeSeat);
+            const newActiveSeat = incrementSeat(table.activeRound.activeSeat, table.seatMap);
             this.tableGatewayService.emitTableEvent(table.id, {
                 type: 'turn',
                 playerId: player.id,

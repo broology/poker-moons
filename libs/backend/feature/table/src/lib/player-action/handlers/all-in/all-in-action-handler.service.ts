@@ -61,7 +61,7 @@ export class AllInActionHandlerService {
             });
 
             // Emit the PlayerTurnEvent to the frontend
-            const newActiveSeat = incrementSeat(table.activeRound.activeSeat);
+            const newActiveSeat = incrementSeat(table.activeRound.activeSeat, table.seatMap);
             this.tableGatewayService.emitTableEvent(table.id, {
                 type: 'turn',
                 playerId: player.id,
