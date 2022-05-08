@@ -1,4 +1,5 @@
-@use '../../../../../../../../apps/frontend/src/styles.scss' as global;
+@use '../../../../../../../../styles/colors.scss' as colors;
+@use '../../../../../../../../styles/borders.scss' as borders;
 
 .button {
     position: relative;
@@ -16,31 +17,23 @@
 }
 
 //Colors
-.colour-primary {
-    color: global.poker-moons-colour-text-contrast('primary');
-    background-color: global.poker-moons-colour('primary');
+.primary {
+    color: colors.color-text-contrast('primary');
+    background-color: colors.color('primary');
 }
-.colour-secondary {
-    color: global.poker-moons-colour-text-contrast('primary');
-    background-color: global.poker-moons-colour('primary');
+.secondary {
+    color: colors.color-text-contrast('primary');
+    background-color: colors.color('primary');
 }
-.colour-foreground {
-    color: global.poker-moons-colour-text-contrast('primary');
-    background-color: global.poker-moons-colour('primary');
+.success {
+    color: colors.color-text-contrast('primary');
+    background-color: colors.color('primary');
 }
-.colour-background {
-    color: global.poker-moons-colour-text-contrast('primary');
-    background-color: global.poker-moons-colour('primary');
+.waring {
+    color: colors.color-text-contrast('primary');
+    background-color: colors.color('primary');
 }
-.colour-success {
-    color: global.poker-moons-colour-text-contrast('primary');
-    background-color: global.poker-moons-colour('primary');
-}
-.colour-waring {
-    color: global.poker-moons-colour-text-contrast('primary');
-    background-color: global.poker-moons-colour('primary');
-}
-.colour-error {
-    color: global.poker-moons-colour-text-contrast('primary');
-    background-color: global.poker-moons-colour('primary');
+.error {
+    color: colors.color-text-contrast('primary');
+    background-color: colors.color('primary');
 }
