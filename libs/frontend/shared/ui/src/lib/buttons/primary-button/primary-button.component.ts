@@ -9,6 +9,7 @@ import { ButtonColors, ButtonVariant } from './primary-button.type';
     styleUrls: ['./primary-button.component.scss'],
 })
 export class PrimaryButtonComponent implements OnInit {
+    @Input() label?: string;
     @Input() variant?: ButtonVariant;
     @Input() color?: ButtonColors;
 
