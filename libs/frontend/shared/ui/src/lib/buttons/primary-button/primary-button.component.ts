@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @angular-eslint/no-empty-lifecycle-method */
 import { Component, Input, OnInit } from '@angular/core';
-import { ButtonColors, ButtonVariant } from './button.type';
+import { ButtonColors, ButtonVariant } from './primary-button.type';
 
 @Component({
-    selector: 'poker-moons-button',
-    templateUrl: './button.component.html',
-    styleUrls: ['./button.component.scss'],
+    selector: 'poker-moons-primary-button',
+    templateUrl: './primary-button.component.html',
+    styleUrls: ['./primary-button.component.scss'],
 })
-export class ButtonComponent implements OnInit {
+export class PrimaryButtonComponent implements OnInit {
     @Input() variant?: ButtonVariant;
     @Input() color?: ButtonColors;
 
