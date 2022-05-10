@@ -1,5 +1,5 @@
-@use '../../../../../../../../styles/colors.scss' as colors;
-@use '../../../../../../../../styles/borders.scss' as borders;
+@use '~styles/borders.scss' as borders;
+@use '~styles/colors.scss' as colors;
 
 .button {
     position: relative;
