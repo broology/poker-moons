@@ -1,1 +1,4 @@
-<button type="button" ngStyles ngClass="getVariantClass() getColorClass()">{{ label }}</button>
+<button type="button" ngStyles [ngClass]="[getVariantClass(), getColorClass()]">
+    <fa-icon *ngIf="startIcon" [icon]="startIcon"></fa-icon>{{ label
+    }}<fa-icon *ngIf="endIcon" [icon]="endIcon"></fa-icon>
+</button>
