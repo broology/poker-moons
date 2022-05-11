@@ -6,9 +6,7 @@
     "targets": {
         "build": {
             "executor": "@nrwl/angular:webpack-browser",
-            "outputs": [
-                "{options.outputPath}"
-            ],
+            "outputs": ["{options.outputPath}"],
             "options": {
                 "outputPath": "dist/apps/frontend",
                 "index": "apps/frontend/src/index.html",
@@ -80,17 +78,12 @@
         "lint": {
             "executor": "@nrwl/linter:eslint",
             "options": {
-                "lintFilePatterns": [
-                    "apps/frontend/src/**/*.ts",
-                    "apps/frontend/src/**/*.html"
-                ]
+                "lintFilePatterns": ["apps/frontend/src/**/*.ts", "apps/frontend/src/**/*.html"]
             }
         },
         "test": {
             "executor": "@nrwl/jest:jest",
-            "outputs": [
-                "coverage/apps/frontend"
-            ],
+            "outputs": ["coverage/apps/frontend"],
             "options": {
                 "jestConfig": "apps/frontend/jest.config.ts",
                 "passWithNoTests": true
@@ -122,9 +115,7 @@
         },
         "build-storybook": {
             "executor": "@nrwl/storybook:build",
-            "outputs": [
-                "{options.outputPath}"
-            ],
+            "outputs": ["{options.outputPath}"],
             "options": {
                 "uiFramework": "@storybook/angular",
                 "outputPath": "dist/storybook/frontend",
@@ -140,7 +131,5 @@
             }
         }
     },
-    "tags": [
-        "app:frontend"
-    ]
+    "tags": ["app:frontend"]
 }
