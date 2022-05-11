@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "logs\\.5c939b2e3bda5721851800eda6a623702960fcf5-audit.json",
+    "files": [
+        {
+            "date": 1651043853522,
+            "name": "logs\\poker-moons-backend-2022-04-27.log",
+            "hash": "5bfa1cfce82504abd2bc5f2eb85a5e96"
+        }
+    ],
+    "hashType": "md5"
+}
