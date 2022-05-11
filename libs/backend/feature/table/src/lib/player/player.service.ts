@@ -50,17 +50,28 @@ export class PlayerService {
         const newPlayer:Player = {...initialPlayerState, username: dto.username, seatId: firstAvailableSeat as SeatId};
         await this.tableStateManagerService.addNewPlayerToTable(tableId, newPlayer);
         this.readySystemService.onPlayerJoined(tableId);
+        this.tableGatewayService.emitTableEvent(tableId, {
+            type: 'playerJoined',
+            seatId: firstAvailableSeat as SeatId,
+            player: newPlayer
+        });
         return newPlayer;
     }
 
     async delete(tableId: TableId, playerId: PlayerId): Promise<LeaveTableResponse> {
         //TODO: rename to removeFromTable? leave?
         this.logger.log("Player " + playerId + " has left table " + tableId);
+        //TODO: set seatId to null in the tableState? and pass previous seatId to frontend for update
         const playerUpdate: Partial<Player> = {
             status : 'out'
         };
         await this.tableStateManagerService.updateTablePlayer(tableId, playerId, playerUpdate);
         this.readySystemService.onPlayerLeft(tableId);
+        const currentPlayerState: Player = (await this.tableStateManagerService.getTableById(tableId)).playerMap[playerId];
+        this.tableGatewayService.emitTableEvent(tableId, {
+            type: 'playerLeft',
+            seatId: currentPlayerState.seatId as SeatId
+        });
         return (await this.tableStateManagerService.getTableById(tableId)).playerMap[playerId];
     }
 
@@ -80,14 +91,14 @@ export class PlayerService {
             ready: currentPlayerState.ready
         }
         const response = await this.tableStateManagerService.updateTablePlayer(tableId, playerId, playerUpdate);
-        //trigger event in ready system to check if the table is ready to start
+        //update status in ready system to check if the table is ready to start
         if(currentPlayerState.ready) {
             this.readySystemService.onPlayerReadied(tableId);
         }
         else {
             this.readySystemService.onPlayerLeft(tableId);
         }
-        //emit playerreadystatus event here
+        //emit playerReadyStatus event here
         this.tableGatewayService.emitTableEvent(tableId, {
             type: 'playerReadyStatus',
             playerId: playerId,
