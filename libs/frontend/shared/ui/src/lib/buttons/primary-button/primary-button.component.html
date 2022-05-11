@@ -1,4 +1,12 @@
-<button type="button" ngStyles [ngClass]="[getVariantClass(), getColorClass()]">
-    <fa-icon *ngIf="startIcon" [icon]="startIcon"></fa-icon>{{ label
-    }}<fa-icon *ngIf="endIcon" [icon]="endIcon"></fa-icon>
+<button type="button" ngStyles [ngClass]="['button', getVariantClass(), getColorClass()]">
+    <div *ngIf="startIcon || endIcon" fxLayout="row" class="container">
+        <div *ngIf="startIcon" class="item">
+            <fa-icon [icon]="startIcon"></fa-icon>
+        </div>
+        <div class="item">{{ label }}</div>
+        <div *ngIf="endIcon" class="item">
+            <fa-icon [icon]="endIcon"></fa-icon>
+        </div>
+    </div>
+    <div *ngIf="!startIcon && !endIcon">{{ label }}</div>
 </button>

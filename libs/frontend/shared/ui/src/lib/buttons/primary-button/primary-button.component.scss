@@ -1,39 +1,63 @@
-@use '~styles/borders.scss' as borders;
-@use '~styles/colors.scss' as colors;
+@use '~styles/borders.scss' as b;
+@use '~styles/colors.scss' as c;
+@use '~styles/typography' as t;
+@use '~styles/spacing' as s;
+@use '~styles/transitions' as tr;
+
+@mixin color-animation($color) {
+    color: c.color-text-contrast($color);
+    background-color: c.color($color);
+    &:hover {
+        background: c.color-shaded($color) radial-gradient(circle, transparent 1%, c.color-shaded($color) 1%)
+            center/15000%;
+    }
+    &:active {
+        background-color: c.color-tinted($color);
+        background-size: 100%;
+        @include tr.transition(background 0s);
+    }
+}
 
 .button {
     position: relative;
-    display: inline-block;
+    display: flex;
 
-    font-family: 'Blinker', sans-serif;
-    font-weight: 600;
-    font-size: 4rem;
-    text-decoration: none;
-    text-align: center;
+    @include t.button;
+    padding: s.spacing(1) s.spacing(2);
 
-    padding: 16px 8px;
+    outline: none;
+    border: none;
+    border-radius: b.border-radius('button');
 
+    overflow: hidden;
     cursor: pointer;
+
+    background-position: center;
+
+    @include tr.transition(background 0.5s);
+
+    &:focus-visible {
+        outline: 1px solid black;
+    }
+}
+
+.container {
+    gap: s.spacing(1);
 }
 
 //Colors
 .primary {
-    color: colors.color-text-contrast('primary');
-    background-color: colors.color('primary');
+    @include color-animation('primary');
 }
 .secondary {
-    color: colors.color-text-contrast('primary');
-    background-color: colors.color('primary');
+    @include color-animation('secondary');
 }
 .success {
-    color: colors.color-text-contrast('primary');
-    background-color: colors.color('primary');
+    @include color-animation('success');
 }
-.waring {
-    color: colors.color-text-contrast('primary');
-    background-color: colors.color('primary');
+.warning {
+    @include color-animation('warning');
 }
 .error {
-    color: colors.color-text-contrast('primary');
-    background-color: colors.color('primary');
+    @include color-animation('error');
 }

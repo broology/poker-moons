@@ -1,11 +1,11 @@
-@use './spacing.scss';
-@use './colors.scss';
+@use './spacing.scss' as s;
+@use './colors.scss' as c;
 
 $border-radii: (
-    'default': spacing(1),
-    'button': spacing(0.5),
-    'card': spacing(1),
-    'popper': spacing(1),
+    'default': s.spacing(1),
+    'button': s.spacing(0.5),
+    'card': s.spacing(1),
+    'popper': s.spacing(1),
 );
 
 @function border-radius($b: 'default') {
@@ -14,12 +14,12 @@ $border-radii: (
 
 $border: (
     'button': (
-        border-color: color('shaded'),
+        border-color: c.color('shaded'),
         border-width: 1px,
         border-style: solid,
     ),
     'card': (
-        border-color: color('tinted'),
+        border-color: c.color('tinted'),
         border-width: 1px,
         border-style: solid,
     ),
