@@ -1,15 +1,21 @@
 import { Test } from '@nestjs/testing';
-import { BackendDataAccessStateModule } from '@poker-moons/backend/data-access/state';
+import { MockStateService, STATE_SERVICE } from '@poker-moons/backend/data-access/state';
 import { mockPlayer } from '@poker-moons/shared/testing';
 import { ServerTableState, TableId } from '@poker-moons/shared/type';
 import { TableStateManagerService } from './table-state-manager.service';
+import { Provider } from '@nestjs/common';
 
 describe('TableStateManagerService', () => {
     let service: TableStateManagerService;
+
+    const StateService: Provider = {
+        provide: STATE_SERVICE,
+        useFactory: () => new MockStateService(),
+    };
+
     beforeEach(async () => {
         const module = await Test.createTestingModule({
-            providers: [TableStateManagerService],
-            imports: [BackendDataAccessStateModule],
+            providers: [TableStateManagerService, StateService],
         }).compile();
 
         service = module.get(TableStateManagerService);
