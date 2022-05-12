@@ -66,7 +66,7 @@ export class RedisStateService implements GenericStateServiceImpl, OnModuleInit,
     }
 
     async update(tableId: TableId, updatedTable: Partial<ServerTableState>): Promise<void> {
-        const tableString = await this.redis?.get('table_1');
+        const tableString = await this.redis?.get(tableId);
         if (tableString) {
             const table: ServerTableState = JSON.parse(tableString);
             await this.redis?.set(tableId, JSON.stringify({ ...table, ...updatedTable }));
