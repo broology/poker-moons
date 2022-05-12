@@ -8,14 +8,14 @@ import { CustomLoggerService } from '@poker-moons/backend/utility';
 
 @Injectable()
 export class RedisStateService implements GenericStateServiceImpl, OnModuleInit, OnModuleDestroy {
-    private redis?: Redis;
+    private redis!: Redis;
     private logger = new CustomLoggerService(RedisStateService.name);
 
     constructor(private readonly configService: ConfigService) {}
 
     async onModuleInit(): Promise<void> {
         this.logger.debug(
-            'Attempting to connnect to redis at: ' +
+            'Attempting to connect to redis at: ' +
                 this.configService.get('REDIS_HOST') +
                 ':' +
                 Number.parseInt(<string>this.configService.get('REDIS_PORT'), 10),
@@ -33,8 +33,8 @@ export class RedisStateService implements GenericStateServiceImpl, OnModuleInit,
     }
 
     onModuleDestroy(): void {
-        this.redis?.disconnect();
-        this.redis?.quit();
+        this.redis.disconnect();
+        this.redis.quit();
     }
 
     async create(serverTableState: ServerTableState): Promise<TableId> {
@@ -49,12 +49,12 @@ export class RedisStateService implements GenericStateServiceImpl, OnModuleInit,
 
     async delete(tableId: TableId): Promise<void> {
         this.logger.log('Deleting table with id: ' + tableId);
-        await this.redis?.del(tableId);
+        await this.redis.del(tableId);
     }
 
     async getState(tableId: TableId): Promise<ServerTableState> {
         this.logger.debug('Attempting to get the table with id: ' + tableId);
-        const tableString = await this.redis?.get(tableId);
+        const tableString = await this.redis.get(tableId);
         if (tableString) {
             const table: ServerTableState = JSON.parse(tableString);
             this.logger.log('Got table with id: ' + tableId + ' successfully');
@@ -66,10 +66,10 @@ export class RedisStateService implements GenericStateServiceImpl, OnModuleInit,
     }
 
     async update(tableId: TableId, updatedTable: Partial<ServerTableState>): Promise<void> {
-        const tableString = await this.redis?.get(tableId);
+        const tableString = await this.redis.get(tableId);
         if (tableString) {
             const table: ServerTableState = JSON.parse(tableString);
-            await this.redis?.set(tableId, JSON.stringify({ ...table, ...updatedTable }));
+            await this.redis.set(tableId, JSON.stringify({ ...table, ...updatedTable }));
         } else {
             throw new InternalServerErrorException('There was an error retrieving the table with id: ' + tableId);
         }
