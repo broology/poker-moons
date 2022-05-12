@@ -2,27 +2,27 @@ import { mockPlayer, mockServerTableState } from '@poker-moons/shared/testing';
 import { Job } from 'bull';
 import type { MockProxy } from 'jest-mock-extended';
 import { mock, mockReset } from 'jest-mock-extended';
-import { CheckActionHandlerService } from '../../player-action/handlers/check/check-action-handler.service';
-import { FoldActionHandlerService } from '../../player-action/handlers/fold/fold-action-handler.service';
-import { TableStateManagerService } from '../../table-state-manager/table-state-manager.service';
-import { TableGatewayService } from '../websocket/table-gateway.service';
-import { TurnTimerConsumer } from './turn-timer.consumer';
-import { TurnTimerQueueJobData } from './turn-timer.type';
+import { CheckActionHandlerService } from '../../../player-action/handlers/check/check-action-handler.service';
+import { FoldActionHandlerService } from '../../../player-action/handlers/fold/fold-action-handler.service';
+import { TableStateManagerService } from '../../../table-state-manager/table-state-manager.service';
+import { TableGatewayService } from '../../websocket/table-gateway.service';
+import { TurnTimerQueueJobData } from '../turn-timer.type';
+import { TurnTimerServiceConsumer } from './turn-timer-consumer.service';
 
-describe('TurnTimerConsumer', () => {
+describe('TurnTimerServiceConsumer', () => {
     const checkActionHandlerService = mock<CheckActionHandlerService>();
     const foldActionHandlerService = mock<FoldActionHandlerService>();
     const tableGatewayService = mock<TableGatewayService>();
     const tableStateManager = mock<TableStateManagerService>();
 
-    const params: [...MockProxy<ConstructorParameters<typeof TurnTimerConsumer>>] = [
+    const params: [...MockProxy<ConstructorParameters<typeof TurnTimerServiceConsumer>>] = [
         checkActionHandlerService,
         foldActionHandlerService,
         tableGatewayService,
         tableStateManager,
     ];
 
-    const service = new TurnTimerConsumer(...params);
+    const service = new TurnTimerServiceConsumer(...params);
 
     beforeEach(() => {
         for (const param of params) {

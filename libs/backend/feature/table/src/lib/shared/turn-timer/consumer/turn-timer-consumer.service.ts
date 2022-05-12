@@ -4,21 +4,21 @@ import { JOB_SCHEDULER_BULL_QUEUE } from '@poker-moons/backend/shared/service/jo
 import { CustomLoggerService } from '@poker-moons/backend/utility';
 import { PlayerId, TableId } from '@poker-moons/shared/type';
 import { Job } from 'bull';
-import { CheckActionHandlerService } from '../../player-action/handlers/check/check-action-handler.service';
-import { FoldActionHandlerService } from '../../player-action/handlers/fold/fold-action-handler.service';
-import { TableStateManagerService } from '../../table-state-manager/table-state-manager.service';
-import { TableGatewayService } from '../websocket/table-gateway.service';
-import { TURN_TIMER_BULL_JOB } from './turn-timer.const';
-import { TurnTimerQueueJobData } from './turn-timer.type';
 import { right } from 'fp-ts/lib/Either';
+import { CheckActionHandlerService } from '../../../player-action/handlers/check/check-action-handler.service';
+import { FoldActionHandlerService } from '../../../player-action/handlers/fold/fold-action-handler.service';
+import { TableStateManagerService } from '../../../table-state-manager/table-state-manager.service';
+import { TableGatewayService } from '../../websocket/table-gateway.service';
+import { TURN_TIMER_BULL_JOB } from '../turn-timer.const';
+import { TurnTimerQueueJobData } from '../turn-timer.type';
 
 /**
  * @description Consumer that is responsible for handling a players turn length, and times them out if they run out of time.
  */
 @Injectable()
 @Processor(JOB_SCHEDULER_BULL_QUEUE)
-export class TurnTimerConsumer {
-    private readonly logger = new CustomLoggerService(TurnTimerConsumer.name);
+export class TurnTimerServiceConsumer {
+    private readonly logger = new CustomLoggerService(TurnTimerServiceConsumer.name);
 
     constructor(
         private readonly checkActionHandlerService: CheckActionHandlerService,
