@@ -29,4 +29,10 @@ export class TableService {
             name: serverTableState.name,
         };
     }
+
+    async delete(id: TableId): Promise<TableId> {
+        await this.tableStateManagerService.deleteTable(id);
+        this.logger.log('Deleted table with id: ' + id);
+        return id;
+    }
 }
