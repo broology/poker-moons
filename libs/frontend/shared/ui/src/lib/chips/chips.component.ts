@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { PlayerOrientation } from '../shared/type';
 import { ChipDenomination, chipDenominations, MAX_CHIPS_PER_STACK } from './chip.type';
 
 /**
@@ -27,6 +28,39 @@ export class ChipsComponent {
      * The number of stacks in a row before making to an new row
      */
     private static STACKS_PER_ROW = 4;
+
+    /**
+     * @description List of player orientations that require a y-axis, and z-axis inversion.
+     */
+    invertTransform: Record<PlayerOrientation, { invertY: boolean; invertZ: boolean }> = {
+        bottom: { invertY: false, invertZ: false },
+        bottomLeft: { invertY: false, invertZ: false },
+        bottomRight: { invertY: true, invertZ: false },
+        left: { invertY: false, invertZ: false },
+        right: { invertY: true, invertZ: false },
+        top: { invertY: true, invertZ: true },
+        topLeft: { invertY: false, invertZ: true },
+        topRight: { invertY: true, invertZ: true },
+    };
+
+    @Input() set amount(value: number) {
+        this.chipStacks = ChipsComponent.amountToChipStackData(value);
+    }
+
+    /**
+     * @description When an orientation transform is required on chips, we need to supply it
+     *              to the component its self, as just flipping the image does not work considering
+     *              we are using svgs that are pre-3d.
+     */
+    @Input() orientation?: PlayerOrientation;
+
+    get invertY() {
+        return !this.orientation ? false : this.invertTransform[this.orientation].invertY;
+    }
+
+    get invertZ() {
+        return !this.orientation ? false : this.invertTransform[this.orientation].invertZ;
+    }
 
     /**
      * The data for each chip stack to be displayed. Compiled together from the {@link amountToChipStackData} method.
@@ -78,10 +112,6 @@ export class ChipsComponent {
         return chipStacks;
     }
 
-    @Input() set amount(value: number) {
-        this.chipStacks = ChipsComponent.amountToChipStackData(value);
-    }
-
     /**
      * Determines the `x` offset to apply to the chip stack depending on it's `col` and `row` value.
      *
@@ -93,7 +123,7 @@ export class ChipsComponent {
      * @returns - The number of pixels to shift the chip-stack from the `left`
      */
     calculateXPosition(col: number, row: number): number {
-        return col * 62 + row * 31;
+        return (col * 62 + row * 31) * (this.invertY ? -1 : 1);
     }
 
     /**
@@ -101,10 +131,12 @@ export class ChipsComponent {
      *
      * The goal is to have the chips be close enough to each other that it looks like they are touching.
      *
+     * If `invertZ` is true, then will reverse the z axis display of the chips.
+     *
      * @param row - Row the stack should be in
      * @returns - The number of pixels to shift the chip-stack from the `top`
      */
     calculateYPosition(row: number): number {
-        return row * 15;
+        return row * 15 * (this.invertZ ? -1 : 1);
     }
 }

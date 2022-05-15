@@ -1,5 +1,6 @@
+<!-- Inverse the chip stacks to non-fuck z-index of chips -->
 <div
-    *ngFor="let data of chipStacks"
+    *ngFor="let data of invertZ ? chipStacks.reverse() : chipStacks"
     class="chip-stack-container"
     [style]="'left: ' + calculateXPosition(data.col, data.row) + 'px;top: ' + calculateYPosition(data.row) + 'px'"
 >

@@ -1,17 +1,5 @@
 import { Component, Input } from '@angular/core';
-
-/**
- * @description The orientation on the table the card is being displayed
- */
-export type CardOrientation =
-    | 'bottom'
-    | 'bottomLeft'
-    | 'bottomRight'
-    | 'left'
-    | 'right'
-    | 'top'
-    | 'topLeft'
-    | 'topRight';
+import { PlayerOrientation } from '../../shared/type';
 
 /**
  * @description Component that transforms the children card components to their appropriate table orientation.
@@ -30,7 +18,7 @@ export type CardOrientation =
     styleUrls: ['./card-orientation-transform.component.scss'],
 })
 export class CardOrientationTransformComponent {
-    orientationTransform: Record<CardOrientation, { transform: string }> = {
+    orientationTransform: Record<PlayerOrientation, { transform: string }> = {
         bottom: { transform: 'rotate3d(1, 0, 0, 50deg)' },
         bottomLeft: { transform: 'rotate3d(3, -1, 2, 50deg)' },
         bottomRight: { transform: 'rotate3d(3, 1, -2, 50deg)' },
@@ -44,5 +32,5 @@ export class CardOrientationTransformComponent {
     /**
      * @description The orientation at the table the card will be displayed (eg. bottomRight)
      */
-    @Input() orientation!: CardOrientation;
+    @Input() orientation!: PlayerOrientation;
 }

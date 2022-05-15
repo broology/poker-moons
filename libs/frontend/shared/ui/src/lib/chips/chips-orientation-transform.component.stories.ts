@@ -1,46 +1,39 @@
 import { Component, Input } from '@angular/core';
 import { MockNgEnvironment } from '@poker-moons/frontend/shared/util/environment';
-import { Card } from '@poker-moons/shared/type';
 import { Meta, moduleMetadata, Story } from '@storybook/angular';
-import { CardModule } from '../../card';
-import { PlayerOrientation } from '../../shared/type';
-import { CardOrientationTransformModule } from './card-orientation-transform.module';
+import { ChipsModule } from '.';
+import { PlayerOrientation } from '../shared/type';
 
 /**
  * This story is to display all versions of card orientation
  */
 @Component({
-    selector: 'poker-moons-card-orientation-transform-test',
+    selector: 'poker-moons-chips-orientation-transform-test',
     template: `
         <div style="margin: 5em;">
-            <poker-moons-card-orientation-transform [orientation]="orientation">
-                <poker-moons-card [card]="card"></poker-moons-card>
-            </poker-moons-card-orientation-transform>
+            <poker-moons-chips [amount]="9997" [orientation]="orientation"></poker-moons-chips>
         </div>
     `,
 })
-class CardOrientationTransformTestComponent {
+class ChipsOrientationTransformTestComponent {
     @Input() orientation!: PlayerOrientation;
 
-    @Input() card: Card = {
-        suit: 'clubs',
-        rank: '2',
-    };
+    @Input() amount = 9997;
 }
 
 export default {
-    title: 'CardOrientationTransformTestComponent',
-    component: CardOrientationTransformTestComponent,
+    title: 'ChipsOrientationTransformTestComponent',
+    component: ChipsOrientationTransformTestComponent,
     decorators: [
         moduleMetadata({
-            imports: [CardOrientationTransformModule, CardModule],
+            imports: [ChipsModule],
             providers: [MockNgEnvironment],
         }),
     ],
-} as Meta<CardOrientationTransformTestComponent>;
+} as Meta<ChipsOrientationTransformTestComponent>;
 
-const Template: Story<CardOrientationTransformTestComponent> = (args: CardOrientationTransformTestComponent) => ({
-    component: CardOrientationTransformTestComponent,
+const Template: Story<ChipsOrientationTransformTestComponent> = (args: ChipsOrientationTransformTestComponent) => ({
+    component: ChipsOrientationTransformTestComponent,
     props: args,
 });
 
