@@ -7,14 +7,14 @@ import { CardOrientation } from './card-orientation-transform.component';
 import { CardOrientationTransformModule } from './card-orientation-transform.module';
 
 /**
- * This story is to display all cards in the deck
+ * This story is to display all versions of card orientation
  */
 @Component({
     selector: 'poker-moons-card-orientation-transform-test',
     template: `
-        <div style="margin: 10em;">
+        <div style="margin: 5em;">
             <poker-moons-card-orientation-transform [orientation]="orientation">
-                <poker-moons-card [card]="card1"></poker-moons-card>
+                <poker-moons-card [card]="card"></poker-moons-card>
             </poker-moons-card-orientation-transform>
         </div>
     `,
@@ -22,11 +22,10 @@ import { CardOrientationTransformModule } from './card-orientation-transform.mod
 class CardOrientationTransformTestComponent {
     @Input() orientation!: CardOrientation;
 
-    card1: Card = {
+    card: Card = {
         suit: 'clubs',
         rank: '2',
     };
-    card2 = null;
 }
 
 export default {

@@ -18,6 +18,7 @@ describe('CardOrientationTransformComponent', () => {
     beforeEach(() => {
         fixture = TestBed.createComponent(CardOrientationTransformComponent);
         component = fixture.componentInstance;
+        component.orientation = 'bottom';
         fixture.detectChanges();
     });
 

@@ -11,11 +11,7 @@ export default {
             imports: chipsModuleImports,
             providers: [MockNgEnvironment],
         }),
-        componentWrapperDecorator((story) => {
-            console.log(story);
-
-            return story;
-        }),
+        componentWrapperDecorator((story) => `<div style="margin-top: 8em">${story}</div>`),
     ],
 } as Meta<ChipsComponent>;
 

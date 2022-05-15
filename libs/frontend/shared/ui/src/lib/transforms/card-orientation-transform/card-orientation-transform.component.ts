@@ -30,7 +30,7 @@ export type CardOrientation =
     styleUrls: ['./card-orientation-transform.component.scss'],
 })
 export class CardOrientationTransformComponent {
-    orientationTransformOrigin: Record<CardOrientation, { transform: string }> = {
+    orientationTransform: Record<CardOrientation, { transform: string }> = {
         bottom: { transform: 'rotate3d(1, 0, 0, 50deg)' },
         bottomLeft: { transform: 'rotate3d(3, -1, 2, 50deg)' },
         bottomRight: { transform: 'rotate3d(3, 1, -2, 50deg)' },
