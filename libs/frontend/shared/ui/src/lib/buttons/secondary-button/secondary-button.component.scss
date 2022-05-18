@@ -1,0 +1,56 @@
+@use '~styles/borders.scss' as b;
+@use '~styles/colors.scss' as c;
+@use '~styles/typography' as t;
+@use '~styles/spacing' as s;
+@use '~styles/transitions' as tr;
+
+@mixin color-animation($color) {
+    color: c.color($color);
+    background-color: transparent;
+    &:hover {
+        color: c.color-tinted($color);
+    }
+    &:active {
+        color: c.color-shaded($color);
+    }
+}
+
+.button {
+    position: relative;
+    display: flex;
+
+    @include t.button;
+    padding: s.spacing(1) s.spacing(2);
+
+    outline: none;
+    border: none;
+    border-radius: b.border-radius('button');
+
+    overflow: hidden;
+    cursor: pointer;
+
+    &:focus-visible {
+        outline: 1px solid black;
+    }
+}
+
+.container {
+    gap: s.spacing(1);
+}
+
+//Colors
+.primary {
+    @include color-animation('primary');
+}
+.secondary {
+    @include color-animation('secondary');
+}
+.success {
+    @include color-animation('success');
+}
+.warning {
+    @include color-animation('warning');
+}
+.error {
+    @include color-animation('error');
+}
