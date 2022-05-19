@@ -1,0 +1,50 @@
+@use '~styles/breakpoints' as bp;
+@use '~styles/colors' as c;
+@use '~styles/shadows' as s;
+@use '~styles/typography' as t;
+
+.dialog {
+    @include s.box-shadow('allAround');
+
+    @include bp.xs {
+        max-width: 250px;
+        min-height: 125px;
+    }
+
+    @include bp.sm {
+        max-width: 450px;
+        min-height: 150px;
+    }
+
+    border-radius: 8px;
+    background-color: c.color('tinted');
+    color: c.color-text-contrast('tinted');
+    padding: 1.6rem;
+    margin: 0 auto;
+}
+
+.dialog h1 {
+    @include t.h3;
+
+    text-align: center;
+    margin: 0;
+}
+
+.dialog h2 {
+    @include t.body1;
+
+    font-style: italic;
+    text-align: center;
+    margin: 0.1em 0;
+}
+
+.dialog-content {
+    margin: 0.5em auto;
+    min-height: 100px;
+}
+
+.dialog-actions {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
