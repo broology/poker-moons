@@ -3,7 +3,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 /**
  * @description The data that can be displayed on the dialog
  */
-interface DialogCopy {
+export interface DialogCopy {
     /**
      * The main title displayed at the top of the dialog
      */

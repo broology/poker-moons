@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { DialogCopy } from '@poker-moons/frontend/shared/ui';
 import { CreateTableRequest } from '@poker-moons/shared/type';
 
 @Component({
@@ -8,7 +9,12 @@ import { CreateTableRequest } from '@poker-moons/shared/type';
     styleUrls: ['./frontend-builder-form-ui.component.scss'],
 })
 export class FrontendBuilderFormUiComponent implements OnInit {
-    TABLE_NAME_LENGTH = { min: 3, max: 25 };
+    tableNameLength = { min: 3, max: 25 };
+
+    dialogCopy: DialogCopy = {
+        title: 'Create Table',
+        primaryButton: 'CREATE',
+    };
 
     @Input() loading!: boolean;
 
@@ -26,8 +32,8 @@ export class FrontendBuilderFormUiComponent implements OnInit {
                 '',
                 Validators.compose([
                     Validators.required,
-                    Validators.minLength(this.TABLE_NAME_LENGTH.min),
-                    Validators.maxLength(this.TABLE_NAME_LENGTH.max),
+                    Validators.minLength(this.tableNameLength.min),
+                    Validators.maxLength(this.tableNameLength.max),
                 ]),
             ),
         });
