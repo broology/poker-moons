@@ -18,6 +18,9 @@ describe('DialogComponent', () => {
     beforeEach(() => {
         fixture = TestBed.createComponent(DialogComponent);
         component = fixture.componentInstance;
+        component.copy = {
+            title: 'test',
+        };
         fixture.detectChanges();
     });
 

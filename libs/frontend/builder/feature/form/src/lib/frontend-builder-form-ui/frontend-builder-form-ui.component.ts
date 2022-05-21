@@ -40,6 +40,7 @@ export class FrontendBuilderFormUiComponent implements OnInit {
     }
 
     submit(): void {
+        console.log('submitted');
         if (this.builderForm.valid) {
             this.createTableEmitter.emit({ name: this.nameControl.value });
         } else {
