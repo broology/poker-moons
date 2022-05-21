@@ -3,8 +3,8 @@ import { MockNgEnvironment } from '@poker-moons/frontend/shared/util/environment
 import { Card } from '@poker-moons/shared/type';
 import { Meta, moduleMetadata, Story } from '@storybook/angular';
 import { CardModule } from '../../card';
+import { DepthLevel } from '../../shared/type';
 import { CardOrientationTransformModule } from '../card-orientation-transform';
-import { DepthLevel } from './depth-transform.component';
 import { DepthTransformModule } from './depth-transform.module';
 
 /**

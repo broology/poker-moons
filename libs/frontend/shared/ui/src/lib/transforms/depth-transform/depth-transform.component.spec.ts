@@ -18,7 +18,7 @@ describe('DepthTransformComponent', () => {
     beforeEach(() => {
         fixture = TestBed.createComponent(DepthTransformComponent);
         component = fixture.componentInstance;
-        component.depth = 'front';
+        component.depth = 0;
         fixture.detectChanges();
     });
 

@@ -11,7 +11,7 @@ import { PlayerOrientation } from '../shared/type';
     selector: 'poker-moons-chips-orientation-transform-test',
     template: `
         <div style="margin: 5em;">
-            <poker-moons-chips [amount]="9997" [orientation]="orientation"></poker-moons-chips>
+            <poker-moons-chips [amount]="99999" [orientation]="orientation"></poker-moons-chips>
         </div>
     `,
 })

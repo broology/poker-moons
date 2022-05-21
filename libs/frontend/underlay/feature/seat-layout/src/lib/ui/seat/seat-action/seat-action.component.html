@@ -1,6 +1,23 @@
-<div>
+<div *ngIf="mutablePlayer">
     <div>
         <strong>Player Actions Display:</strong>
     </div>
-    <span *ngIf="mutablePlayer">{{ mutablePlayer | json }}</span>
+    <span *ngIf="mutablePlayer">{{ mutablePlayer.status }}</span>
+
+    <poker-moons-depth-transform [depth]="depthLevel">
+        <poker-moons-card-orientation-transform [orientation]="playerOrientation">
+            <div class="card-pair">
+                <poker-moons-card [card]="mutablePlayer.cards[0]"></poker-moons-card>
+                <poker-moons-card [card]="mutablePlayer.cards[1]"></poker-moons-card>
+            </div>
+        </poker-moons-card-orientation-transform>
+
+        <div class="stack">
+            <poker-moons-chips [amount]="mutablePlayer.stack" [orientation]="playerOrientation"></poker-moons-chips>
+        </div>
+
+        <div class="called">
+            <poker-moons-chips [amount]="mutablePlayer.called" [orientation]="playerOrientation"></poker-moons-chips>
+        </div>
+    </poker-moons-depth-transform>
 </div>

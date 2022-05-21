@@ -1,6 +1,5 @@
 <div>
     <figure *ngIf="immutablePlayer; else isEmpty">
-        <img alt="profile image" [src]="immutablePlayer.img || (DEFAULT_PLAYER_IMG | assetUrl)" />
         <figcaption>{{ immutablePlayer.username }}</figcaption>
     </figure>
 

@@ -1,6 +1,26 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { TableStateFacade } from '@poker-moons/frontend/shared/state/table';
-import { SeatId } from '@poker-moons/shared/type';
+import { DepthLevel, PlayerOrientation } from '@poker-moons/frontend/shared/ui';
+import { ImmutablePublicPlayer, MutablePublicPlayer, SeatId } from '@poker-moons/shared/type';
+import { Observable } from 'rxjs';
+
+const displaySeatToPlayerOrientation: Record<SeatId, PlayerOrientation> = {
+    0: 'bottom',
+    1: 'bottomLeft',
+    2: 'topLeft',
+    3: 'top',
+    4: 'topRight',
+    5: 'bottomRight',
+};
+
+const displaySeatToDepthLevel: Record<SeatId, DepthLevel> = {
+    0: 0,
+    1: 1,
+    2: 2,
+    3: 3,
+    4: 2,
+    5: 1,
+};
 
 @Component({
     selector: 'poker-moons-seat',
@@ -8,13 +28,16 @@ import { SeatId } from '@poker-moons/shared/type';
     styleUrls: ['./seat.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SeatComponent {
+export class SeatComponent implements OnInit {
     /**
      * The seat which is being displayed.
      *
      * Use this seatId to perform styling calculations relative to the table rotation
      */
-    @Input() displaySeatId!: SeatId;
+    @Input() set displaySeatId(seatId: SeatId) {
+        this.playerOrientation = displaySeatToPlayerOrientation[seatId];
+        this.depthLevel = displaySeatToDepthLevel[seatId];
+    }
 
     /**
      * The player's seat index.
@@ -23,9 +46,20 @@ export class SeatComponent {
      */
     @Input() playerSeatId!: SeatId;
 
-    readonly mutablePlayer$ = this.tableStateFacade.selectMutablePlayerBySeatId(this.playerSeatId);
+    mutablePlayer$!: Observable<MutablePublicPlayer | null>;
 
-    readonly immutablePlayer$ = this.tableStateFacade.selectImmutablePlayerBySeatId(this.playerSeatId);
+    immutablePlayer$!: Observable<ImmutablePublicPlayer | null>;
 
-    constructor(private readonly tableStateFacade: TableStateFacade) {}
+    playerOrientation!: PlayerOrientation;
+
+    depthLevel!: DepthLevel;
+
+    constructor(private readonly tableStateFacade: TableStateFacade) {
+        console.log(this.playerSeatId);
+    }
+
+    ngOnInit(): void {
+        this.mutablePlayer$ = this.tableStateFacade.selectMutablePlayerBySeatId(this.playerSeatId);
+        this.immutablePlayer$ = this.tableStateFacade.selectImmutablePlayerBySeatId(this.playerSeatId);
+    }
 }

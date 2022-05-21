@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { DepthLevel, PlayerOrientation } from '@poker-moons/frontend/shared/ui';
 import { MutablePublicPlayer } from '@poker-moons/shared/type';
 
 @Component({
@@ -8,5 +9,9 @@ import { MutablePublicPlayer } from '@poker-moons/shared/type';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SeatActionComponent {
+    @Input() depthLevel!: DepthLevel;
+
+    @Input() playerOrientation!: PlayerOrientation;
+
     @Input() mutablePlayer!: MutablePublicPlayer | null;
 }

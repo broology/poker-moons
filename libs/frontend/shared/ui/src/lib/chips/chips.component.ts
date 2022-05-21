@@ -31,16 +31,21 @@ export class ChipsComponent {
 
     /**
      * @description List of player orientations that require a y-axis, and z-axis inversion.
+     *
+     * The provided offsetX and offsetY are used to center the transformed chips into the ui container.
      */
-    invertTransform: Record<PlayerOrientation, { invertY: boolean; invertZ: boolean }> = {
-        bottom: { invertY: false, invertZ: false },
-        bottomLeft: { invertY: false, invertZ: false },
-        bottomRight: { invertY: true, invertZ: false },
-        left: { invertY: false, invertZ: false },
-        right: { invertY: true, invertZ: false },
-        top: { invertY: true, invertZ: true },
-        topLeft: { invertY: false, invertZ: true },
-        topRight: { invertY: true, invertZ: true },
+    orientationTransform: Record<
+        PlayerOrientation,
+        { invertY: boolean; invertZ: boolean; offsetX: number; offsetY: number }
+    > = {
+        bottom: { invertY: false, invertZ: false, offsetX: 35, offsetY: 50 },
+        bottomLeft: { invertY: false, invertZ: false, offsetX: 35, offsetY: 50 },
+        bottomRight: { invertY: true, invertZ: false, offsetX: 240, offsetY: 50 },
+        left: { invertY: false, invertZ: false, offsetX: 35, offsetY: 50 },
+        right: { invertY: true, invertZ: false, offsetX: 240, offsetY: 50 },
+        top: { invertY: true, invertZ: true, offsetX: 240, offsetY: 80 },
+        topLeft: { invertY: false, invertZ: true, offsetX: 50, offsetY: 80 },
+        topRight: { invertY: true, invertZ: true, offsetX: 240, offsetY: 80 },
     };
 
     @Input() set amount(value: number) {
@@ -55,11 +60,17 @@ export class ChipsComponent {
     @Input() orientation?: PlayerOrientation;
 
     get invertY() {
-        return !this.orientation ? false : this.invertTransform[this.orientation].invertY;
+        return !this.orientation ? false : this.orientationTransform[this.orientation].invertY;
+    }
+    get invertZ() {
+        return !this.orientation ? false : this.orientationTransform[this.orientation].invertZ;
     }
 
-    get invertZ() {
-        return !this.orientation ? false : this.invertTransform[this.orientation].invertZ;
+    get offsetX() {
+        return !this.orientation ? 0 : this.orientationTransform[this.orientation].offsetX;
+    }
+    get offsetY() {
+        return !this.orientation ? 0 : this.orientationTransform[this.orientation].offsetY;
     }
 
     /**
@@ -123,7 +134,7 @@ export class ChipsComponent {
      * @returns - The number of pixels to shift the chip-stack from the `left`
      */
     calculateXPosition(col: number, row: number): number {
-        return (col * 62 + row * 31) * (this.invertY ? -1 : 1);
+        return this.offsetX + (col * 62 + row * 31) * (this.invertY ? -1 : 1);
     }
 
     /**
@@ -137,6 +148,6 @@ export class ChipsComponent {
      * @returns - The number of pixels to shift the chip-stack from the `top`
      */
     calculateYPosition(row: number): number {
-        return row * 15 * (this.invertZ ? -1 : 1);
+        return this.offsetY + row * 15 * (this.invertZ ? -1 : 1);
     }
 }

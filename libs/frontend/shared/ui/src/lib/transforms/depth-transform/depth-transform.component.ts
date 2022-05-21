@@ -1,13 +1,5 @@
 import { Component, Input } from '@angular/core';
-
-/**
- * @description The depth level of where the entities are relative to the table.
- *
- * - `front`: entity is at the front of the table
- * - `middle`: entity is at the middle of the table
- * - `back`: entity is at the back of the table
- */
-export type DepthLevel = 'front' | 'middle' | 'back';
+import { DepthLevel } from '../../shared/type';
 
 /**
  * @description Component that transforms each of the children components scale to simulate a level
@@ -27,9 +19,10 @@ export type DepthLevel = 'front' | 'middle' | 'back';
 })
 export class DepthTransformComponent {
     depthTransform: Record<DepthLevel, { transform: string }> = {
-        front: { transform: 'scale(1)' },
-        middle: { transform: 'scale(0.85)' },
-        back: { transform: 'scale(0.70)' },
+        0: { transform: 'scale(1)' },
+        1: { transform: 'scale(0.9)' },
+        2: { transform: 'scale(0.8)' },
+        3: { transform: 'scale(0.7)' },
     };
 
     /**
