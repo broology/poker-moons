@@ -49,15 +49,19 @@ const Template: Story<DepthTransformTestComponent> = (args: DepthTransformTestCo
 
 export const _1front = Template.bind({});
 _1front.args = {
-    depth: 'front',
+    depth: 0,
 };
 
-export const _2middle = Template.bind({});
-_2middle.args = {
-    depth: 'middle',
+export const _2frontMiddle = Template.bind({});
+_2frontMiddle.args = {
+    depth: 1,
+};
+export const _2backMiddle = Template.bind({});
+_2backMiddle.args = {
+    depth: 2,
 };
 
 export const _3back = Template.bind({});
 _3back.args = {
-    depth: 'back',
+    depth: 3,
 };

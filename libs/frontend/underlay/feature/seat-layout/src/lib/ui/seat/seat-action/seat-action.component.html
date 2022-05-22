@@ -1,7 +1,4 @@
-<div *ngIf="mutablePlayer">
-    <div>
-        <strong>Player Actions Display:</strong>
-    </div>
+<div *ngIf="mutablePlayer" class="seat-action">
     <span *ngIf="mutablePlayer">{{ mutablePlayer.status }}</span>
 
     <poker-moons-depth-transform [depth]="depthLevel">
