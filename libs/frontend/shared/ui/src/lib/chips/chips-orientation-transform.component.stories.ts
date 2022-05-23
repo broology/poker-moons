@@ -10,11 +10,30 @@ import { PlayerOrientation } from '../shared/type';
 @Component({
     selector: 'poker-moons-chips-orientation-transform-test',
     template: `
-        <div style="margin: 5em;">
-            <poker-moons-chips [amount]="6" [orientation]="orientation"></poker-moons-chips>
-            <poker-moons-chips [amount]="99999" [orientation]="orientation"></poker-moons-chips>
+        <div>
+            <div>
+                <poker-moons-chips [amount]="1" [orientation]="orientation"></poker-moons-chips>
+            </div>
+            <div>
+                <poker-moons-chips [amount]="6" [orientation]="orientation"></poker-moons-chips>
+            </div>
+            <div>
+                <poker-moons-chips [amount]="99999" [orientation]="orientation"></poker-moons-chips>
+            </div>
+            <div>
+                <poker-moons-chips [amount]="999999" [orientation]="orientation"></poker-moons-chips>
+            </div>
         </div>
     `,
+    styles: [
+        `
+            div > div {
+                display: inline-block;
+                background-color: black;
+                margin: 5em;
+            }
+        `,
+    ],
 })
 class ChipsOrientationTransformTestComponent {
     @Input() orientation!: PlayerOrientation;

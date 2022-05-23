@@ -108,10 +108,7 @@ export class ChipsComponent {
     calculateXPosition(col: number, row: number): number {
         const transform = chipOrientationTransform[this.orientation || 'bottom'];
 
-        return (
-            transform.offset.x +
-            (col * transform.delta.x.col + row * transform.delta.x.row) * (transform.invert.y ? -1 : 1)
-        );
+        return (col * transform.delta.x.col + row * transform.delta.x.row) * (transform.invert.y ? -1 : 1);
     }
 
     /**
@@ -128,9 +125,22 @@ export class ChipsComponent {
     calculateYPosition(col: number, row: number): number {
         const transform = chipOrientationTransform[this.orientation || 'bottom'];
 
-        return (
-            transform.offset.y +
-            (col * transform.delta.y.col + row * transform.delta.y.row) * (transform.invert.z ? -1 : 1)
-        );
+        return (col * transform.delta.y.col + row * transform.delta.y.row) * (transform.invert.z ? -1 : 1);
+    }
+
+    calculateXOffset() {
+        const row = Math.floor(this.chipStacks.length / ChipsComponent.STACKS_PER_ROW);
+        const col = row > 0 ? ChipsComponent.STACKS_PER_ROW : this.chipStacks.length % ChipsComponent.STACKS_PER_ROW;
+        const transform = chipOrientationTransform[this.orientation || 'bottom'];
+
+        return transform.offset.x.base + (col * transform.offset.x.col + row * transform.offset.x.row);
+    }
+
+    calculateYOffset() {
+        const row = Math.floor(this.chipStacks.length / ChipsComponent.STACKS_PER_ROW);
+        const col = row > 0 ? ChipsComponent.STACKS_PER_ROW : this.chipStacks.length % ChipsComponent.STACKS_PER_ROW;
+        const transform = chipOrientationTransform[this.orientation || 'bottom'];
+
+        return transform.offset.y.base + (col * transform.offset.y.col + row * transform.offset.y.row);
     }
 }
