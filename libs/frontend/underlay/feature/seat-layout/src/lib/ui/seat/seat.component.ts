@@ -54,9 +54,7 @@ export class SeatComponent implements OnInit {
 
     depthLevel!: DepthLevel;
 
-    constructor(private readonly tableStateFacade: TableStateFacade) {
-        console.log(this.playerSeatId);
-    }
+    constructor(private readonly tableStateFacade: TableStateFacade) {}
 
     ngOnInit(): void {
         this.mutablePlayer$ = this.tableStateFacade.selectMutablePlayerBySeatId(this.playerSeatId);
