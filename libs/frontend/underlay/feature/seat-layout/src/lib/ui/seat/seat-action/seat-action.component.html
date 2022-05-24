@@ -1,20 +1,24 @@
-<div *ngIf="mutablePlayer" class="seat-action">
-    <span *ngIf="mutablePlayer">{{ mutablePlayer.status }}</span>
-
+<div *ngIf="mutablePlayer">
     <poker-moons-depth-transform [depth]="depthLevel">
-        <poker-moons-card-orientation-transform [orientation]="orientation">
-            <div class="card-pair" [ngStyle]="transform.cards">
-                <poker-moons-card [card]="mutablePlayer.cards[0]"></poker-moons-card>
-                <poker-moons-card [card]="mutablePlayer.cards[1]"></poker-moons-card>
+        <div class="seat-action">
+            <div class="stack" [ngStyle]="transform.stack">
+                <poker-moons-chips [amount]="mutablePlayer.stack" [orientation]="orientation"></poker-moons-chips>
             </div>
-        </poker-moons-card-orientation-transform>
 
-        <div class="stack" [ngStyle]="transform.stack">
-            <poker-moons-chips [amount]="mutablePlayer.stack" [orientation]="orientation"></poker-moons-chips>
-        </div>
+            <div class="called" [ngStyle]="transform.called">
+                <poker-moons-chips [amount]="mutablePlayer.called" [orientation]="orientation"></poker-moons-chips>
+            </div>
 
-        <div class="called" [ngStyle]="transform.called">
-            <poker-moons-chips [amount]="mutablePlayer.called" [orientation]="orientation"></poker-moons-chips>
+            <div class="cards" [ngStyle]="transform.cards">
+                <poker-moons-card-orientation-transform [orientation]="orientation">
+                    <div [class]="mutablePlayer.status === 'folded' ? 'folded' : ''">
+                        <div class="card-pair">
+                            <poker-moons-card [card]="mutablePlayer.cards[0]"></poker-moons-card>
+                            <poker-moons-card [card]="mutablePlayer.cards[1]"></poker-moons-card>
+                        </div>
+                    </div>
+                </poker-moons-card-orientation-transform>
+            </div>
         </div>
     </poker-moons-depth-transform>
 </div>

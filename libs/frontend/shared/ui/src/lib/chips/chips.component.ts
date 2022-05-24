@@ -44,7 +44,7 @@ export class ChipsComponent {
     /**
      * The data for each chip stack to be displayed. Compiled together from the {@link amountToChipStackData} method.
      */
-    chipStacks!: ChipStackData[];
+    chipStacks: ChipStackData[] = [];
 
     get invertZ() {
         return chipOrientationTransform[this.orientation || 'bottom'].invert.z;
@@ -96,7 +96,8 @@ export class ChipsComponent {
     }
 
     /**
-     * Determines the `x` offset to apply to the chip stack depending on it's `col` and `row` value.
+     * @description Determines the `x` offset to apply to the individual chip stack depending on it's `col` and `row` value,
+     *              and the orientation constants.
      *
      * The goal is to have the chips look 3D. So we also add an extra offset if its on a further row.
      * This is to emulate the look that the chips are slotted in-between each other.
@@ -112,7 +113,8 @@ export class ChipsComponent {
     }
 
     /**
-     * Determines the `y` offset to apply to the chip stack depending on it's `col` and `row` value.
+     * @description Determines the `y` offset to apply to the individual chip stack depending on it's `col` and `row` value,
+     *              and the orientation constants.
      *
      * The goal is to have the chips be close enough to each other that it looks like they are touching.
      *
@@ -128,6 +130,10 @@ export class ChipsComponent {
         return (col * transform.delta.y.col + row * transform.delta.y.row) * (transform.invert.z ? -1 : 1);
     }
 
+    /**
+     * @description Determines the `x` offset to apply to the entire chip stack to center it in the `div` element,
+     *              given the `col` and `row` values, and the orientation constants.
+     */
     calculateXOffset() {
         const row = Math.floor(this.chipStacks.length / ChipsComponent.STACKS_PER_ROW);
         const col = row > 0 ? ChipsComponent.STACKS_PER_ROW : this.chipStacks.length % ChipsComponent.STACKS_PER_ROW;
@@ -136,6 +142,10 @@ export class ChipsComponent {
         return transform.offset.x.base + (col * transform.offset.x.col + row * transform.offset.x.row);
     }
 
+    /**
+     * @description Determines the `y` offset to apply to the entire chip stack to center it in the `div` element,
+     *              given the `col` and `row` values.
+     */
     calculateYOffset() {
         const row = Math.floor(this.chipStacks.length / ChipsComponent.STACKS_PER_ROW);
         const col = row > 0 ? ChipsComponent.STACKS_PER_ROW : this.chipStacks.length % ChipsComponent.STACKS_PER_ROW;

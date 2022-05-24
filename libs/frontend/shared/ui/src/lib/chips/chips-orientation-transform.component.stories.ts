@@ -5,7 +5,7 @@ import { ChipsModule } from '.';
 import { PlayerOrientation } from '../shared/type';
 
 /**
- * This story is to display all versions of card orientation
+ * This story is to display all versions of chip orientations
  */
 @Component({
     selector: 'poker-moons-chips-orientation-transform-test',
