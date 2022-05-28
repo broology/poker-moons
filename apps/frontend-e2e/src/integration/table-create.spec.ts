@@ -18,7 +18,7 @@ describe('table create', () => {
         cy.get('[data-cy=create-table-name]').type('New Table');
 
         // [Action] Click `create`
-        cy.get('[data-cy=create-table-button]').click();
+        cy.get('[data-cy=dialog-primary-button]').click();
 
         // [Wait] for mock response
         cy.wait('@createTable');

@@ -18,7 +18,7 @@ $colors: (
 
 /* Function to fetch a text contrast version of the associated color from the poker-moons theme */
 @function color-text-contrast($name: 'primary') {
-    @if ($name == 'success' or $name == 'warning') {
+    @if ($name == 'success' or $name == 'warning' or $name == 'tinted') {
         @return map-get($colors, 'text');
     } @else {
         @return map-get($colors, 'text-contrast');
