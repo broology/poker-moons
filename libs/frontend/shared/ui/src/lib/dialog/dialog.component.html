@@ -1,0 +1,21 @@
+<div class="dialog">
+    <h1>{{ copy.title }}</h1>
+    <h2 *ngIf="copy.subtitle">{{ copy.subtitle }}</h2>
+    <div class="dialog-content">
+        <ng-content></ng-content>
+    </div>
+    <div class="dialog-actions">
+        <div>
+            <!-- TODO Replace with secondary button after #148 -->
+            <button *ngIf="copy.secondaryButton" data-cy="dialog-secondary-button" (click)="secondary.emit()">
+                {{ copy.secondaryButton }}
+            </button>
+        </div>
+        <div>
+            <!-- TODO Replace with secondary button after #148 -->
+            <button *ngIf="copy.primaryButton" data-cy="dialog-primary-button" (click)="primary.emit()">
+                {{ copy.primaryButton }}
+            </button>
+        </div>
+    </div>
+</div>
