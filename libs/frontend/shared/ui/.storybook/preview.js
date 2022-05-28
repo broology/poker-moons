@@ -1,1 +1,1 @@
-import '!style-loader!css-loader!sass-loader!../../../../../apps/frontend/src/styles.scss';
+import '!style-loader!css-loader!sass-loader!../../../../../styles/index.scss';

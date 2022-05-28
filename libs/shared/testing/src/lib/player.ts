@@ -30,17 +30,20 @@ export function mockImmutablePublicPlayer(overrides: DeepPartial<ImmutablePublic
     return merge(immutablePublicPlayer, overrides);
 }
 
-export function mockMutablePublicPlayer(overrides: DeepPartial<MutablePublicPlayer> = {}): MutablePublicPlayer {
+export function mockMutablePublicPlayer(overrides: Partial<MutablePublicPlayer> = {}): MutablePublicPlayer {
     const mutablePublicPlayer: MutablePublicPlayer = {
         stack: 100,
         status: 'called',
         called: 10,
-        cards: [],
+        cards: [null, null],
         ready: false,
         timeBank: 120,
     };
 
-    return merge(mutablePublicPlayer, overrides);
+    return {
+        ...mutablePublicPlayer,
+        ...overrides,
+    };
 }
 
 export function mockPlayer(overrides: DeepPartial<Player> = {}): Player {
