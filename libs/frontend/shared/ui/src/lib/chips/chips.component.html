@@ -1,7 +1,17 @@
-<div
-    *ngFor="let data of chipStacks"
-    class="chip-stack-container"
-    [style]="'left: ' + calculateXPosition(data.col, data.row) + 'px;top: ' + calculateYPosition(data.row) + 'px'"
->
-    <poker-moons-chip-stack [count]="data.count" [denomination]="data.denomination"></poker-moons-chip-stack>
+<div class="chips">
+    <div class="chips-offset" [style]="'left: ' + calculateXOffset() + 'px;top: ' + calculateYOffset() + 'px'">
+        <div
+            *ngFor="let data of invertZ ? chipStacks.reverse() : chipStacks"
+            class="chip-stack-container"
+            [style]="
+                'left: ' +
+                calculateXPosition(data.col, data.row) +
+                'px;top: ' +
+                calculateYPosition(data.col, data.row) +
+                'px'
+            "
+        >
+            <poker-moons-chip-stack [count]="data.count" [denomination]="data.denomination"></poker-moons-chip-stack>
+        </div>
+    </div>
 </div>
