@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import {
-    Card,
     ImmutablePublicPlayer,
     JoinTableRequest,
     MutablePublicPlayer,
@@ -22,7 +21,7 @@ import {
     selectImmutablePlayerBySeatId,
     selectMutablePlayerBySeatId,
 } from './table-state.selectors';
-import { selectActiveRound, selectCards, selectSeatMap, selectStartDate, selectStatus } from './table.state';
+import { selectActiveRound, selectSeatMap, selectStartDate, selectStatus } from './table.state';
 
 @Injectable({ providedIn: 'root' })
 export class TableStateFacade {
@@ -87,13 +86,6 @@ export class TableStateFacade {
      */
     selectClientMutablePlayer(): Observable<MutablePublicPlayer | null> {
         return this.store.pipe(select(selectClientMutablePlayer));
-    }
-
-    /**
-     * Selects the cards of the current client
-     */
-    selectClientPlayerCards(): Observable<[Card, Card] | []> {
-        return this.store.pipe(select(selectCards));
     }
 
     /**

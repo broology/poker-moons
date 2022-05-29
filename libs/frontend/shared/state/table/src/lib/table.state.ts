@@ -21,7 +21,6 @@ export const initialState: ClientTableState = {
         cards: [],
         turnCount: 0,
     },
-    cards: [],
     playerId: null,
     tableId: null,
     startDate: null,
@@ -35,7 +34,6 @@ export const storeFeature = createFeature({
 
 export const {
     selectActiveRound,
-    selectCards,
     selectPlayerId,
     selectTableId,
     selectImmutablePlayerMap,

@@ -45,6 +45,8 @@ export interface PlayerTimeBankEvent extends GeneralTableEvent<'playerTimeBank'>
 export interface RoundStatusChangedEvent extends GeneralTableEvent<'roundStatusChanged'> {
     status: RoundStatus;
 
+    activeSeat: SeatId | null;
+
     cards: Card[];
 }
 

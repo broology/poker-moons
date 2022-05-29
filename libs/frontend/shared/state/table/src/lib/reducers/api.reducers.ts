@@ -20,5 +20,14 @@ export const apiReducers: ReducerTypes<ClientTableState, [ActionType<any>]>[] = 
     //on(preformTableAction.success, (state, { payload }) => state),
     //on(toggleReadyStatus.success, (state, { payload }) => state),
 
-    on(getCards.success, (state, { payload }) => ({ ...state, cards: payload })),
+    on(getCards.success, (state, { payload: { playerId, cards } }) => ({
+        ...state,
+        mutablePlayerMap: {
+            ...state.mutablePlayerMap,
+            [playerId]: {
+                ...state.mutablePlayerMap[playerId],
+                cards: cards,
+            },
+        },
+    })),
 ];

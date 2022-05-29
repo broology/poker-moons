@@ -2,7 +2,9 @@
     [clientMutablePlayer]="clientMutablePlayer$ | push"
     [clientImmutablePlayer]="clientImmutablePlayer$ | push"
     [round]="round$ | push"
+    [tableStatus]="tableStatus$ | push"
     (joinTableEmitter)="join($event)"
     (leaveTableEmitter)="leave()"
     (playerActionEmitter)="performAction($event)"
+    (toggleReadyStatusEmitter)="toggleReadyStatus()"
 ></poker-moons-action-panel-ui>

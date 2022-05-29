@@ -1,9 +1,9 @@
+import { Provider } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { MockStateService, STATE_SERVICE } from '@poker-moons/backend/data-access/state';
 import { mockPlayer } from '@poker-moons/shared/testing';
 import { ServerTableState, TableId } from '@poker-moons/shared/type';
 import { TableStateManagerService } from './table-state-manager.service';
-import { Provider } from '@nestjs/common';
 
 describe('TableStateManagerService', () => {
     let service: TableStateManagerService;
@@ -106,7 +106,7 @@ describe('TableStateManagerService', () => {
                 seatId: null,
                 cards: [],
             });
-            await service.addNewPlayerToTable('table_1', newPlayer);
+            await service.addNewPlayerToTable('table_1', 0, newPlayer);
             const table = await service.getTableById('table_1');
             expect(table.playerMap['player_1']).toBeDefined();
             expect(table.playerMap.player_1.username).toEqual('test');
@@ -124,7 +124,7 @@ describe('TableStateManagerService', () => {
                 seatId: null,
                 cards: [],
             });
-            await service.addNewPlayerToTable('table_1', newPlayer);
+            await service.addNewPlayerToTable('table_1', 0, newPlayer);
             await service.updateTablePlayer('table_1', 'player_1', { username: 'Jordan' });
             const table: ServerTableState = await service.getTableById('table_1');
             expect(table.playerMap.player_1.username).toEqual('Jordan');

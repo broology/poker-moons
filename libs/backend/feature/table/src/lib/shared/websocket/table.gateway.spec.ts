@@ -66,7 +66,6 @@ describe('TableGateway', () => {
                 seatMap: {},
                 roundCount: 1,
                 activeRound: mockRound(),
-                cards: [],
                 mutablePlayerMap: { player_1: { stack, status, called, cards: [null, null], ready, timeBank } },
                 immutablePlayerMap: { player_1: { id, username, img, seatId } },
                 startDate: null,

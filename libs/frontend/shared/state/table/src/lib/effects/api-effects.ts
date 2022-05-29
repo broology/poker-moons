@@ -94,7 +94,11 @@ export class TableStateApiEffects {
                     throw new Error('Missing required params');
                 }
 
-                return this.performApiRequest(getCards, () => this.playerApiService.getCards(tableId, playerId));
+                return this.performApiRequest(getCards, () =>
+                    this.playerApiService
+                        .getCards(tableId, playerId)
+                        .pipe(switchMap((cards) => of({ playerId, cards }))),
+                );
             }),
         ),
     );

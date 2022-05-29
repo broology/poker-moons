@@ -92,12 +92,12 @@ export class TableStateManagerService {
      * @param id The id of the table to add the player to
      * @param newPlayer The new player object to add
      */
-    public async addNewPlayerToTable(id: TableId, newPlayer: Player): Promise<void> {
+    public async addNewPlayerToTable(id: TableId, seatId: SeatId, newPlayer: Player): Promise<void> {
         const tableToUpdate: ServerTableState = await this.stateService.getState(id);
-        tableToUpdate.playerMap = {
-            ...tableToUpdate.playerMap,
-            [newPlayer.id]: newPlayer,
-        };
+
+        tableToUpdate.playerMap[newPlayer.id] = newPlayer;
+        tableToUpdate.seatMap[seatId] = newPlayer.id;
+
         this.logger.debug('Newly added player (full table): ' + JSON.stringify(tableToUpdate, null, 4));
         await this.stateService.update(id, tableToUpdate);
     }
