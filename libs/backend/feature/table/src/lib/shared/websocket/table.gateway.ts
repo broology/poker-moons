@@ -97,7 +97,6 @@ export class TableGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
             seatMap,
             roundCount,
             activeRound,
-            cards: [],
             mutablePlayerMap,
             immutablePlayerMap,
             startDate,

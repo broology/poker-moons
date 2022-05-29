@@ -69,6 +69,7 @@ export class RoundManagerService {
             this.tableGatewayService.emitTableEvent(table.id, {
                 type: 'roundStatusChanged',
                 status: incrementRoundStatus(table.activeRound.roundStatus),
+                activeSeat: nextActiveSeat,
                 cards: table.activeRound.cards,
             });
         }
@@ -140,6 +141,7 @@ export class RoundManagerService {
         this.tableGatewayService.emitTableEvent(table.id, {
             type: 'roundStatusChanged',
             status: 'deal',
+            activeSeat,
             cards: [],
         });
 

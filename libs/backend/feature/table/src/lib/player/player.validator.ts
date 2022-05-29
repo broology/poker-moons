@@ -1,6 +1,6 @@
-import { JoinTableRequest, PLAYER_PREFIX, PlayerId, TABLE_PREFIX, TableId } from '@poker-moons/shared/type';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { JoinTableRequest, PlayerId, PLAYER_PREFIX, TableId, TABLE_PREFIX } from '@poker-moons/shared/type';
 import { IsEntityId } from '@poker-moons/shared/util';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class JoinTableRequestValidator implements JoinTableRequest {
     @IsString()
@@ -13,7 +13,6 @@ export class JoinTableParamValidator {
     tableId!: TableId;
 }
 
-//TODO: Maybe just make one validator class for all put/get to extend
 export class LeaveTableRequestValidator {
     @IsEntityId(TABLE_PREFIX)
     tableId!: TableId;

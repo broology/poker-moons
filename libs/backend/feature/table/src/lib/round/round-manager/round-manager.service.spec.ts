@@ -73,6 +73,7 @@ describe('RoundManagerService', () => {
             expect(tableGatewayService.emitTableEvent).toHaveBeenCalledWith(table.id, {
                 type: 'roundStatusChanged',
                 status: 'turn',
+                activeSeat: 2,
                 cards: table.activeRound.cards,
             });
         });
@@ -99,6 +100,7 @@ describe('RoundManagerService', () => {
             expect(tableGatewayService.emitTableEvent).toHaveBeenCalledWith(table.id, {
                 type: 'roundStatusChanged',
                 status: 'deal',
+                activeSeat: 1,
                 cards: [],
             });
 
@@ -203,6 +205,7 @@ describe('RoundManagerService', () => {
             expect(tableGatewayService.emitTableEvent).toHaveBeenCalledWith(table.id, {
                 type: 'roundStatusChanged',
                 status: 'deal',
+                activeSeat: 1,
                 cards: [],
             });
         });

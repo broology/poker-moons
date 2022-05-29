@@ -1,3 +1,5 @@
+import { Test } from '@nestjs/testing';
+import { mockCard, mockPublicPlayer } from '@poker-moons/shared/testing';
 import {
     Card,
     PlayerJoinedTableEvent,
@@ -9,9 +11,7 @@ import {
     TableId,
     WinnerWinnerChickenDinnerEvent,
 } from '@poker-moons/shared/type';
-import { Test } from '@nestjs/testing';
 import { TableGatewayService } from './table-gateway.service';
-import { mockCard, mockPublicPlayer } from '@poker-moons/shared/testing';
 
 describe('TableGatewayService', () => {
     let service: TableGatewayService;
@@ -78,6 +78,7 @@ describe('TableGatewayService', () => {
             const roundStatusChangedEvent: RoundStatusChangedEvent = {
                 type: 'roundStatusChanged',
                 status: 'flop',
+                activeSeat: 1,
                 cards: [mockCard(), mockCard({ suit: 'hearts', rank: '12' }), mockCard({ suit: 'spades', rank: '5' })],
             };
 

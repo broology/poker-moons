@@ -1,15 +1,19 @@
 import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
-import type { GetPlayerCardsResponse, JoinTableResponse, LeaveTableResponse, ToggleReadyStatusResponse } from '@poker-moons/shared/type';
+import { CustomLoggerService } from '@poker-moons/backend/utility';
+import type {
+    GetPlayerCardsResponse,
+    JoinTableResponse,
+    LeaveTableResponse,
+    ToggleReadyStatusResponse,
+} from '@poker-moons/shared/type';
 import { PlayerService } from './player.service';
 import {
     GetPlayerCardsRequestValidator,
     JoinTableParamValidator,
     JoinTableRequestValidator,
     LeaveTableRequestValidator,
-    ToggleReadyStatusRequestValidator
+    ToggleReadyStatusRequestValidator,
 } from './player.validator';
-import { CustomLoggerService } from '@poker-moons/backend/utility';
-import { TableIdValidator } from '../table/table.validator';
 
 @Controller()
 export class PlayerController {
@@ -20,9 +24,9 @@ export class PlayerController {
     @Post()
     create(
         @Body() dto: JoinTableRequestValidator,
-        @Param() { tableId }: JoinTableParamValidator
+        @Param() { tableId }: JoinTableParamValidator,
     ): Promise<JoinTableResponse> {
-        this.logger.debug('Received create player request: ' + dto);
+        this.logger.debug('Received create player request: ' + JSON.stringify(dto, null, 2));
         return this.playerService.create(dto, tableId);
     }
 

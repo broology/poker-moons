@@ -6,8 +6,6 @@ import type { Table, TableId } from './table';
 export type SharedTableState = Pick<Table, 'name' | 'seatMap' | 'roundCount' | 'activeRound' | 'status' | 'startDate'>;
 
 export interface ClientTableState extends SharedTableState {
-    cards: [Card, Card] | [];
-
     /**
      * The `playerId` of client, if null, then the user hasn't joined the table yet
      */
