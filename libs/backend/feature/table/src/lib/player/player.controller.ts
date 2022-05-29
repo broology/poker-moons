@@ -1,12 +1,19 @@
 import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
-import type { GetPlayerCardsResponse, JoinTableResponse, LeaveTableResponse } from '@poker-moons/shared/type';
+import { CustomLoggerService } from '@poker-moons/backend/utility';
+import type {
+    GetPlayerCardsResponse,
+    JoinTableResponse,
+    LeaveTableResponse,
+    ToggleReadyStatusResponse,
+} from '@poker-moons/shared/type';
 import { PlayerService } from './player.service';
 import {
     GetPlayerCardsRequestValidator,
+    JoinTableParamValidator,
     JoinTableRequestValidator,
     LeaveTableRequestValidator,
+    ToggleReadyStatusRequestValidator,
 } from './player.validator';
-import { CustomLoggerService } from '@poker-moons/backend/utility';
 
 @Controller()
 export class PlayerController {
@@ -15,20 +22,29 @@ export class PlayerController {
     constructor(private readonly playerService: PlayerService) {}
 
     @Post()
-    create(@Body() dto: JoinTableRequestValidator): JoinTableResponse {
-        this.logger.debug('Received create table request: ' + dto);
-        return this.playerService.create(dto);
+    create(
+        @Body() dto: JoinTableRequestValidator,
+        @Param() { tableId }: JoinTableParamValidator,
+    ): Promise<JoinTableResponse> {
+        this.logger.debug('Received create player request: ' + JSON.stringify(dto, null, 2));
+        return this.playerService.create(dto, tableId);
     }
 
     @Put(':playerId')
-    leave(@Param() { tableId, playerId }: LeaveTableRequestValidator): LeaveTableResponse {
+    leave(@Param() { tableId, playerId }: LeaveTableRequestValidator): Promise<LeaveTableResponse> {
         this.logger.debug('Received leave table request: ' + tableId + ', ' + playerId);
         return this.playerService.delete(tableId, playerId);
     }
 
     @Get(':playerId/cards')
-    getCards(@Param() { tableId, playerId }: GetPlayerCardsRequestValidator): GetPlayerCardsResponse {
+    getCards(@Param() { tableId, playerId }: GetPlayerCardsRequestValidator): Promise<GetPlayerCardsResponse> {
         this.logger.debug('Received get cards request: ' + tableId + ', ' + playerId);
         return this.playerService.getCards(tableId, playerId);
+    }
+
+    @Put(':playerId/ready-status')
+    ready(@Param() { tableId, playerId }: ToggleReadyStatusRequestValidator): Promise<ToggleReadyStatusResponse> {
+        this.logger.debug('Received player ready update request: ' + tableId + ', ' + playerId);
+        return this.playerService.ready(tableId, playerId);
     }
 }

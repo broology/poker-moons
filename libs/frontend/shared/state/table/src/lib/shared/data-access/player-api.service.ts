@@ -47,7 +47,7 @@ export class PlayerApiService {
         playerId: PlayerId,
         dto: PerformPlayerActionRequest,
     ): Observable<PerformPlayerActionResponse> {
-        return this.httpClient.put<PerformPlayerActionResponse>(
+        return this.httpClient.post<PerformPlayerActionResponse>(
             `${this.env.api}/table/${tableId}/player/${playerId}/action`,
             dto,
         );

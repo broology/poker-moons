@@ -5,6 +5,7 @@ import {
     LeaveTableResponse,
     PerformPlayerActionRequest,
     PerformPlayerActionResponse,
+    PlayerId,
     PokerMoonsError,
     TableId,
 } from '@poker-moons/shared/type';
@@ -18,9 +19,11 @@ export const initialize = createActionType<{ tableId: TableId }>('initialize the
 /**
  * The private way for the user to request the cards themselves once the round starts
  */
-export const getCards = buildAsyncRequestActions<undefined, GetPlayerCardsResponse, PokerMoonsError>(
-    'get player cards',
-);
+export const getCards = buildAsyncRequestActions<
+    undefined,
+    { playerId: PlayerId; cards: GetPlayerCardsResponse },
+    PokerMoonsError
+>('get player cards');
 
 /**
  * The player joins the poker table

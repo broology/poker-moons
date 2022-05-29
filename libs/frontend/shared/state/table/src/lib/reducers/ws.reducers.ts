@@ -11,12 +11,14 @@ export const wsReducers: ReducerTypes<ClientTableState, [ActionType<any>]>[] = [
      * And place them at their seat.
      */
     on(tableWsActionMap.playerJoined, (state, { payload: { seatId, player } }) => {
-        const { status, stack, called, ...immutable } = player;
+        const { stack, status, called, cards, ready, timeBank, ...immutable } = player;
+
+        const mutable: MutablePublicPlayer = { stack, status, called, cards, ready, timeBank };
 
         return {
             ...state,
             immutablePlayerMap: { ...state.immutablePlayerMap, [player.id]: immutable },
-            mutablePlayerMap: { ...state.mutablePlayerMap, [player.id]: { status, stack, called } },
+            mutablePlayerMap: { ...state.mutablePlayerMap, [player.id]: mutable },
             seatMap: { ...state.seatMap, [seatId]: player.id },
         };
     }),
@@ -71,14 +73,31 @@ export const wsReducers: ReducerTypes<ClientTableState, [ActionType<any>]>[] = [
     /**
      * When the round status changes, update the active round data.
      */
-    on(tableWsActionMap.roundStatusChanged, (state, { payload }) => ({
-        ...state,
-        activeRound: {
-            ...state.activeRound,
-            roundStatus: payload.status,
-            cards: payload.cards,
-        },
-    })),
+    on(tableWsActionMap.roundStatusChanged, (state, { payload }) => {
+        return {
+            ...state,
+            activeRound: {
+                ...state.activeRound,
+                roundStatus: payload.status,
+                cards: payload.cards,
+                activeSeat: payload.activeSeat,
+            },
+            // In the case of the cards being dealt, set all players cards
+            mutablePlayerMap:
+                payload.status === 'deal'
+                    ? Object.entries(state.mutablePlayerMap).reduce(
+                          (prev, [playerId, player]) => ({
+                              ...prev,
+                              [playerId]: {
+                                  ...player,
+                                  cards: [null, null],
+                              },
+                          }),
+                          state.mutablePlayerMap,
+                      )
+                    : state.mutablePlayerMap,
+        };
+    }),
 
     /**
      * When a winner is declared at the end of a round. Update the the mutable players pot.

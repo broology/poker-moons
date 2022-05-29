@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { TableStateFacade } from '@poker-moons/frontend/shared/state/table';
 import { DepthLevel, PlayerOrientation } from '@poker-moons/frontend/shared/ui';
 import { ImmutablePublicPlayer, MutablePublicPlayer, SeatId } from '@poker-moons/shared/type';
@@ -28,7 +28,7 @@ const displaySeatToDepthLevel: Record<SeatId, DepthLevel> = {
     styleUrls: ['./seat.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SeatComponent implements OnInit {
+export class SeatComponent implements OnChanges {
     /**
      * The seat which is being displayed.
      *
@@ -56,8 +56,10 @@ export class SeatComponent implements OnInit {
 
     constructor(private readonly tableStateFacade: TableStateFacade) {}
 
-    ngOnInit(): void {
-        this.mutablePlayer$ = this.tableStateFacade.selectMutablePlayerBySeatId(this.playerSeatId);
-        this.immutablePlayer$ = this.tableStateFacade.selectImmutablePlayerBySeatId(this.playerSeatId);
+    ngOnChanges({ playerSeatId }: SimpleChanges): void {
+        if (playerSeatId.currentValue !== playerSeatId.previousValue) {
+            this.mutablePlayer$ = this.tableStateFacade.selectMutablePlayerBySeatId(this.playerSeatId);
+            this.immutablePlayer$ = this.tableStateFacade.selectImmutablePlayerBySeatId(this.playerSeatId);
+        }
     }
 }
