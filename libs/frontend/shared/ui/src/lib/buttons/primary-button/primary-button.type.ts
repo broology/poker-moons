@@ -1,4 +1,4 @@
-import { mainColors } from '../../../../../../../../styles/types';
+import { mainColors } from '@poker-moons/styles';
 
 export const variants = ['primary', 'secondary'] as const;
 
