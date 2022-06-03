@@ -1,9 +1,5 @@
-import { mainColors } from '@poker-moons/frontend/shared/util/styles';
+import { MainColor } from '@poker-moons/frontend/shared/util/styles';
 
-export const variants = ['primary', 'secondary'] as const;
+export type ButtonVariant = 'primary' | 'secondary';
 
-export type ButtonVariant = typeof variants[number];
-
-export const buttonColors = mainColors;
-
-export type ButtonColors = typeof buttonColors[number];
+export type ButtonColors = MainColor;
