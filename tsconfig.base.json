@@ -30,6 +30,7 @@
             "@poker-moons/frontend/shared/state/table": ["libs/frontend/shared/state/table/src/index.ts"],
             "@poker-moons/frontend/shared/ui": ["libs/frontend/shared/ui/src/index.ts"],
             "@poker-moons/frontend/shared/util/environment": ["libs/frontend/shared/util/environment/src/index.ts"],
+            "@poker-moons/frontend/shared/util/styles": ["libs/frontend/shared/util/styles/src/index.ts"],
             "@poker-moons/frontend/underlay/feature/seat-layout": [
                 "libs/frontend/underlay/feature/seat-layout/src/index.ts"
             ],
@@ -39,8 +40,7 @@
             "@poker-moons/frontend/underlay/shell": ["libs/frontend/underlay/shell/src/index.ts"],
             "@poker-moons/shared/testing": ["libs/shared/testing/src/index.ts"],
             "@poker-moons/shared/type": ["libs/shared/type/src/index.ts"],
-            "@poker-moons/shared/util": ["libs/shared/util/src/index.ts"],
-            "@poker-moons/styles": ["styles"]
+            "@poker-moons/shared/util": ["libs/shared/util/src/index.ts"]
         }
     },
     "exclude": ["node_modules", "tmp"]
