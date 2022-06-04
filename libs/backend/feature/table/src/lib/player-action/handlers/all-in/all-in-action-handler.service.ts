@@ -41,7 +41,7 @@ export class AllInActionHandlerService {
         if (isRight(action)) {
             const { table, player } = action.right;
 
-            if (!table.activeRound.activeSeat) {
+            if (table.activeRound.activeSeat === null) {
                 throw new InternalServerErrorException('Something went wrong, no active seat is set!');
             }
 
