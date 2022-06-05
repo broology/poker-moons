@@ -75,6 +75,7 @@ describe('RoundManagerService', () => {
                 status: 'turn',
                 activeSeat: 2,
                 cards: table.activeRound.cards,
+                toCall: 0,
             });
         });
     });
@@ -102,6 +103,7 @@ describe('RoundManagerService', () => {
                 status: 'deal',
                 activeSeat: 1,
                 cards: [],
+                toCall: 0,
             });
 
             expect(turnTimeService.onStart).toHaveBeenCalledWith({
@@ -207,6 +209,7 @@ describe('RoundManagerService', () => {
                 status: 'deal',
                 activeSeat: 1,
                 cards: [],
+                toCall: 0,
             });
         });
     });

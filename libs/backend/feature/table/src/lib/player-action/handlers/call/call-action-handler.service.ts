@@ -46,15 +46,17 @@ export class CallActionHandlerService {
                 throw new InternalServerErrorException('Something went wrong, no active seat is set!');
             }
 
-            // Update the player's status, called amount, and stack in the server
+            const delta = table.activeRound.toCall - player.biddingCycleCalled;
+
+            // Update the player's status, biddingCycleCalled amount, and stack in the server
             await this.tableStateManagerService.updateTablePlayer(table.id, player.id, {
                 status: 'called',
-                called: player.called + table.activeRound.toCall,
-                stack: player.stack - table.activeRound.toCall,
+                biddingCycleCalled: table.activeRound.toCall,
+                stack: player.stack - delta,
             });
 
             // Increment the pot
-            await this.potManagerService.incrementPot(table.id, table.activeRound.pot, table.activeRound.toCall);
+            await this.potManagerService.incrementPot(table.id, table.activeRound.pot, delta);
 
             // Emit the PlayerTurnEvent to the frontend
             const newActiveSeat = incrementSeat(table.activeRound.activeSeat, table.seatMap);
@@ -63,7 +65,7 @@ export class CallActionHandlerService {
                 playerId: player.id,
                 newStatus: 'called',
                 newActiveSeatId: newActiveSeat,
-                bidAmount: table.activeRound.toCall,
+                bidAmount: delta,
             });
 
             table.playerMap[player.id] = { ...player, status: 'called' };

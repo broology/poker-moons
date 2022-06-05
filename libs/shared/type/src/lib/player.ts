@@ -48,9 +48,14 @@ export interface Player {
     status: PlayerStatus;
 
     /**
+     * The amount the user has bet in the current bidding cycle (within the round)
+     */
+    biddingCycleCalled: number;
+
+    /**
      * The amount the user has bet in the current round
      */
-    called: number;
+    roundCalled: number;
 
     /**
      * The seat the player is sitting in. If they left, then this will be `null`
@@ -85,7 +90,10 @@ export interface PublicPlayer extends StrictOmit<Player, 'cards'> {
 /**
  * Data on the player that is to be frequently updated during the game
  */
-export type MutablePublicPlayer = Pick<PublicPlayer, 'stack' | 'status' | 'called' | 'cards' | 'ready' | 'timeBank'>;
+export type MutablePublicPlayer = Pick<
+    PublicPlayer,
+    'stack' | 'status' | 'biddingCycleCalled' | 'roundCalled' | 'cards' | 'ready' | 'timeBank'
+>;
 
 /**
  * Data on the player that will stay the same during the game (mostly)

@@ -55,11 +55,11 @@ export class PotManagerService {
      *
      * @returns the pot amount to distribute amongst the winners
      */
-    buildPot(players: Pick<Player, 'called'>[]): number {
+    buildPot(players: Pick<Player, 'roundCalled'>[]): number {
         let pot = 0;
 
         for (const player of players) {
-            pot += player.called;
+            pot += player.roundCalled;
         }
 
         return pot;

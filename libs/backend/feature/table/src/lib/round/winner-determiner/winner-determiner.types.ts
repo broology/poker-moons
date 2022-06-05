@@ -16,7 +16,7 @@ export const handCategory = [
 ] as const;
 export type HandCategory = typeof handCategory[number];
 
-export type PlayerWithHand = Pick<Player, 'id' | 'username' | 'called'> & {
+export type PlayerWithHand = Pick<Player, 'id' | 'username' | 'roundCalled'> & {
     cards: [Card, Card];
 
     /**

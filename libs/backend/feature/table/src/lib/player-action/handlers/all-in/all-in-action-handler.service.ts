@@ -41,23 +41,28 @@ export class AllInActionHandlerService {
         if (isRight(action)) {
             const { table, player } = action.right;
 
+            this.logger.debug(`Player ${player.id} is performing an all in action`);
+
             if (table.activeRound.activeSeat === null) {
+                this.logger.error('Active seat is null');
                 throw new InternalServerErrorException('Something went wrong, no active seat is set!');
             }
 
-            // Update the player's status, called amount, and stack in the server
+            // Update the player's status, biddingCycleCalled amount, and stack in the server
             await this.tableStateManagerService.updateTablePlayer(table.id, player.id, {
                 status: 'all-in',
-                called: player.called + player.stack,
+                biddingCycleCalled: player.biddingCycleCalled + player.stack,
                 stack: 0,
             });
+
+            this.logger.debug(`Player ${player.id} updated stack `);
 
             // Increment the pot
             await this.potManagerService.incrementPot(table.id, table.activeRound.pot, player.stack);
 
             // Update toCall amount on round
             await this.tableStateManagerService.updateRound(table.id, {
-                toCall: table.activeRound.toCall + player.stack,
+                toCall: player.biddingCycleCalled + player.stack,
             });
 
             // Emit the PlayerTurnEvent to the frontend

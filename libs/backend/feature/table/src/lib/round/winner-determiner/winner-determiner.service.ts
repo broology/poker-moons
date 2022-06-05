@@ -1,12 +1,12 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import type { Card, Player, PlayerId, Round, TableId, WinnerMap } from '@poker-moons/shared/type';
 import { TableGatewayService } from '../../shared/websocket/table-gateway.service';
+import { TableStateManagerService } from '../../table-state-manager/table-state-manager.service';
 import { PotManagerService } from '../pot-manager/pot-manager.service';
 import { compareHands, playerHasTwoCards, tableHasFiveCards } from './util/rank';
 import { playerMissingCards, roundMissingCards } from './winner-determiner.copy';
 import type { Hand, PlayerWithHand, RankHandReponse } from './winner-determiner.types';
 import currency = require('currency.js');
-import { TableStateManagerService } from '../../table-state-manager/table-state-manager.service';
 
 @Injectable()
 export class WinnerDeterminerService {
@@ -42,9 +42,9 @@ export class WinnerDeterminerService {
                     id: player.id,
                     username: player.username,
                     cards: player.cards,
-                    hand: this.findBestHand(player.id, player.username, player.called, player.cards, round.cards).player
-                        .hand,
-                    called: player.called,
+                    hand: this.findBestHand(player.id, player.username, player.roundCalled, player.cards, round.cards)
+                        .player.hand,
+                    roundCalled: player.roundCalled,
                 });
             }
         }
@@ -72,14 +72,14 @@ export class WinnerDeterminerService {
     private findBestHand(
         playerId: PlayerId,
         username: string,
-        called: number,
+        roundCalled: number,
         playerCards: [Card, Card],
         tableCards: [Card, Card, Card, Card, Card],
     ): RankHandReponse {
         const playersWithHands: PlayerWithHand[] = [];
 
         // The table cards are 1 possible hand
-        playersWithHands.push({ id: playerId, username, cards: playerCards, hand: tableCards, called });
+        playersWithHands.push({ id: playerId, username, cards: playerCards, hand: tableCards, roundCalled });
 
         /*
          * Iterates through each index and replaces it with each player card, producing 10 hands
@@ -89,7 +89,7 @@ export class WinnerDeterminerService {
             for (let y = 0; y < tableCards.length; y += 1) {
                 const newHand: Hand = [...tableCards];
                 newHand[y] = playerCards[x];
-                playersWithHands.push({ id: playerId, username, cards: playerCards, hand: newHand, called });
+                playersWithHands.push({ id: playerId, username, cards: playerCards, hand: newHand, roundCalled });
             }
         }
 
@@ -101,7 +101,7 @@ export class WinnerDeterminerService {
                 const newHand: Hand = [...tableCards];
                 newHand[i] = playerCards[0];
                 newHand[j] = playerCards[1];
-                playersWithHands.push({ id: playerId, username, cards: playerCards, hand: newHand, called });
+                playersWithHands.push({ id: playerId, username, cards: playerCards, hand: newHand, roundCalled });
             }
         }
 
@@ -128,8 +128,8 @@ export class WinnerDeterminerService {
 
         // Loop through until no unclaimed chips in pot
         while (this.potManagerService.buildPot(playersWithHand) > 0) {
-            // An array of players that still have a `called` amount left
-            const playersWithCommitment = sortedHands.filter((hand) => hand.player.called > 0);
+            // An array of players that still have a `roundCalled` amount left
+            const playersWithCommitment = sortedHands.filter((hand) => hand.player.roundCalled > 0);
 
             // An array of winners that need to be paid out in this iteration
             const winnersToPay = playersWithCommitment.filter(
@@ -142,13 +142,13 @@ export class WinnerDeterminerService {
 
             for (const winner of winnersToPay) {
                 collectedSidePot = 0;
-                currentCommitment = winner.player.called;
+                currentCommitment = winner.player.roundCalled;
 
                 // Collect commitment from all players who have money in pot
                 for (const player of playersWithHand) {
-                    if (player.called > 0) {
-                        collectionAmount = Math.min(currentCommitment, player.called);
-                        player.called -= collectionAmount;
+                    if (player.roundCalled > 0) {
+                        collectionAmount = Math.min(currentCommitment, player.roundCalled);
+                        player.roundCalled -= collectionAmount;
                         collectedSidePot += collectionAmount;
                     }
                 }

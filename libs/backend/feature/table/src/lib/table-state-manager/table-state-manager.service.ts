@@ -118,6 +118,31 @@ export class TableStateManagerService {
     }
 
     /**
+     * Update all players on the table
+     * @param id The id of the table to update
+     * @param data The data to update the players
+     */
+    public async updateAllPlayers(id: TableId, data: Partial<Player>): Promise<void> {
+        const table: ServerTableState = await this.stateService.getState(id);
+
+        const updatedPlayerMap = Object.values(table.playerMap).reduce<Record<PlayerId, Player>>(
+            (prev, cur) => ({
+                ...prev,
+                [cur.id]: {
+                    ...cur,
+                    ...data,
+                },
+            }),
+            {},
+        );
+
+        const updatedTable = { ...table, playerMap: updatedPlayerMap };
+
+        this.logger.debug('Newly updated round (full table): ' + JSON.stringify(updatedTable, null, 4));
+        await this.stateService.update(id, updatedTable);
+    }
+
+    /**
      * Update the seat map of a table
      * @param id The id of the table to update
      * @param updatedSeatMap A partial of a complete seat map, containing that values to update

@@ -102,7 +102,6 @@ describe('TableStateManagerService', () => {
                 img: 'test',
                 stack: 4,
                 status: `waiting`,
-                called: 0,
                 seatId: null,
                 cards: [],
             });
@@ -120,7 +119,6 @@ describe('TableStateManagerService', () => {
                 img: 'test',
                 stack: 4,
                 status: `waiting`,
-                called: 0,
                 seatId: null,
                 cards: [],
             });

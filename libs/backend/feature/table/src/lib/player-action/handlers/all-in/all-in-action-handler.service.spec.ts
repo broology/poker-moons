@@ -1,13 +1,13 @@
-import { PlayerAction } from '@poker-moons/shared/type';
-import { AllInActionHandlerService } from './all-in-action-handler.service';
-import { mockCard, mockPlayer, mockServerTableState } from '@poker-moons/shared/testing';
-import { createTestingModuleFactory, SpyObject } from '@trellisorg/nest-spectator';
-import { RoundManagerService } from '../../../round/round-manager/round-manager.service';
-import { TableStateManagerService } from '../../../table-state-manager/table-state-manager.service';
-import { TableGatewayService } from '../../../shared/websocket/table-gateway.service';
-import { right, left } from 'fp-ts/lib/Either';
 import { BadRequestException, InternalServerErrorException } from '@nestjs/common';
+import { mockCard, mockPlayer, mockServerTableState } from '@poker-moons/shared/testing';
+import { PlayerAction } from '@poker-moons/shared/type';
+import { createTestingModuleFactory, SpyObject } from '@trellisorg/nest-spectator';
+import { left, right } from 'fp-ts/lib/Either';
 import { PotManagerService } from '../../../round/pot-manager/pot-manager.service';
+import { RoundManagerService } from '../../../round/round-manager/round-manager.service';
+import { TableGatewayService } from '../../../shared/websocket/table-gateway.service';
+import { TableStateManagerService } from '../../../table-state-manager/table-state-manager.service';
+import { AllInActionHandlerService } from './all-in-action-handler.service';
 
 describe('AllInActionHandlerService', () => {
     let service: AllInActionHandlerService;
@@ -42,7 +42,7 @@ describe('AllInActionHandlerService', () => {
         seatId: 1,
         username: 'Levi',
         cards: [mockCard({ suit: 'clubs', rank: '2' }), mockCard({ suit: 'hearts', rank: '3' })],
-        called: 200,
+        biddingCycleCalled: 200,
     });
 
     const action: PlayerAction = { type: 'all-in' };
@@ -69,7 +69,7 @@ describe('AllInActionHandlerService', () => {
 
             expect(tableStateManagerService.updateTablePlayer).toHaveBeenCalledWith(table.id, player.id, {
                 status: 'all-in',
-                called: player.called + player.stack,
+                biddingCycleCalled: player.biddingCycleCalled + player.stack,
                 stack: 0,
             });
 

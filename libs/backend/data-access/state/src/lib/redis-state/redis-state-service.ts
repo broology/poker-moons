@@ -1,10 +1,10 @@
 import { Injectable, InternalServerErrorException, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
-import { GenericStateServiceImpl } from '../generic-state-service.impl';
+import { ConfigService } from '@nestjs/config';
+import { CustomLoggerService } from '@poker-moons/backend/utility';
 import { ServerTableState, TableId } from '@poker-moons/shared/type';
 import Redis from 'ioredis';
-import { ConfigService } from '@nestjs/config';
 import { nanoid } from 'nanoid';
-import { CustomLoggerService } from '@poker-moons/backend/utility';
+import { GenericStateServiceImpl } from '../generic-state-service.impl';
 
 @Injectable()
 export class RedisStateService implements GenericStateServiceImpl, OnModuleInit, OnModuleDestroy {
@@ -41,7 +41,6 @@ export class RedisStateService implements GenericStateServiceImpl, OnModuleInit,
         const id: TableId = `table_${nanoid()}`;
         serverTableState.id = id;
         this.logger.log('Attempting to create table with id: ' + id);
-        this.logger.debug('New table content:\n' + JSON.stringify(serverTableState, null, 4));
         await this.redis?.set(id, JSON.stringify(serverTableState));
         this.logger.log('New table created');
         return id;
@@ -58,7 +57,6 @@ export class RedisStateService implements GenericStateServiceImpl, OnModuleInit,
         if (tableString) {
             const table: ServerTableState = JSON.parse(tableString);
             this.logger.log('Got table with id: ' + tableId + ' successfully');
-            this.logger.debug('Table contents: ' + JSON.stringify(table, null, 4));
             return table;
         } else {
             throw new InternalServerErrorException('There was an error retrieving the table with id: ' + tableId);

@@ -48,6 +48,8 @@ export interface RoundStatusChangedEvent extends GeneralTableEvent<'roundStatusC
     activeSeat: SeatId | null;
 
     cards: Card[];
+
+    toCall: number;
 }
 
 export interface TableStatusChangedEvent extends GeneralTableEvent<'tableStatusChanged'> {
