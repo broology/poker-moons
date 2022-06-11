@@ -1,0 +1,12 @@
+@use '~styles/colors' as c;
+@use '~styles/spacing' as s;
+
+.hud-frame {
+    display: flex;
+    align-content: space-between;
+    padding: s.spacing(1);
+
+    background-color: c.color('tinted');
+    border: 2px solid c.color('shaded');
+    border-radius: 8px;
+}
