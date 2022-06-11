@@ -1,8 +1,13 @@
-<div class="lobby-controls">
-    <div>
-        <span *ngIf="startDate">All Players Ready. Game starting at {{ startDate | date: 'h:mm:ss a' }}</span>
+<poker-moons-hud-frame>
+    <div class="text-section" [ngSwitch]="status">
+        <span *ngSwitchCase="'notReady'">Ready up</span>
+        <span *ngSwitchCase="'ready'">Waiting for others</span>
+        <span *ngSwitchCase="'gameStarting'">Starting in x seconds</span>
     </div>
-    <button [class]="ready ? 'unready' : 'ready'" (click)="toggleReadyStatus()">
-        {{ ready ? 'Cancel' : 'Ready' }}
-    </button>
-</div>
+    <div class="action-section">
+        <!-- TODO Change with primary button -->
+        <button [class]="ready ? 'unready' : 'ready'" (click)="toggleReadyStatus()">
+            {{ ready ? 'Leave' : 'Ready' }}
+        </button>
+    </div>
+</poker-moons-hud-frame>
