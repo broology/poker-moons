@@ -2,6 +2,7 @@
 @use '~styles/colors' as c;
 @use '~styles/shadows' as s;
 @use '~styles/typography' as t;
+@use '~styles/spacing' as sp;
 
 .dialog {
     @include s.box-shadow('allAround');
@@ -19,8 +20,8 @@
     border-radius: 8px;
     background-color: c.color('tinted');
     color: c.color-text-contrast('tinted');
-    padding: 1.6rem;
     margin: 0 auto;
+    padding: sp.spacing(2);
 }
 
 .dialog h1 {
@@ -35,12 +36,13 @@
 
     font-style: italic;
     text-align: center;
-    margin: 0.1em 0;
+    margin: sp.spacing(0.5);
 }
 
 .dialog-content {
-    margin: 0.5em auto;
+    text-align: center;
     min-height: 100px;
+    margin: sp.spacing(1);
 }
 
 .dialog-actions {
