@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { DialogCopy } from '@poker-moons/frontend/shared/ui';
 import { JoinTableRequest, TableStatus } from '@poker-moons/shared/type';
 
 @Component({
@@ -8,7 +9,12 @@ import { JoinTableRequest, TableStatus } from '@poker-moons/shared/type';
     styleUrls: ['./spectator-controls.component.scss'],
 })
 export class SpectatorControlsComponent implements OnInit {
-    USERNAME_LENGTH = { min: 2, max: 15 };
+    readonly dialogCopy: DialogCopy = {
+        title: 'Enter a username to join the game',
+        primaryButton: 'JOIN',
+    };
+
+    readonly userNameLength = { min: 2, max: 15 };
 
     @Input() tableStatus!: TableStatus;
 
@@ -29,8 +35,8 @@ export class SpectatorControlsComponent implements OnInit {
             username: new FormControl(
                 '',
                 Validators.compose([
-                    Validators.minLength(this.USERNAME_LENGTH.min),
-                    Validators.maxLength(this.USERNAME_LENGTH.max),
+                    Validators.minLength(this.userNameLength.min),
+                    Validators.maxLength(this.userNameLength.max),
                 ]),
             ),
         });
