@@ -25,4 +25,8 @@ export class SecondaryButtonComponent implements OnInit {
     getColorClass() {
         return this.color;
     }
+
+    click(): void {
+        return this.handleClick.emit();
+    }
 }

@@ -1,4 +1,4 @@
-<button (click)="(handleClick)" type="button" ngStyles [ngClass]="['button', getColorClass()]">
+<button (click)="click()" type="button" ngStyles [ngClass]="['button', getColorClass()]">
     <div *ngIf="startIcon || endIcon" fxLayout="row" class="container">
         <div *ngIf="startIcon" class="item">
             <fa-icon [icon]="startIcon"></fa-icon>

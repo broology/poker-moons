@@ -25,4 +25,8 @@ export class PrimaryButtonComponent implements OnInit {
     getColorClass() {
         return this.color;
     }
+
+    click(): void {
+        return this.handleClick.emit();
+    }
 }
