@@ -1,5 +1,8 @@
-$bg: #21232c;
-$primary: #d84712;
+@use '~styles/borders.scss' as b;
+@use '~styles/colors.scss' as c;
+@use '~styles/typography' as t;
+@use '~styles/spacing' as s;
+@use '~styles/transitions' as tr;
 
 @keyframes slideInFromBottom {
     0% {
@@ -20,24 +23,28 @@ $primary: #d84712;
 .landing-button {
     position: relative;
     display: inline-block;
-    font-family: 'Blinker', sans-serif;
-    font-weight: 600;
-    font-size: 4rem;
-    cursor: pointer;
+
+    @include t.h1;
     text-decoration: none;
     text-align: center;
-    color: $primary;
-    border: $primary 0.125em solid;
-    border-radius: 0.25em;
-    padding: 0.25em 1em;
-    text-shadow: 0 0 0.125em rgba(255, 255, 255, 20%), 0 0 0.45em $primary;
-    box-shadow: 0 0 0.5em 0 $primary, inset 0 0 0.5em 0 $primary;
+
+    cursor: pointer;
+    padding: s.spacing(1) s.spacing(2);
+
+    color: c.color('primary');
+    border: c.color('primary') 0.125em solid;
+    border-radius: b.border-radius('default');
+
+    text-shadow: 0 0 0.125em rgba(255, 255, 255, 20%), 0 0 0.45em c.color('primary');
+    box-shadow: 0 0 0.5em 0 c.color('primary'), inset 0 0 0.5em 0 c.color('primary');
     animation: 0.8s ease-out 0s 1 slideInFromBottom, fadeIn 2s;
+    @include tr.transition(color 100ms linear, background-color 100ms linear, border-color 100ms linear);
+
     &::before {
         pointer-events: none;
         content: '';
         position: absolute;
-        background: $primary;
+        background: c.color('primary');
         top: 120%;
         left: 0;
         width: 100%;
@@ -53,14 +60,27 @@ $primary: #d84712;
         bottom: 0;
         left: 0;
         right: 0;
-        box-shadow: 0 0 2em 0.5em $primary;
+        box-shadow: 0 0 2em 0.5em c.color('primary');
         opacity: 0;
-        background-color: $primary;
+        background-color: c.color('primary');
         z-index: -1;
-        transition: opacity 100ms linear;
+        @include tr.transition(opacity 100ms linear);
     }
     &:hover {
-        color: $bg;
+        color: c.color-text-contrast('primary');
+        background-color: c.color('primary');
+        text-shadow: none;
+        &::before {
+            opacity: 1;
+        }
+        &::after {
+            opacity: 1;
+        }
+    }
+    &:active {
+        color: c.color-text-contrast('primary');
+        background-color: c.color-shaded('primary');
+        border-color: c.color-shaded('primary');
         text-shadow: none;
         &::before {
             opacity: 1;
@@ -70,7 +90,8 @@ $primary: #d84712;
         }
     }
     &:focus {
-        color: $bg;
+        color: c.color-text-contrast('primary');
+        background-color: c.color-tinted('primary');
         text-shadow: none;
         &::before {
             opacity: 1;
