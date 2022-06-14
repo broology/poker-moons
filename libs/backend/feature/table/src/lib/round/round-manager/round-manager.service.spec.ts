@@ -1,5 +1,6 @@
 import { InternalServerErrorException } from '@nestjs/common';
 import { mockCard, mockPlayer, mockRound, mockServerTableState } from '@poker-moons/shared/testing';
+import { Player, PlayerId } from '@poker-moons/shared/type';
 import { mock, MockProxy, mockReset } from 'jest-mock-extended';
 import { TurnTimerService } from '../../shared/turn-timer/turn-timer.service';
 import { TableGatewayService } from '../../shared/websocket/table-gateway.service';
@@ -32,10 +33,6 @@ describe('RoundManagerService', () => {
         }
     });
 
-    it('should be defined', () => {
-        expect(service).toBeDefined();
-    });
-
     const table = mockServerTableState({
         activeRound: mockRound({ dealerSeat: 0, activeSeat: 1, roundStatus: 'flop' }),
     });
@@ -45,6 +42,8 @@ describe('RoundManagerService', () => {
 
     describe('startNextTurn', () => {
         it('should update the round and trigger turn timer for next player', async () => {
+            tableStateManagerService.getTableById.mockResolvedValue(table);
+
             await service.startNextTurn(table, 2, playerStatuses);
 
             expect(tableStateManagerService.updateRound).toHaveBeenCalledWith(table.id, {
@@ -59,15 +58,24 @@ describe('RoundManagerService', () => {
             });
         });
 
-        it('should advance round to next stage if everyone has taken their turn', async () => {
-            deckManagerService.drawCard.mockResolvedValue({ card, deck: [mockCard()] });
-
+        it('should advance round to next stage if everyone has taken their turn and bidding cycle has ended', async () => {
             table.activeRound.cards.push(card);
 
-            await service.startNextTurn(table, 2, ['checked', 'checked', 'checked']);
+            // Player map with ended bidding cycle
+            const playerMap: Record<PlayerId, Player> = {
+                player_1: mockPlayer({ biddingCycleCalled: 10, status: 'raised' }),
+                player_2: mockPlayer({ biddingCycleCalled: 10, status: 'called' }),
+            };
+
+            tableStateManagerService.getTableById.mockResolvedValue(table);
+            deckManagerService.drawCard.mockResolvedValue({ card, deck: [mockCard()] });
+
+            await service.startNextTurn({ ...table, playerMap }, 2, ['checked', 'checked', 'checked']);
 
             expect(tableStateManagerService.updateRound).toHaveBeenCalledWith(table.id, {
                 cards: table.activeRound.cards,
+                roundStatus: 'turn',
+                toCall: 0,
             });
 
             expect(tableGatewayService.emitTableEvent).toHaveBeenCalledWith(table.id, {
@@ -151,6 +159,8 @@ describe('RoundManagerService', () => {
                     player_1: mockPlayer({ id: 'player_1', stack: 0 }),
                 },
             };
+
+            tableStateManagerService.getTableById.mockResolvedValue(table);
 
             await service.endRound(table);
 

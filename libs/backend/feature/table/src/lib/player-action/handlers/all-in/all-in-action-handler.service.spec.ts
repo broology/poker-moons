@@ -76,7 +76,7 @@ describe('AllInActionHandlerService', () => {
             expect(potManagerService.incrementPot).toHaveBeenCalledWith(table.id, table.activeRound.pot, player.stack);
 
             expect(tableStateManagerService.updateRound).toHaveBeenCalledWith(table.id, {
-                toCall: table.activeRound.toCall + player.stack,
+                toCall: player.biddingCycleCalled + player.stack,
             });
 
             expect(tableGatewayService.emitTableEvent).toHaveBeenCalledWith(table.id, {
