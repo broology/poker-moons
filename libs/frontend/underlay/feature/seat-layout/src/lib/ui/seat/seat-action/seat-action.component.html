@@ -6,7 +6,10 @@
             </div>
 
             <div class="called" [ngStyle]="transform.called">
-                <poker-moons-chips [amount]="mutablePlayer.called" [orientation]="orientation"></poker-moons-chips>
+                <poker-moons-chips
+                    [amount]="mutablePlayer.biddingCycleCalled"
+                    [orientation]="orientation"
+                ></poker-moons-chips>
             </div>
 
             <div class="cards" [ngStyle]="transform.cards">

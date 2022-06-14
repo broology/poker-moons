@@ -1,13 +1,13 @@
-import { PlayerAction } from '@poker-moons/shared/type';
-import { RaiseActionHandlerService } from './raise-action-handler.service';
-import { mockCard, mockPlayer, mockServerTableState } from '@poker-moons/shared/testing';
-import { createTestingModuleFactory, SpyObject } from '@trellisorg/nest-spectator';
-import { RoundManagerService } from '../../../round/round-manager/round-manager.service';
-import { TableStateManagerService } from '../../../table-state-manager/table-state-manager.service';
-import { TableGatewayService } from '../../../shared/websocket/table-gateway.service';
-import { right, left } from 'fp-ts/lib/Either';
 import { BadRequestException, InternalServerErrorException } from '@nestjs/common';
+import { mockCard, mockPlayer, mockServerTableState } from '@poker-moons/shared/testing';
+import { PlayerAction } from '@poker-moons/shared/type';
+import { createTestingModuleFactory, SpyObject } from '@trellisorg/nest-spectator';
+import { left, right } from 'fp-ts/lib/Either';
 import { PotManagerService } from '../../../round/pot-manager/pot-manager.service';
+import { RoundManagerService } from '../../../round/round-manager/round-manager.service';
+import { TableGatewayService } from '../../../shared/websocket/table-gateway.service';
+import { TableStateManagerService } from '../../../table-state-manager/table-state-manager.service';
+import { RaiseActionHandlerService } from './raise-action-handler.service';
 
 describe('RaiseActionHandlerService', () => {
     let service: RaiseActionHandlerService;
@@ -42,7 +42,7 @@ describe('RaiseActionHandlerService', () => {
         seatId: 1,
         username: 'Levi',
         cards: [mockCard({ suit: 'clubs', rank: '2' }), mockCard({ suit: 'hearts', rank: '3' })],
-        called: 200,
+        biddingCycleCalled: 200,
     });
 
     const action: PlayerAction = { type: 'raise', amount: 50 };
@@ -81,13 +81,15 @@ describe('RaiseActionHandlerService', () => {
         it('should update player, increment pot, update toCall amount, emit PlayerTurnEvent, and start next turn', async () => {
             await service.raise(right({ table, player, action }));
 
+            const delta = table.activeRound.toCall - player.biddingCycleCalled + action.amount;
+
             expect(tableStateManagerService.updateTablePlayer).toHaveBeenCalledWith(table.id, player.id, {
                 status: 'raised',
-                called: player.called + action.amount,
-                stack: player.stack - action.amount,
+                biddingCycleCalled: table.activeRound.toCall + action.amount,
+                stack: player.stack - delta,
             });
 
-            expect(potManagerService.incrementPot).toHaveBeenCalledWith(table.id, table.activeRound.pot, action.amount);
+            expect(potManagerService.incrementPot).toHaveBeenCalledWith(table.id, table.activeRound.pot, delta);
 
             expect(tableStateManagerService.updateRound).toHaveBeenCalledWith(table.id, {
                 toCall: table.activeRound.toCall + action.amount,
@@ -98,7 +100,7 @@ describe('RaiseActionHandlerService', () => {
                 playerId: player.id,
                 newStatus: 'raised',
                 newActiveSeatId: 2,
-                bidAmount: action.amount,
+                bidAmount: delta,
             });
 
             expect(roundManagerService.startNextTurn).toHaveBeenCalled();

@@ -24,7 +24,8 @@ const initialPlayerState: Omit<Player, 'id'> = {
     ready: false,
     timeBank: 300,
     status: 'waiting',
-    called: 0,
+    roundCalled: 0,
+    biddingCycleCalled: 0,
     seatId: null,
     cards: [],
 };

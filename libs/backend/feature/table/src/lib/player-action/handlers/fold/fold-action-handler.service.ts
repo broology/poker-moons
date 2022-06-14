@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { CustomLoggerService } from '@poker-moons/backend/utility';
 import {
     FoldPlayerAction,
     PerformPlayerActionResponse,
@@ -7,12 +8,11 @@ import {
     ServerTableState,
 } from '@poker-moons/shared/type';
 import { Either, isRight, right } from 'fp-ts/lib/Either';
-import { validatePlayerTurn } from '../util/validate-player-turn';
-import { CustomLoggerService } from '@poker-moons/backend/utility';
-import { TableStateManagerService } from '../../../table-state-manager/table-state-manager.service';
+import { RoundManagerService } from '../../../round/round-manager/round-manager.service';
 import { incrementSeat, isRoundComplete } from '../../../shared/util/round.util';
 import { TableGatewayService } from '../../../shared/websocket/table-gateway.service';
-import { RoundManagerService } from '../../../round/round-manager/round-manager.service';
+import { TableStateManagerService } from '../../../table-state-manager/table-state-manager.service';
+import { validatePlayerTurn } from '../util/validate-player-turn';
 
 @Injectable()
 export class FoldActionHandlerService {
@@ -39,7 +39,7 @@ export class FoldActionHandlerService {
         if (isRight(action)) {
             const { table, player } = action.right;
 
-            if (!table.activeRound.activeSeat) {
+            if (table.activeRound.activeSeat === null) {
                 throw new Error('Something went wrong, no active seat is set!');
             }
 
@@ -47,7 +47,7 @@ export class FoldActionHandlerService {
 
             // Emit the PlayerTurnEvent to the frontend
             const newActiveSeat = incrementSeat(table.activeRound.activeSeat, table.seatMap);
-            await this.tableGatewayService.emitTableEvent(table.id, {
+            this.tableGatewayService.emitTableEvent(table.id, {
                 type: 'turn',
                 playerId: player.id,
                 newStatus: 'folded',

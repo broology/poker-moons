@@ -9,7 +9,8 @@ const player = mockPlayer({
     img: 'test',
     stack: 4,
     status: `waiting`,
-    called: 0,
+    roundCalled: 0,
+    biddingCycleCalled: 0,
     seatId: null,
     cards: [],
 });
@@ -139,7 +140,6 @@ describe('MockStateService', () => {
                 img: 'test',
                 stack: 4,
                 status: `waiting`,
-                called: 0,
                 seatId: null,
                 cards: [],
             });

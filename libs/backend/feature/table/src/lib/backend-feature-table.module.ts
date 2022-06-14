@@ -14,6 +14,9 @@ import { TableModule } from './table/table.module';
         PlayerModule,
         PlayerActionModule,
 
+        // Consumer Modules
+        // TurnTimerConsumerModule,
+
         // Routes
         RouterModule.register([
             {

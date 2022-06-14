@@ -1,12 +1,12 @@
-import { TableId } from '@poker-moons/shared/type';
-import { WinnerDeterminerService } from './winner-determiner.service';
+import { BadRequestException } from '@nestjs/common';
 import { mockCard, mockPlayer, mockRound } from '@poker-moons/shared/testing';
+import { TableId } from '@poker-moons/shared/type';
 import { createTestingModuleFactory, SpyObject } from '@trellisorg/nest-spectator';
 import { TableGatewayService } from '../../shared/websocket/table-gateway.service';
-import { PotManagerService } from '../pot-manager/pot-manager.service';
-import { BadRequestException } from '@nestjs/common';
-import { playerMissingCards, roundMissingCards } from './winner-determiner.copy';
 import { TableStateManagerService } from '../../table-state-manager/table-state-manager.service';
+import { PotManagerService } from '../pot-manager/pot-manager.service';
+import { playerMissingCards, roundMissingCards } from './winner-determiner.copy';
+import { WinnerDeterminerService } from './winner-determiner.service';
 
 describe('WinnerDeterminerService', () => {
     let service: WinnerDeterminerService;
@@ -49,35 +49,35 @@ describe('WinnerDeterminerService', () => {
         id: 'player_1',
         username: 'Levi',
         cards: [mockCard({ suit: 'clubs', rank: '2' }), mockCard({ suit: 'hearts', rank: '3' })],
-        called: 200,
+        roundCalled: 200,
     });
 
     const player2 = mockPlayer({
         id: 'player_2',
         username: 'Bob',
         cards: [mockCard({ suit: 'spades', rank: '2' }), mockCard({ suit: 'hearts', rank: '8' })],
-        called: 200,
+        roundCalled: 200,
     });
 
     const player3 = mockPlayer({
         id: 'player_3',
         username: 'Joe',
         cards: [mockCard({ suit: 'spades', rank: '10' }), mockCard({ suit: 'hearts', rank: '5' })],
-        called: 200,
+        roundCalled: 200,
     });
 
     const player4 = mockPlayer({
         id: 'player_4',
         username: 'Sam',
         cards: [mockCard({ suit: 'spades', rank: '9' }), mockCard({ suit: 'hearts', rank: '5' })],
-        called: 500,
+        roundCalled: 500,
     });
 
     const player5 = mockPlayer({
         id: 'player_5',
         username: 'Smith',
         cards: [mockCard({ suit: 'spades', rank: '14' }), mockCard({ suit: 'hearts', rank: '14' })],
-        called: 500,
+        roundCalled: 500,
     });
 
     describe('determineWinner', () => {

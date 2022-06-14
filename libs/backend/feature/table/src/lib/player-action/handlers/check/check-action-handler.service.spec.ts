@@ -1,12 +1,12 @@
-import { PlayerAction } from '@poker-moons/shared/type';
-import { CheckActionHandlerService } from './check-action-handler.service';
-import { mockCard, mockPlayer, mockServerTableState } from '@poker-moons/shared/testing';
-import { createTestingModuleFactory, SpyObject } from '@trellisorg/nest-spectator';
-import { RoundManagerService } from '../../../round/round-manager/round-manager.service';
-import { TableStateManagerService } from '../../../table-state-manager/table-state-manager.service';
-import { TableGatewayService } from '../../../shared/websocket/table-gateway.service';
-import { right, left } from 'fp-ts/lib/Either';
 import { BadRequestException, InternalServerErrorException } from '@nestjs/common';
+import { mockCard, mockPlayer, mockServerTableState } from '@poker-moons/shared/testing';
+import { PlayerAction } from '@poker-moons/shared/type';
+import { createTestingModuleFactory, SpyObject } from '@trellisorg/nest-spectator';
+import { left, right } from 'fp-ts/lib/Either';
+import { RoundManagerService } from '../../../round/round-manager/round-manager.service';
+import { TableGatewayService } from '../../../shared/websocket/table-gateway.service';
+import { TableStateManagerService } from '../../../table-state-manager/table-state-manager.service';
+import { CheckActionHandlerService } from './check-action-handler.service';
 
 describe('CheckActionHandlerService', () => {
     let service: CheckActionHandlerService;
@@ -39,7 +39,7 @@ describe('CheckActionHandlerService', () => {
         seatId: 1,
         username: 'Levi',
         cards: [mockCard({ suit: 'clubs', rank: '2' }), mockCard({ suit: 'hearts', rank: '3' })],
-        called: 200,
+        biddingCycleCalled: 200,
     });
 
     const action: PlayerAction = { type: 'check' };

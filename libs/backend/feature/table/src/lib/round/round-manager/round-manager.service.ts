@@ -1,7 +1,12 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { Player, PlayerId, PlayerStatus, SeatId, ServerTableState, TableId } from '@poker-moons/shared/type';
 import { TurnTimerService } from '../../shared/turn-timer/turn-timer.service';
-import { hasEveryoneTakenTurn, incrementRoundStatus, incrementSeat } from '../../shared/util/round.util';
+import {
+    hasBiddingCycleEnded,
+    hasEveryoneTakenTurn,
+    incrementRoundStatus,
+    incrementSeat,
+} from '../../shared/util/round.util';
 import { TableGatewayService } from '../../shared/websocket/table-gateway.service';
 import { TableStateManagerService } from '../../table-state-manager/table-state-manager.service';
 import { DeckManagerService } from '../deck-manager/deck-manager.service';
@@ -36,17 +41,24 @@ export class RoundManagerService {
         nextActiveSeat: SeatId,
         playerStatuses: PlayerStatus[],
     ): Promise<void> {
+        // Re-fetch table, because race condition with player service
+        table = await this.tableStateManagerService.getTableById(table.id);
+
         /*
          * If everyone has taken their turn, set every active player back to 'waiting',
          * draw a new card for the table, and update the round status
          */
-        if (hasEveryoneTakenTurn(playerStatuses)) {
+        if (
+            hasEveryoneTakenTurn(playerStatuses) &&
+            hasBiddingCycleEnded(Object.values(table.playerMap), table.activeRound)
+        ) {
             const updatedPlayerMap: Record<PlayerId, Player> = {};
 
             for (const player of Object.values(table.playerMap)) {
                 updatedPlayerMap[player.id] = {
                     ...player,
-                    status: player.status === 'folded' ? 'folded' : 'waiting',
+                    biddingCycleCalled: 0,
+                    status: player.status === 'folded' || player.status === 'all-in' ? player.status : 'waiting',
                 };
             }
 
@@ -64,13 +76,18 @@ export class RoundManagerService {
                 table.activeRound.cards.push(card);
             }
 
-            await this.tableStateManagerService.updateRound(table.id, { cards: table.activeRound.cards });
+            await this.tableStateManagerService.updateRound(table.id, {
+                cards: table.activeRound.cards,
+                roundStatus: incrementRoundStatus(table.activeRound.roundStatus),
+                toCall: 0,
+            });
 
             this.tableGatewayService.emitTableEvent(table.id, {
                 type: 'roundStatusChanged',
                 status: incrementRoundStatus(table.activeRound.roundStatus),
                 activeSeat: nextActiveSeat,
                 cards: table.activeRound.cards,
+                toCall: 0,
             });
         }
 
@@ -78,6 +95,7 @@ export class RoundManagerService {
         await Promise.all([
             this.tableStateManagerService.updateRound(table.id, {
                 turnCount: table.activeRound.turnCount + 1,
+
                 activeSeat: nextActiveSeat,
             }),
             this.turnTimeService.onTurn({
@@ -143,6 +161,7 @@ export class RoundManagerService {
             status: 'deal',
             activeSeat,
             cards: [],
+            toCall: 0,
         });
 
         // Start the turn timer for the first player
@@ -167,6 +186,21 @@ export class RoundManagerService {
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             finalPlayerId: table.seatMap[table.activeRound.activeSeat!]!,
         });
+
+        // Reset players to waiting at the end of the round
+        table = await this.tableStateManagerService.getTableById(table.id);
+
+        const updatedPlayerMap = table.playerMap;
+
+        for (const player of Object.values(table.playerMap)) {
+            updatedPlayerMap[player.id] = {
+                ...player,
+                status: 'waiting',
+                roundCalled: player.biddingCycleCalled + player.roundCalled,
+            };
+        }
+
+        await this.tableStateManagerService.updateTable(table.id, { playerMap: updatedPlayerMap });
 
         // Determine and emit winner of round and update player's stacks
         await this.winnerDeterminerService.determineWinner(table.id, table.playerMap, table.activeRound);
@@ -200,6 +234,12 @@ export class RoundManagerService {
                 cards: [],
                 dealerSeat: nextDealerSeat,
                 activeSeat: nextActiveSeat,
+            });
+
+            await this.tableStateManagerService.updateAllPlayers(table.id, {
+                status: 'waiting',
+                roundCalled: 0,
+                biddingCycleCalled: 0,
             });
 
             await this.startRound(table.id);

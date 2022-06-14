@@ -80,6 +80,7 @@ describe('TableGatewayService', () => {
                 status: 'flop',
                 activeSeat: 1,
                 cards: [mockCard(), mockCard({ suit: 'hearts', rank: '12' }), mockCard({ suit: 'spades', rank: '5' })],
+                toCall: 0,
             };
 
             serverSpy.mockReturnValue({

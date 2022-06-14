@@ -17,7 +17,7 @@ describe('Rank Utility Functions', () => {
                         mockCard({ suit: 'diamonds', rank: '2' }),
                         mockCard({ suit: 'spades', rank: '4' }),
                     ],
-                    called: 100,
+                    roundCalled: 100,
                 },
                 {
                     id: 'player_2',
@@ -30,7 +30,7 @@ describe('Rank Utility Functions', () => {
                         mockCard({ suit: 'clubs', rank: '2' }),
                         mockCard({ suit: 'clubs', rank: '11' }),
                     ],
-                    called: 100,
+                    roundCalled: 100,
                 },
                 {
                     id: 'player_3',
@@ -43,7 +43,7 @@ describe('Rank Utility Functions', () => {
                         mockCard({ suit: 'diamonds', rank: '14' }),
                         mockCard({ suit: 'clubs', rank: '11' }),
                     ],
-                    called: 100,
+                    roundCalled: 100,
                 },
             ];
 
@@ -62,7 +62,7 @@ describe('Rank Utility Functions', () => {
                             mockCard({ suit: 'clubs', rank: '2' }),
                             mockCard({ suit: 'clubs', rank: '11' }),
                         ],
-                        called: 100,
+                        roundCalled: 100,
                     },
                     category: 'flush',
                     score: 600 + 4 + 5 + 8 + 2 + 11,
@@ -79,7 +79,7 @@ describe('Rank Utility Functions', () => {
                             mockCard({ suit: 'diamonds', rank: '2' }),
                             mockCard({ suit: 'spades', rank: '4' }),
                         ],
-                        called: 100,
+                        roundCalled: 100,
                     },
                     category: 'three of a kind',
                     score: 400 + 4 + 4 + 4,
@@ -96,7 +96,7 @@ describe('Rank Utility Functions', () => {
                             mockCard({ suit: 'diamonds', rank: '14' }),
                             mockCard({ suit: 'clubs', rank: '11' }),
                         ],
-                        called: 100,
+                        roundCalled: 100,
                     },
                     category: 'high card',
                     score: 100 + 14,
@@ -118,7 +118,7 @@ describe('Rank Utility Functions', () => {
                     mockCard({ suit: 'diamonds', rank: '2' }),
                     mockCard({ suit: 'spades', rank: '12' }),
                 ],
-                called: 100,
+                roundCalled: 100,
             };
 
             const result = rankHand(player);
@@ -142,7 +142,7 @@ describe('Rank Utility Functions', () => {
                     mockCard({ suit: 'diamonds', rank: '2' }),
                     mockCard({ suit: 'spades', rank: '12' }),
                 ],
-                called: 100,
+                roundCalled: 100,
             };
 
             const result = rankHand(player);
@@ -166,7 +166,7 @@ describe('Rank Utility Functions', () => {
                     mockCard({ suit: 'diamonds', rank: '8' }),
                     mockCard({ suit: 'spades', rank: '12' }),
                 ],
-                called: 100,
+                roundCalled: 100,
             };
 
             const result = rankHand(player);
@@ -190,7 +190,7 @@ describe('Rank Utility Functions', () => {
                     mockCard({ suit: 'diamonds', rank: '2' }),
                     mockCard({ suit: 'spades', rank: '4' }),
                 ],
-                called: 100,
+                roundCalled: 100,
             };
 
             const result = rankHand(player);
@@ -214,7 +214,7 @@ describe('Rank Utility Functions', () => {
                     mockCard({ suit: 'diamonds', rank: '7' }),
                     mockCard({ suit: 'spades', rank: '8' }),
                 ],
-                called: 100,
+                roundCalled: 100,
             };
 
             const result = rankHand(player);
@@ -238,7 +238,7 @@ describe('Rank Utility Functions', () => {
                     mockCard({ suit: 'clubs', rank: '7' }),
                     mockCard({ suit: 'clubs', rank: '13' }),
                 ],
-                called: 100,
+                roundCalled: 100,
             };
 
             const result = rankHand(player);
@@ -262,7 +262,7 @@ describe('Rank Utility Functions', () => {
                     mockCard({ suit: 'clubs', rank: '7' }),
                     mockCard({ suit: 'diamonds', rank: '7' }),
                 ],
-                called: 100,
+                roundCalled: 100,
             };
 
             const result = rankHand(player);
@@ -286,7 +286,7 @@ describe('Rank Utility Functions', () => {
                     mockCard({ suit: 'hearts', rank: '4' }),
                     mockCard({ suit: 'diamonds', rank: '7' }),
                 ],
-                called: 100,
+                roundCalled: 100,
             };
 
             const result = rankHand(player);
@@ -310,7 +310,7 @@ describe('Rank Utility Functions', () => {
                     mockCard({ suit: 'clubs', rank: '7' }),
                     mockCard({ suit: 'clubs', rank: '8' }),
                 ],
-                called: 100,
+                roundCalled: 100,
             };
 
             const result = rankHand(player);
@@ -334,7 +334,7 @@ describe('Rank Utility Functions', () => {
                     mockCard({ suit: 'clubs', rank: '13' }),
                     mockCard({ suit: 'clubs', rank: '14' }),
                 ],
-                called: 100,
+                roundCalled: 100,
             };
 
             const result = rankHand(player);

@@ -48,8 +48,8 @@ describe('PotManagerService', () => {
     });
 
     describe('buildPot', () => {
-        it('should build the pot amount based on the amount each player has called', () => {
-            const result = service.buildPot([{ called: 100 }, { called: 150 }, { called: 25 }]);
+        it('should build the pot amount based on the amount each player has roundCalled', () => {
+            const result = service.buildPot([{ roundCalled: 100 }, { roundCalled: 150 }, { roundCalled: 25 }]);
 
             expect(result).toEqual(275);
         });

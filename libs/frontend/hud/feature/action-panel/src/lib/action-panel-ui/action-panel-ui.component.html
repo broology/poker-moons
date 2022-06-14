@@ -1,7 +1,7 @@
 <div class="action-panel" [ngSwitch]="displayView">
     <poker-moons-active-controls
         *ngSwitchCase="'active'"
-        [called]="clientMutablePlayer!.called"
+        [called]="clientMutablePlayer!.biddingCycleCalled"
         [stack]="clientMutablePlayer!.stack"
         [toCall]="round.toCall"
         (playerActionEmitter)="playerActionEmitter.emit($event)"

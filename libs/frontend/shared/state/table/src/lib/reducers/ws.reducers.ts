@@ -11,9 +11,9 @@ export const wsReducers: ReducerTypes<ClientTableState, [ActionType<any>]>[] = [
      * And place them at their seat.
      */
     on(tableWsActionMap.playerJoined, (state, { payload: { seatId, player } }) => {
-        const { stack, status, called, cards, ready, timeBank, ...immutable } = player;
+        const { stack, status, biddingCycleCalled, roundCalled, cards, ready, timeBank, ...immutable } = player;
 
-        const mutable: MutablePublicPlayer = { stack, status, called, cards, ready, timeBank };
+        const mutable: MutablePublicPlayer = { stack, status, biddingCycleCalled, roundCalled, cards, ready, timeBank };
 
         return {
             ...state,
@@ -55,7 +55,7 @@ export const wsReducers: ReducerTypes<ClientTableState, [ActionType<any>]>[] = [
                 [playerId]: {
                     ...mutablePlayer,
                     status: newStatus,
-                    called: mutablePlayer.called + bidAmount,
+                    biddingCycleCalled: mutablePlayer.biddingCycleCalled + bidAmount,
                     stack: mutablePlayer.stack - bidAmount,
                 },
             },
@@ -63,7 +63,9 @@ export const wsReducers: ReducerTypes<ClientTableState, [ActionType<any>]>[] = [
                 ...round,
                 pot: round.pot + payload.bidAmount,
                 toCall:
-                    mutablePlayer.called + bidAmount > round.toCall ? mutablePlayer.called + bidAmount : round.toCall,
+                    mutablePlayer.biddingCycleCalled + bidAmount > round.toCall
+                        ? mutablePlayer.biddingCycleCalled + bidAmount
+                        : round.toCall,
                 turnCount: round.turnCount + 1,
                 activeSeat: newActiveSeatId,
             },
@@ -81,6 +83,7 @@ export const wsReducers: ReducerTypes<ClientTableState, [ActionType<any>]>[] = [
                 roundStatus: payload.status,
                 cards: payload.cards,
                 activeSeat: payload.activeSeat,
+                toCall: payload.toCall,
             },
             // In the case of the cards being dealt, set all players cards
             mutablePlayerMap:

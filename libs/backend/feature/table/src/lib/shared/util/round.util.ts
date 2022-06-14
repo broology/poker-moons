@@ -1,4 +1,4 @@
-import type { PlayerId, PlayerStatus, RoundStatus, SeatId } from '@poker-moons/shared/type';
+import type { Player, PlayerId, PlayerStatus, Round, RoundStatus, SeatId } from '@poker-moons/shared/type';
 
 /**
  * @description Counts the occurrences of a particular player status from an array of statuses
@@ -88,4 +88,23 @@ export function hasEveryoneTakenTurn(playerStatuses: PlayerStatus[]): boolean {
     }
 
     return false;
+}
+
+/**
+ * @description Determining if the bidding cycle has ended.
+ *
+ *              Players must match the rounds `toCall` value unless they are
+ *              all in or folded.
+ */
+export function hasBiddingCycleEnded(
+    players: Pick<Player, 'biddingCycleCalled' | 'status'>[],
+    round: Pick<Round, 'toCall'>,
+): boolean {
+    for (const player of players) {
+        if (player.status !== ('all-in' || 'folded') && player.biddingCycleCalled < round.toCall) {
+            return false;
+        }
+    }
+
+    return true;
 }
