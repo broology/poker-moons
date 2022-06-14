@@ -134,6 +134,7 @@
   version "13.3.4"
   resolved "https://registry.npmjs.org/@angular-devkit/core/-/core-13.3.4.tgz"
   integrity sha512-gj6i8ksPaT2bvYwI7wKJxLX53pHfTmZc1RaNbAGfZB1/zFNnb3MPj8utTcJSk4qMsGXuDDhiB7hpTKBw8ROaGA==
+
   dependencies:
     ajv "8.9.0"
     ajv-formats "2.1.1"
@@ -147,6 +148,7 @@
   resolved "https://registry.npmjs.org/@angular-devkit/schematics/-/schematics-13.3.2.tgz"
   integrity sha512-XCLb23jmqHN0gJg9ZlICaFgfpfnCufIQp5SOsRKMKRkhjKycvDmKnfBTKDlkzb1IaUl6wQwP5k7Z69b9EX+CQw==
   dependencies:
+
     "@angular-devkit/core" "13.3.2"
     jsonc-parser "3.0.0"
     magic-string "0.25.7"
