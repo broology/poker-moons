@@ -6,7 +6,7 @@ $colors: (
     'secondary': #104614,
     'success': #1ea966,
     'warning': #e6bd19,
-    'error': #c6394a,
+    'error': #d82112,
     'text': #ffffff,
     'text-contrast': #000000,
 );
@@ -18,10 +18,10 @@ $colors: (
 
 /* Function to fetch a text contrast version of the associated color from the poker-moons theme */
 @function color-text-contrast($name: 'primary') {
-    @if ($name == 'success' or $name == 'warning' or $name == 'tinted') {
-        @return map-get($colors, 'text');
-    } @else {
+    @if ($name == 'text') {
         @return map-get($colors, 'text-contrast');
+    } @else {
+        @return map-get($colors, 'text');
     }
 }
 

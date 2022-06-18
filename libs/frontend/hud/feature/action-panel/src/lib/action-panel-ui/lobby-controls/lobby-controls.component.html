@@ -2,12 +2,13 @@
     <div class="text-section" [ngSwitch]="status">
         <span *ngSwitchCase="'notReady'">Ready up</span>
         <span *ngSwitchCase="'ready'">Waiting for others</span>
-        <span *ngSwitchCase="'gameStarting'">Starting in x seconds</span>
+        <span *ngSwitchCase="'gameStarting'">Starting in {{ startDate | countDown | async }}</span>
     </div>
     <div class="action-section">
-        <!-- TODO Change with primary button -->
-        <button [class]="ready ? 'unready' : 'ready'" (click)="toggleReadyStatus()">
-            {{ ready ? 'Leave' : 'Ready' }}
-        </button>
+        <poker-moons-primary-button
+            [color]="ready ? 'error' : 'primary'"
+            [label]="ready ? 'Leave' : 'Ready'"
+            (handleClick)="toggleReadyStatus()"
+        ></poker-moons-primary-button>
     </div>
 </poker-moons-hud-frame>
