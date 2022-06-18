@@ -5,7 +5,7 @@ import { ChipStackComponent } from './chip-stack.component';
 import { chipStackImports } from './chip-stack.module';
 
 export default {
-    title: 'ChipStackComponent',
+    title: 'Chips/Individual Stack',
     component: ChipStackComponent,
     decorators: [
         moduleMetadata({

@@ -42,7 +42,7 @@ class ChipsOrientationTransformTestComponent {
 }
 
 export default {
-    title: 'ChipsOrientationTransformTestComponent',
+    title: 'Chips/Transform',
     component: ChipsOrientationTransformTestComponent,
     decorators: [
         moduleMetadata({

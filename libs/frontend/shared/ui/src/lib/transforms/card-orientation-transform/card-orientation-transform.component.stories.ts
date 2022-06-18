@@ -29,7 +29,7 @@ class CardOrientationTransformTestComponent {
 }
 
 export default {
-    title: 'CardOrientationTransformTestComponent',
+    title: 'Card/Orientation Transform',
     component: CardOrientationTransformTestComponent,
     decorators: [
         moduleMetadata({

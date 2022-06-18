@@ -4,7 +4,7 @@ import { DialogComponent } from './dialog.component';
 import { dialogImports } from './dialog.module';
 
 export default {
-    title: 'DialogComponent',
+    title: 'Dialog/Component',
     component: DialogComponent,
     decorators: [
         moduleMetadata({
