@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 @Component({
@@ -6,8 +6,18 @@ import { FormControl } from '@angular/forms';
     templateUrl: './text-input.component.html',
     styleUrls: ['./text-input.component.scss'],
 })
-export class TextInputComponent {
+export class TextInputComponent implements AfterViewInit {
+    @Input() autofocus = false;
+
     @Input() placeholder!: string;
 
     @Input() formControl!: FormControl;
+
+    @ViewChild('textInput') element!: ElementRef<HTMLInputElement>;
+
+    ngAfterViewInit(): void {
+        if (this.autofocus) {
+            this.element.nativeElement.focus();
+        }
+    }
 }

@@ -1,6 +1,10 @@
 <form *ngIf="tableStatus === 'lobby'; else started" [formGroup]="spectatorForm" (submit)="join()">
     <poker-moons-dialog [copy]="dialogCopy" (primary)="join()">
-        <poker-moons-text-input placeholder="Username" [formControl]="usernameControl"></poker-moons-text-input>
+        <poker-moons-text-input
+            placeholder="Username"
+            [autofocus]="true"
+            [formControl]="usernameControl"
+        ></poker-moons-text-input>
         <poker-moons-error-label [error]="error"></poker-moons-error-label>
     </poker-moons-dialog>
 </form>
