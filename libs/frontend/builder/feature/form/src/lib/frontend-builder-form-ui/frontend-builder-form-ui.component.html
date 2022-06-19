@@ -1,10 +1,10 @@
-<form [formGroup]="builderForm">
+<form [formGroup]="builderForm" (submit)="submit()">
     <poker-moons-dialog [copy]="dialogCopy" (primary)="submit()">
-        <!-- TODO Replace with shared form ui component -->
-        <label for="table-name">Table Name</label>
-        <input id="table-name" data-cy="create-table-name" formControlName="name" />
-        <span *ngIf="!nameControl.valid"
-            >Must be within {{ tableNameLength.min }} and {{ tableNameLength.max }} characters long.</span
-        >
+        <poker-moons-text-input
+            data-cy="create-table-name"
+            placeholder="Table Name"
+            [formControl]="nameControl"
+        ></poker-moons-text-input>
+        <poker-moons-error-label [error]="error"></poker-moons-error-label>
     </poker-moons-dialog>
 </form>

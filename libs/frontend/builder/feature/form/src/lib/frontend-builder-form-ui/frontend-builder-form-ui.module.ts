@@ -1,10 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { DialogModule } from '@poker-moons/frontend/shared/ui';
+import { DialogModule, ErrorLabelModule, TextInputModule } from '@poker-moons/frontend/shared/ui';
 import { FrontendBuilderFormUiComponent } from './frontend-builder-form-ui.component';
 
-export const frontendBuilderFormUiImports = [...([CommonModule, ReactiveFormsModule, DialogModule] as const)];
+export const frontendBuilderFormUiImports = [
+    ...([CommonModule, DialogModule, ReactiveFormsModule, TextInputModule, ErrorLabelModule] as const),
+];
 
 @NgModule({
     imports: frontendBuilderFormUiImports,

@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { FormControl } from '@angular/forms';
 
 @Component({
     selector: 'poker-moons-text-input',
@@ -8,5 +9,5 @@ import { Component, Input } from '@angular/core';
 export class TextInputComponent {
     @Input() placeholder!: string;
 
-    @Input() formControlName!: string;
+    @Input() formControl!: FormControl;
 }

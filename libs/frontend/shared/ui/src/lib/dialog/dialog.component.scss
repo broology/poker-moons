@@ -52,6 +52,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    -webkit-box-orient: vertical;
+    -moz-box-orient: vertical;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
 
     min-height: 100px;
 
