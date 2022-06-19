@@ -45,6 +45,8 @@ export class SpectatorControlsComponent implements OnInit {
     }
 
     join(): void {
+        this.spectatorForm.markAllAsTouched();
+
         if (this.spectatorForm.valid) {
             this.error = undefined;
             this.joinTableEmitter.emit({ username: this.usernameControl.value });

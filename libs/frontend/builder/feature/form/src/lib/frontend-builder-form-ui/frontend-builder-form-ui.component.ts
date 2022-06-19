@@ -42,6 +42,8 @@ export class FrontendBuilderFormUiComponent implements OnInit {
     }
 
     submit(): void {
+        this.builderForm.markAllAsTouched();
+
         if (this.builderForm.valid) {
             this.error = undefined;
             this.createTableEmitter.emit({ name: this.nameControl.value });

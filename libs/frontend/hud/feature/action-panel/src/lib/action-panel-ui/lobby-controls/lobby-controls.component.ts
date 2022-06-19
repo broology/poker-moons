@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 /**
  * @description The status of the lobby for simply switch mapping in ui.
@@ -14,6 +14,7 @@ type LobbyStatus = 'notReady' | 'ready' | 'gameStarting';
     selector: 'poker-moons-lobby-controls',
     templateUrl: './lobby-controls.component.html',
     styleUrls: ['./lobby-controls.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LobbyControlsComponent {
     /**

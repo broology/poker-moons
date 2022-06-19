@@ -2,7 +2,9 @@
     <div class="text-section" [ngSwitch]="status">
         <span *ngSwitchCase="'notReady'">Ready up</span>
         <span *ngSwitchCase="'ready'">Waiting for others</span>
-        <span *ngSwitchCase="'gameStarting'">Starting in {{ startDate | countDown | async }}</span>
+        <span *ngSwitchCase="'gameStarting'">
+            <poker-moons-lobby-count-down *ngIf="startDate" [startDate]="startDate"></poker-moons-lobby-count-down>
+        </span>
     </div>
     <div class="action-section">
         <poker-moons-primary-button

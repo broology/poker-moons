@@ -3,11 +3,11 @@ import { map, Observable, of, timer } from 'rxjs';
 
 /**
  * @description Will generate a human readable realtime count down string of text to be displayed until
- *  the given date is reached.
+ *  the given date is reached. Must also import `PushModule` and use the `push` pipe.
  *
  * @example
  * ```html
- * <span>{{ new Date(...One minute in the future) | countDown | async }}</span>
+ * <span>{{ new Date(...One minute in the future) | countDown | push }}</span>
  * ```
  * _Will render as:_
  * ```html
@@ -23,7 +23,7 @@ export class CountDownPipe implements PipeTransform {
      * @param   date
      * @returns number  milliseconds remaining
      */
-    private static getMsDiff = (date: Date): number => +new Date(date) - Date.now();
+    private static getMsDiff = (date: Date): number => +date - Date.now();
 
     /**
      * @private static
@@ -56,7 +56,7 @@ export class CountDownPipe implements PipeTransform {
      */
     transform(date: Date | null): Observable<string> {
         if (!date || CountDownPipe.getMsDiff(date) < 0) {
-            return of('...');
+            return of('');
         }
         return timer(0, 1000).pipe(
             map(() => {
@@ -75,7 +75,7 @@ export class CountDownPipe implements PipeTransform {
      */
     private msToTime(msRemaining: number): string {
         if (msRemaining < 0) {
-            return '...';
+            return '';
         }
 
         const seconds = Math.floor((msRemaining / 1000) % 60),

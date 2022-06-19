@@ -1,0 +1,4 @@
+<ng-container *ngIf="startDate | countDown | push as countDownDisplay; else starting">
+    <ng-container *ngIf="countDownDisplay"> Starting in {{ countDownDisplay }}</ng-container>
+</ng-container>
+<ng-template #starting>Game Starting...</ng-template>

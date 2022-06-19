@@ -3,6 +3,7 @@
     [clientImmutablePlayer]="clientImmutablePlayer$ | push"
     [round]="round$ | push"
     [tableStatus]="tableStatus$ | push"
+    [tableStartDate]="tableStartDate$ | push"
     (joinTableEmitter)="join($event)"
     (leaveTableEmitter)="leave()"
     (playerActionEmitter)="performAction($event)"
