@@ -28,6 +28,7 @@
             "@poker-moons/frontend/hud/feature/bank-panel": ["libs/frontend/hud/feature/bank-panel/src/index.ts"],
             "@poker-moons/frontend/hud/shell": ["libs/frontend/hud/shell/src/index.ts"],
             "@poker-moons/frontend/shared/state/table": ["libs/frontend/shared/state/table/src/index.ts"],
+            "@poker-moons/frontend/shared/timer-moon": ["libs/frontend/shared/timer-moon/src/index.ts"],
             "@poker-moons/frontend/shared/ui": ["libs/frontend/shared/ui/src/index.ts"],
             "@poker-moons/frontend/shared/util/environment": ["libs/frontend/shared/util/environment/src/index.ts"],
             "@poker-moons/frontend/shared/util/styles": ["libs/frontend/shared/util/styles/src/index.ts"],
