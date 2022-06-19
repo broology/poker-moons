@@ -1,0 +1,17 @@
+@use '~styles/colors' as c;
+@use '~styles/spacing' as s;
+@use '~styles/typography' as t;
+@use '~styles/borders' as b;
+@use '~styles/transitions' as tr;
+
+.error-message {
+    @include t.body1;
+
+    color: c.color('error');
+
+    padding: s.spacing(0.5);
+}
+
+.error-label-container {
+    margin: s.spacing(0.5);
+}

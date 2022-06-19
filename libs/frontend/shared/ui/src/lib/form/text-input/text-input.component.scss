@@ -10,6 +10,7 @@ input {
     background-color: c.color('text');
     color: c.color-text-contrast('text');
 
+    width: 100%;
     padding: s.spacing(1);
 
     border: 1px outset c.color('shaded');
@@ -23,5 +24,6 @@ input {
 }
 
 .text-input-container {
+    max-width: 22em;
     margin: s.spacing(0.5);
 }
