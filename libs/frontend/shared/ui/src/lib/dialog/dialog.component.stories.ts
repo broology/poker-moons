@@ -12,6 +12,14 @@ export default {
             providers: [MockNgEnvironment],
         }),
     ],
+    argTypes: {
+        primary: {
+            action: 'Primary Action',
+        },
+        secondary: {
+            action: 'Secondary Action',
+        },
+    },
 } as Meta<DialogComponent>;
 
 const Template: Story<DialogComponent> = (args: DialogComponent) => ({

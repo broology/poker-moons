@@ -6,16 +6,22 @@
     </div>
     <div class="dialog-actions">
         <div>
-            <!-- TODO Replace with secondary button after #148 -->
-            <button *ngIf="copy.secondaryButton" data-cy="dialog-secondary-button" (click)="secondary.emit()">
-                {{ copy.secondaryButton }}
-            </button>
+            <poker-moons-secondary-button
+                *ngIf="copy.secondaryButton"
+                [label]="copy.secondaryButton"
+                color="error"
+                data-cy="dialog-secondary-button"
+                (handleClick)="secondary.emit()"
+            ></poker-moons-secondary-button>
         </div>
         <div>
-            <!-- TODO Replace with secondary button after #148 -->
-            <button *ngIf="copy.primaryButton" data-cy="dialog-primary-button" (click)="primary.emit()">
-                {{ copy.primaryButton }}
-            </button>
+            <poker-moons-primary-button
+                *ngIf="copy.primaryButton"
+                [label]="copy.primaryButton"
+                color="primary"
+                data-cy="dialog-primary-button"
+                (handleClick)="primary.emit()"
+            ></poker-moons-primary-button>
         </div>
     </div>
 </div>
