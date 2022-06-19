@@ -1,27 +1,29 @@
-<div class="dialog">
-    <h1>{{ copy.title }}</h1>
-    <h2 *ngIf="copy.subtitle">{{ copy.subtitle }}</h2>
-    <div class="dialog-content">
-        <ng-content></ng-content>
-    </div>
-    <div class="dialog-actions">
-        <div>
-            <poker-moons-secondary-button
-                *ngIf="copy.secondaryButton"
-                [label]="copy.secondaryButton"
-                color="error"
-                data-cy="dialog-secondary-button"
-                (handleClick)="secondary.emit()"
-            ></poker-moons-secondary-button>
+<div class="center-point">
+    <div class="dialog">
+        <h1>{{ copy.title }}</h1>
+        <h2 *ngIf="copy.subtitle">{{ copy.subtitle }}</h2>
+        <div class="dialog-content">
+            <ng-content></ng-content>
         </div>
-        <div>
-            <poker-moons-primary-button
-                *ngIf="copy.primaryButton"
-                [label]="copy.primaryButton"
-                color="primary"
-                data-cy="dialog-primary-button"
-                (handleClick)="primary.emit()"
-            ></poker-moons-primary-button>
+        <div class="dialog-actions">
+            <div>
+                <poker-moons-secondary-button
+                    *ngIf="copy.secondaryButton"
+                    [label]="copy.secondaryButton"
+                    color="error"
+                    data-cy="dialog-secondary-button"
+                    (handleClick)="secondary.emit()"
+                ></poker-moons-secondary-button>
+            </div>
+            <div>
+                <poker-moons-primary-button
+                    *ngIf="copy.primaryButton"
+                    [label]="copy.primaryButton"
+                    color="primary"
+                    data-cy="dialog-primary-button"
+                    (handleClick)="primary.emit()"
+                ></poker-moons-primary-button>
+            </div>
         </div>
     </div>
 </div>
