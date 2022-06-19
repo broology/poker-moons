@@ -1,10 +1,7 @@
-<form *ngIf="tableStatus === 'lobby'; else started" [formGroup]="spectatorForm">
+<form *ngIf="tableStatus === 'lobby'; else started" [formGroup]="spectatorForm" (submit)="join()">
     <poker-moons-dialog [copy]="dialogCopy" (primary)="join()">
-        <!-- TODO: Replace with poker-moons input  -->
-        <input id="username" formControlName="username" placeholder="Username" />
-        <span *ngIf="!spectatorForm.valid"
-            >Must be within length {{ userNameLength.min }} - {{ userNameLength.max }} characters</span
-        >
+        <poker-moons-text-input placeholder="Username" [formControl]="usernameControl"></poker-moons-text-input>
+        <poker-moons-error-label [error]="error"></poker-moons-error-label>
     </poker-moons-dialog>
 </form>
 

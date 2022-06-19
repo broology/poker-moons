@@ -3,6 +3,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DialogCopy } from '@poker-moons/frontend/shared/ui';
 import { JoinTableRequest, TableStatus } from '@poker-moons/shared/type';
 
+const USERNAME_LENGTH = { min: 2, max: 15 };
+
 @Component({
     selector: 'poker-moons-spectator-controls',
     templateUrl: './spectator-controls.component.html',
@@ -14,11 +16,11 @@ export class SpectatorControlsComponent implements OnInit {
         primaryButton: 'JOIN',
     };
 
-    readonly userNameLength = { min: 2, max: 15 };
-
     @Input() tableStatus!: TableStatus;
 
     @Output() joinTableEmitter: EventEmitter<JoinTableRequest>;
+
+    error?: string;
 
     spectatorForm!: FormGroup;
 
@@ -35,8 +37,8 @@ export class SpectatorControlsComponent implements OnInit {
             username: new FormControl(
                 '',
                 Validators.compose([
-                    Validators.minLength(this.userNameLength.min),
-                    Validators.maxLength(this.userNameLength.max),
+                    Validators.minLength(USERNAME_LENGTH.min),
+                    Validators.maxLength(USERNAME_LENGTH.max),
                 ]),
             ),
         });
@@ -44,7 +46,10 @@ export class SpectatorControlsComponent implements OnInit {
 
     join(): void {
         if (this.spectatorForm.valid) {
+            this.error = undefined;
             this.joinTableEmitter.emit({ username: this.usernameControl.value });
+        } else {
+            this.error = `Must be within length ${USERNAME_LENGTH.min} - ${USERNAME_LENGTH.max} characters`;
         }
     }
 }

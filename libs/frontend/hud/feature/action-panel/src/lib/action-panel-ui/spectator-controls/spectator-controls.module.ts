@@ -1,12 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { DialogModule } from '@poker-moons/frontend/shared/ui';
+import { DialogModule, ErrorLabelModule, TextInputModule } from '@poker-moons/frontend/shared/ui';
 import { HudFrameModule } from '../../shared';
 import { SpectatorControlsComponent } from './spectator-controls.component';
 
 export const spectatorControlsImports = [
-    ...([CommonModule, DialogModule, ReactiveFormsModule, HudFrameModule] as const),
+    ...([CommonModule, DialogModule, ReactiveFormsModule, HudFrameModule, TextInputModule, ErrorLabelModule] as const),
 ];
 
 @NgModule({
