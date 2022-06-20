@@ -13,7 +13,6 @@
         "frontend-hud-shell": "libs/frontend/hud/shell",
         "frontend-landing": "libs/frontend/landing",
         "frontend-shared-state-table": "libs/frontend/shared/state/table",
-        "frontend-shared-timer-moon": "libs/frontend/shared/timer-moon",
         "frontend-shared-ui": "libs/frontend/shared/ui",
         "frontend-shared-util-auth": "libs/frontend/shared/util/auth",
         "frontend-shared-util-environment": "libs/frontend/shared/util/environment",
