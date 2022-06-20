@@ -14,7 +14,6 @@
         "frontend-hud-feature-bank-panel": "libs/frontend/hud/feature/bank-panel",
         "frontend-hud-shell": "libs/frontend/hud/shell",
         "frontend-shared-state-table": "libs/frontend/shared/state/table",
-        "frontend-shared-timer-moon": "libs/frontend/shared/timer-moon",
         "frontend-shared-ui": "libs/frontend/shared/ui",
         "frontend-shared-util-environment": "libs/frontend/shared/util/environment",
         "frontend-shared-util-styles": "libs/frontend/shared/util/styles",
