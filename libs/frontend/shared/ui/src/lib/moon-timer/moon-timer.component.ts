@@ -8,10 +8,14 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
     styleUrls: ['./moon-timer.component.scss'],
 })
 export class MoonTimerComponent implements OnInit {
-    @Input() label?: string;
+    @Input() duration: number;
+    @Input() currentTime: number;
     @Output() handleClick: EventEmitter<string> = new EventEmitter<string>();
 
-    constructor() {}
+    constructor() {
+        this.duration = 60;
+        this.currentTime = this.duration;
+    }
 
     ngOnInit(): void {}
 

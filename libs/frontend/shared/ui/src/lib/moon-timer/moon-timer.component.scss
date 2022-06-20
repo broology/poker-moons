@@ -1,0 +1,9 @@
+@use '~styles/transitions' as tr;
+
+.cycle {
+    color: red;
+    @include tr.transition(d 4s linear);
+    &:hover {
+        d: path('M 50, 25 a 0,25 0 1,1 0,50 a 25,25 0 1,1 0,-50');
+    }
+}
