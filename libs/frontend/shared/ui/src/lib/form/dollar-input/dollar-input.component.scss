@@ -4,6 +4,19 @@
 @use '~styles/borders' as b;
 @use '~styles/transitions' as tr;
 
+.currency-character {
+    @include t.input;
+    position: relative;
+    display: block;
+    height: 0;
+    bottom: 1.75em;
+    left: 0em;
+    pointer-events: none;
+    width: 25px;
+    text-align: center;
+    font-style: normal;
+}
+
 input {
     @include t.input;
 
@@ -12,6 +25,7 @@ input {
 
     width: 100%;
     padding: s.spacing(1);
+    padding-left: s.spacing(2.5);
 
     border: 1px outset c.color('shaded');
     border-radius: b.border-radius('input');
@@ -23,8 +37,8 @@ input {
     }
 }
 
-.text-input-container {
-    max-width: 15em;
+.dollar-input-container {
+    max-width: 7.5em;
     margin: s.spacing(0.5);
     margin-right: s.spacing(3);
 }
