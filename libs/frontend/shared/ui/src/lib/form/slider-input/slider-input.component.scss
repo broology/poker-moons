@@ -1,0 +1,58 @@
+@use '~styles/colors' as c;
+@use '~styles/spacing' as s;
+@use '~styles/typography' as t;
+@use '~styles/borders' as b;
+@use '~styles/transitions' as tr;
+
+.slider-input {
+    max-width: 10em;
+}
+
+::ng-deep {
+    .slider-input .ngx-slider {
+        margin: 35px 0 15px;
+        margin-top: 15px;
+    }
+
+    .slider-input .ngx-slider .ngx-slider-bar {
+        background: #e6e6e6;
+        height: 3px;
+    }
+    .slider-input .ngx-slider .ngx-slider-selection {
+        background: #ffffff;
+    }
+
+    .slider-input .ngx-slider .ngx-slider-pointer {
+        width: 12px;
+        height: 12px;
+        top: auto;
+        bottom: -3.5px;
+        background-color: c.color('primary');
+        border: 1px solid c.color('shaded');
+    }
+
+    .slider-input .ngx-slider .ngx-slider-pointer:after {
+        display: none;
+    }
+
+    .slider-input .ngx-slider .ngx-slider-bubble {
+        bottom: 14px;
+    }
+
+    .slider-input .ngx-slider .ngx-slider-limit {
+        font-weight: bold;
+        color: orange;
+    }
+
+    .slider-input .ngx-slider .ngx-slider-tick {
+        width: 1px;
+        height: 10px;
+        margin-left: 4px;
+        border-radius: 0;
+        background: #ffe4d1;
+    }
+
+    .slider-input .ngx-slider .ngx-slider-tick.ngx-slider-selected {
+        background: orange;
+    }
+}
