@@ -32,7 +32,7 @@ class DepthTransformTestComponent {
 }
 
 export default {
-    title: 'DepthTransformTestComponent',
+    title: 'Card/Depth Transform',
     component: DepthTransformTestComponent,
     decorators: [
         moduleMetadata({

@@ -2,8 +2,17 @@
 @use '~styles/colors' as c;
 @use '~styles/shadows' as s;
 @use '~styles/typography' as t;
+@use '~styles/spacing' as sp;
+@use '~styles/z-index' as z;
 
 .dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    z-index: z.zIndex('modal');
+
     @include s.box-shadow('allAround');
 
     @include bp.xs {
@@ -19,8 +28,8 @@
     border-radius: 8px;
     background-color: c.color('tinted');
     color: c.color-text-contrast('tinted');
-    padding: 1.6rem;
-    margin: 0 auto;
+
+    padding: sp.spacing(2);
 }
 
 .dialog h1 {
@@ -35,16 +44,28 @@
 
     font-style: italic;
     text-align: center;
-    margin: 0.1em 0;
+
+    margin: sp.spacing(0.5);
 }
 
 .dialog-content {
-    margin: 0.5em auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-box-orient: vertical;
+    -moz-box-orient: vertical;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+
     min-height: 100px;
+
+    margin: sp.spacing(1);
 }
 
 .dialog-actions {
     display: flex;
     justify-content: space-between;
+
     width: 100%;
 }

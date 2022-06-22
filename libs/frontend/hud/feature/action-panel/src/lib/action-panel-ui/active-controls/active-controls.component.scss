@@ -1,0 +1,18 @@
+@use '~styles/typography' as t;
+@use '~styles/spacing' as s;
+
+.raise-input {
+    margin: s.spacing(0.5) 0;
+    text-align: center;
+}
+
+.action-button-container {
+    margin: 0 s.spacing(1.5);
+}
+
+.text-section {
+    @include t.body1;
+
+    width: 40%;
+    margin: 0 s.spacing(2);
+}

@@ -5,7 +5,7 @@ import { CardComponent } from './card.component';
 import { cardImports } from './card.module';
 
 export default {
-    title: 'CardComponent',
+    title: 'Card/Component',
     component: CardComponent,
     decorators: [
         moduleMetadata({

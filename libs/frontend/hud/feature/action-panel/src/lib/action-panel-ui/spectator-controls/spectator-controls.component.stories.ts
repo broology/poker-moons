@@ -3,7 +3,7 @@ import { SpectatorControlsComponent } from './spectator-controls.component';
 import { spectatorControlsImports } from './spectator-controls.module';
 
 export default {
-    title: 'SpectatorControlsComponent',
+    title: 'Spectator Controls/Component',
     component: SpectatorControlsComponent,
     decorators: [
         moduleMetadata({
@@ -20,5 +20,12 @@ const Template: Story<SpectatorControlsComponent> = (args: SpectatorControlsComp
     props: args,
 });
 
-export const Primary = Template.bind({});
-Primary.args = {};
+export const notStarted = Template.bind({});
+notStarted.args = {
+    tableStatus: 'lobby',
+};
+
+export const started = Template.bind({});
+started.args = {
+    tableStatus: 'in-progress',
+};

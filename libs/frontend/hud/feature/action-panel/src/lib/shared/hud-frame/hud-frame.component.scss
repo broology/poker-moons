@@ -1,0 +1,24 @@
+@use '~styles/colors' as c;
+@use '~styles/spacing' as s;
+
+.hud-frame {
+    position: fixed;
+    left: 75%;
+    bottom: 0;
+    transform: translate(-50%, 0);
+
+    display: flex;
+    align-content: space-between;
+    align-items: center;
+
+    padding: 0 s.spacing(2);
+    min-height: 82px;
+    width: 480px;
+
+    background-color: c.color('tinted');
+    color: c.color-text-contrast('tinted');
+    border: 2px solid c.color('shaded');
+    border-radius: 8px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}

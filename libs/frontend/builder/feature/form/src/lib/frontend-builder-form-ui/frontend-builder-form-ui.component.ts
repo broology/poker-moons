@@ -3,14 +3,14 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DialogCopy } from '@poker-moons/frontend/shared/ui';
 import { CreateTableRequest } from '@poker-moons/shared/type';
 
+const TABLE_NAME_LENGTH = { min: 3, max: 25 };
+
 @Component({
     selector: 'poker-moons-frontend-builder-form-ui',
     templateUrl: './frontend-builder-form-ui.component.html',
     styleUrls: ['./frontend-builder-form-ui.component.scss'],
 })
 export class FrontendBuilderFormUiComponent implements OnInit {
-    tableNameLength = { min: 3, max: 25 };
-
     dialogCopy: DialogCopy = {
         title: 'Create Table',
         primaryButton: 'CREATE',
@@ -22,6 +22,8 @@ export class FrontendBuilderFormUiComponent implements OnInit {
 
     builderForm!: FormGroup;
 
+    error?: string;
+
     get nameControl(): FormControl {
         return this.builderForm.get('name') as FormControl;
     }
@@ -32,19 +34,21 @@ export class FrontendBuilderFormUiComponent implements OnInit {
                 '',
                 Validators.compose([
                     Validators.required,
-                    Validators.minLength(this.tableNameLength.min),
-                    Validators.maxLength(this.tableNameLength.max),
+                    Validators.minLength(TABLE_NAME_LENGTH.min),
+                    Validators.maxLength(TABLE_NAME_LENGTH.max),
                 ]),
             ),
         });
     }
 
     submit(): void {
-        console.log('submitted');
+        this.builderForm.markAllAsTouched();
+
         if (this.builderForm.valid) {
+            this.error = undefined;
             this.createTableEmitter.emit({ name: this.nameControl.value });
         } else {
-            this.builderForm.markAllAsTouched();
+            this.error = `Must be within ${TABLE_NAME_LENGTH.min} and ${TABLE_NAME_LENGTH.max} characters long.`;
         }
     }
 }

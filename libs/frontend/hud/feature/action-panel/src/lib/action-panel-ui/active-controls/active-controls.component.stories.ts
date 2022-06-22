@@ -3,7 +3,7 @@ import { ActiveControlsComponent } from './active-controls.component';
 import { activeControlsImports } from './active-controls.module';
 
 export default {
-    title: 'ActiveControlsComponent',
+    title: 'Active Controls/Component',
     component: ActiveControlsComponent,
     decorators: [
         moduleMetadata({

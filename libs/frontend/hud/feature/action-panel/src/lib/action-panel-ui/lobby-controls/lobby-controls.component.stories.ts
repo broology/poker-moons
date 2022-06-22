@@ -4,7 +4,7 @@ import { LobbyControlsComponent } from './lobby-controls.component';
 import { lobbyControlsImports } from './lobby-controls.module';
 
 export default {
-    title: 'LobbyControlsComponent',
+    title: 'Lobby Controls/Component',
     component: LobbyControlsComponent,
     decorators: [
         moduleMetadata({

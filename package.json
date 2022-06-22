@@ -33,6 +33,7 @@
     },
     "private": true,
     "dependencies": {
+        "@angular-slider/ngx-slider": "^2.0.4",
         "@angular/animations": "13.3.4",
         "@angular/cdk": "^13.3.6",
         "@angular/common": "13.3.4",

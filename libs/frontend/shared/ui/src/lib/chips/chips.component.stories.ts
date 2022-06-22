@@ -4,7 +4,7 @@ import { ChipsComponent } from './chips.component';
 import { chipsModuleImports } from './chips.module';
 
 export default {
-    title: 'ChipsComponent',
+    title: 'Chips/Component',
     component: ChipsComponent,
     decorators: [
         moduleMetadata({

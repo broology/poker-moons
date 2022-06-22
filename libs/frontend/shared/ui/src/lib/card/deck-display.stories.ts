@@ -41,7 +41,7 @@ class DeckDisplayComponent {
 }
 
 export default {
-    title: 'DeckDisplay',
+    title: 'Card/Deck Display',
     component: DeckDisplayComponent,
     decorators: [
         moduleMetadata({

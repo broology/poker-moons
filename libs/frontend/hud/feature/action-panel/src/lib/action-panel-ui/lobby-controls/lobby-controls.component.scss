@@ -1,7 +1,14 @@
-.ready {
-    //TODO
+@use '~styles/typography' as t;
+@use '~styles/spacing' as s;
+
+.text-section {
+    @include t.h3;
+
+    width: 75%;
+    margin: 0 s.spacing(2);
 }
 
-.unready {
-    //TODO
+.action-section {
+    width: 25%;
+    text-align: right;
 }

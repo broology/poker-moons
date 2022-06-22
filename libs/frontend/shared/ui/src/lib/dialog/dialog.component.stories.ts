@@ -4,7 +4,7 @@ import { DialogComponent } from './dialog.component';
 import { dialogImports } from './dialog.module';
 
 export default {
-    title: 'DialogComponent',
+    title: 'Dialog/Component',
     component: DialogComponent,
     decorators: [
         moduleMetadata({
@@ -12,6 +12,14 @@ export default {
             providers: [MockNgEnvironment],
         }),
     ],
+    argTypes: {
+        primary: {
+            action: 'Primary Action',
+        },
+        secondary: {
+            action: 'Secondary Action',
+        },
+    },
 } as Meta<DialogComponent>;
 
 const Template: Story<DialogComponent> = (args: DialogComponent) => ({

@@ -91,7 +91,8 @@ export class TableStateApiEffects {
             ),
             switchMap(([, tableId, playerId]) => {
                 if (tableId === null || playerId === null) {
-                    throw new Error('Missing required params');
+                    // Player not joined yet
+                    return of();
                 }
 
                 return this.performApiRequest(getCards, () =>

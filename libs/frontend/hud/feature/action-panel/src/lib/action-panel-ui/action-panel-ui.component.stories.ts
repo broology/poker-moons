@@ -28,7 +28,7 @@ const Template: Story<ActionPanelUiComponent> = (args: ActionPanelUiComponent) =
 
 const defaultArgs = {
     clientImmutablePlayer: mockImmutablePublicPlayer({ seatId: 0 }),
-    clientMutablePlayer: mockMutablePublicPlayer({ stack: 1000, called: 0, ready: false }),
+    clientMutablePlayer: mockMutablePublicPlayer({ stack: 1000, biddingCycleCalled: 0, ready: false }),
     round: mockRound({ activeSeat: 0, toCall: 100 }),
     tableStatus: 'lobby' as const,
     startDate: null,

@@ -1,6 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { DialogCopy } from '@poker-moons/frontend/shared/ui';
 import { JoinTableRequest, TableStatus } from '@poker-moons/shared/type';
+
+const USERNAME_LENGTH = { min: 2, max: 15 };
 
 @Component({
     selector: 'poker-moons-spectator-controls',
@@ -8,11 +11,16 @@ import { JoinTableRequest, TableStatus } from '@poker-moons/shared/type';
     styleUrls: ['./spectator-controls.component.scss'],
 })
 export class SpectatorControlsComponent implements OnInit {
-    USERNAME_LENGTH = { min: 2, max: 15 };
+    readonly dialogCopy: DialogCopy = {
+        title: 'Enter a username to join the game',
+        primaryButton: 'JOIN',
+    };
 
     @Input() tableStatus!: TableStatus;
 
     @Output() joinTableEmitter: EventEmitter<JoinTableRequest>;
+
+    error?: string;
 
     spectatorForm!: FormGroup;
 
@@ -29,16 +37,21 @@ export class SpectatorControlsComponent implements OnInit {
             username: new FormControl(
                 '',
                 Validators.compose([
-                    Validators.minLength(this.USERNAME_LENGTH.min),
-                    Validators.maxLength(this.USERNAME_LENGTH.max),
+                    Validators.minLength(USERNAME_LENGTH.min),
+                    Validators.maxLength(USERNAME_LENGTH.max),
                 ]),
             ),
         });
     }
 
     join(): void {
+        this.spectatorForm.markAllAsTouched();
+
         if (this.spectatorForm.valid) {
+            this.error = undefined;
             this.joinTableEmitter.emit({ username: this.usernameControl.value });
+        } else {
+            this.error = `Must be within length ${USERNAME_LENGTH.min} - ${USERNAME_LENGTH.max} characters`;
         }
     }
 }
