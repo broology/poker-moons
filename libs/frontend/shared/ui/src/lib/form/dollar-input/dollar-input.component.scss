@@ -6,6 +6,7 @@
 
 .currency-character {
     @include t.input;
+    color: c.color('text-contrast');
     position: relative;
     display: block;
     height: 0;
@@ -40,5 +41,5 @@ input {
 .dollar-input-container {
     max-width: 7.5em;
     margin: s.spacing(0.5);
-    margin-right: s.spacing(3);
+    margin-right: s.spacing(4);
 }

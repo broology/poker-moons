@@ -37,7 +37,6 @@ export class SliderInputComponent {
     _value!: number;
 
     options: Options = {
-        floor: 0,
         hideLimitLabels: true,
         hidePointerLabels: true,
         showSelectionBar: true,

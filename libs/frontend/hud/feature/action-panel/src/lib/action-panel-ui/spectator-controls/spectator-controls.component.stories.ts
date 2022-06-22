@@ -3,7 +3,7 @@ import { SpectatorControlsComponent } from './spectator-controls.component';
 import { spectatorControlsImports } from './spectator-controls.module';
 
 export default {
-    title: 'SpectatorControlsComponent',
+    title: 'Spectator Controls/Component',
     component: SpectatorControlsComponent,
     decorators: [
         moduleMetadata({

@@ -3,7 +3,7 @@ import { InActiveControlsComponent } from './in-active-controls.component';
 import { inActiveControlsImports } from './in-active-controls.module';
 
 export default {
-    title: 'InActiveControlsComponent',
+    title: 'Inactive Controls/Component',
     component: InActiveControlsComponent,
     decorators: [
         moduleMetadata({
