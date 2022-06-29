@@ -2,13 +2,18 @@
     <poker-moons-depth-transform [depth]="depthLevel">
         <div class="seat-action">
             <div class="stack" [ngStyle]="transform.stack">
-                <poker-moons-chips [amount]="mutablePlayer.stack" [orientation]="orientation"></poker-moons-chips>
+                <poker-moons-chips
+                    [amount]="mutablePlayer.stack"
+                    [orientation]="orientation"
+                    [optimal]="false"
+                ></poker-moons-chips>
             </div>
 
             <div class="called" [ngStyle]="transform.called">
                 <poker-moons-chips
                     [amount]="mutablePlayer.biddingCycleCalled"
                     [orientation]="orientation"
+                    [optimal]="true"
                 ></poker-moons-chips>
             </div>
 
