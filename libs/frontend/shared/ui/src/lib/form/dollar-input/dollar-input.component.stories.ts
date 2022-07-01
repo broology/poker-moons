@@ -21,5 +21,5 @@ const Template: Story<DollarInputComponent> = (args: DollarInputComponent) => ({
 
 export const primary = Template.bind({});
 primary.args = {
-    placeholder: '500',
+    placeholder: 500,
 };

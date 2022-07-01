@@ -20,7 +20,14 @@ const Template: Story<ChipsComponent> = (args: ChipsComponent) => ({
     props: args,
 });
 
-export const Primary = Template.bind({});
-Primary.args = {
-    amount: 500000,
+export const optimal = Template.bind({});
+optimal.args = {
+    optimal: true,
+    amount: 5000,
+};
+
+export const unOptimal = Template.bind({});
+unOptimal.args = {
+    optimal: false,
+    amount: 5000,
 };
