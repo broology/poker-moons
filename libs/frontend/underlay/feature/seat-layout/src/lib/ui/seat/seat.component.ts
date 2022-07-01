@@ -50,6 +50,8 @@ export class SeatComponent implements OnChanges {
 
     immutablePlayer$!: Observable<ImmutablePublicPlayer | null>;
 
+    activeSeatId$!: Observable<SeatId | null>;
+
     playerOrientation!: PlayerOrientation;
 
     depthLevel!: DepthLevel;
@@ -60,6 +62,7 @@ export class SeatComponent implements OnChanges {
         if (playerSeatId.currentValue !== playerSeatId.previousValue) {
             this.mutablePlayer$ = this.tableStateFacade.selectMutablePlayerBySeatId(this.playerSeatId);
             this.immutablePlayer$ = this.tableStateFacade.selectImmutablePlayerBySeatId(this.playerSeatId);
+            this.activeSeatId$ = this.tableStateFacade.selectActiveSeatId();
         }
     }
 }

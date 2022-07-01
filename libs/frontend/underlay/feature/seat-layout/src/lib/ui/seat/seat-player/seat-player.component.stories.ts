@@ -1,5 +1,5 @@
 import { MockNgEnvironment } from '@poker-moons/frontend/shared/util/environment';
-import { mockImmutablePublicPlayer } from '@poker-moons/shared/testing';
+import { mockImmutablePublicPlayer, mockMutablePublicPlayer } from '@poker-moons/shared/testing';
 import { Meta, moduleMetadata, Story } from '@storybook/angular';
 import { SeatPlayerComponent } from './seat-player.component';
 import { seatPlayerImports } from './seat-player.module';
@@ -20,14 +20,22 @@ const Template: Story<SeatPlayerComponent> = (args: SeatPlayerComponent) => ({
     props: args,
 });
 
-export const primary = Template.bind({});
-primary.args = {
-    immutablePlayer: mockImmutablePublicPlayer(),
+export const active = Template.bind({});
+active.args = {
+    immutablePlayer: mockImmutablePublicPlayer({
+        username: 'Dylan',
+        seatId: 0,
+    }),
+    mutablePlayer: mockMutablePublicPlayer(),
+    active: true,
 };
 
 export const occupied = Template.bind({});
 occupied.args = {
-    immutablePlayer: mockImmutablePublicPlayer(),
+    immutablePlayer: mockImmutablePublicPlayer({
+        username: 'Dylan',
+    }),
+    mutablePlayer: mockMutablePublicPlayer(),
 };
 
 export const empty = Template.bind({});
