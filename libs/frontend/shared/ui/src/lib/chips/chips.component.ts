@@ -1,16 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { PlayerOrientation } from '../shared/type';
-import { ChipDenomination, ChipStackData, MAX_CHIPS_PER_STACK, STACKS_PER_ROW } from './chip.type';
+import { ChipDenomination, ChipStackData, STACKS_PER_ROW } from './chip.type';
 import { chipOrientationTransform } from './chips-orientation-transform';
 import { applyDifferenceToChipStack, buildOptimalChipStack, buildUnOptimalChipStack } from './chips.util';
-
-/**
- * TODO Step 1:
- * - Get a component that will takin an `amount` and spread it into chip denominations for display
- *
- * TODO Step 2:
- * - Add animations to make changes to the amount smooth
- */
 
 @Component({
     selector: 'poker-moons-chips',
@@ -63,6 +55,13 @@ export class ChipsComponent implements OnChanges {
         return chipOrientationTransform[this.orientation || 'bottom'].invert.z;
     }
 
+    /**
+     * @description Life-cycle hook for the component.
+     *
+     * - On first render, if `optimal` is set, then will provide an optimal stack, otherwise will create a semi uniform stack.
+     * - On future renders, if the `amount` changes, then calculates the diff and applies it to the chip stack in a "realistic" way,
+     * performing trade in and such to keep consistency on the chips.
+     */
     ngOnChanges(changes: SimpleChanges): void {
         if (!changes.amount) {
             return;

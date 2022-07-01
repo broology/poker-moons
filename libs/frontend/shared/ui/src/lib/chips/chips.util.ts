@@ -154,7 +154,9 @@ function buildChipStackFromDenominationCounts(denominationCountMap: Record<ChipD
 
 /**
  * @description Performs a trade in to split given chips to have at least {@link count} of {@link denomination}.
- * Given the current {@link denominationCountMap}
+ * Given the current {@link denominationCountMap}.
+ *
+ * Although if their is nothing to trade in to make this possible it just returns a state closest to the goal as possible.
  */
 function tradeInChips(
     denominationCountMap: Record<ChipDenomination, number>,
@@ -163,10 +165,14 @@ function tradeInChips(
 ): Record<ChipDenomination, number> {
     const denominationIdx = chipDenominations.indexOf(denomination);
 
-    while (denominationCountMap[denomination] < count)
+    while (denominationCountMap[denomination] < count) {
+        let tradeable = false;
+
         for (let y = denominationIdx - 1; y >= 0; y--) {
             const yDenomination = chipDenominations[y];
+
             if (denominationCountMap[yDenomination] > 0) {
+                tradeable = true;
                 denominationCountMap[yDenomination]--;
                 denominationCountMap[chipDenominations[y + 1]] = Math.floor(yDenomination / chipDenominations[y + 1]);
                 const remainder = yDenomination % chipDenominations[y + 1];
@@ -177,6 +183,12 @@ function tradeInChips(
                 break;
             }
         }
+
+        // If no more higher chips are tradable, break the loop
+        if (!tradeable) {
+            break;
+        }
+    }
 
     return denominationCountMap;
 }
@@ -214,18 +226,32 @@ export function applyDifferenceToChipStack(
         }
 
         const count = Math.floor(total / denomination);
-        const delta = denomination * count;
-        total -= delta;
+        let delta = denomination * count;
 
         if (operation === 'add') {
             denominationCountMap[denomination] += count;
         } else {
+            /**
+             * If the denomination doesn't have the required count of chips,
+             * Then attempt to trade in from higher denominations.
+             * If that's not possible. Then subtract what you can and move on.
+             */
+
             if (denominationCountMap[denomination] - count < 0) {
                 denominationCountMap = tradeInChips(denominationCountMap, denomination, count);
-            }
 
-            denominationCountMap[denomination] -= count;
+                const available =
+                    denominationCountMap[denomination] >= count ? count : denominationCountMap[denomination];
+
+                denominationCountMap[denomination] -= available;
+
+                delta = denomination * available;
+            } else {
+                denominationCountMap[denomination] -= count;
+            }
         }
+
+        total -= delta;
     }
 
     return {
