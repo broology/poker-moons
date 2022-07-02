@@ -22,6 +22,7 @@
                 "libs/backend/shared/service/job-scheduler/src/index.ts"
             ],
             "@poker-moons/backend/utility": ["libs/backend/utility/src/index.ts"],
+            "@poker-moons/frontend/landing": ["libs/frontend/landing/src/index.ts"],
             "@poker-moons/frontend/builder/feature/form": ["libs/frontend/builder/feature/form/src/index.ts"],
             "@poker-moons/frontend/builder/shell": ["libs/frontend/builder/shell/src/index.ts"],
             "@poker-moons/frontend/hud/feature/action-panel": ["libs/frontend/hud/feature/action-panel/src/index.ts"],
