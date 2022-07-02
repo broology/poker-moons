@@ -223,6 +223,18 @@ export class RoundManagerService {
              * If the game can continue, set the next dealer/active seat, reset the round in state,
              * and call `startRound` to initiate the next round.
              */
+
+            // Remove players who have no chips left from the game
+            const outPlayers = Object.values(table.playerMap).filter((player) => player.stack === 0);
+            for (const loser of Object.values(outPlayers)) {
+                const playerUpdate: Partial<Player> = {
+                    status : 'out',
+                    seatId : null,
+                };
+                // update each player individually, or just yeet an updated seatMap?
+                await this.tableStateManagerService.updateTablePlayer(table.id, loser.id, playerUpdate);
+                // TODO: update readySystemService? emit a tableEvent?
+            }
             const nextDealerSeat = incrementSeat(table.activeRound.dealerSeat, table.seatMap);
             const nextActiveSeat = incrementSeat(nextDealerSeat, table.seatMap);
 
