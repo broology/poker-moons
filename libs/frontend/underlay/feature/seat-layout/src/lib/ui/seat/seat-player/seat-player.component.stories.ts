@@ -5,7 +5,7 @@ import { SeatPlayerComponent } from './seat-player.component';
 import { seatPlayerImports } from './seat-player.module';
 
 export default {
-    title: 'SeatPlayerComponent',
+    title: 'Seat/Player Component',
     component: SeatPlayerComponent,
     decorators: [
         moduleMetadata({

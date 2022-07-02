@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { TableStateFacade } from '@poker-moons/frontend/shared/state/table';
 import { DepthLevel, PlayerOrientation } from '@poker-moons/frontend/shared/ui';
-import { ImmutablePublicPlayer, MutablePublicPlayer, SeatId } from '@poker-moons/shared/type';
+import { ImmutablePublicPlayer, MutablePublicPlayer, SeatId, TableStatus } from '@poker-moons/shared/type';
 import { Observable } from 'rxjs';
 
 const displaySeatToPlayerOrientation: Record<SeatId, PlayerOrientation> = {
@@ -52,6 +52,8 @@ export class SeatComponent implements OnChanges {
 
     activeSeatId$!: Observable<SeatId | null>;
 
+    tableStatus$!: Observable<TableStatus>;
+
     playerOrientation!: PlayerOrientation;
 
     depthLevel!: DepthLevel;
@@ -63,6 +65,7 @@ export class SeatComponent implements OnChanges {
             this.mutablePlayer$ = this.tableStateFacade.selectMutablePlayerBySeatId(this.playerSeatId);
             this.immutablePlayer$ = this.tableStateFacade.selectImmutablePlayerBySeatId(this.playerSeatId);
             this.activeSeatId$ = this.tableStateFacade.selectActiveSeatId();
+            this.tableStatus$ = this.tableStateFacade.selectStatus();
         }
     }
 }

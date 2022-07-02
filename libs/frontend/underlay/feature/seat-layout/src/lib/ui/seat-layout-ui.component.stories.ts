@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { TableStateFacade } from '@poker-moons/frontend/shared/state/table';
 import { MockNgEnvironment } from '@poker-moons/frontend/shared/util/environment';
 import { mockCard, mockImmutablePublicPlayer, mockMutablePublicPlayer } from '@poker-moons/shared/testing';
-import { ImmutablePublicPlayer, MutablePublicPlayer, SeatId } from '@poker-moons/shared/type';
+import { ImmutablePublicPlayer, MutablePublicPlayer, SeatId, TableStatus } from '@poker-moons/shared/type';
 import { Meta, moduleMetadata, Story } from '@storybook/angular';
 import { Observable, of } from 'rxjs';
 import {} from 'ts-essentials';
@@ -30,10 +30,18 @@ class MockTableStateFacade {
     selectImmutablePlayerBySeatId(seatId: SeatId): Observable<ImmutablePublicPlayer> {
         return of(mockImmutablePublicPlayer({ seatId }));
     }
+
+    selectActiveSeatId(): Observable<SeatId | null> {
+        return of(0);
+    }
+
+    selectStatus(): Observable<TableStatus> {
+        return of('in-progress');
+    }
 }
 
 export default {
-    title: 'SeatLayoutUiComponent',
+    title: 'Seat Layout/Component',
     component: SeatLayoutUiComponent,
     decorators: [
         moduleMetadata({

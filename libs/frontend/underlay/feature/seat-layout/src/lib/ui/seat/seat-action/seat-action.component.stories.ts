@@ -3,7 +3,7 @@ import { Meta, moduleMetadata, Story } from '@storybook/angular';
 import { SeatActionComponent } from './seat-action.component';
 
 export default {
-    title: 'SeatActionComponent',
+    title: 'Seat/Action Component',
     component: SeatActionComponent,
     decorators: [
         moduleMetadata({
