@@ -1,8 +1,23 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { RouterModule } from '@angular/router';
+import { LandingButtonModule } from '../../../shared/ui/src';
 import { FrontendLandingComponent } from './frontend-landing.component';
 
-export const frontendLandingImports = [...([CommonModule] as const)];
+export const frontendLandingImports = [
+    ...([
+        CommonModule,
+        FlexLayoutModule,
+        LandingButtonModule,
+        RouterModule.forChild([
+            {
+                path: '',
+                component: FrontendLandingComponent,
+            },
+        ]),
+    ] as const),
+];
 
 @NgModule({
     imports: frontendLandingImports,

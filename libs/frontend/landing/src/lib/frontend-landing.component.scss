@@ -1,0 +1,11 @@
+@use '~styles/borders.scss' as b;
+@use '~styles/colors.scss' as c;
+@use '~styles/typography' as t;
+@use '~styles/spacing' as s;
+@use '~styles/transitions' as tr;
+
+.root {
+    height: 100vh;
+    width: 100%;
+    background-color: c.color('background');
+}
