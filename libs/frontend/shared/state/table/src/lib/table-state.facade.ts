@@ -15,6 +15,7 @@ import { Observable } from 'rxjs';
 import { joinTable, leaveTable, performTableAction, toggleReadyStatus } from './actions/api.actions';
 import { connectToWs } from './actions/ws.actions';
 import {
+    selectActiveSeatId,
     selectClientImmutablePlayer,
     selectClientMutablePlayer,
     selectClientSeatId,
@@ -65,6 +66,13 @@ export class TableStateFacade {
      */
     selectMutablePlayerBySeatId(seatId: SeatId): Observable<MutablePublicPlayer | null> {
         return this.store.pipe(select(selectMutablePlayerBySeatId({ seatId })));
+    }
+
+    /**
+     * The active seat at the table.
+     */
+    selectActiveSeatId(): Observable<SeatId | null> {
+        return this.store.pipe(select(selectActiveSeatId));
     }
 
     /**
