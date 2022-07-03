@@ -13,6 +13,7 @@ export const handCategory = [
     'two pairs',
     'pair',
     'high card',
+    'win via fold',
 ] as const;
 export type HandCategory = typeof handCategory[number];
 
@@ -20,9 +21,11 @@ export type PlayerWithHand = Pick<Player, 'id' | 'username' | 'roundCalled'> & {
     cards: [Card, Card];
 
     /**
-     * The five cards that make up the player's hand
+     * The five cards that make up the player's hand.
+     *
+     * Will be null only if the player has won due to everyone else folding.
      */
-    hand: Hand;
+    hand: Hand | null;
 };
 
 export interface RankHandReponse {

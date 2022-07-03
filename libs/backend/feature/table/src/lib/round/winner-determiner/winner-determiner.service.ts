@@ -4,7 +4,7 @@ import { TableGatewayService } from '../../shared/websocket/table-gateway.servic
 import { TableStateManagerService } from '../../table-state-manager/table-state-manager.service';
 import { PotManagerService } from '../pot-manager/pot-manager.service';
 import { compareHands, playerHasTwoCards, tableHasFiveCards } from './util/rank';
-import { playerMissingCards, roundMissingCards } from './winner-determiner.copy';
+import { playerMissingCards } from './winner-determiner.copy';
 import type { Hand, PlayerWithHand, RankHandReponse } from './winner-determiner.types';
 import currency = require('currency.js');
 
@@ -28,10 +28,6 @@ export class WinnerDeterminerService {
     async determineWinner(tableId: TableId, playerMap: Record<PlayerId, Player>, round: Round): Promise<void> {
         const playersWithHand: PlayerWithHand[] = [];
 
-        if (!tableHasFiveCards(round.cards)) {
-            throw new BadRequestException(roundMissingCards);
-        }
-
         for (const player of Object.values(playerMap)) {
             if (!playerHasTwoCards(player.cards)) {
                 throw new BadRequestException(playerMissingCards(player.id));
@@ -42,8 +38,10 @@ export class WinnerDeterminerService {
                     id: player.id,
                     username: player.username,
                     cards: player.cards,
-                    hand: this.findBestHand(player.id, player.username, player.roundCalled, player.cards, round.cards)
-                        .player.hand,
+                    hand: tableHasFiveCards(round.cards)
+                        ? this.findBestHand(player.id, player.username, player.roundCalled, player.cards, round.cards)
+                              .player.hand
+                        : null,
                     roundCalled: player.roundCalled,
                 });
             }
@@ -123,29 +121,28 @@ export class WinnerDeterminerService {
         playersWithHand: PlayerWithHand[],
     ): Promise<WinnerMap> {
         const winnerMap: WinnerMap = {};
-
+        const players = Object.values(playerMap);
         const sortedHands = compareHands(playersWithHand);
 
         // Loop through until no unclaimed chips in pot
-        while (this.potManagerService.buildPot(playersWithHand) > 0) {
-            // An array of players that still have a `roundCalled` amount left
-            const playersWithCommitment = sortedHands.filter((hand) => hand.player.roundCalled > 0);
+        while (this.potManagerService.buildPot(players) > 0) {
+            // An array of non-folded players that still have a `roundCalled` amount left
+            const playersWithCommitment = sortedHands.filter((hand) => playerMap[hand.player.id].roundCalled > 0);
 
             // An array of winners that need to be paid out in this iteration
             const winnersToPay = playersWithCommitment.filter(
                 (player) => player.score === playersWithCommitment[0].score,
             );
 
-            let collectedSidePot = 0;
             let currentCommitment = 0;
             let collectionAmount = 0;
 
             for (const winner of winnersToPay) {
-                collectedSidePot = 0;
+                let collectedSidePot = 0;
                 currentCommitment = winner.player.roundCalled;
 
                 // Collect commitment from all players who have money in pot
-                for (const player of playersWithHand) {
+                for (const player of players) {
                     if (player.roundCalled > 0) {
                         collectionAmount = Math.min(currentCommitment, player.roundCalled);
                         player.roundCalled -= collectionAmount;
