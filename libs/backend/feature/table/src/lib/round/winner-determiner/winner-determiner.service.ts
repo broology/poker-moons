@@ -5,7 +5,7 @@ import { TableStateManagerService } from '../../table-state-manager/table-state-
 import { PotManagerService } from '../pot-manager/pot-manager.service';
 import { compareHands, playerHasTwoCards, tableHasFiveCards } from './util/rank';
 import { playerMissingCards } from './winner-determiner.copy';
-import type { Hand, PlayerWithHand, RankHandReponse } from './winner-determiner.types';
+import type { Hand, PlayerWithHand, RankHandReponse as RankHandResponse } from './winner-determiner.types';
 import currency = require('currency.js');
 
 @Injectable()
@@ -73,7 +73,7 @@ export class WinnerDeterminerService {
         roundCalled: number,
         playerCards: [Card, Card],
         tableCards: [Card, Card, Card, Card, Card],
-    ): RankHandReponse {
+    ): RankHandResponse {
         const playersWithHands: PlayerWithHand[] = [];
 
         // The table cards are 1 possible hand

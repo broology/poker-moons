@@ -65,7 +65,7 @@ describe('CallActionHandlerService', () => {
         it('should return PokerMoonsError if attempting to call when not enough chips in stack', async () => {
             const table = mockServerTableState({ activeRound: { activeSeat: 1, toCall: 100 } });
 
-            const result = await service.canCall(table, { ...player, stack: 50 }, action);
+            const result = await service.canCall(table, { ...player, stack: 50, biddingCycleCalled: 0 }, action);
 
             expect(result).toEqual(left(`Minimum to call is 100.`));
         });
