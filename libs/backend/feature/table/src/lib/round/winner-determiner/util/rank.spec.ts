@@ -103,6 +103,34 @@ describe('Rank Utility Functions', () => {
                 },
             ]);
         });
+
+        it('should return a win via fold case if only one player is passed in', () => {
+            const players: PlayerWithHand[] = [
+                {
+                    id: 'player_1',
+                    username: 'Levi',
+                    cards: [mockCard({ suit: 'clubs', rank: '4' }), mockCard({ suit: 'spades', rank: '4' })],
+                    hand: null,
+                    roundCalled: 100,
+                },
+            ];
+
+            const result = compareHands(players);
+
+            expect(result).toEqual<RankHandReponse[]>([
+                {
+                    player: {
+                        id: 'player_1',
+                        username: 'Levi',
+                        cards: [mockCard({ suit: 'clubs', rank: '4' }), mockCard({ suit: 'spades', rank: '4' })],
+                        hand: null,
+                        roundCalled: 100,
+                    },
+                    category: 'win via fold',
+                    score: 10000,
+                },
+            ]);
+        });
     });
 
     describe('rankHand', () => {

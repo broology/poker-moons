@@ -1,3 +1,4 @@
+import { InternalServerErrorException } from '@nestjs/common';
 import type { Card, Rank, Suit } from '@poker-moons/shared/type';
 import type { HandCategory, PlayerWithHand, RankHandReponse } from '../winner-determiner.types';
 
@@ -31,6 +32,11 @@ import type { HandCategory, PlayerWithHand, RankHandReponse } from '../winner-de
  * Score for Hand2 = 200 + 4 + 4 + 11 = 219
  */
 export function rankHand(player: PlayerWithHand): RankHandReponse {
+    // This should never happen, just done to satisfy TS
+    if (player.hand === null) {
+        throw new InternalServerErrorException('Attempting to rank a non-existant hand!');
+    }
+
     // Using a zero index, the ten card will be at index 8 (used to check for a royal flush)
     const TEN_CARD_POSITION = 8;
 
@@ -75,6 +81,7 @@ export function rankHand(player: PlayerWithHand): RankHandReponse {
         'two pairs': Object.values(ranks).filter((count) => count === 2).length === 2,
         pair: Object.values(ranks).filter((count) => count === 2).length === 1,
         'high card': true,
+        'win via fold': false,
     };
 
     categoryMap['straight flush'] = categoryMap.flush && categoryMap.straight;
@@ -130,11 +137,24 @@ export function rankHand(player: PlayerWithHand): RankHandReponse {
 }
 
 /**
- * Sorts the player's hands in ranking order
+ * Sorts the player's hands in ranking order.
+ *
+ * If only one player is passed in, it means they have won as a result
+ * of everyone else folding, so no ranking is necessary.
  *
  * @param players - the players and their hands to compare
  */
 export function compareHands(players: PlayerWithHand[]): RankHandReponse[] {
+    if (players.length === 1) {
+        return [
+            {
+                player: players[0],
+                category: 'win via fold',
+                score: 10000,
+            },
+        ];
+    }
+
     const sortedHands: RankHandReponse[] = players
         .map((player) => rankHand(player))
         .sort((handA, handB) => handB.score - handA.score);
