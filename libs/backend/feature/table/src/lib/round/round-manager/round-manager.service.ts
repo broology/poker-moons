@@ -6,6 +6,7 @@ import {
     hasEveryoneTakenTurn,
     incrementRoundStatus,
     incrementSeat,
+    isAutoCompletable,
 } from '../../shared/util/round.util';
 import { TableGatewayService } from '../../shared/websocket/table-gateway.service';
 import { TableStateManagerService } from '../../table-state-manager/table-state-manager.service';
@@ -52,11 +53,18 @@ export class RoundManagerService {
             hasEveryoneTakenTurn(playerStatuses) &&
             hasBiddingCycleEnded(Object.values(table.playerMap), table.activeRound)
         ) {
+            // if a round a can be auto-completed, which occurs when less than 2 players are actively bidden.
+            if (isAutoCompletable(playerStatuses)) {
+                await this.autoCompleteRound(table.id, nextActiveSeat);
+                return;
+            }
+
             const updatedPlayerMap: Record<PlayerId, Player> = {};
 
             for (const player of Object.values(table.playerMap)) {
                 updatedPlayerMap[player.id] = {
                     ...player,
+                    roundCalled: player.biddingCycleCalled + player.roundCalled,
                     biddingCycleCalled: 0,
                     status: player.status === 'folded' || player.status === 'all-in' ? player.status : 'waiting',
                 };
@@ -106,6 +114,58 @@ export class RoundManagerService {
                 nextPlayerId: table.seatMap[nextActiveSeat]!,
             }),
         ]);
+    }
+
+    /**
+     * @description Draws the remaining cards for the round, bidding is complete before this is called.
+     *
+     *  This method should be called in the player action handlers at the end of every turn.
+     *
+     * @param tableId - the ID of the table to auto-complete
+     * @param nextActiveSeat - the seat ID of the player whose turn is next
+     */
+    async autoCompleteRound(tableId: TableId, nextActiveSeat: SeatId): Promise<void> {
+        let table: ServerTableState;
+
+        // eslint-disable-next-line no-constant-condition
+        while (true) {
+            table = await this.tableStateManagerService.getTableById(tableId);
+
+            // If transitioning from deal -> flop, draw 3 cards, otherwise draw only 1
+            if (table.activeRound.roundStatus === 'deal') {
+                const draw1 = await this.deckManagerService.drawCard(table.id, table.deck);
+                const draw2 = await this.deckManagerService.drawCard(table.id, draw1.deck);
+                const draw3 = await this.deckManagerService.drawCard(table.id, draw2.deck);
+
+                table.activeRound.cards.push(draw1.card, draw2.card, draw3.card);
+            } else {
+                const { card } = await this.deckManagerService.drawCard(table.id, table.deck);
+                table.activeRound.cards.push(card);
+            }
+
+            const newStatus = incrementRoundStatus(table.activeRound.roundStatus);
+
+            await this.tableStateManagerService.updateRound(table.id, {
+                cards: table.activeRound.cards,
+                roundStatus: newStatus,
+                toCall: 0,
+            });
+
+            this.tableGatewayService.emitTableEvent(table.id, {
+                type: 'roundStatusChanged',
+                status: newStatus,
+                activeSeat: nextActiveSeat,
+                cards: table.activeRound.cards,
+                toCall: 0,
+            });
+
+            if (newStatus === 'river') {
+                break;
+            }
+        }
+
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        await this.endRound(table!);
     }
 
     /**
@@ -196,14 +256,13 @@ export class RoundManagerService {
             updatedPlayerMap[player.id] = {
                 ...player,
                 status: 'waiting',
-                roundCalled: player.biddingCycleCalled + player.roundCalled,
             };
         }
 
         await this.tableStateManagerService.updateTable(table.id, { playerMap: updatedPlayerMap });
 
         // Determine and emit winner of round and update player's stacks
-        await this.winnerDeterminerService.determineWinner(table.id, table.playerMap, table.activeRound);
+        await this.winnerDeterminerService.determineWinner(table.id, updatedPlayerMap, table.activeRound);
 
         // Determine if the game can continue (i.e. two or more players still have chips)
         const playerStacks = Object.values(table.playerMap).map((player) => player.stack);
@@ -219,10 +278,35 @@ export class RoundManagerService {
                 startDate: undefined,
             });
         } else {
+            // Because race conditions
+            table = await this.tableStateManagerService.getTableById(table.id);
             /*
              * If the game can continue, set the next dealer/active seat, reset the round in state,
              * and call `startRound` to initiate the next round.
              */
+
+            // Remove players who have no chips left from the game
+            const outPlayers = Object.values(table.playerMap).filter((player) => player.stack === 0);
+            for (const loser of Object.values(outPlayers)) {
+                const player = table.playerMap[loser.id];
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                const seatId = player.seatId!;
+
+                player.status = 'out';
+                player.seatId = null;
+
+                table.seatMap[seatId] = undefined;
+
+                this.tableGatewayService.emitTableEvent(table.id, {
+                    type: 'playerLeft',
+                    seatId,
+                });
+            }
+
+            await this.tableStateManagerService.updateTable(table.id, table);
+
+            table = await this.tableStateManagerService.getTableById(table.id);
+
             const nextDealerSeat = incrementSeat(table.activeRound.dealerSeat, table.seatMap);
             const nextActiveSeat = incrementSeat(nextDealerSeat, table.seatMap);
 

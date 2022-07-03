@@ -76,6 +76,7 @@ export class PlayerService {
         //TODO: set seatId to null in the tableState? and pass previous seatId to frontend for update
         const playerUpdate: Partial<Player> = {
             status: 'out',
+            seatId: null,
         };
         await this.tableStateManagerService.updateTablePlayer(tableId, playerId, playerUpdate);
         this.readySystemService.onPlayerLeft(tableId);
