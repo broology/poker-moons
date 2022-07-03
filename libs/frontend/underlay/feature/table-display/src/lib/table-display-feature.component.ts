@@ -10,5 +10,9 @@ import { TableStateFacade } from '@poker-moons/frontend/shared/state/table';
 export class TableDisplayFeatureComponent {
     readonly round$ = this.tableStateFacade.selectRound();
 
+    readonly tableStatus$ = this.tableStateFacade.selectStatus();
+
+    readonly sumRoundCalled$ = this.tableStateFacade.selectSumRoundCalled();
+
     constructor(private readonly tableStateFacade: TableStateFacade) {}
 }

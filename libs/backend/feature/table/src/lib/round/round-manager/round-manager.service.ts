@@ -62,12 +62,24 @@ export class RoundManagerService {
             const updatedPlayerMap: Record<PlayerId, Player> = {};
 
             for (const player of Object.values(table.playerMap)) {
-                updatedPlayerMap[player.id] = {
-                    ...player,
+                const playerChanges = {
                     roundCalled: player.biddingCycleCalled + player.roundCalled,
                     biddingCycleCalled: 0,
-                    status: player.status === 'folded' || player.status === 'all-in' ? player.status : 'waiting',
+                    status: (player.status === 'folded' || player.status === 'all-in'
+                        ? player.status
+                        : 'waiting') as PlayerStatus,
                 };
+
+                updatedPlayerMap[player.id] = {
+                    ...player,
+                    ...playerChanges,
+                };
+
+                this.tableGatewayService.emitTableEvent(table.id, {
+                    type: 'playerChanged',
+                    id: player.id,
+                    ...playerChanges,
+                });
             }
 
             await this.tableStateManagerService.updateTable(table.id, { playerMap: updatedPlayerMap });

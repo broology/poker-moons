@@ -136,32 +136,16 @@ export const wsReducers: ReducerTypes<ClientTableState, [ActionType<any>]>[] = [
     }),
 
     /**
-     * When the player exceeds default timeout, using their time bank
+     * When the player's mutable data changes
      */
-    on(tableWsActionMap.playerTimeBank, (state, { payload }) => {
+    on(tableWsActionMap.playerChanged, (state, { payload }) => {
         return {
             ...state,
             mutablePlayerMap: {
                 ...state.mutablePlayerMap,
-                [payload.playerId]: {
-                    ...state.mutablePlayerMap[payload.playerId],
-                    timeBank: payload.timeBank,
-                },
-            },
-        };
-    }),
-
-    /**
-     * When the player changes their ready status
-     */
-    on(tableWsActionMap.playerReadyStatus, (state, { payload }) => {
-        return {
-            ...state,
-            mutablePlayerMap: {
-                ...state.mutablePlayerMap,
-                [payload.playerId]: {
-                    ...state.mutablePlayerMap[payload.playerId],
-                    ready: payload.ready,
+                [payload.id]: {
+                    ...state.mutablePlayerMap[payload.id],
+                    ...payload,
                 },
             },
         };

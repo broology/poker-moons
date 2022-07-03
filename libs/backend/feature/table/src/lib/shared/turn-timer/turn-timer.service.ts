@@ -182,8 +182,8 @@ export class TurnTimerService {
                     timeBank: newTimeBank,
                 });
                 this.tableGatewayService.emitTableEvent(tableId, {
-                    type: 'playerTimeBank',
-                    playerId: player.id,
+                    type: 'playerChanged',
+                    id: player.id,
                     timeBank: newTimeBank,
                 });
 
