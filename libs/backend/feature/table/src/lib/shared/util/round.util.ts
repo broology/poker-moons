@@ -26,19 +26,26 @@ export function isRoundComplete(roundStatus: RoundStatus, playerStatuses: Player
     ) {
         return true;
     }
-    
-    // If there is ever a point where every player has all-ined or folded, or every player but one has all-ined or folded, the round is over
-    if (
-        ((countOccurrences(playerStatuses, 'all-in') + countOccurrences(playerStatuses, "folded")) === 
-        playerStatuses.length - 1) ||
-        ((countOccurrences(playerStatuses, 'all-in') + countOccurrences(playerStatuses, "folded")) === 
-        playerStatuses.length)
-    ) {
-        return true;
-    }
 
     // If it's the river and everyone checks, the round is over
     if (roundStatus === 'river' && countOccurrences(playerStatuses, 'checked') === playerStatuses.length) {
+        return true;
+    }
+
+    return false;
+}
+
+/**
+ * @description Determines if a round a can be auto-completed, which occurs when less than 2 players are actively bidden.
+ */
+export function isAutoCompletable(playerStatuses: PlayerStatus[]): boolean {
+    // If there is ever a point where every player has all-ined or folded, or every player but one has all-ined or folded, the round is over
+    if (
+        countOccurrences(playerStatuses, 'all-in') + countOccurrences(playerStatuses, 'folded') ===
+            playerStatuses.length - 1 ||
+        countOccurrences(playerStatuses, 'all-in') + countOccurrences(playerStatuses, 'folded') ===
+            playerStatuses.length
+    ) {
         return true;
     }
 

@@ -47,7 +47,7 @@ export class CallActionHandlerService {
             }
 
             const delta = table.activeRound.toCall - player.biddingCycleCalled;
-            const newStatus = (delta < player.stack) ? 'called' : 'all-in'
+            const newStatus = delta < player.stack ? 'called' : 'all-in';
 
             // Update the player's status, biddingCycleCalled amount, and stack in the server
             await this.tableStateManagerService.updateTablePlayer(table.id, player.id, {
@@ -104,8 +104,8 @@ export class CallActionHandlerService {
         const playerTurn = validatePlayerTurn(table, player, action);
 
         if (isRight(playerTurn))
-        // Can we update this to allow calling a larger bet than the stack?
-            return match([player.stack >= (table.activeRound.toCall - player.biddingCycleCalled)])
+            // Can we update this to allow calling a larger bet than the stack?
+            return match([player.stack >= table.activeRound.toCall - player.biddingCycleCalled])
                 .with([false], () => left(`Minimum to call is ${table.activeRound.toCall}.`))
                 .otherwise(() => right({ table, player, action }));
 
