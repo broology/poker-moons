@@ -1,8 +1,9 @@
-import { moduleMetadata, Story, Meta } from '@storybook/angular';
+import { mockMutablePublicPlayer } from '@poker-moons/shared/testing';
+import { Meta, moduleMetadata, Story } from '@storybook/angular';
 import { SeatActionComponent } from './seat-action.component';
 
 export default {
-    title: 'SeatActionComponent',
+    title: 'Seat/Action Component',
     component: SeatActionComponent,
     decorators: [
         moduleMetadata({
@@ -17,4 +18,8 @@ const Template: Story<SeatActionComponent> = (args: SeatActionComponent) => ({
 });
 
 export const Primary = Template.bind({});
-Primary.args = {};
+Primary.args = {
+    mutablePlayer: mockMutablePublicPlayer(),
+    playerOrientation: 'bottom',
+    depthLevel: 0,
+};

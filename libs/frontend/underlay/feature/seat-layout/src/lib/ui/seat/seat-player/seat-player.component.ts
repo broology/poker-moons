@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { ImmutablePublicPlayer } from '@poker-moons/shared/type';
+import { ImmutablePublicPlayer, MutablePublicPlayer, SeatId } from '@poker-moons/shared/type';
 
 @Component({
     selector: 'poker-moons-seat-player',
@@ -8,7 +8,32 @@ import { ImmutablePublicPlayer } from '@poker-moons/shared/type';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SeatPlayerComponent {
-    DEFAULT_PLAYER_IMG = '/default-profile-img.jpg';
+    /**
+     * @description Setter to determine if this seat is currently the active seat.
+     */
+    @Input() set activeSeatId(seatId: SeatId | null) {
+        if (this.immutablePlayer) {
+            if (seatId === this.immutablePlayer.seatId) {
+                this.active = true;
+                return;
+            }
+        }
 
+        this.active = false;
+    }
+
+    /**
+     * @description The immutable data of the player in this seat.
+     */
     @Input() immutablePlayer!: ImmutablePublicPlayer | null;
+
+    /**
+     * @description The mutable data of the player in this seat
+     */
+    @Input() mutablePlayer!: MutablePublicPlayer | null;
+
+    /**
+     * @description True if this player is currently the active seat at the table.
+     */
+    active = false;
 }
