@@ -75,24 +75,23 @@ export const wsReducers: ReducerTypes<ClientTableState, [ActionType<any>]>[] = [
     /**
      * When the round status changes, update the active round data.
      */
-    on(tableWsActionMap.roundStatusChanged, (state, { payload }) => {
+    on(tableWsActionMap.roundChanged, (state, { payload }) => {
         return {
             ...state,
             activeRound: {
                 ...state.activeRound,
-                roundStatus: payload.status,
-                cards: payload.cards,
-                activeSeat: payload.activeSeat,
-                toCall: payload.toCall,
+                ...payload,
             },
             // In the case of the cards being dealt, set all players cards
             mutablePlayerMap:
-                payload.status === 'deal'
+                payload.roundStatus === 'deal'
                     ? Object.entries(state.mutablePlayerMap).reduce(
                           (prev, [playerId, player]) => ({
                               ...prev,
                               [playerId]: {
                                   ...player,
+                                  roundCalled: 0,
+                                  biddingCycleCalled: 0,
                                   cards: [null, null],
                               },
                           }),

@@ -48,7 +48,7 @@ export class TableStateWsEffects {
 
     updateClientCards$ = createEffect(() =>
         this.actions$.pipe(
-            ofType(connectToWs.success, tableWsActionMap.roundStatusChanged),
+            ofType(connectToWs.success, tableWsActionMap.roundChanged),
             switchMap(() => of(getCards.request({ payload: undefined }))),
         ),
     );

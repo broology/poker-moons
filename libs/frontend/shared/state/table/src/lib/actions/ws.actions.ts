@@ -23,7 +23,7 @@ export const tableWsActionMap: TableWsActionMap = {
     playerLeft: createActionType('player has left the table'),
     playerReadyStatus: createActionType('player ready status has changed'),
     playerTimeBank: createActionType('player has passed timeout period, and their time bank has been affected'),
-    roundStatusChanged: createActionType('round status has changed'),
+    roundChanged: createActionType('round status has changed'),
     tableStatusChanged: createActionType('table status has been changed'),
     turn: createActionType('player turn has occurred'),
     winner: createActionType('winner has been decided'),

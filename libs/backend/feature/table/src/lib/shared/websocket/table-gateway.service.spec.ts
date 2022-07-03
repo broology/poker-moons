@@ -75,8 +75,8 @@ describe('TableGatewayService', () => {
 
     describe('emitRoundStatusChangedEvent', () => {
         it('should call server.to with the correct info', () => {
-            const roundStatusChangedEvent: RoundStatusChangedEvent = {
-                type: 'roundStatusChanged',
+            const roundChangedEvent: RoundStatusChangedEvent = {
+                type: 'roundChanged',
                 status: 'flop',
                 activeSeat: 1,
                 cards: [mockCard(), mockCard({ suit: 'hearts', rank: '12' }), mockCard({ suit: 'spades', rank: '5' })],
@@ -85,12 +85,12 @@ describe('TableGatewayService', () => {
 
             serverSpy.mockReturnValue({
                 emit: (type: string, event: RoundStatusChangedEvent) => {
-                    expect(type).toEqual('roundStatusChanged');
-                    expect(event).toEqual(roundStatusChangedEvent);
+                    expect(type).toEqual('roundChanged');
+                    expect(event).toEqual(roundChangedEvent);
                 },
             });
 
-            service.emitTableEvent(tableId, roundStatusChangedEvent);
+            service.emitTableEvent(tableId, roundChangedEvent);
 
             expect(serverSpy).toHaveBeenCalledWith(tableId);
         });

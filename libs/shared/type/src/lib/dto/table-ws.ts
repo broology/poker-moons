@@ -1,6 +1,5 @@
-import type { Card } from '../card';
 import type { PlayerId, PlayerStatus, PublicPlayer, WinnerMap } from '../player';
-import type { RoundStatus } from '../round';
+import type { Round } from '../round';
 import type { ClientTableState } from '../state';
 import type { SeatId, TableStatus } from '../table';
 
@@ -42,15 +41,7 @@ export interface PlayerTimeBankEvent extends GeneralTableEvent<'playerTimeBank'>
     timeBank: number;
 }
 
-export interface RoundStatusChangedEvent extends GeneralTableEvent<'roundStatusChanged'> {
-    status: RoundStatus;
-
-    activeSeat: SeatId | null;
-
-    cards: Card[];
-
-    toCall: number;
-}
+export interface RoundChangedEvent extends GeneralTableEvent<'roundChanged'>, Partial<Round> {}
 
 export interface TableStatusChangedEvent extends GeneralTableEvent<'tableStatusChanged'> {
     status: TableStatus;
@@ -108,6 +99,6 @@ export type TableEvent =
     | PlayerReadyStatusEvent
     | PlayerTimeBankEvent
     | PlayerTurnEvent
-    | RoundStatusChangedEvent
+    | RoundChangedEvent
     | TableStatusChangedEvent
     | WinnerWinnerChickenDinnerEvent;
