@@ -9,3 +9,14 @@
     width: 100%;
     background-color: c.color('background');
 }
+
+.container {
+    height: 50%;
+    align-items: center;
+    justify-content: space-around;
+    gap: s.spacing(5);
+}
+
+.logo {
+    width: 90%;
+}
