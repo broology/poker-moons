@@ -20,6 +20,7 @@
         "frontend-underlay-feature-seat-layout": "libs/frontend/underlay/feature/seat-layout",
         "frontend-underlay-feature-table-display": "libs/frontend/underlay/feature/table-display",
         "frontend-underlay-shell": "libs/frontend/underlay/shell",
+        "shared-assets": "libs/shared/assets",
         "shared-testing": "libs/shared/testing",
         "shared-type": "libs/shared/type",
         "shared-util": "libs/shared/util"
