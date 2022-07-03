@@ -1,19 +1,9 @@
 <div class="root" fxLayout="row" fxLayoutAlign="center">
     <div class="container" fxLayout="column" fxFlexAlign="center">
-        <img class="logo" src="/assets/poker-moons-logo.svg" alt="poker-moons-logo.svg" />
-        <poker-moons-landing-button label="Play Now"></poker-moons-landing-button>
+        <div class="logo-container" fxLayout="column">
+            <img class="logo" src="/assets/poker-moons-logo.svg" alt="poker-moons-logo.svg" />
+            <h1>Free online poker with friends without the hassle.</h1>
+        </div>
+        <poker-moons-landing-button class="btn" label="Play Now"></poker-moons-landing-button>
     </div>
 </div>
-
-<!-- <button type="button" ngStyles>
-    <div *ngIf="startIcon || endIcon" fxLayout="row" class="container">
-        <div *ngIf="startIcon" class="item">
-            <fa-icon [icon]="startIcon"></fa-icon>
-        </div>
-        <div class="item">{{ label }}</div>
-        <div *ngIf="endIcon" class="item">
-            <fa-icon [icon]="endIcon"></fa-icon>
-        </div>
-    </div>
-    <div *ngIf="!startIcon && !endIcon">{{ label }}</div>
-</button> -->

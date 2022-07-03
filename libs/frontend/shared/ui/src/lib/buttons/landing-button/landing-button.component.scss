@@ -4,22 +4,6 @@
 @use '~styles/spacing' as s;
 @use '~styles/transitions' as tr;
 
-@keyframes slideInFromBottom {
-    0% {
-        transform: translateY(100%);
-    }
-    100% {
-        transform: translateY(0);
-    }
-}
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
 .landing-button {
     position: relative;
     display: inline-block;
@@ -37,7 +21,6 @@
 
     text-shadow: 0 0 0.125em rgba(255, 255, 255, 20%), 0 0 0.45em c.color('primary');
     box-shadow: 0 0 0.5em 0 c.color('primary'), inset 0 0 0.5em 0 c.color('primary');
-    animation: 0.8s ease-out 0s 1 slideInFromBottom, fadeIn 2s;
     @include tr.transition(color 100ms linear, background-color 100ms linear, border-color 100ms linear);
 
     &::before {
@@ -70,6 +53,7 @@
         color: c.color-text-contrast('primary');
         background-color: c.color('primary');
         text-shadow: none;
+        box-shadow: 0 0 0.8em 0 c.color('primary'), inset 0 0 0.8em 0 c.color('primary');
         &::before {
             opacity: 1;
         }
@@ -81,7 +65,6 @@
         color: c.color-text-contrast('primary');
         background-color: c.color-shaded('primary');
         border-color: c.color-shaded('primary');
-        text-shadow: none;
         &::before {
             opacity: 1;
         }
@@ -92,7 +75,6 @@
     &:focus {
         color: c.color-text-contrast('primary');
         background-color: c.color-tinted('primary');
-        text-shadow: none;
         &::before {
             opacity: 1;
         }

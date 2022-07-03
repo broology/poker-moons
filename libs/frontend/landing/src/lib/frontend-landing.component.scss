@@ -8,6 +8,7 @@
     height: 100vh;
     width: 100%;
     background-color: c.color('background');
+    color: c.color('text');
 }
 
 .container {
@@ -15,8 +16,42 @@
     align-items: center;
     justify-content: space-around;
     gap: s.spacing(5);
+    padding: s.spacing(4);
+}
+
+.logo-container {
+    align-items: center;
+    gap: s.spacing(3);
+    animation: 0.8s ease-out 0s 1 slideInFromBottom, fadeIn 2s;
 }
 
 .logo {
     width: 90%;
+}
+
+h1 {
+    @include t.h4;
+    text-align: center;
+    animation: 1s ease-out 0s 1 slideInFromBottom, fadeIn 2s;
+}
+
+.btn {
+    animation: 1.2s ease-out 0s 1 slideInFromBottom, fadeIn 2s;
+}
+
+@keyframes slideInFromBottom {
+    0% {
+        transform: translateY(100%);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
