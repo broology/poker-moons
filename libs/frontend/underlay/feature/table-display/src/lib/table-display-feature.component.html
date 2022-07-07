@@ -1,6 +1,10 @@
 <!-- These can definitely be optimized to not render as often. But it's fine for now -->
 <div *rxLet="round$ as round" class="table-display">
     <poker-moons-table-display-community-cards [cards]="round.cards"></poker-moons-table-display-community-cards>
-    <poker-moons-table-display-pot [mainPot]="round.pot"></poker-moons-table-display-pot>
-    <poker-moons-table-display-status [status]="round.roundStatus"></poker-moons-table-display-status>
+    <poker-moons-table-display-status
+        [pot]="round.pot"
+        [roundStatus]="round.roundStatus"
+        [tableStatus]="tableStatus$ | push"
+    ></poker-moons-table-display-status>
+    <poker-moons-table-display-pot [mainPot]="sumRoundCalled$ | push"></poker-moons-table-display-pot>
 </div>

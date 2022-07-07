@@ -116,10 +116,10 @@ export class PlayerService {
         } else {
             this.readySystemService.onPlayerLeft(tableId);
         }
-        //emit playerReadyStatus event here
+        //emit playerChanged event here
         this.tableGatewayService.emitTableEvent(tableId, {
-            type: 'playerReadyStatus',
-            playerId: playerId,
+            type: 'playerChanged',
+            id: playerId,
             ready: currentPlayerState.ready,
         });
         return currentPlayerState;

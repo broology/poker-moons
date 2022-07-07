@@ -28,6 +28,10 @@ export const selectClientSeatId = createSelector(
 
 export const selectActiveSeatId = createSelector(selectActiveRound, (round) => round.activeSeat);
 
+export const selectSumRoundCalled = createSelector(selectMutablePlayerMap, (mutablePlayerMap) =>
+    Object.values(mutablePlayerMap).reduce((prev, cur) => prev + cur.roundCalled, 0),
+);
+
 export const selectMutablePlayerBySeatId = (props: { seatId: SeatId }) =>
     createSelector(selectSeatMap, selectMutablePlayerMap, (seatMap, mutablePlayerMap) => {
         const playerId = seatMap[props.seatId];

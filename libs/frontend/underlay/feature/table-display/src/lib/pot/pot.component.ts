@@ -8,6 +8,9 @@ import { SeatId } from '@poker-moons/shared/type';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PotComponent {
+    /**
+     * @description The number of chips to be displayed in the center of the table. This total excludes to the active bidding cycle.
+     */
     @Input() mainPot!: number;
 
     /**
