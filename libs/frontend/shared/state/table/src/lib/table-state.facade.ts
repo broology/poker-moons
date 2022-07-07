@@ -21,6 +21,7 @@ import {
     selectClientSeatId,
     selectImmutablePlayerBySeatId,
     selectMutablePlayerBySeatId,
+    selectSumRoundCalled,
 } from './table-state.selectors';
 import { selectActiveRound, selectSeatMap, selectStartDate, selectStatus } from './table.state';
 
@@ -73,6 +74,15 @@ export class TableStateFacade {
      */
     selectActiveSeatId(): Observable<SeatId | null> {
         return this.store.pipe(select(selectActiveSeatId));
+    }
+
+    /**
+     * Selects the total amount of chips that have been round called. (aka, number of chips to display in the center)
+     *
+     * Not the same as pot, as bidding cycle chips contribute to the pot total.
+     */
+    selectSumRoundCalled(): Observable<number> {
+        return this.store.pipe(select(selectSumRoundCalled));
     }
 
     /**

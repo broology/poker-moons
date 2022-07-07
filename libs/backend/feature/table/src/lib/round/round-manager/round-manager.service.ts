@@ -1,5 +1,5 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { Player, PlayerId, PlayerStatus, SeatId, ServerTableState, TableId } from '@poker-moons/shared/type';
+import { Player, PlayerId, PlayerStatus, Round, SeatId, ServerTableState, TableId } from '@poker-moons/shared/type';
 import { TurnTimerService } from '../../shared/turn-timer/turn-timer.service';
 import {
     hasBiddingCycleEnded,
@@ -62,12 +62,24 @@ export class RoundManagerService {
             const updatedPlayerMap: Record<PlayerId, Player> = {};
 
             for (const player of Object.values(table.playerMap)) {
-                updatedPlayerMap[player.id] = {
-                    ...player,
+                const playerChanges = {
                     roundCalled: player.biddingCycleCalled + player.roundCalled,
                     biddingCycleCalled: 0,
-                    status: player.status === 'folded' || player.status === 'all-in' ? player.status : 'waiting',
+                    status: (player.status === 'folded' || player.status === 'all-in'
+                        ? player.status
+                        : 'waiting') as PlayerStatus,
                 };
+
+                updatedPlayerMap[player.id] = {
+                    ...player,
+                    ...playerChanges,
+                };
+
+                this.tableGatewayService.emitTableEvent(table.id, {
+                    type: 'playerChanged',
+                    id: player.id,
+                    ...playerChanges,
+                });
             }
 
             await this.tableStateManagerService.updateTable(table.id, { playerMap: updatedPlayerMap });
@@ -91,8 +103,8 @@ export class RoundManagerService {
             });
 
             this.tableGatewayService.emitTableEvent(table.id, {
-                type: 'roundStatusChanged',
-                status: incrementRoundStatus(table.activeRound.roundStatus),
+                type: 'roundChanged',
+                roundStatus: incrementRoundStatus(table.activeRound.roundStatus),
                 activeSeat: nextActiveSeat,
                 cards: table.activeRound.cards,
                 toCall: 0,
@@ -152,8 +164,8 @@ export class RoundManagerService {
             });
 
             this.tableGatewayService.emitTableEvent(table.id, {
-                type: 'roundStatusChanged',
-                status: newStatus,
+                type: 'roundChanged',
+                roundStatus: newStatus,
                 activeSeat: nextActiveSeat,
                 cards: table.activeRound.cards,
                 toCall: 0,
@@ -217,8 +229,8 @@ export class RoundManagerService {
          * This also triggers each player to fetch their cards from the server
          */
         this.tableGatewayService.emitTableEvent(table.id, {
-            type: 'roundStatusChanged',
-            status: 'deal',
+            type: 'roundChanged',
+            roundStatus: 'deal',
             activeSeat,
             cards: [],
             toCall: 0,
@@ -310,7 +322,7 @@ export class RoundManagerService {
             const nextDealerSeat = incrementSeat(table.activeRound.dealerSeat, table.seatMap);
             const nextActiveSeat = incrementSeat(nextDealerSeat, table.seatMap);
 
-            await this.tableStateManagerService.updateRound(table.id, {
+            const roundChanges: Partial<Round> = {
                 turnCount: 0,
                 roundStatus: 'deal',
                 pot: 0,
@@ -318,6 +330,13 @@ export class RoundManagerService {
                 cards: [],
                 dealerSeat: nextDealerSeat,
                 activeSeat: nextActiveSeat,
+            };
+
+            await this.tableStateManagerService.updateRound(table.id, roundChanges);
+
+            this.tableGatewayService.emitTableEvent(table.id, {
+                type: 'roundChanged',
+                ...roundChanges,
             });
 
             await this.tableStateManagerService.updateAllPlayers(table.id, {
