@@ -41,7 +41,7 @@ export class TurnTimerServiceConsumer {
         this.logger.log(`${job.id}: Player "${playerId}" timed out`);
 
         await this.tableStateManagerService.updateTablePlayer(tableId, playerId, { timeBank: 0 });
-        this.tableGatewayService.emitTableEvent(tableId, { type: 'playerTimeBank', playerId, timeBank: 0 });
+        this.tableGatewayService.emitTableEvent(tableId, { type: 'playerChanged', id: playerId, timeBank: 0 });
 
         // Check or Fold for player
         await this.triggerAction(tableId, playerId);

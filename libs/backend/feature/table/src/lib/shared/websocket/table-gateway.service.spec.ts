@@ -6,7 +6,7 @@ import {
     PlayerLeftTableEvent,
     PlayerTurnEvent,
     PublicPlayer,
-    RoundStatusChangedEvent,
+    RoundChangedEvent,
     SeatId,
     TableId,
     WinnerWinnerChickenDinnerEvent,
@@ -75,16 +75,16 @@ describe('TableGatewayService', () => {
 
     describe('emitRoundStatusChangedEvent', () => {
         it('should call server.to with the correct info', () => {
-            const roundChangedEvent: RoundStatusChangedEvent = {
+            const roundChangedEvent: RoundChangedEvent = {
                 type: 'roundChanged',
-                status: 'flop',
+                roundStatus: 'flop',
                 activeSeat: 1,
                 cards: [mockCard(), mockCard({ suit: 'hearts', rank: '12' }), mockCard({ suit: 'spades', rank: '5' })],
                 toCall: 0,
             };
 
             serverSpy.mockReturnValue({
-                emit: (type: string, event: RoundStatusChangedEvent) => {
+                emit: (type: string, event: RoundChangedEvent) => {
                     expect(type).toEqual('roundChanged');
                     expect(event).toEqual(roundChangedEvent);
                 },
