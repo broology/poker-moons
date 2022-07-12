@@ -1,8 +1,7 @@
-@use '~styles/borders.scss' as b;
 @use '~styles/colors.scss' as c;
 @use '~styles/typography' as t;
 @use '~styles/spacing' as s;
-@use '~styles/transitions' as tr;
+@use '~styles/z-index' as z;
 
 .root {
     height: 100vh;
@@ -23,20 +22,36 @@
     align-items: center;
     gap: s.spacing(3);
     animation: 0.8s ease-out 0s 1 slideInFromBottom, fadeIn 2s;
+    z-index: z.zIndex('hud');
 }
 
 .logo {
     width: 90%;
 }
 
+.table {
+    background-image: linear-gradient(to top, c.color-alpha('tinted', 0.5), c.color-alpha('background', 0.9)),
+        url('/assets/poker-moons-table.svg');
+    background-position: center;
+    background-size: cover;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+}
+
 h1 {
     @include t.h4;
     text-align: center;
     animation: 1s ease-out 0s 1 slideInFromBottom, fadeIn 2s;
+    z-index: z.zIndex('hud');
 }
 
 .btn {
     animation: 1.2s ease-out 0s 1 slideInFromBottom, fadeIn 2s;
+    z-index: z.zIndex('hud');
 }
 
 @keyframes slideInFromBottom {
