@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
 import { FrontendLandingComponent } from './frontend-landing.component';
 import { frontendLandingImports } from './frontend-landing.module';
 

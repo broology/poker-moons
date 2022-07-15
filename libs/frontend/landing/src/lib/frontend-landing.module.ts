@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { RouterModule } from '@angular/router';
-import { LandingButtonModule } from '../../../shared/ui/src';
+import { LandingButtonModule } from '@poker-moons/frontend/shared/ui';
 import { FrontendLandingComponent } from './frontend-landing.component';
 
 export const frontendLandingImports = [
