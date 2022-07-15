@@ -8,7 +8,7 @@ module.exports = {
             stringifyContentPathRegex: '\\.(html|svg)$',
         },
     },
-    coverageDirectory: '../../../../../coverage/libs/frontend/landing',
+    coverageDirectory: '../../../coverage/libs/frontend/landing',
     transform: {
         '^.+\\.(ts|mjs|js|html)$': 'jest-preset-angular',
     },
@@ -18,5 +18,5 @@ module.exports = {
         'jest-preset-angular/build/serializers/ng-snapshot',
         'jest-preset-angular/build/serializers/html-comment',
     ],
-    preset: '../../../../../jest.preset.ts',
+    preset: '../../../jest.preset.ts',
 };
