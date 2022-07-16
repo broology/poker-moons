@@ -9,7 +9,7 @@ import { TableRoutingGuard } from './guard/table-routing.guard';
                 {
                     path: '',
                     pathMatch: 'full',
-                    redirectTo: 'builder',
+                    loadChildren: () => import('@poker-moons/frontend/landing').then((m) => m.FrontendLandingModule),
                 },
                 {
                     path: 'builder',
