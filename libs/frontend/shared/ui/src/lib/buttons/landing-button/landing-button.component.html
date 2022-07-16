@@ -1,4 +1,4 @@
-<a (click)="click()" class="landing-button">
+<a (click)="click()" class="landing-button" data-cy="landing-button">
     <div *ngIf="startIcon || endIcon" fxLayout="row" class="container">
         <div *ngIf="startIcon" class="item">
             <fa-icon [icon]="startIcon"></fa-icon>

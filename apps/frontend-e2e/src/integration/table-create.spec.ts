@@ -11,6 +11,8 @@ describe('table create', () => {
         // [Action] Load base page
         cy.visit('/');
 
+        cy.get('[data-cy=landing-button]').click();
+
         // [Assert] Redirects to builder
         cy.location('pathname').should('eq', '/builder');
 

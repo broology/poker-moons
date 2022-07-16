@@ -1,0 +1,74 @@
+@use '~styles/colors.scss' as c;
+@use '~styles/typography' as t;
+@use '~styles/spacing' as s;
+@use '~styles/z-index' as z;
+
+.root {
+    height: 100vh;
+    width: 100%;
+    background-color: c.color('background');
+    color: c.color('text');
+}
+
+.container {
+    height: 50%;
+    align-items: center;
+    justify-content: space-around;
+    gap: s.spacing(5);
+    padding: s.spacing(4);
+}
+
+.logo-container {
+    align-items: center;
+    gap: s.spacing(3);
+    animation: 0.6s ease-out 0s 1 slideInFromBottom, fadeIn 2s;
+    z-index: z.zIndex('hud');
+    padding-left: s.spacing(2);
+    padding-right: s.spacing(2);
+}
+
+.logo {
+    width: 100%;
+}
+
+.table {
+    background-image: linear-gradient(to top, c.color-alpha('tinted', 0.5), c.color-alpha('background', 0.9)),
+        url('/assets/poker-moons-landing-table.svg');
+    background-position: center;
+    background-size: cover;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+}
+
+h1 {
+    @include t.h4;
+    text-align: center;
+    animation: 1s ease-out 0s 1 slideInFromBottom, fadeIn 2s;
+    z-index: z.zIndex('hud');
+}
+
+.btn {
+    animation: 1.2s ease-out 0s 1 slideInFromBottom, fadeIn 2s;
+    z-index: z.zIndex('hud');
+}
+
+@keyframes slideInFromBottom {
+    0% {
+        transform: translateY(100%);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
