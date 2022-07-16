@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FrontendLandingComponent } from './frontend-landing.component';
 import { frontendLandingImports } from './frontend-landing.module';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('FrontendLandingComponent', () => {
     let component: FrontendLandingComponent;
@@ -8,7 +9,7 @@ describe('FrontendLandingComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: frontendLandingImports,
+            imports: [RouterTestingModule, ...frontendLandingImports],
             declarations: [FrontendLandingComponent],
         }).compileComponents();
     });
