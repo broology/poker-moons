@@ -18,19 +18,19 @@ export interface SeatActionOrientationTransform {
 
 export const seatActionOrientationTransform: Record<PlayerOrientation, SeatActionOrientationTransform> = {
     bottom: {
-        cards: { ['top.px']: 70, ['left.px']: 175 },
-        stack: { ['top.px']: 50, ['left.px']: 290 },
-        called: { ['top.px']: -120, ['left.px']: 88 },
+        cards: { ['top.px']: -210, ['left.px']: 62.5 },
+        stack: { ['top.px']: -160, ['left.px']: 230 },
+        called: { ['top.px']: -250, ['left.px']: 15 },
     },
     bottomLeft: {
-        cards: { ['top.px']: 95, ['left.px']: 240 },
-        stack: { ['top.px']: 140, ['left.px']: 240 },
-        called: { ['top.px']: -90, ['left.px']: 280 },
+        cards: { ['top.px']: -130, ['left.px']: 220 },
+        stack: { ['top.px']: -100, ['left.px']: 245 },
+        called: { ['top.px']: -250, ['left.px']: 350 },
     },
     bottomRight: {
-        cards: { ['top.px']: 130, ['left.px']: 130 },
-        stack: { ['top.px']: 140, ['left.px']: -60 },
-        called: { ['top.px']: -90, ['left.px']: -100 },
+        cards: { ['top.px']: -90, ['left.px']: -40 },
+        stack: { ['top.px']: -100, ['left.px']: -255 },
+        called: { ['top.px']: -250, ['left.px']: -360 },
     },
     left: {
         cards: { ['top.px']: -230, ['left.px']: 60 },
@@ -43,18 +43,18 @@ export const seatActionOrientationTransform: Record<PlayerOrientation, SeatActio
         called: { ['top.px']: 210, ['left.px']: -120 },
     },
     top: {
-        cards: { ['top.px']: 150, ['left.px']: 280 },
-        stack: { ['top.px']: 0, ['left.px']: -100 },
-        called: { ['top.px']: 200, ['left.px']: 88 },
+        cards: { ['top.px']: 120, ['left.px']: 157 },
+        stack: { ['top.px']: 0, ['left.px']: -280 },
+        called: { ['top.px']: 110, ['left.px']: -32 },
     },
     topLeft: {
-        cards: { ['top.px']: 160, ['left.px']: 310 },
-        stack: { ['top.px']: 25, ['left.px']: 240 },
-        called: { ['top.px']: 210, ['left.px']: 300 },
+        cards: { ['top.px']: 120, ['left.px']: 310 },
+        stack: { ['top.px']: -10, ['left.px']: 245 },
+        called: { ['top.px']: 80, ['left.px']: 382.5 },
     },
     topRight: {
-        cards: { ['top.px']: 200, ['left.px']: 220 },
-        stack: { ['top.px']: 25, ['left.px']: -60 },
-        called: { ['top.px']: 210, ['left.px']: -120 },
+        cards: { ['top.px']: 150, ['left.px']: 5 },
+        stack: { ['top.px']: -10, ['left.px']: -285 },
+        called: { ['top.px']: 80, ['left.px']: -420 },
     },
 };

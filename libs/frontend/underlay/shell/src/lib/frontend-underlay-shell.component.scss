@@ -1,7 +1,4 @@
 @use '~styles/colors.scss' as c;
-@use '~styles/typography' as t;
-@use '~styles/spacing' as s;
-@use '~styles/z-index' as z;
 
 .root {
     height: 100vh;
@@ -11,6 +8,27 @@
 }
 
 .table {
-    background-image: linear-gradient(to top, c.color-alpha('tinted', 0.5), c.color-alpha('background', 0.9)),
-        url('/assets/poker-moons-landing-table.svg');
+    background-position: center;
+    background-size: cover;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    margin: 0;
+    padding: 0;
+}
+
+.table img {
+    height: 100vh;
+    width: 100vw;
+    margin: -1em;
+
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+    -webkit-user-drag: none;
 }
