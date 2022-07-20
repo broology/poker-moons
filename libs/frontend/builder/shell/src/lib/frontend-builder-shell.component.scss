@@ -1,0 +1,21 @@
+@use '~styles/colors.scss' as c;
+
+.root {
+    height: 100vh;
+    width: 100%;
+    background-color: c.color('background');
+    color: c.color('text');
+}
+
+.table {
+    background-image: linear-gradient(to top, c.color-alpha('tinted', 0.5), c.color-alpha('background', 0.9)),
+        url('/assets/poker-moons-landing-table.svg');
+    background-position: center;
+    background-size: cover;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+}

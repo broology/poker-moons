@@ -20,7 +20,7 @@ import { TableStateManagerService } from '../table-state-manager/table-state-man
 const initialPlayerState: Omit<Player, 'id'> = {
     username: '',
     img: '',
-    stack: 2999,
+    stack: 3000,
     ready: false,
     timeBank: 300,
     status: 'waiting',
