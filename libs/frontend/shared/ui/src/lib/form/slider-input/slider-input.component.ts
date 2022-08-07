@@ -1,5 +1,5 @@
 import { Options } from '@angular-slider/ngx-slider';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 @Component({
@@ -42,7 +42,10 @@ export class SliderInputComponent {
         showSelectionBar: true,
     };
 
+    manualRefresh = new EventEmitter();
+
     changed(value: number) {
         this.control.setValue(value);
+        this.manualRefresh.emit();
     }
 }
