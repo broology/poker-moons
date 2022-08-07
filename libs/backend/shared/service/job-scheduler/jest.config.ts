@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     displayName: 'backend-shared-service-job-scheduler',
 
     globals: {
@@ -12,5 +12,5 @@ module.exports = {
     },
     moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
     coverageDirectory: '../../../../../coverage/libs/backend/shared/service/job-scheduler',
-    preset: '../../../../../jest.preset.ts',
+    preset: '../../../../../jest.preset.js',
 };

@@ -19,16 +19,7 @@
             }
         }
     },
-    "targetDependencies": {
-        "build": [
-            {
-                "target": "build",
-                "projects": "dependencies"
-            }
-        ]
-    },
     "cli": {
-        "defaultCollection": "@nrwl/angular",
         "packageManager": "npm"
     },
     "generators": {
@@ -57,5 +48,11 @@
             "style": "scss"
         }
     },
-    "defaultProject": "frontend"
+    "defaultProject": "frontend",
+    "$schema": "./node_modules/nx/schemas/nx-schema.json",
+    "targetDefaults": {
+        "build": {
+            "dependsOn": ["^build"]
+        }
+    }
 }

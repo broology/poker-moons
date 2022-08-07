@@ -1,5 +1,5 @@
 {
-    "root": "libs/shared/type",
+    "$schema": "../../../node_modules/nx/schemas/project-schema.json",
     "sourceRoot": "libs/shared/type/src",
     "projectType": "library",
     "targets": {

@@ -1,6 +1,6 @@
 {
+    "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
     "projectType": "library",
-    "root": "libs/frontend/builder/feature/form",
     "sourceRoot": "libs/frontend/builder/feature/form/src",
     "prefix": "poker-moons",
     "targets": {
@@ -38,14 +38,12 @@
             }
         },
         "storybook": {
-            "executor": "@nrwl/storybook:storybook",
+            "executor": "@storybook/angular:start-storybook",
             "options": {
-                "uiFramework": "@storybook/angular",
                 "port": 4400,
-                "config": {
-                    "configFolder": "libs/frontend/builder/feature/form/.storybook"
-                },
-                "projectBuildConfig": "frontend-builder-feature-form:build-storybook"
+                "configDir": "libs/frontend/builder/feature/form/.storybook",
+                "browserTarget": "frontend-builder-feature-form:build-storybook",
+                "compodoc": false
             },
             "configurations": {
                 "ci": {
@@ -54,15 +52,13 @@
             }
         },
         "build-storybook": {
-            "executor": "@nrwl/storybook:build",
+            "executor": "@storybook/angular:build-storybook",
             "outputs": ["{options.outputPath}"],
             "options": {
-                "uiFramework": "@storybook/angular",
-                "outputPath": "dist/storybook/frontend-builder-feature-form",
-                "config": {
-                    "configFolder": "libs/frontend/builder/feature/form/.storybook"
-                },
-                "projectBuildConfig": "frontend-builder-feature-form:build-storybook"
+                "outputDir": "dist/storybook/frontend-builder-feature-form",
+                "configDir": "libs/frontend/builder/feature/form/.storybook",
+                "browserTarget": "frontend-builder-feature-form:build-storybook",
+                "compodoc": false
             },
             "configurations": {
                 "ci": {
