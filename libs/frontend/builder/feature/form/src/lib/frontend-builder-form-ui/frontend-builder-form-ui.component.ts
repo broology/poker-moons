@@ -5,6 +5,10 @@ import { CreateTableRequest } from '@poker-moons/shared/type';
 
 const TABLE_NAME_LENGTH = { min: 3, max: 25 };
 
+interface TableBuilderForm {
+    name: FormControl<string>;
+}
+
 @Component({
     selector: 'poker-moons-frontend-builder-form-ui',
     templateUrl: './frontend-builder-form-ui.component.html',
@@ -24,13 +28,13 @@ export class FrontendBuilderFormUiComponent implements OnInit {
 
     error?: string;
 
-    get nameControl(): FormControl {
-        return this.builderForm.get('name') as FormControl;
+    get nameControl(): FormControl<string> {
+        return this.builderForm.get('name') as FormControl<string>;
     }
 
     ngOnInit(): void {
         this.builderForm = new FormGroup({
-            name: new FormControl(
+            name: new FormControl<string>(
                 '',
                 Validators.compose([
                     Validators.required,

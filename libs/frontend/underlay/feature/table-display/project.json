@@ -1,6 +1,6 @@
 {
+    "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
     "projectType": "library",
-    "root": "libs/frontend/underlay/feature/table-display",
     "sourceRoot": "libs/frontend/underlay/feature/table-display/src",
     "prefix": "poker-moons",
     "targets": {
@@ -38,14 +38,12 @@
             }
         },
         "storybook": {
-            "executor": "@nrwl/storybook:storybook",
+            "executor": "@storybook/angular:start-storybook",
             "options": {
-                "uiFramework": "@storybook/angular",
                 "port": 4400,
-                "config": {
-                    "configFolder": "libs/frontend/underlay/feature/table-display/.storybook"
-                },
-                "projectBuildConfig": "frontend-underlay-feature-table-display:build-storybook"
+                "configDir": "libs/frontend/underlay/feature/table-display/.storybook",
+                "browserTarget": "frontend-underlay-feature-table-display:build-storybook",
+                "compodoc": false
             },
             "configurations": {
                 "ci": {
@@ -54,15 +52,13 @@
             }
         },
         "build-storybook": {
-            "executor": "@nrwl/storybook:build",
+            "executor": "@storybook/angular:build-storybook",
             "outputs": ["{options.outputPath}"],
             "options": {
-                "uiFramework": "@storybook/angular",
-                "outputPath": "dist/storybook/frontend-underlay-feature-table-display",
-                "config": {
-                    "configFolder": "libs/frontend/underlay/feature/table-display/.storybook"
-                },
-                "projectBuildConfig": "frontend-underlay-feature-table-display:build-storybook"
+                "outputDir": "dist/storybook/frontend-underlay-feature-table-display",
+                "configDir": "libs/frontend/underlay/feature/table-display/.storybook",
+                "browserTarget": "frontend-underlay-feature-table-display:build-storybook",
+                "compodoc": false
             },
             "configurations": {
                 "ci": {

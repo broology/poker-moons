@@ -33,8 +33,8 @@ export class ActiveControlsComponent implements OnInit {
 
     raiseFormGroup!: FormGroup;
 
-    get amountControl(): FormControl {
-        return this.raiseFormGroup.get('amount') as FormControl;
+    get amountControl(): FormControl<number> {
+        return this.raiseFormGroup.get('amount') as FormControl<number>;
     }
 
     ngOnInit(): void {

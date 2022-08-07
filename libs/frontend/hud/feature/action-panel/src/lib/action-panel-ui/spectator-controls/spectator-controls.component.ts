@@ -24,8 +24,8 @@ export class SpectatorControlsComponent implements OnInit {
 
     spectatorForm!: FormGroup;
 
-    get usernameControl(): FormControl {
-        return this.spectatorForm.get('username') as FormControl;
+    get usernameControl(): FormControl<string> {
+        return this.spectatorForm.get('username') as FormControl<string>;
     }
 
     constructor() {

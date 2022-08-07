@@ -1,5 +1,5 @@
 {
-    "root": "libs/frontend/shared/util/styles",
+    "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
     "sourceRoot": "libs/frontend/shared/util/styles/src",
     "projectType": "library",
     "targets": {
