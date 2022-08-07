@@ -25,5 +25,6 @@
         "shared-testing": "libs/shared/testing",
         "shared-type": "libs/shared/type",
         "shared-util": "libs/shared/util"
-    }
+    },
+    "$schema": "./node_modules/nx/schemas/workspace-schema.json"
 }

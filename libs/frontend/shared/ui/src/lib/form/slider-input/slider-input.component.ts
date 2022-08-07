@@ -32,7 +32,7 @@ export class SliderInputComponent {
     /**
      * @description The form control to be updated when the slider changes values
      */
-    @Input() control!: FormControl;
+    @Input() control!: FormControl<number>;
 
     _value!: number;
 

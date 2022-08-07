@@ -15,7 +15,7 @@ export class DollarInputComponent {
     /**
      * @description The Form control to be updated
      */
-    @Input() control!: FormControl;
+    @Input() control!: FormControl<number>;
 
     /**
      * @description Maximum number allowed
