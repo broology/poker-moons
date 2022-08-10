@@ -53,8 +53,6 @@ export class RoundManagerService {
         // Re-fetch table, because race condition with player service
         table = await this.tableStateManagerService.getTableById(table.id);
 
-        this.logger.debug('HERE');
-
         /*
          * If everyone has taken their turn, set every active player back to 'waiting',
          * draw a new card for the table, and update the round status
