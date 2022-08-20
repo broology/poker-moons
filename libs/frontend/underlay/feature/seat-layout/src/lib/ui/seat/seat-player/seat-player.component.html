@@ -3,7 +3,7 @@
         <div class="timer">Moon-Timer</div>
         <div class="username">{{ immutablePlayer.username }}</div>
         <div class="extra">
-            <span class="stack">{{ mutablePlayer.stack | currency: 'USD':'symbol':'1.0-0' }}</span>
+            <span class="stack">{{ mutablePlayer.stack | chipCurrency }}</span>
         </div>
     </div>
 </ng-container>

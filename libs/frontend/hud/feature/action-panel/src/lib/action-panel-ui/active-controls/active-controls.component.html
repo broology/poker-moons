@@ -1,45 +1,55 @@
 <poker-moons-hud-frame>
-    <ng-container *ngIf="toCall < stack; else onlyAllInCase">
+    <ng-container *ngIf="minRaiseAmount < stack; else onlyAllInCase">
         <div class="raise-input">
-            <form [formGroup]="raiseFormGroup" (submit)="amountControl.value === stack ? allIn() : raise()">
+            <form [formGroup]="raiseFormGroup" (submit)="raise()">
                 <poker-moons-dollar-input
-                    [min]="toCall"
+                    [min]="minRaiseAmount"
                     [max]="stack"
-                    [placeholder]="toCall"
+                    [placeholder]="minRaiseAmount"
                     [control]="amountControl"
                 ></poker-moons-dollar-input>
                 <poker-moons-slider-input
-                    [min]="toCall"
+                    [min]="minRaiseAmount"
                     [max]="stack"
-                    [start]="amountControl.value"
+                    [start]="minRaiseAmount"
                     [control]="amountControl"
                 ></poker-moons-slider-input>
             </form>
         </div>
 
-        <div class="action-button-container">
-            <poker-moons-primary-button
-                [label]="amountControl.value === stack ? 'ALL IN' : 'RAISE'"
-                color="primary"
-                (handleClick)="amountControl.value === stack ? allIn() : raise()"
-            ></poker-moons-primary-button>
-        </div>
-        <div class="action-button-container">
-            <poker-moons-primary-button
-                [label]="called < toCall ? 'CALL' : 'CHECK'"
-                color="primary"
-                (handleClick)="called < toCall ? call() : check()"
-            ></poker-moons-primary-button>
-        </div>
-        <div class="action-button-container">
-            <poker-moons-primary-button label="FOLD" color="error" (handleClick)="fold()"></poker-moons-primary-button>
-        </div>
+        <ng-container *rxLet="currentRaiseAmount$ as raiseValue">
+            <div class="action-button-container">
+                <poker-moons-primary-button
+                    [label]="
+                        raiseValue === stack
+                            ? 'ALL IN\n' + (stack | chipCurrency)
+                            : 'RAISE\n' + (raiseValue | chipCurrency)
+                    "
+                    color="primary"
+                    (handleClick)="raise()"
+                ></poker-moons-primary-button>
+            </div>
+            <div class="action-button-container">
+                <poker-moons-primary-button
+                    [label]="called < toCall ? 'CALL\n' + (toCall | chipCurrency) : 'CHECK'"
+                    color="primary"
+                    (handleClick)="called < toCall ? call() : check()"
+                ></poker-moons-primary-button>
+            </div>
+            <div class="action-button-container">
+                <poker-moons-primary-button
+                    [label]="'FOLD\n'"
+                    color="error"
+                    (handleClick)="fold()"
+                ></poker-moons-primary-button>
+            </div>
+        </ng-container>
     </ng-container>
 
     <ng-template #onlyAllInCase>
         <div class="text-section">
             You do <strong>NOT</strong> have enough chips to match the called amount of
-            <strong>{{ toCall | currency }}</strong>
+            <strong>{{ toCall | chipCurrency }}</strong>
         </div>
         <div class="action-button-container">
             <poker-moons-primary-button
