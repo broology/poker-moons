@@ -1,5 +1,5 @@
-import { CurrencyPipe, LOCATION_INITIALIZED } from '@angular/common';
-import { Inject, Pipe, PipeTransform } from '@angular/core';
+import { CurrencyPipe } from '@angular/common';
+import { Inject, LOCALE_ID, Pipe, PipeTransform } from '@angular/core';
 
 /**
  * @description Will transform a raw integer value to it's displayed chip currency value.
@@ -13,7 +13,7 @@ import { Inject, Pipe, PipeTransform } from '@angular/core';
 export class ChipCurrencyPipe implements PipeTransform {
     private currencyPipe = new CurrencyPipe(this.locale);
 
-    constructor(@Inject(LOCATION_INITIALIZED) private readonly locale: string) {}
+    constructor(@Inject(LOCALE_ID) private readonly locale: string) {}
 
     transform(value: number): string | null {
         return this.currencyPipe.transform(value, 'USD', 'symbol', '1.0-0');

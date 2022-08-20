@@ -28,13 +28,19 @@ export class CallActionHandlerService {
     ) {}
 
     /**
-     * CallActionHandlerService.call
-     * @description Performs the call action and returns an action response if the state is valid, else it throws an error describing the invalid state.
-     * Calling means matching a bet or raise. To call is to bet the minimum amount to stay active in the current round.
-     * @param action
+     * @description CallActionHandlerService.call.
+     *
+     * Performs the call action and returns an action response if the state is valid, else it throws an error
+     * describing the invalid state. Calling means matching a bet or raise. To call is to bet the minimum amount to
+     * stay active in the current round.
+     *
      * @type Either<PokerMoonsError, { table: ServerTableState; player: Player }>
-     * @returns PerformPlayerActionResponse
-     * @throws Error
+     *
+     * @param action
+     *
+     * @returns PerformPlayerActionResponse.
+     *
+     * @throws Error.
      */
     async call(
         action: Either<PokerMoonsError, { table: ServerTableState; player: Player }>,
@@ -85,15 +91,19 @@ export class CallActionHandlerService {
     }
 
     /**
-     * CallActionHandlerService.canCall
-     * @description Determines if a player is able to call given the current game state.
-     * A call can happen at any point during a betting round.
-     * @param table
+     * @description CallActionHandlerService.canCall.
+     *
+     * Determines if a player is able to call given the current game state. A call can happen at any point during a
+     * betting round.
+     *
      * @type ServerTableState
-     * @param player
      * @type Player
-     * @param action
      * @type CallPlayerAction
+     *
+     * @param table
+     * @param player
+     * @param action
+     *
      * @returns Either<PokerMoonsError, CallPlayerAction>
      */
     canCall(

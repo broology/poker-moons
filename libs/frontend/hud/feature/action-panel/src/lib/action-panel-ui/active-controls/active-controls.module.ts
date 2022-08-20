@@ -1,17 +1,25 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { DollarInputModule, PrimaryButtonModule, SliderInputModule } from '@poker-moons/frontend/shared/ui';
+import {
+    ChipCurrencyModule,
+    DollarInputModule,
+    PrimaryButtonModule,
+    SliderInputModule,
+} from '@poker-moons/frontend/shared/ui';
+import { LetModule } from '@rx-angular/template';
 import { HudFrameModule } from '../../shared';
 import { ActiveControlsComponent } from './active-controls.component';
 
 export const activeControlsImports = [
     ...([
         CommonModule,
-        ReactiveFormsModule,
+        ChipCurrencyModule,
+        DollarInputModule,
         HudFrameModule,
         PrimaryButtonModule,
-        DollarInputModule,
+        LetModule,
+        ReactiveFormsModule,
         SliderInputModule,
     ] as const),
 ];

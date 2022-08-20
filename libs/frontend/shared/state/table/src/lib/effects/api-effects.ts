@@ -105,7 +105,7 @@ export class TableStateApiEffects {
     );
 
     /**
-     * In the case of any api failures display the error message requested
+     * @description In the case of any api failures display the error message requested.
      */
     failedApiRequest$ = createEffect(
         () =>
@@ -133,7 +133,7 @@ export class TableStateApiEffects {
             switchMap((response) => of(action.success({ payload: response }))),
             catchError((err) => {
                 console.error(err);
-                return of(action.failure({ payload: `Error performing: ${action.request.type}` as any }));
+                return of(action.failure({ payload: `Error performing: ${action.request.type}` as never }));
             }),
         );
     }

@@ -16,3 +16,13 @@
     width: 40%;
     margin: 0 s.spacing(2);
 }
+
+::ng-deep {
+    .button {
+        height: 3.3rem;
+        width: 6rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+}

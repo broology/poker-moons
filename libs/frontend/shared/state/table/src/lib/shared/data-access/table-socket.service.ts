@@ -11,9 +11,9 @@ export class TableSocketService implements OnDestroy {
     constructor(@Inject(NG_ENVIRONMENT) private readonly env: NgEnvironment) {}
 
     /**
-     * Configures the connection to the websocket, but doesn't actually trigger the connection.
+     * @description Configures the connection to the websocket, but doesn't actually trigger the connection.
      *
-     * @param tableId - The ID of the table the socket is being connected to
+     * @param tableId - The ID of the table the socket is being connected to.
      */
     initialize(tableId: TableId): void {
         this.socket = new SocketClient(this.env.api, TABLE_NAMESPACE, {
@@ -24,7 +24,7 @@ export class TableSocketService implements OnDestroy {
     }
 
     /**
-     * Performs the connection to the websocket
+     * @description Performs the connection to the websocket.
      *
      * `this.initialize` must be called before `connect`
      */
@@ -33,15 +33,16 @@ export class TableSocketService implements OnDestroy {
     }
 
     /**
-     * @param type - The table event you with to create an observable for
-     * @returns - Observable object of the table event that can be subscribed too
+     * @param type - The table event you with to create an observable for.
+     *
+     * @returns - Observable object of the table event that can be subscribed too.
      */
     onEvent<Type extends TableEvent['type']>(type: Type): Observable<Extract<TableEvent, { type: Type }>> {
         return this.socket.on(type);
     }
 
     /**
-     * Clean up on destroy
+     * @description Clean up on destroy.
      */
     ngOnDestroy(): void {
         this.socket?.disconnect();

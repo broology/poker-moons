@@ -15,10 +15,11 @@ export interface AsyncRequestActions<Request, SuccessResponse, ErrorResponse> {
     failure: ActionType<ErrorResponse>;
 }
 /**
- * Function to standardize the different actions in an client async request
+ * @description Function to standardize the different actions in an client async request.
  *
- * @param description - Unique description of the action
- * @returns {request, success, failure} - actions
+ * @param description - Unique description of the action.
+ *
+ * @returns {request, success, failure} - Actions.
  */
 export function buildAsyncRequestActions<Request, SuccessResponse, ErrorResponse>(
     description: string,
