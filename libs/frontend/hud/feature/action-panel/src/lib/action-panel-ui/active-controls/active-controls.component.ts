@@ -68,7 +68,7 @@ export class ActiveControlsComponent implements OnInit, OnChanges {
     ngOnChanges(changes: SimpleChanges): void {
         const toCall = changes['toCall']?.currentValue;
 
-        if (isNaN(toCall) && toCall !== changes['toCall']?.previousValue) {
+        if (!isNaN(toCall) && toCall !== changes['toCall']?.previousValue) {
             this.initForm();
         }
     }
@@ -112,7 +112,7 @@ export class ActiveControlsComponent implements OnInit, OnChanges {
         });
 
         this.currentRaiseAmount$ = this.amountControl.valueChanges.pipe(
-            startWith(this.minRaiseAmount ?? 1),
+            startWith(this.minRaiseAmount),
             map((v) => v),
         );
     }
