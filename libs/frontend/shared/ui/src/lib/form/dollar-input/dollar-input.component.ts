@@ -8,22 +8,22 @@ import { FormControl } from '@angular/forms';
 })
 export class DollarInputComponent {
     /**
-     * @description Place holder displayed
+     * @description Place holder displayed.
      */
     @Input() placeholder!: number;
 
     /**
-     * @description The Form control to be updated
+     * @description The Form control to be updated.
      */
     @Input() control!: FormControl<number>;
 
     /**
-     * @description Maximum number allowed
+     * @description Maximum number allowed.
      */
     @Input() min = Number.MIN_SAFE_INTEGER;
 
     /**
-     * @description Minimum number allowed
+     * @description Minimum number allowed.
      */
     @Input() max = Number.MAX_SAFE_INTEGER;
 }

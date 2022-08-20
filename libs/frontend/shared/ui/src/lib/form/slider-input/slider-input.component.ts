@@ -9,28 +9,28 @@ import { FormControl } from '@angular/forms';
 })
 export class SliderInputComponent {
     /**
-     * @description The minimum value of the slider range
+     * @description The minimum value of the slider range.
      */
     @Input() set min(min: number) {
         this.options.floor = min;
     }
 
     /**
-     * @description The maximum value of the slider range
+     * @description The maximum value of the slider range.
      */
     @Input() set max(max: number) {
         this.options.ceil = max;
     }
 
     /**
-     * @description The value the slider will start at
+     * @description The value the slider will start at.
      */
     @Input() set start(start: number) {
         this._value = start;
     }
 
     /**
-     * @description The form control to be updated when the slider changes values
+     * @description The form control to be updated when the slider changes values.
      */
     @Input() control!: FormControl<number>;
 
