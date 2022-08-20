@@ -9,14 +9,14 @@
                 <div *ngSwitchCase="'out'" class="seat-status out">OUT</div>
                 <div *ngSwitchCase="'checked'" class="seat-status checked">CHECK</div>
                 <div *ngSwitchCase="'called'" class="seat-status called">
-                    CALL | {{ mutablePlayer.biddingCycleCalled | currency: 'USD':'symbol':'1.0-0' }}
+                    CALL | {{ mutablePlayer.biddingCycleCalled | chipCurrency }}
                 </div>
                 <div *ngSwitchCase="'folded'" class="seat-status folded">FOLD</div>
                 <div *ngSwitchCase="'raised'" class="seat-status raised">
-                    RAISE | {{ mutablePlayer.biddingCycleCalled | currency: 'USD':'symbol':'1.0-0' }}
+                    RAISE | {{ mutablePlayer.biddingCycleCalled | chipCurrency }}
                 </div>
                 <div *ngSwitchCase="'all-in'" class="seat-status all-in">
-                    ALL-IN | {{ mutablePlayer.biddingCycleCalled | currency: 'USD':'symbol':'1.0-0' }}
+                    ALL-IN | {{ mutablePlayer.biddingCycleCalled | chipCurrency }}
                 </div>
             </ng-container>
         </ng-container>

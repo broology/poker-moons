@@ -27,15 +27,15 @@ export class RoundManagerService {
     /**
      * @description Initiates the next turn during a round of poker.
      *
-     * - Handles incrementing the turn count and active seat
-     * - Handles advancing the to the next stage of a round
-     * - Handles transitioning the turn timer from one player to the next
+     * - Handles incrementing the turn count and active seat.
+     * - Handles advancing the to the next stage of a round.
+     * - Handles transitioning the turn timer from one player to the next.
      *
      * This method should be called in the player action handlers at the end of every turn.
      *
-     * @param table - the ServerTableState and table ID
-     * @param nextActiveSeat - the seat ID of the player whose turn is next
-     * @param playerStatuses - the status of each player in the round
+     * @param table - The ServerTableState and table ID.
+     * @param nextActiveSeat - The seat ID of the player whose turn is next.
+     * @param playerStatuses - The status of each player in the round.
      */
     async startNextTurn(
         table: ServerTableState,
@@ -115,7 +115,6 @@ export class RoundManagerService {
         await Promise.all([
             this.tableStateManagerService.updateRound(table.id, {
                 turnCount: table.activeRound.turnCount + 1,
-
                 activeSeat: nextActiveSeat,
             }),
             this.turnTimeService.onTurn({
@@ -131,10 +130,10 @@ export class RoundManagerService {
     /**
      * @description Draws the remaining cards for the round, bidding is complete before this is called.
      *
-     *  This method should be called in the player action handlers at the end of every turn.
+     * This method should be called in the player action handlers at the end of every turn.
      *
-     * @param tableId - the ID of the table to auto-complete
-     * @param nextActiveSeat - the seat ID of the player whose turn is next
+     * @param tableId - The ID of the table to auto-complete.
+     * @param nextActiveSeat - The seat ID of the player whose turn is next.
      */
     async autoCompleteRound(tableId: TableId, nextActiveSeat: SeatId): Promise<void> {
         let table: ServerTableState;
@@ -183,13 +182,13 @@ export class RoundManagerService {
     /**
      * @description Starts a new round of poker.
      *
-     * - Handles setting the first active seat if it hasn't already been set
-     * - Handles building a new deck and dealing out cards to the players
-     * - Handles initiating the first player's turn timer
+     * - Handles setting the first active seat if it hasn't already been set.
+     * - Handles building a new deck and dealing out cards to the players.
+     * - Handles initiating the first player's turn timer.
      *
-     * @throws {InternalServerErrorException} if there's no player in the seat next to the dealer
+     * @param tableId - The ID of the table the round is starting on.
      *
-     * @param tableId - the ID of the table the round is starting on
+     * @throws {InternalServerErrorException} If there's no player in the seat next to the dealer.
      */
     async startRound(tableId: TableId): Promise<void> {
         const table = await this.tableStateManagerService.getTableById(tableId);
@@ -243,13 +242,13 @@ export class RoundManagerService {
     /**
      * @description Ends a round of poker.
      *
-     * This method stops the final player's timer, handles calling the WinnerDeterminerService, and
-     * then determines if the game should continue to another round.
+     * This method stops the final player's timer, handles calling the WinnerDeterminerService, and then determines
+     * if the game should continue to another round.
      *
-     * If the game is over (i.e. one player has all the chips) this method will update the
-     * table status to ended. Otherwise, a new round is started.
+     * If the game is over (i.e. one player has all the chips) this method will update the table status to ended.
+     * Otherwise, a new round is started.
      *
-     * @param table - the ServerTableState
+     * @param table - The ServerTableState.
      */
     async endRound(table: ServerTableState): Promise<void> {
         // Stop the final player's timer
