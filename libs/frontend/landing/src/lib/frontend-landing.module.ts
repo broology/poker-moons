@@ -1,4 +1,5 @@
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { RouterModule } from '@angular/router';
@@ -11,6 +12,7 @@ export const frontendLandingImports = [
         CommonModule,
         FlexLayoutModule,
         LandingButtonModule,
+        HttpClientModule,
         RouterModule.forChild([
             {
                 path: '',
