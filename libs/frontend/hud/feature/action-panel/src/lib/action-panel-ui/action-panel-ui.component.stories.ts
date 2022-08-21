@@ -1,3 +1,4 @@
+import { MockNgEnvironment } from '@poker-moons/frontend/shared/util/environment';
 import { mockImmutablePublicPlayer, mockMutablePublicPlayer, mockRound } from '@poker-moons/shared/testing';
 import { Meta, moduleMetadata, Story } from '@storybook/angular';
 import { ActionPanelUiComponent } from './action-panel-ui.component';
@@ -9,6 +10,7 @@ export default {
     decorators: [
         moduleMetadata({
             imports: actionPanelUiImports,
+            providers: [MockNgEnvironment],
         }),
     ],
     argTypes: {
@@ -59,4 +61,5 @@ lobby.args = {
     ...defaultArgs,
     tableStatus: 'lobby',
     round: mockRound({ activeSeat: 1 }),
+    tableId: 'table_test',
 };

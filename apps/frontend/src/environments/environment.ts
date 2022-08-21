@@ -6,6 +6,8 @@ import { NgEnvironment } from '@poker-moons/frontend/shared/util/environment';
 export const environment: NgEnvironment = {
     env: 'local',
 
+    app: 'http://localhost:4200',
+
     api: 'http://localhost:3000',
 
     assets: 'https://d17df73wtlc9mc.cloudfront.net',

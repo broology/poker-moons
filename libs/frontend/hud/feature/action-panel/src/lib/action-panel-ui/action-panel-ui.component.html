@@ -11,6 +11,7 @@
         *ngSwitchCase="'lobby'"
         [ready]="clientMutablePlayer!.ready"
         [startDate]="tableStartDate"
+        [tableId]="tableId"
         (toggleReadyStatusEmitter)="toggleReadyStatusEmitter.emit()"
     ></poker-moons-lobby-controls>
     <poker-moons-spectator-controls

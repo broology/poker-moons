@@ -4,17 +4,22 @@ export type EnvType = 'local' | 'production' | 'testing';
 
 export interface NgEnvironment {
     /**
-     * Configuration value to determine which environment the application is running under
+     * @description Configuration value to determine which environment the application is running under.
      */
     env: EnvType;
 
     /**
-     * The base url of the api server (no trailing slash)
+     * @description The base url of the the frontend app being served.
+     */
+    app: string;
+
+    /**
+     * @description The base url of the api server (no trailing slash)
      */
     api: string;
 
     /**
-     * The base url of the assets cdn domain. (no trailing slash)
+     * @description The base url of the assets cdn domain. (no trailing slash)
      */
     assets: string;
 }

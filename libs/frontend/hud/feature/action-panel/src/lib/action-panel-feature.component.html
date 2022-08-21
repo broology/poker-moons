@@ -2,6 +2,7 @@
     [clientMutablePlayer]="clientMutablePlayer$ | push"
     [clientImmutablePlayer]="clientImmutablePlayer$ | push"
     [round]="round$ | push"
+    [tableId]="tableId$ | push"
     [tableStatus]="tableStatus$ | push"
     [tableStartDate]="tableStartDate$ | push"
     (joinTableEmitter)="join($event)"

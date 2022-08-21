@@ -1,3 +1,9 @@
+<poker-moons-dialog [copy]="dialogCopy" (primary)="copyTableUrl()">
+    <div class="text-input-container">
+        <input #tableUrlInput type="text" [value]="'/table/' + tableId | appUrl" readonly />
+    </div>
+</poker-moons-dialog>
+
 <poker-moons-hud-frame>
     <div class="text-section" [ngSwitch]="status">
         <span *ngSwitchCase="'notReady'">Ready up</span>

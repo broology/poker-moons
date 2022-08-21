@@ -1,5 +1,8 @@
-@use '~styles/typography' as t;
+@use '~styles/colors' as c;
 @use '~styles/spacing' as s;
+@use '~styles/typography' as t;
+@use '~styles/borders' as b;
+@use '~styles/transitions' as tr;
 
 .text-section {
     @include t.h3;
@@ -11,4 +14,30 @@
 .action-section {
     width: 25%;
     text-align: right;
+}
+
+input {
+    @include t.input;
+
+    background-color: c.color('text');
+    color: c.color-text-contrast('text');
+    text-align: center;
+
+    width: 100%;
+    padding: s.spacing(1);
+
+    border: 1px outset c.color('shaded');
+    border-radius: b.border-radius('input');
+
+    &:focus-visible {
+        outline: unset !important;
+        border-color: c.color-tinted('shaded');
+        border-style: inset;
+    }
+}
+
+.text-input-container {
+    width: 20em;
+    margin: s.spacing(0.5);
+    margin-right: s.spacing(3);
 }

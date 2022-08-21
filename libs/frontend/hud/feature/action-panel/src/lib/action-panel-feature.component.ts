@@ -14,6 +14,8 @@ export class ActionPanelFeatureComponent {
 
     readonly round$ = this.tableStateFacade.selectRound();
 
+    readonly tableId$ = this.tableStateFacade.selectTableId();
+
     readonly tableStartDate$ = this.tableStateFacade.selectStartDate();
 
     readonly tableStatus$ = this.tableStateFacade.selectStatus();
