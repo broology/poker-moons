@@ -1,15 +1,18 @@
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { RouterModule } from '@angular/router';
 import { LandingButtonModule } from '@poker-moons/frontend/shared/ui';
 import { FrontendLandingComponent } from './frontend-landing.component';
+import { TableBuilderStore } from './store/table-builder.store';
 
 export const frontendLandingImports = [
     ...([
         CommonModule,
         FlexLayoutModule,
         LandingButtonModule,
+        HttpClientModule,
         RouterModule.forChild([
             {
                 path: '',
@@ -21,6 +24,7 @@ export const frontendLandingImports = [
 
 @NgModule({
     imports: frontendLandingImports,
+    providers: [TableBuilderStore],
     declarations: [FrontendLandingComponent],
     exports: [FrontendLandingComponent],
 })

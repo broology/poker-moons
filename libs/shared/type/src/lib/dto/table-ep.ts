@@ -1,17 +1,12 @@
 import { Table, TableId } from '../table';
 
 /**
- * POST /table
+ * @description POST /table.
  */
-export type CreateTableRequest = Pick<Table, 'name'>;
+export type CreateTableRequest = void;
 export type CreateTableResponse = TableId;
 
 /**
- * GET /table/id
+ * @description GET /table/id.
  */
-export type GetTableResponse = Pick<Table, 'id' | 'name'>;
-
-/**
- * PUT /table/id
- */
-export type UpdateTableRequest = Partial<Pick<Table, 'name'>>;
+export type GetTableResponse = Pick<Table, 'id'>;
