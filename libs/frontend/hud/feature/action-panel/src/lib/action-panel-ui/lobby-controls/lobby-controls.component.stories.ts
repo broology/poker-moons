@@ -1,3 +1,4 @@
+import { MockNgEnvironment } from '@poker-moons/frontend/shared/util/environment';
 import { Meta, moduleMetadata, Story } from '@storybook/angular';
 import { addSeconds } from 'date-fns';
 import { LobbyControlsComponent } from './lobby-controls.component';
@@ -9,6 +10,7 @@ export default {
     decorators: [
         moduleMetadata({
             imports: lobbyControlsImports,
+            providers: [MockNgEnvironment],
         }),
     ],
     argTypes: {
@@ -24,15 +26,18 @@ const Template: Story<LobbyControlsComponent> = (args: LobbyControlsComponent) =
 export const unReady = Template.bind({});
 unReady.args = {
     ready: false,
+    tableId: 'table_test',
 };
 
 export const ready = Template.bind({});
 ready.args = {
     ready: true,
+    tableId: 'table_test',
 };
 
 export const allPlayersReady = Template.bind({});
 allPlayersReady.args = {
     ready: true,
     startDate: addSeconds(new Date(), 10),
+    tableId: 'table_test',
 };
