@@ -5,6 +5,7 @@ import {
     MutablePublicPlayer,
     PlayerAction,
     Round,
+    TableId,
     TableStatus,
 } from '@poker-moons/shared/type';
 
@@ -23,6 +24,8 @@ export class ActionPanelUiComponent {
 
     @Input() round!: Round;
 
+    @Input() tableId!: TableId | null;
+
     @Input() tableStartDate!: Date | null;
 
     @Input() tableStatus!: TableStatus;
@@ -36,7 +39,7 @@ export class ActionPanelUiComponent {
     @Output() readonly toggleReadyStatusEmitter = new EventEmitter<void>();
 
     /**
-     * Determines the `ActivePanelDisplayView` for what to render on the UI
+     * @description Determines the `ActivePanelDisplayView` for what to render on the UI.
      */
     get displayView(): ActionPanelDisplayView {
         if (this.clientImmutablePlayer == null) {

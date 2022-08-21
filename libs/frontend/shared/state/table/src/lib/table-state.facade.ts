@@ -23,13 +23,20 @@ import {
     selectMutablePlayerBySeatId,
     selectSumRoundCalled,
 } from './table-state.selectors';
-import { selectActiveRound, selectSeatMap, selectStartDate, selectStatus } from './table.state';
+import { selectActiveRound, selectSeatMap, selectStartDate, selectStatus, selectTableId } from './table.state';
 
 @Injectable({ providedIn: 'root' })
 export class TableStateFacade {
     constructor(private readonly store: Store) {}
 
     /* Selectors */
+
+    /**
+     * @description Selects the ID of the table the client is connected too. `null` if not connected to any.
+     */
+    selectTableId(): Observable<TableId | null> {
+        return this.store.pipe(select(selectTableId));
+    }
 
     /**
      * @description The map of seats to display on the table.
