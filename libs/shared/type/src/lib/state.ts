@@ -3,26 +3,26 @@ import type { Card } from './card';
 import type { MutablePublicPlayer, PlayerId } from './player';
 import type { Table, TableId } from './table';
 
-export type SharedTableState = Pick<Table, 'name' | 'seatMap' | 'roundCount' | 'activeRound' | 'status' | 'startDate'>;
+export type SharedTableState = Pick<Table, 'seatMap' | 'roundCount' | 'activeRound' | 'status' | 'startDate'>;
 
 export interface ClientTableState extends SharedTableState {
     /**
-     * The `playerId` of client, if null, then the user hasn't joined the table yet
+     * @description The `playerId` of client, if null, then the user hasn't joined the table yet.
      */
     playerId: PlayerId | null;
 
     /**
-     * The `TableId` that is loaded, if null, then the table isn't loaded yet
+     * @description The `TableId` that is loaded, if null, then the table isn't loaded yet.
      */
     tableId: TableId | null;
 
     /**
-     * Map of player data that will be frequently changed.
+     * @description Map of player data that will be frequently changed.
      */
     mutablePlayerMap: Record<PlayerId, MutablePublicPlayer>;
 
     /**
-     * Map of player data that will (for the most part) stay the same during the game
+     * @description Map of player data that will (for the most part) stay the same during the game.
      */
     immutablePlayerMap: Record<PlayerId, ImmutablePublicPlayer>;
 }

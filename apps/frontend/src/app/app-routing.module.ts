@@ -12,12 +12,6 @@ import { TableRoutingGuard } from './guard/table-routing.guard';
                     loadChildren: () => import('@poker-moons/frontend/landing').then((m) => m.FrontendLandingModule),
                 },
                 {
-                    path: 'builder',
-                    loadChildren: () =>
-                        // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
-                        import('@poker-moons/frontend/builder/shell').then((m) => m.FrontendBuilderShellModule),
-                },
-                {
                     path: 'table/:tableId',
                     canActivate: [TableRoutingGuard],
                     loadChildren: () =>
@@ -27,7 +21,7 @@ import { TableRoutingGuard } from './guard/table-routing.guard';
                 },
                 {
                     path: '**',
-                    redirectTo: 'builder',
+                    redirectTo: '',
                 },
             ],
             {

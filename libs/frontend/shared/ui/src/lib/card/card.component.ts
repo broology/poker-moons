@@ -18,7 +18,7 @@ export class CardComponent {
      */
     @Input() card: Card | null | undefined;
 
-    constructor(private sanitizer: DomSanitizer) {}
+    constructor(private readonly sanitizer: DomSanitizer) {}
 
     /**
      * @description Converts the given {@link Card} and converts it into the raw html of an equivalent cardmeister ui card.

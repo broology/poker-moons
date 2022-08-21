@@ -27,7 +27,7 @@ export class TableGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
     }
 
     /**
-     * Client joins a table's room when they connect to the table websocket
+     * @description Client joins a table's room when they connect to the table websocket.
      */
     async handleConnection(client: Socket): Promise<void> {
         const tableId = client.handshake.query.tableId;
@@ -58,7 +58,7 @@ export class TableGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
     }
 
     /**
-     * Client leaves a table's room when they disconnect from the table websocket
+     * @description Client leaves a table's room when they disconnect from the table websocket.
      */
     handleDisconnect(client: Socket): void {
         const tableId = client.handshake.query.tableId as TableId;
@@ -72,7 +72,7 @@ export class TableGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
         tableId: TableId,
         serverState: ServerTableState,
     ): Omit<ClientTableState, 'playerId'> {
-        const { name, seatMap, roundCount, activeRound, playerMap, startDate, status } = serverState;
+        const { seatMap, roundCount, activeRound, playerMap, startDate, status } = serverState;
 
         const mutablePlayerMap: Record<PlayerId, MutablePublicPlayer> = {};
         const immutablePlayerMap: Record<PlayerId, ImmutablePublicPlayer> = {};
@@ -106,7 +106,6 @@ export class TableGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
 
         return {
             tableId,
-            name,
             seatMap,
             roundCount,
             activeRound,

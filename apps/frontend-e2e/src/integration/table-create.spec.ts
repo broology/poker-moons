@@ -13,15 +13,6 @@ describe('table create', () => {
 
         cy.get('[data-cy=landing-button]').click();
 
-        // [Assert] Redirects to builder
-        cy.location('pathname').should('eq', '/builder');
-
-        // [Action] Fill in table name
-        cy.get('[data-cy=create-table-name]').type('New Table');
-
-        // [Action] Click `create`
-        cy.get('[data-cy=dialog-primary-button]').click();
-
         // [Wait] for mock response
         cy.wait('@createTable');
         cy.wait('@getTable');

@@ -1,36 +1,35 @@
-import type { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
-import { CreateTableRequest } from '@poker-moons/shared/type';
-import type { Observable } from 'rxjs';
-import { switchMap, tap } from 'rxjs/operators';
+import { Observable, switchMap, tap } from 'rxjs';
 import { TableApiService } from './data-access/table-api.service';
 
-interface BuilderState {
+interface TableBuilderState {
     loading: boolean;
 }
 
 @Injectable()
-export class FrontendBuilderStore extends ComponentStore<BuilderState> {
+export class TableBuilderStore extends ComponentStore<TableBuilderState> {
     readonly loading$: Observable<boolean> = this.select((state) => state.loading);
+
     private readonly setLoading = this.updater((state, loading: boolean) => ({ ...state, loading }));
-    readonly createTable = this.effect((dto: Observable<CreateTableRequest>) =>
-        dto.pipe(
+
+    readonly createTable = this.effect((o: Observable<void>) =>
+        o.pipe(
             tap(() => {
                 this.setLoading(true);
             }),
-            switchMap((req) =>
-                this.tableApiService.create(req).pipe(
+            switchMap(() =>
+                this.tableApiService.create().pipe(
                     tapResponse(
                         (tableId) => {
                             // Success
                             this.setLoading(false);
                             this.router.navigate(['table', tableId]);
                         },
-                        (error: HttpErrorResponse) => {
+                        () => {
                             // Failed
-                            alert(JSON.stringify(error, null, '\t'));
+                            alert('Something went wrong creating the table.');
                             this.setLoading(false);
                         },
                     ),
