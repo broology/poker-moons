@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
 import { Component } from '@angular/core';
+import { TableBuilderStore } from './store/table-builder.store';
 
 @Component({
     selector: 'poker-moons-frontend-landing',
@@ -7,5 +7,9 @@ import { Component } from '@angular/core';
     styleUrls: ['./frontend-landing.component.scss'],
 })
 export class FrontendLandingComponent {
-    constructor() {}
+    constructor(private readonly builderStore: TableBuilderStore) {}
+
+    createTable() {
+        return this.builderStore.createTable();
+    }
 }

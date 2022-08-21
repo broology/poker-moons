@@ -4,6 +4,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { RouterModule } from '@angular/router';
 import { LandingButtonModule } from '@poker-moons/frontend/shared/ui';
 import { FrontendLandingComponent } from './frontend-landing.component';
+import { TableBuilderStore } from './store/table-builder.store';
 
 export const frontendLandingImports = [
     ...([
@@ -21,6 +22,7 @@ export const frontendLandingImports = [
 
 @NgModule({
     imports: frontendLandingImports,
+    providers: [TableBuilderStore],
     declarations: [FrontendLandingComponent],
     exports: [FrontendLandingComponent],
 })

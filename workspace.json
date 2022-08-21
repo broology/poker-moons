@@ -7,8 +7,6 @@
         "backend-shared-service-job-scheduler": "libs/backend/shared/service/job-scheduler",
         "backend-utility": "libs/backend/utility",
         "frontend": "apps/frontend",
-        "frontend-builder-feature-form": "libs/frontend/builder/feature/form",
-        "frontend-builder-shell": "libs/frontend/builder/shell",
         "frontend-e2e": "apps/frontend-e2e",
         "frontend-hud-feature-action-panel": "libs/frontend/hud/feature/action-panel",
         "frontend-hud-feature-bank-panel": "libs/frontend/hud/feature/bank-panel",

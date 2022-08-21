@@ -1,4 +1,10 @@
-import { Injectable, InternalServerErrorException, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
+import {
+    Injectable,
+    InternalServerErrorException,
+    NotFoundException,
+    OnModuleDestroy,
+    OnModuleInit,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { CustomLoggerService } from '@poker-moons/backend/utility';
 import { ServerTableState, TableId } from '@poker-moons/shared/type';
@@ -59,7 +65,7 @@ export class RedisStateService implements GenericStateServiceImpl, OnModuleInit,
             this.logger.log('Got table with id: ' + tableId + ' successfully');
             return table;
         } else {
-            throw new InternalServerErrorException('There was an error retrieving the table with id: ' + tableId);
+            throw new NotFoundException('There was an error retrieving the table with id: ' + tableId);
         }
     }
 
