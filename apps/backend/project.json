@@ -60,15 +60,15 @@
             "options": {
                 "region": "ca-central-1",
                 "ecrRegistryUrl": "553501565082.dkr.ecr.ca-central-1.amazonaws.com",
-                "platform": "linux/arm64"
+                "platform": "linux/amd64"
             }
         },
         "deploy": {
             "executor": "./tools/executors/aws:eb-deploy",
             "options": {
                 "region": "ca-central-1",
-                "ebEnvironment": "poker-moons-develop-environment",
-                "ebApplication": "poker-moons-develop",
+                "ebEnvironment": "poker-moons-backend-environment",
+                "ebApplication": "poker-moons-backend",
                 "ebDeploymentBucket": "elasticbeanstalk-ca-central-1-553501565082",
                 "ecrRegistryUrl": "553501565082.dkr.ecr.ca-central-1.amazonaws.com"
             }
