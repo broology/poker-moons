@@ -125,13 +125,18 @@ jobs:
             - store_artifacts:
                   path: dist/cypress
     dockerize:
-        <<: *defaults
+        working_directory: ~/repo
+        resource_class: large
+        docker:
+            - image: circleci/node:14-browsers
         steps:
             - setup
             - attach_workspace:
                   at: ~/repo
             - aws-cli/install:
                   version: '2'
+            - setup_remote_docker:
+                  version: 20.10.11
             - run:
                   <<: *build_executors
             - run: yarn affected:dockerize -- ${AFFECTED_ARGS} --parallel 2 --tag=${CIRCLE_SHA1}
