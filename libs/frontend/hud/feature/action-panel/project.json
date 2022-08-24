@@ -1,6 +1,6 @@
 {
+    "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
     "projectType": "library",
-    "root": "libs/frontend/hud/feature/action-panel",
     "sourceRoot": "libs/frontend/hud/feature/action-panel/src",
     "prefix": "poker-moons",
     "targets": {
@@ -38,14 +38,12 @@
             }
         },
         "storybook": {
-            "executor": "@nrwl/storybook:storybook",
+            "executor": "@storybook/angular:start-storybook",
             "options": {
-                "uiFramework": "@storybook/angular",
                 "port": 4400,
-                "config": {
-                    "configFolder": "libs/frontend/hud/feature/action-panel/.storybook"
-                },
-                "projectBuildConfig": "frontend-hud-feature-action-panel:build-storybook"
+                "configDir": "libs/frontend/hud/feature/action-panel/.storybook",
+                "browserTarget": "frontend-hud-feature-action-panel:build-storybook",
+                "compodoc": false
             },
             "configurations": {
                 "ci": {
@@ -54,15 +52,13 @@
             }
         },
         "build-storybook": {
-            "executor": "@nrwl/storybook:build",
+            "executor": "@storybook/angular:build-storybook",
             "outputs": ["{options.outputPath}"],
             "options": {
-                "uiFramework": "@storybook/angular",
-                "outputPath": "dist/storybook/frontend-hud-feature-action-panel",
-                "config": {
-                    "configFolder": "libs/frontend/hud/feature/action-panel/.storybook"
-                },
-                "projectBuildConfig": "frontend-hud-feature-action-panel:build-storybook"
+                "outputDir": "dist/storybook/frontend-hud-feature-action-panel",
+                "configDir": "libs/frontend/hud/feature/action-panel/.storybook",
+                "browserTarget": "frontend-hud-feature-action-panel:build-storybook",
+                "compodoc": false
             },
             "configurations": {
                 "ci": {

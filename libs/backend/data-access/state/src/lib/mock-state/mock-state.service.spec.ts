@@ -27,7 +27,6 @@ const round = mockRound({
 
 const mockTableState = mockServerTableState({
     id: 'table_1',
-    name: 'test',
     deck: [],
     playerMap: { player_1: player },
     seatMap: { 0: undefined, 1: undefined, 2: undefined, 3: undefined, 4: undefined, 5: undefined },
@@ -68,7 +67,6 @@ describe('MockStateService', () => {
             await service.create(mockTableState);
             const mockState = mockServerTableState({
                 id: 'table_2',
-                name: 'test2',
                 deck: [],
                 playerMap: { player_1: mockPlayer({}) },
                 seatMap: { 0: undefined, 1: undefined, 2: undefined, 3: undefined, 4: undefined, 5: undefined },
@@ -77,9 +75,9 @@ describe('MockStateService', () => {
             });
             await service.create(mockState);
             const table1: ServerTableState = await service.getState('table_1');
-            expect(table1.name).toEqual('test');
+            expect(table1.id).toEqual('table_1');
             const table2: ServerTableState = await service.getState('table_2');
-            expect(table2.name).toEqual('test2');
+            expect(table2.id).toEqual('table_2');
         });
     });
 
@@ -94,9 +92,9 @@ describe('MockStateService', () => {
     describe('update', () => {
         it('should update a table - top level', async () => {
             await service.create(mockTableState);
-            await service.update('table_1', { name: "Your mom's dinner table" });
+            await service.update('table_1', { roundCount: 2 });
             const table: ServerTableState = await service.getState('table_1');
-            expect(table.name).toEqual("Your mom's dinner table");
+            expect(table.roundCount).toEqual(2);
         });
 
         it('should update a table - player', async () => {

@@ -20,7 +20,7 @@ import { TableStateManagerService } from '../table-state-manager/table-state-man
 const initialPlayerState: Omit<Player, 'id'> = {
     username: '',
     img: '',
-    stack: 2999,
+    stack: 3000,
     ready: false,
     timeBank: 300,
     status: 'waiting',
@@ -76,6 +76,7 @@ export class PlayerService {
         //TODO: set seatId to null in the tableState? and pass previous seatId to frontend for update
         const playerUpdate: Partial<Player> = {
             status: 'out',
+            seatId: null,
         };
         await this.tableStateManagerService.updateTablePlayer(tableId, playerId, playerUpdate);
         this.readySystemService.onPlayerLeft(tableId);
@@ -115,10 +116,10 @@ export class PlayerService {
         } else {
             this.readySystemService.onPlayerLeft(tableId);
         }
-        //emit playerReadyStatus event here
+        //emit playerChanged event here
         this.tableGatewayService.emitTableEvent(tableId, {
-            type: 'playerReadyStatus',
-            playerId: playerId,
+            type: 'playerChanged',
+            id: playerId,
             ready: currentPlayerState.ready,
         });
         return currentPlayerState;

@@ -46,7 +46,6 @@ describe('TableGateway', () => {
 
             tableStateManagerService.getTableById.mockResolvedValue({
                 id: 'table_1',
-                name: 'Table 1',
                 seatMap: {},
                 roundCount: 1,
                 activeRound: mockRound(),
@@ -63,7 +62,6 @@ describe('TableGateway', () => {
             expect(mockSocket.join).toHaveBeenCalledWith(tableId);
             expect(mockSocket.emit).toHaveBeenCalledWith<[string, ConnectedEvent['state']]>('connected', {
                 tableId,
-                name: 'Table 1',
                 seatMap: {},
                 roundCount: 1,
                 activeRound: mockRound(),

@@ -27,8 +27,8 @@ describe('TableStateManagerService', () => {
 
     describe('create', () => {
         it('should create an initial table state', async () => {
-            const id: TableId = await service.createNewTable('testTable');
-            const id2: TableId = await service.createNewTable('testTable2');
+            const id: TableId = await service.createNewTable();
+            const id2: TableId = await service.createNewTable();
             expect(id).toEqual('table_1');
             expect(id2).toEqual('table_2');
         });
@@ -36,12 +36,11 @@ describe('TableStateManagerService', () => {
 
     describe('getState', () => {
         it('should properly retrieve a table', async () => {
-            await service.createNewTable('testTable');
+            await service.createNewTable();
 
             const actual = await service.getTableById('table_1');
             expect(actual).toEqual<typeof actual>({
                 id: 'table_1',
-                name: 'testTable',
                 seatMap: {
                     0: undefined,
                     1: undefined,
@@ -69,18 +68,18 @@ describe('TableStateManagerService', () => {
         });
 
         it('should get the correct table when multiple are created', async () => {
-            await service.createNewTable('testTable1');
-            await service.createNewTable('testTable2');
+            await service.createNewTable();
+            await service.createNewTable();
             const table1 = await service.getTableById('table_1');
             const table2 = await service.getTableById('table_2');
-            expect(table1.name).toEqual('testTable1');
-            expect(table2.name).toEqual('testTable2');
+            expect(table1.id).toEqual('table_1');
+            expect(table2.id).toEqual('table_2');
         });
     });
 
     describe('delete', () => {
         it('should delate a table', async () => {
-            await service.createNewTable('testTable');
+            await service.createNewTable();
             await service.deleteTable('table_1');
             expect(await service.getTableById('table_1')).toBeUndefined();
         });
@@ -88,14 +87,14 @@ describe('TableStateManagerService', () => {
 
     describe('update', () => {
         it('should update a table - top level', async () => {
-            await service.createNewTable('testTable');
-            await service.updateTable('table_1', { name: "Your mom's dinner table" });
+            await service.createNewTable();
+            await service.updateTable('table_1', { roundCount: 2 });
             const table: ServerTableState = await service.getTableById('table_1');
-            expect(table.name).toEqual("Your mom's dinner table");
+            expect(table.roundCount).toEqual(2);
         });
 
         it('should update a table - addNewPlayerToTable', async () => {
-            await service.createNewTable('testTable');
+            await service.createNewTable();
             const newPlayer = mockPlayer({
                 id: `player_${'1'}`,
                 username: 'test',
@@ -112,7 +111,7 @@ describe('TableStateManagerService', () => {
         });
 
         it('should update a table - updateTablePlayer', async () => {
-            await service.createNewTable('testTable');
+            await service.createNewTable();
             const newPlayer = mockPlayer({
                 id: `player_${'1'}`,
                 username: 'test',
@@ -129,14 +128,14 @@ describe('TableStateManagerService', () => {
         });
 
         it('should update a table - updateRound', async () => {
-            await service.createNewTable('testTable');
+            await service.createNewTable();
             await service.updateRound('table_1', { pot: 69 }); //nice
             const table: ServerTableState = await service.getTableById('table_1');
             expect(table.activeRound.pot).toEqual(69);
         });
 
         it('should update a table - updateSeatMap', async () => {
-            await service.createNewTable('testTable');
+            await service.createNewTable();
             await service.updateSeatMap('table_1', { 0: 'player_1' });
             const table: ServerTableState = await service.getTableById('table_1');
             expect(table.seatMap['0']).toEqual('player_1');

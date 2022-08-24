@@ -1,6 +1,7 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { SeatId } from '@poker-moons/shared/type';
 import {
+    selectActiveRound,
     selectImmutablePlayerMap,
     selectMutablePlayerMap,
     selectPlayerId,
@@ -23,6 +24,12 @@ export const selectClientMutablePlayer = createSelector(selectMutablePlayerMap, 
 export const selectClientSeatId = createSelector(
     selectClientImmutablePlayer,
     (immutablePlayer) => immutablePlayer?.seatId,
+);
+
+export const selectActiveSeatId = createSelector(selectActiveRound, (round) => round.activeSeat);
+
+export const selectSumRoundCalled = createSelector(selectMutablePlayerMap, (mutablePlayerMap) =>
+    Object.values(mutablePlayerMap).reduce((prev, cur) => prev + cur.roundCalled, 0),
 );
 
 export const selectMutablePlayerBySeatId = (props: { seatId: SeatId }) =>

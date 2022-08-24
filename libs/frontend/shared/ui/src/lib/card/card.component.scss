@@ -1,10 +1,7 @@
 /* Real playing cards are 3.5" by 2.5" so we must scale these dimensions */
-.playing-card {
+.playing-card-container {
+    display: inline-block;
     width: 5em;
     height: 7em;
     user-select: none;
-}
-
-.playing-card-container {
-    display: inline-block;
 }

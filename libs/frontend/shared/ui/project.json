@@ -1,6 +1,6 @@
 {
+    "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
     "projectType": "library",
-    "root": "libs/frontend/shared/ui",
     "sourceRoot": "libs/frontend/shared/ui/src",
     "prefix": "poker-moons",
     "targets": {
@@ -35,14 +35,12 @@
             }
         },
         "storybook": {
-            "executor": "@nrwl/storybook:storybook",
+            "executor": "@storybook/angular:start-storybook",
             "options": {
-                "uiFramework": "@storybook/angular",
                 "port": 4400,
-                "config": {
-                    "configFolder": "libs/frontend/shared/ui/.storybook"
-                },
-                "projectBuildConfig": "frontend-shared-ui:build-storybook"
+                "configDir": "libs/frontend/shared/ui/.storybook",
+                "browserTarget": "frontend-shared-ui:build-storybook",
+                "compodoc": false
             },
             "configurations": {
                 "ci": {
@@ -51,15 +49,13 @@
             }
         },
         "build-storybook": {
-            "executor": "@nrwl/storybook:build",
+            "executor": "@storybook/angular:build-storybook",
             "outputs": ["{options.outputPath}"],
             "options": {
-                "uiFramework": "@storybook/angular",
-                "outputPath": "dist/storybook/frontend-shared-ui",
-                "config": {
-                    "configFolder": "libs/frontend/shared/ui/.storybook"
-                },
-                "projectBuildConfig": "frontend-shared-ui:build-storybook"
+                "outputDir": "dist/storybook/frontend-shared-ui",
+                "configDir": "libs/frontend/shared/ui/.storybook",
+                "browserTarget": "frontend-shared-ui:build-storybook",
+                "compodoc": false
             },
             "configurations": {
                 "ci": {

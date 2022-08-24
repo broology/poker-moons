@@ -28,13 +28,19 @@ export class CallActionHandlerService {
     ) {}
 
     /**
-     * CallActionHandlerService.call
-     * @description Performs the call action and returns an action response if the state is valid, else it throws an error describing the invalid state.
-     * Calling means matching a bet or raise. To call is to bet the minimum amount to stay active in the current round.
-     * @param action
+     * @description CallActionHandlerService.call.
+     *
+     * Performs the call action and returns an action response if the state is valid, else it throws an error
+     * describing the invalid state. Calling means matching a bet or raise. To call is to bet the minimum amount to
+     * stay active in the current round.
+     *
      * @type Either<PokerMoonsError, { table: ServerTableState; player: Player }>
-     * @returns PerformPlayerActionResponse
-     * @throws Error
+     *
+     * @param action
+     *
+     * @returns PerformPlayerActionResponse.
+     *
+     * @throws Error.
      */
     async call(
         action: Either<PokerMoonsError, { table: ServerTableState; player: Player }>,
@@ -47,10 +53,11 @@ export class CallActionHandlerService {
             }
 
             const delta = table.activeRound.toCall - player.biddingCycleCalled;
+            const newStatus = delta < player.stack ? 'called' : 'all-in';
 
             // Update the player's status, biddingCycleCalled amount, and stack in the server
             await this.tableStateManagerService.updateTablePlayer(table.id, player.id, {
-                status: 'called',
+                status: newStatus,
                 biddingCycleCalled: table.activeRound.toCall,
                 stack: player.stack - delta,
             });
@@ -84,15 +91,19 @@ export class CallActionHandlerService {
     }
 
     /**
-     * CallActionHandlerService.canCall
-     * @description Determines if a player is able to call given the current game state.
-     * A call can happen at any point during a betting round.
-     * @param table
+     * @description CallActionHandlerService.canCall.
+     *
+     * Determines if a player is able to call given the current game state. A call can happen at any point during a
+     * betting round.
+     *
      * @type ServerTableState
-     * @param player
      * @type Player
-     * @param action
      * @type CallPlayerAction
+     *
+     * @param table
+     * @param player
+     * @param action
+     *
      * @returns Either<PokerMoonsError, CallPlayerAction>
      */
     canCall(
@@ -103,7 +114,8 @@ export class CallActionHandlerService {
         const playerTurn = validatePlayerTurn(table, player, action);
 
         if (isRight(playerTurn))
-            return match([player.stack >= table.activeRound.toCall])
+            // Can we update this to allow calling a larger bet than the stack?
+            return match([player.stack >= table.activeRound.toCall - player.biddingCycleCalled])
                 .with([false], () => left(`Minimum to call is ${table.activeRound.toCall}.`))
                 .otherwise(() => right({ table, player, action }));
 

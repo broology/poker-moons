@@ -1,22 +1,8 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { PlayerOrientation } from '../shared/type';
-import { ChipDenomination, chipDenominations, MAX_CHIPS_PER_STACK } from './chip.type';
+import { ChipDenomination, ChipStackData, STACKS_PER_ROW } from './chip.type';
 import { chipOrientationTransform } from './chips-orientation-transform';
-
-/**
- * TODO Step 1:
- * - Get a component that will takin an `amount` and spread it into chip denominations for display
- *
- * TODO Step 2:
- * - Add animations to make changes to the amount smooth
- */
-
-interface ChipStackData {
-    count: number;
-    denomination: ChipDenomination;
-    col: number;
-    row: number;
-}
+import { applyDifferenceToChipStack, buildOptimalChipStack, buildUnOptimalChipStack } from './chips.util';
 
 @Component({
     selector: 'poker-moons-chips',
@@ -24,15 +10,17 @@ interface ChipStackData {
     styleUrls: ['./chips.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ChipsComponent {
-    /**
-     * The number of stacks in a row before making to an new row
-     */
-    private static STACKS_PER_ROW = 4;
+export class ChipsComponent implements OnChanges {
+    @Input() amount!: number;
 
-    @Input() set amount(value: number) {
-        this.chipStacks = ChipsComponent.amountToChipStackData(value);
-    }
+    /**
+     * @description When optimal is `true` the chip stack will be build as efficiently as grouping the chips
+     * into the denominations.
+     *
+     * When optimal is `false`, the chip stack will intentionally not be efficient at grouping the chips in the denominations,
+     * and try to keep a variety of chips in the stack. (Main use case being players chip stacks).
+     */
+    @Input() optimal = true;
 
     /**
      * @description When an orientation transform is required on chips, we need to supply it
@@ -40,6 +28,23 @@ export class ChipsComponent {
      *              we are using svgs that are pre-3d.
      */
     @Input() orientation?: PlayerOrientation;
+
+    /**
+     * The count of each denomination in this stack
+     */
+    denominationCountMap: Record<ChipDenomination, number> = {
+        5000: 0,
+        2500: 0,
+        1000: 0,
+        500: 0,
+        250: 0,
+        100: 0,
+        50: 0,
+        25: 0,
+        10: 0,
+        5: 0,
+        1: 0,
+    };
 
     /**
      * The data for each chip stack to be displayed. Compiled together from the {@link amountToChipStackData} method.
@@ -51,48 +56,35 @@ export class ChipsComponent {
     }
 
     /**
-     * Converts the amount of dollars to be displayed into the count of each poker chip.
-     * Also taking to account the {@link MAX_CHIPS_PER_STACK} and building multiple stacks of the same type.
+     * @description Life-cycle hook for the component.
      *
-     * @param amount - The amount to be displayed in poker chips
-     * @returns {ChipStackData[]} - The data for the individual poker chip stacks
+     * - On first render, if `optimal` is set, then will provide an optimal stack, otherwise will create a semi uniform stack.
+     * - On future renders, if the `amount` changes, then calculates the diff and applies it to the chip stack in a "realistic" way,
+     * performing trade in and such to keep consistency on the chips.
      */
-    private static amountToChipStackData(amount: number): ChipStackData[] {
-        const chipStacks: ChipStackData[] = [];
-
-        const getColumn = () => chipStacks.length % ChipsComponent.STACKS_PER_ROW;
-        const getRow = () => Math.floor(chipStacks.length / ChipsComponent.STACKS_PER_ROW);
-
-        let total = amount;
-        for (const denomination of chipDenominations) {
-            const count = Math.floor(total / denomination);
-            const delta = denomination * count;
-            total -= delta;
-
-            // * Build full stacks
-            const stacks = Math.floor(count / MAX_CHIPS_PER_STACK);
-            for (let x = 0; x < stacks; x++) {
-                chipStacks.push({
-                    count: MAX_CHIPS_PER_STACK,
-                    denomination,
-                    col: getColumn(),
-                    row: getRow(),
-                });
-            }
-
-            // * Build the remainder stack
-            const remainder = count % MAX_CHIPS_PER_STACK;
-            if (remainder > 0) {
-                chipStacks.push({
-                    count: remainder,
-                    denomination,
-                    col: getColumn(),
-                    row: getRow(),
-                });
-            }
+    ngOnChanges(changes: SimpleChanges): void {
+        if (!changes.amount) {
+            return;
         }
 
-        return chipStacks;
+        if (changes.amount.isFirstChange()) {
+            const { chipStacks, denominationCountMap } = this.amountToChipStackData(changes.amount.currentValue);
+
+            this.chipStacks = chipStacks;
+            this.denominationCountMap = denominationCountMap;
+            return;
+        }
+
+        if (changes.amount.currentValue !== changes.amount.previousValue) {
+            const { chipStacks, denominationCountMap } = applyDifferenceToChipStack(
+                changes.amount.currentValue - changes.amount.previousValue,
+                this.denominationCountMap,
+            );
+
+            this.chipStacks = chipStacks;
+            this.denominationCountMap = denominationCountMap;
+            return;
+        }
     }
 
     /**
@@ -135,8 +127,8 @@ export class ChipsComponent {
      *              given the `col` and `row` values, and the orientation constants.
      */
     calculateXOffset() {
-        const row = Math.floor(this.chipStacks.length / ChipsComponent.STACKS_PER_ROW);
-        const col = row > 0 ? ChipsComponent.STACKS_PER_ROW : this.chipStacks.length % ChipsComponent.STACKS_PER_ROW;
+        const row = Math.floor(this.chipStacks.length / STACKS_PER_ROW);
+        const col = row > 0 ? STACKS_PER_ROW : this.chipStacks.length % STACKS_PER_ROW;
         const transform = chipOrientationTransform[this.orientation || 'bottom'];
 
         return transform.offset.x.base + (col * transform.offset.x.col + row * transform.offset.x.row);
@@ -147,10 +139,28 @@ export class ChipsComponent {
      *              given the `col` and `row` values.
      */
     calculateYOffset() {
-        const row = Math.floor(this.chipStacks.length / ChipsComponent.STACKS_PER_ROW);
-        const col = row > 0 ? ChipsComponent.STACKS_PER_ROW : this.chipStacks.length % ChipsComponent.STACKS_PER_ROW;
+        const row = Math.floor(this.chipStacks.length / STACKS_PER_ROW);
+        const col = row > 0 ? STACKS_PER_ROW : this.chipStacks.length % STACKS_PER_ROW;
         const transform = chipOrientationTransform[this.orientation || 'bottom'];
 
         return transform.offset.y.base + (col * transform.offset.y.col + row * transform.offset.y.row);
+    }
+
+    /**
+     * @description Converts the amount of dollars to be displayed into the count of each poker chip.
+     * Also taking to account the {@link MAX_CHIPS_PER_STACK} and building multiple stacks of the same type.
+     *
+     * @param amount - The amount to be displayed in poker chips
+     * @returns {ChipStackData[]} - The data for the individual poker chip stacks
+     */
+    private amountToChipStackData(amount: number): {
+        chipStacks: ChipStackData[];
+        denominationCountMap: Record<ChipDenomination, number>;
+    } {
+        if (this.optimal) {
+            return buildOptimalChipStack(amount);
+        }
+
+        return buildUnOptimalChipStack(amount);
     }
 }

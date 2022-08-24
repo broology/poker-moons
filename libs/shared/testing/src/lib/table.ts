@@ -10,7 +10,6 @@ import { mockImmutablePublicPlayer, mockMutablePublicPlayer, mockPlayer } from '
 export function mockTable(overrides: DeepPartial<Table> = {}): Table {
     const table: Table = {
         id: `table_${Math.round(Math.random() * 100000)}`,
-        name: 'Name of table',
         seatMap: {},
         playerMap: {},
         roundCount: 0,
@@ -24,7 +23,6 @@ export function mockTable(overrides: DeepPartial<Table> = {}): Table {
 
 function mockSharedTableState(overrides: DeepPartial<SharedTableState> = {}) {
     const table: SharedTableState = {
-        name: 'Table 1',
         seatMap: {
             0: 'player_0',
             1: 'player_1',
@@ -45,7 +43,6 @@ function mockSharedTableState(overrides: DeepPartial<SharedTableState> = {}) {
 export function mockServerTableState(overrides: DeepPartial<ServerTableState> = {}): ServerTableState {
     const table: ServerTableState = {
         id: 'table_1',
-        name: 'Table 1',
         deck: [{ suit: 'diamonds', rank: '2' }],
         playerMap: {
             player_0: mockPlayer({

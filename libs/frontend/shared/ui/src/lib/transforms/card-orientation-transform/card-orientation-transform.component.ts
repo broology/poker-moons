@@ -19,14 +19,14 @@ import { PlayerOrientation } from '../../shared/type';
 })
 export class CardOrientationTransformComponent {
     orientationTransform: Record<PlayerOrientation, { transform: string }> = {
-        bottom: { transform: 'rotate3d(1, 0, 0, 50deg)' },
-        bottomLeft: { transform: 'rotate3d(3, -1, 2, 60deg)' },
-        bottomRight: { transform: 'rotate3d(3, 1, -2, 60deg)' },
+        bottom: { transform: 'rotate3d(0, 0, 0, 0deg) scale(1.5)' },
+        bottomLeft: { transform: 'rotate3d(3, -1, 2, 75deg)' },
+        bottomRight: { transform: 'rotate3d(3, 1, -2, 75deg)' },
         left: { transform: 'rotate3d(1, 0, 0, 50deg) rotateZ(90deg)' },
         right: { transform: 'rotate3d(1, 0, 0, 50deg) rotateZ(-90deg)' },
         top: { transform: 'rotate3d(1, 0, 0, 50deg) rotateZ(180deg)' },
-        topLeft: { transform: 'rotate3d(3, 1, -2, 60deg) rotateZ(180deg)' },
-        topRight: { transform: 'rotate3d(3, -1, 2, 60deg) rotateZ(180deg)' },
+        topLeft: { transform: 'rotate3d(3, 1, -2, 70deg) rotateZ(180deg)' },
+        topRight: { transform: 'rotate3d(3, -1, 2, 70deg) rotateZ(180deg)' },
     };
 
     /**

@@ -1,8 +1,8 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { CustomLoggerService } from '@poker-moons/backend/utility';
 import { CreateTableResponse, GetTableResponse, TableId } from '@poker-moons/shared/type';
 import { TableService } from './table.service';
-import { CreateTableRequestValidator, TableIdValidator } from './table.validator';
-import { CustomLoggerService } from '@poker-moons/backend/utility';
+import { TableIdValidator } from './table.validator';
 
 @Controller()
 export class TableController {
@@ -11,9 +11,9 @@ export class TableController {
     constructor(private readonly tableService: TableService) {}
 
     @Post()
-    create(@Body() dto: CreateTableRequestValidator): Promise<CreateTableResponse> {
-        this.logger.debug('Received create table request: ' + dto);
-        return this.tableService.create(dto);
+    create(): Promise<CreateTableResponse> {
+        this.logger.debug('Received create table request');
+        return this.tableService.create();
     }
 
     @Get(':tableId')

@@ -60,8 +60,8 @@ describe('TurnTimerServiceConsumer', () => {
                 timeBank: 0,
             });
             expect(tableGatewayService.emitTableEvent).toHaveBeenCalledWith(tableId, {
-                type: 'playerTimeBank',
-                playerId,
+                type: 'playerChanged',
+                id: playerId,
                 timeBank: 0,
             });
         });

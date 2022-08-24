@@ -139,8 +139,8 @@ describe('TurnTimerService', () => {
                 timeBank: expect.any(Number),
             });
             expect(tableGatewayService.emitTableEvent).toHaveBeenCalledWith(tableId, {
-                type: 'playerTimeBank',
-                playerId: currentPlayer.id,
+                type: 'playerChanged',
+                id: currentPlayer.id,
                 timeBank: expect.any(Number),
             });
         });
@@ -207,8 +207,8 @@ describe('TurnTimerService', () => {
             });
 
             expect(tableGatewayService.emitTableEvent).toHaveBeenCalledWith(tableId, {
-                type: 'playerTimeBank',
-                playerId: player.id,
+                type: 'playerChanged',
+                id: player.id,
                 timeBank: expect.any(Number),
             });
         });

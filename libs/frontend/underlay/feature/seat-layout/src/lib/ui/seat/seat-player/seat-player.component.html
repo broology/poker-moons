@@ -1,7 +1,17 @@
-<div>
-    <figure *ngIf="immutablePlayer; else isEmpty">
-        <figcaption>{{ immutablePlayer.username }}</figcaption>
-    </figure>
+<ng-container *ngIf="immutablePlayer && mutablePlayer; else empty">
+    <div [class]="active ? 'seat active-seat' : 'seat'">
+        <div class="timer">Moon-Timer</div>
+        <div class="username">{{ immutablePlayer.username }}</div>
+        <div class="extra">
+            <span class="stack">{{ mutablePlayer.stack | chipCurrency }}</span>
+        </div>
+    </div>
+</ng-container>
 
-    <ng-template #isEmpty>Empty Seat</ng-template>
-</div>
+<ng-template #empty>
+    <div class="seat empty-seat">
+        <div class="timer">Moon-Timer</div>
+        <div class="username">Empty</div>
+        <div class="extra"></div>
+    </div>
+</ng-template>

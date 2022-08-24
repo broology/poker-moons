@@ -1,6 +1,6 @@
 {
+    "$schema": "../../node_modules/nx/schemas/project-schema.json",
     "projectType": "application",
-    "root": "apps/frontend",
     "sourceRoot": "apps/frontend/src",
     "prefix": "poker-moons",
     "targets": {
@@ -14,7 +14,15 @@
                 "polyfills": "apps/frontend/src/polyfills.ts",
                 "tsConfig": "apps/frontend/tsconfig.app.json",
                 "inlineStyleLanguage": "scss",
-                "assets": ["apps/frontend/src/favicon.ico", "apps/frontend/src/assets"],
+                "assets": [
+                    "apps/frontend/src/favicon.ico",
+                    "apps/frontend/src/assets",
+                    {
+                        "input": "libs/shared/assets/src/lib",
+                        "glob": "**/*",
+                        "output": "assets"
+                    }
+                ],
                 "styles": ["styles/index.scss"],
                 "scripts": [],
                 "buildLibsFromSource": false
@@ -98,14 +106,12 @@
             }
         },
         "storybook": {
-            "executor": "@nrwl/storybook:storybook",
+            "executor": "@storybook/angular:start-storybook",
             "options": {
-                "uiFramework": "@storybook/angular",
                 "port": 4400,
-                "config": {
-                    "configFolder": "apps/frontend/.storybook"
-                },
-                "projectBuildConfig": "frontend:build-storybook"
+                "configDir": "apps/frontend/.storybook",
+                "browserTarget": "frontend:build-storybook",
+                "compodoc": false
             },
             "configurations": {
                 "ci": {
@@ -114,15 +120,13 @@
             }
         },
         "build-storybook": {
-            "executor": "@nrwl/storybook:build",
+            "executor": "@storybook/angular:build-storybook",
             "outputs": ["{options.outputPath}"],
             "options": {
-                "uiFramework": "@storybook/angular",
-                "outputPath": "dist/storybook/frontend",
-                "config": {
-                    "configFolder": "apps/frontend/.storybook"
-                },
-                "projectBuildConfig": "frontend:build-storybook"
+                "outputDir": "dist/storybook/frontend",
+                "configDir": "apps/frontend/.storybook",
+                "browserTarget": "frontend:build-storybook",
+                "compodoc": false
             },
             "configurations": {
                 "ci": {

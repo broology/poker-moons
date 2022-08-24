@@ -22,11 +22,10 @@
                 "libs/backend/shared/service/job-scheduler/src/index.ts"
             ],
             "@poker-moons/backend/utility": ["libs/backend/utility/src/index.ts"],
-            "@poker-moons/frontend/builder/feature/form": ["libs/frontend/builder/feature/form/src/index.ts"],
-            "@poker-moons/frontend/builder/shell": ["libs/frontend/builder/shell/src/index.ts"],
             "@poker-moons/frontend/hud/feature/action-panel": ["libs/frontend/hud/feature/action-panel/src/index.ts"],
             "@poker-moons/frontend/hud/feature/bank-panel": ["libs/frontend/hud/feature/bank-panel/src/index.ts"],
             "@poker-moons/frontend/hud/shell": ["libs/frontend/hud/shell/src/index.ts"],
+            "@poker-moons/frontend/landing": ["libs/frontend/landing/src/index.ts"],
             "@poker-moons/frontend/shared/state/table": ["libs/frontend/shared/state/table/src/index.ts"],
             "@poker-moons/frontend/shared/ui": ["libs/frontend/shared/ui/src/index.ts"],
             "@poker-moons/frontend/shared/util/environment": ["libs/frontend/shared/util/environment/src/index.ts"],
@@ -38,6 +37,7 @@
                 "libs/frontend/underlay/feature/table-display/src/index.ts"
             ],
             "@poker-moons/frontend/underlay/shell": ["libs/frontend/underlay/shell/src/index.ts"],
+            "@poker-moons/shared/assets": ["libs/shared/assets/src/index.ts"],
             "@poker-moons/shared/testing": ["libs/shared/testing/src/index.ts"],
             "@poker-moons/shared/type": ["libs/shared/type/src/index.ts"],
             "@poker-moons/shared/util": ["libs/shared/util/src/index.ts"]

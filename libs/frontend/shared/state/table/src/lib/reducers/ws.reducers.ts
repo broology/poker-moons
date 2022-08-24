@@ -75,24 +75,23 @@ export const wsReducers: ReducerTypes<ClientTableState, [ActionType<any>]>[] = [
     /**
      * When the round status changes, update the active round data.
      */
-    on(tableWsActionMap.roundStatusChanged, (state, { payload }) => {
+    on(tableWsActionMap.roundChanged, (state, { payload }) => {
         return {
             ...state,
             activeRound: {
                 ...state.activeRound,
-                roundStatus: payload.status,
-                cards: payload.cards,
-                activeSeat: payload.activeSeat,
-                toCall: payload.toCall,
+                ...payload,
             },
             // In the case of the cards being dealt, set all players cards
             mutablePlayerMap:
-                payload.status === 'deal'
+                payload.roundStatus === 'deal'
                     ? Object.entries(state.mutablePlayerMap).reduce(
                           (prev, [playerId, player]) => ({
                               ...prev,
                               [playerId]: {
                                   ...player,
+                                  roundCalled: 0,
+                                  biddingCycleCalled: 0,
                                   cards: [null, null],
                               },
                           }),
@@ -137,32 +136,16 @@ export const wsReducers: ReducerTypes<ClientTableState, [ActionType<any>]>[] = [
     }),
 
     /**
-     * When the player exceeds default timeout, using their time bank
+     * When the player's mutable data changes
      */
-    on(tableWsActionMap.playerTimeBank, (state, { payload }) => {
+    on(tableWsActionMap.playerChanged, (state, { payload }) => {
         return {
             ...state,
             mutablePlayerMap: {
                 ...state.mutablePlayerMap,
-                [payload.playerId]: {
-                    ...state.mutablePlayerMap[payload.playerId],
-                    timeBank: payload.timeBank,
-                },
-            },
-        };
-    }),
-
-    /**
-     * When the player changes their ready status
-     */
-    on(tableWsActionMap.playerReadyStatus, (state, { payload }) => {
-        return {
-            ...state,
-            mutablePlayerMap: {
-                ...state.mutablePlayerMap,
-                [payload.playerId]: {
-                    ...state.mutablePlayerMap[payload.playerId],
-                    ready: payload.ready,
+                [payload.id]: {
+                    ...state.mutablePlayerMap[payload.id],
+                    ...payload,
                 },
             },
         };

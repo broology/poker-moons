@@ -1,58 +1,78 @@
+@use 'breakpoints.scss' as br;
+
 $font-family: 'Blinker', sans-serif;
 
 @mixin h1 {
     font-family: $font-family;
     font-weight: 600;
-    font-size: 4.5rem;
+    font-size: 3rem;
     line-height: 1;
     letter-spacing: 0;
     text-transform: uppercase;
     text-decoration: none;
+    @include br.md {
+        font-size: 4.5rem;
+    }
 }
 @mixin h2 {
     font-family: $font-family;
     font-weight: 600;
-    font-size: 2.25rem;
+    font-size: 2rem;
     line-height: 1;
     letter-spacing: 0;
     text-transform: none;
     text-decoration: none;
+    @include br.md {
+        font-size: 2.25rem;
+    }
 }
 @mixin h3 {
     font-family: $font-family;
     font-weight: 600;
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     line-height: 1.4;
     letter-spacing: 0;
     text-transform: none;
     text-decoration: none;
+    @include br.md {
+        font-size: 1.5rem;
+    }
 }
 @mixin h4 {
     font-family: $font-family;
     font-weight: 400;
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     line-height: 1;
     letter-spacing: 0;
     text-transform: none;
     text-decoration: none;
+    @include br.md {
+        font-size: 1.5rem;
+    }
 }
 @mixin h5 {
     font-family: $font-family;
     font-weight: 600;
-    font-size: 1.25rem;
+    font-size: 1.15rem;
     line-height: 1;
     letter-spacing: 0;
     text-transform: uppercase;
     text-decoration: none;
+    @include br.md {
+        font-size: 1.25rem;
+    }
 }
 @mixin h6 {
     font-family: $font-family;
     font-weight: 400;
-    font-size: 1.125rem;
+    font-size: 1rem;
     line-height: 1.2;
     letter-spacing: 0;
     text-transform: none;
     text-decoration: none;
+    @include br.md {
+        font-size: 1.125rem;
+    }
 }
 @mixin body1 {
     font-family: $font-family;
@@ -84,18 +104,24 @@ $font-family: 'Blinker', sans-serif;
 @mixin title {
     font-family: $font-family;
     font-weight: 600;
-    font-size: 2.25rem;
+    font-size: 2rem;
     line-height: 1.4;
     letter-spacing: 0;
     text-transform: none;
     text-decoration: none;
+    @include br.md {
+        font-size: 2.25rem;
+    }
 }
 @mixin button {
     font-family: $font-family;
     font-weight: 600;
-    font-size: 1.125rem;
+    font-size: 1rem;
     line-height: 1;
     letter-spacing: 0;
     text-transform: uppercase;
     text-decoration: none;
+    @include br.md {
+        font-size: 1.125rem;
+    }
 }

@@ -1,0 +1,25 @@
+@use '~styles/colors' as c;
+@use '~styles/spacing' as s;
+@use '~styles/typography' as t;
+
+.table-status {
+    @include t.h6;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: c.color-text-contrast('tinted');
+    background-color: c.color-alpha('tinted', 0.75);
+
+    border: 2px solid c.color-alpha('shaded', 0.75);
+    border-radius: 25px;
+
+    height: 25px;
+    min-width: 125px;
+    max-width: 175px;
+    text-align: center;
+
+    margin: auto;
+    padding: s.spacing(0.5) s.spacing(0.5);
+}

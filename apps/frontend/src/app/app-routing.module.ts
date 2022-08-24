@@ -9,13 +9,7 @@ import { TableRoutingGuard } from './guard/table-routing.guard';
                 {
                     path: '',
                     pathMatch: 'full',
-                    redirectTo: 'builder',
-                },
-                {
-                    path: 'builder',
-                    loadChildren: () =>
-                        // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
-                        import('@poker-moons/frontend/builder/shell').then((m) => m.FrontendBuilderShellModule),
+                    loadChildren: () => import('@poker-moons/frontend/landing').then((m) => m.FrontendLandingModule),
                 },
                 {
                     path: 'table/:tableId',
@@ -27,7 +21,7 @@ import { TableRoutingGuard } from './guard/table-routing.guard';
                 },
                 {
                     path: '**',
-                    redirectTo: 'builder',
+                    redirectTo: '',
                 },
             ],
             {

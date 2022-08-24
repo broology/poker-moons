@@ -1,53 +1,45 @@
-import { AfterViewInit, Component, ElementRef, Input, OnChanges, ViewChild } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Card } from '@poker-moons/shared/type';
-import { applyMeisterCard, cardToCardMeister } from './meister/card.adapter';
+import { cardToCardMeister } from './meister/card.adapter';
 
 @Component({
     selector: 'poker-moons-card',
     templateUrl: './card.component.html',
     styleUrls: ['./card.component.scss'],
 })
-export class CardComponent implements AfterViewInit, OnChanges {
-    private rendered = false;
-
+export class CardComponent {
     /**
-     * The card to be displayed. If given null display the back of the card
+     * @description The card to be displayed. If given null display the back of the card.
      *
-     * - `Card`: displays given card
-     * - `null`: displays back of card
-     * - `undefined`: displays nothing
+     * - `Card`: displays given card.
+     * - `null`: displays back of card.
+     * - `undefined`: displays nothing.
      */
     @Input() card: Card | null | undefined;
 
-    @ViewChild('card') htmlCard: ElementRef | undefined;
-
-    ngAfterViewInit(): void {
-        this.apply(this.card);
-        this.rendered = true;
-    }
+    constructor(private readonly sanitizer: DomSanitizer) {}
 
     /**
-     * On card data update, re-apply the card
+     * @description Converts the given {@link Card} and converts it into the raw html of an equivalent cardmeister ui card.
+     *
+     * @param card - Rank and suite of the card to be displayed.
+     *
+     * @returns Html to be rendered for this card.
+     *
+     * @see https://github.com/cardmeister/cardmeister.github.io for more details
      */
-    ngOnChanges(): void {
-        if (this.rendered) {
-            this.apply(this.card);
+    renderCard(card: Card | null | undefined): SafeHtml {
+        if (card === undefined) {
+            return '';
         }
-    }
 
-    /**
-     * Takes the card data and injects it into the meister card component
-     */
-    private apply(card: Card | null | undefined) {
-        if (this.htmlCard && card !== undefined) {
-            const ref = this.htmlCard.nativeElement;
-            const attrs = cardToCardMeister(card);
+        const attributes = cardToCardMeister(card);
 
-            for (const [field, value] of Object.entries(attrs)) {
-                ref.setAttribute(field, value);
-            }
+        const rawAttributes = Object.entries(attributes)
+            .map(([field, value]) => `${field}="${value}"`)
+            .join(' ');
 
-            applyMeisterCard(this.htmlCard.nativeElement);
-        }
+        return this.sanitizer.bypassSecurityTrustHtml(`<card-t ${rawAttributes}></card-t>`);
     }
 }

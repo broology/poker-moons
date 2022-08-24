@@ -7,12 +7,11 @@
         "backend-shared-service-job-scheduler": "libs/backend/shared/service/job-scheduler",
         "backend-utility": "libs/backend/utility",
         "frontend": "apps/frontend",
-        "frontend-builder-feature-form": "libs/frontend/builder/feature/form",
-        "frontend-builder-shell": "libs/frontend/builder/shell",
         "frontend-e2e": "apps/frontend-e2e",
         "frontend-hud-feature-action-panel": "libs/frontend/hud/feature/action-panel",
         "frontend-hud-feature-bank-panel": "libs/frontend/hud/feature/bank-panel",
         "frontend-hud-shell": "libs/frontend/hud/shell",
+        "frontend-landing": "libs/frontend/landing",
         "frontend-shared-state-table": "libs/frontend/shared/state/table",
         "frontend-shared-ui": "libs/frontend/shared/ui",
         "frontend-shared-util-environment": "libs/frontend/shared/util/environment",
@@ -20,8 +19,10 @@
         "frontend-underlay-feature-seat-layout": "libs/frontend/underlay/feature/seat-layout",
         "frontend-underlay-feature-table-display": "libs/frontend/underlay/feature/table-display",
         "frontend-underlay-shell": "libs/frontend/underlay/shell",
+        "shared-assets": "libs/shared/assets",
         "shared-testing": "libs/shared/testing",
         "shared-type": "libs/shared/type",
         "shared-util": "libs/shared/util"
-    }
+    },
+    "$schema": "./node_modules/nx/schemas/workspace-schema.json"
 }

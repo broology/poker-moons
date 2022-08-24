@@ -1,0 +1,28 @@
+<ng-container *ngIf="mutablePlayer; else empty">
+    <ng-container [ngSwitch]="status">
+        <ng-container *ngSwitchCase="'lobby'">
+            <div *ngIf="mutablePlayer.ready" class="seat-status ready">READY</div>
+            <div *ngIf="!mutablePlayer.ready" class="seat-status not-ready">NOT READY</div>
+        </ng-container>
+        <ng-container *ngSwitchCase="'active'">
+            <ng-container [ngSwitch]="mutablePlayer.status">
+                <div *ngSwitchCase="'out'" class="seat-status out">OUT</div>
+                <div *ngSwitchCase="'checked'" class="seat-status checked">CHECK</div>
+                <div *ngSwitchCase="'called'" class="seat-status called">
+                    CALL | {{ mutablePlayer.biddingCycleCalled | chipCurrency }}
+                </div>
+                <div *ngSwitchCase="'folded'" class="seat-status folded">FOLD</div>
+                <div *ngSwitchCase="'raised'" class="seat-status raised">
+                    RAISE | {{ mutablePlayer.biddingCycleCalled | chipCurrency }}
+                </div>
+                <div *ngSwitchCase="'all-in'" class="seat-status all-in">
+                    ALL-IN | {{ mutablePlayer.biddingCycleCalled | chipCurrency }}
+                </div>
+            </ng-container>
+        </ng-container>
+    </ng-container>
+</ng-container>
+
+<ng-template #empty>
+    <!--  Nothing -->
+</ng-template>

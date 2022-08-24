@@ -1,5 +1,5 @@
 import { Options } from '@angular-slider/ngx-slider';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 @Component({
@@ -9,30 +9,30 @@ import { FormControl } from '@angular/forms';
 })
 export class SliderInputComponent {
     /**
-     * @description The minimum value of the slider range
+     * @description The minimum value of the slider range.
      */
     @Input() set min(min: number) {
         this.options.floor = min;
     }
 
     /**
-     * @description The maximum value of the slider range
+     * @description The maximum value of the slider range.
      */
     @Input() set max(max: number) {
         this.options.ceil = max;
     }
 
     /**
-     * @description The value the slider will start at
+     * @description The value the slider will start at.
      */
     @Input() set start(start: number) {
         this._value = start;
     }
 
     /**
-     * @description The form control to be updated when the slider changes values
+     * @description The form control to be updated when the slider changes values.
      */
-    @Input() control!: FormControl;
+    @Input() control!: FormControl<number>;
 
     _value!: number;
 
@@ -42,7 +42,10 @@ export class SliderInputComponent {
         showSelectionBar: true,
     };
 
+    manualRefresh = new EventEmitter();
+
     changed(value: number) {
         this.control.setValue(value);
+        this.manualRefresh.emit();
     }
 }

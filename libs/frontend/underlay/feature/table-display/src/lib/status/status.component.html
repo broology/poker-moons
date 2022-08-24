@@ -1,2 +1,5 @@
-<p>Table Status</p>
-<div>{{ status }}</div>
+<ng-container [ngSwitch]="status">
+    <div *ngSwitch="'lobby'" class="table-status">LOBBY</div>
+    <div *ngSwitchCase="'bidding'" class="table-status">POT | {{ pot | chipCurrency }}</div>
+    <div *ngSwitch="'game-end'" class="table-status">FINISHED</div>
+</ng-container>

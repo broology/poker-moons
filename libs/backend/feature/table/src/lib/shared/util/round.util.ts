@@ -45,6 +45,23 @@ export function isRoundComplete(roundStatus: RoundStatus, playerStatuses: Player
 }
 
 /**
+ * @description Determines if a round a can be auto-completed, which occurs when less than 2 players are actively bidden.
+ */
+export function isAutoCompletable(playerStatuses: PlayerStatus[]): boolean {
+    // If there is ever a point where every player has all-ined or folded, or every player but one has all-ined or folded, the round is over
+    if (
+        countOccurrences(playerStatuses, 'all-in') + countOccurrences(playerStatuses, 'folded') ===
+            playerStatuses.length - 1 ||
+        countOccurrences(playerStatuses, 'all-in') + countOccurrences(playerStatuses, 'folded') ===
+            playerStatuses.length
+    ) {
+        return true;
+    }
+
+    return false;
+}
+
+/**
  * @description A recursive function that, provided the current seat and seat map,
  *              returns the next seat in sequence that has a player associated with it.
  */

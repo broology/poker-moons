@@ -11,7 +11,7 @@ export class TextInputComponent implements AfterViewInit {
 
     @Input() placeholder!: string;
 
-    @Input() control!: FormControl;
+    @Input() control!: FormControl<string>;
 
     @ViewChild('textInput') element!: ElementRef<HTMLInputElement>;
 
