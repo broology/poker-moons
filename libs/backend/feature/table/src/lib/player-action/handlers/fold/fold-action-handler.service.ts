@@ -59,7 +59,7 @@ export class FoldActionHandlerService {
             const playerStatuses = Object.values(table.playerMap).map((player) => player.status);
 
             // Determine if the round is complete, if it isn't, start the next turn
-            if (isRoundComplete(table.activeRound.roundStatus, playerStatuses)) {
+            if (isRoundComplete(table.activeRound.roundStatus, playerStatuses, table)) {
                 await this.roundManagerService.endRound(table);
             } else {
                 await this.roundManagerService.startNextTurn(table, newActiveSeat, playerStatuses);

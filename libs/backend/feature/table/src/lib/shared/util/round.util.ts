@@ -1,4 +1,4 @@
-import type { Player, PlayerId, PlayerStatus, Round, RoundStatus, SeatId } from '@poker-moons/shared/type';
+import type { Player, PlayerId, PlayerStatus, Round, RoundStatus, SeatId, ServerTableState } from '@poker-moons/shared/type';
 
 /**
  * @description Counts the occurrences of a particular player status from an array of statuses
@@ -11,25 +11,34 @@ const countOccurrences = (playerStatuses: PlayerStatus[], status: PlayerStatus) 
  *              returns true if the round is complete and the winner determiner should be
  *              called or false if the round should continue
  */
-export function isRoundComplete(roundStatus: RoundStatus, playerStatuses: PlayerStatus[]): boolean {
-    // Handles the case where everyone except for 1 player folds, resulting in the end of the round
-    if (countOccurrences(playerStatuses, 'folded') === playerStatuses.length - 1) {
-        return true;
-    }
-
-    // If it's the river and one player has raised or gone all-in and everyone else has either called or folded, the round is over
+export function isRoundComplete(roundStatus: RoundStatus, playerStatuses: PlayerStatus[], table: ServerTableState): boolean {
+    // TODO: Should we pass the whole table in here, or just playerMap and activeRound?
+    // First check if bidding cycle has ended. (Bit of redundancy between checking this here and in startNextTurn. Refactor?)
     if (
-        roundStatus === 'river' &&
-        (countOccurrences(playerStatuses, 'raised') === 1 || countOccurrences(playerStatuses, 'all-in') === 1) &&
-        countOccurrences(playerStatuses, 'called') + countOccurrences(playerStatuses, 'folded') ===
-            playerStatuses.length - 1
+        hasEveryoneTakenTurn(playerStatuses) &&
+        hasBiddingCycleEnded(Object.values(table.playerMap), table.activeRound)
     ) {
-        return true;
-    }
+        // Handles the case where everyone except for 1 player folds, resulting in the end of the round
+        if (countOccurrences(playerStatuses, 'folded') === playerStatuses.length - 1) {
+            return true;
+        }
 
-    // If it's the river and everyone checks, the round is over
-    if (roundStatus === 'river' && countOccurrences(playerStatuses, 'checked') === playerStatuses.length) {
-        return true;
+        // If it's the river and one player has raised or gone all-in and everyone else has either called or folded, the round is over
+        if (
+            roundStatus === 'river' &&
+            (countOccurrences(playerStatuses, 'raised') === 1 || countOccurrences(playerStatuses, 'all-in') === 1) &&
+            countOccurrences(playerStatuses, 'called') + countOccurrences(playerStatuses, 'folded') ===
+                playerStatuses.length - 1
+        ) {
+            return true;
+        }
+
+        // If it's the river and everyone checks, the round is over
+        if (roundStatus === 'river' && countOccurrences(playerStatuses, 'checked') === playerStatuses.length) {
+            return true;
+        }
+
+        return false;
     }
 
     return false;
