@@ -33,7 +33,8 @@
 
 .table {
     background-image: linear-gradient(to top, c.color-alpha('tinted', 0.5), c.color-alpha('background', 0.9)),
-        url('/assets/poker-moons-landing-table.svg');
+        // Just hard coding this asset. As we can't dynamically render here as we are making use of scss variables.
+        url('https://d17df73wtlc9mc.cloudfront.net/landing/poker-moons-landing-table.svg');
     background-position: center;
     background-size: cover;
     height: 100%;
