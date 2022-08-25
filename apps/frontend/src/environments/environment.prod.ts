@@ -5,7 +5,7 @@ export const environment: NgEnvironment = {
 
     app: 'https://beta.pokermoons.net',
 
-    api: 'http://api.pokermoons.net',
+    api: 'https://api.pokermoons.net',
 
     assets: 'https://d17df73wtlc9mc.cloudfront.net',
 };
