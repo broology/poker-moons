@@ -2,7 +2,7 @@
     <div class="table"></div>
     <div class="container" fxLayout="column" fxFlexAlign="center">
         <div class="logo-container" fxLayout="column">
-            <img class="logo" src="/assets/poker-moons-logo.svg" alt="poker-moons-logo.svg" />
+            <img class="logo" [src]="'/landing/poker-moons-logo.svg' | assetUrl" alt="Poker Moons Logo" />
             <h1>Free online poker with friends without the hassle.</h1>
         </div>
         <a class="btn" (click)="createTable()">
