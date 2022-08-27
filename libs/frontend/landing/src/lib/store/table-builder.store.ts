@@ -27,9 +27,10 @@ export class TableBuilderStore extends ComponentStore<TableBuilderState> {
                             this.setLoading(false);
                             this.router.navigate(['table', tableId]);
                         },
-                        () => {
+                        (e) => {
                             // Failed
                             alert('Something went wrong creating the table.');
+                            console.log(e);
                             this.setLoading(false);
                         },
                     ),

@@ -1,54 +1,55 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { TableStateFacade } from '@poker-moons/frontend/shared/state/table';
-import { first, Observable, switchMap } from 'rxjs';
+import { Router } from '@angular/router';
+import { TableId } from '@poker-moons/shared/type';
+import { Observable } from 'rxjs';
+import { AuthService } from './auth.service';
 
 /**
- * @description Interceptor responsible for setting the clients `Authorization` token for specified tables.
+ * @description Interceptor responsible for setting the clients `Authorization` header based on the `route`.
  */
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-    constructor(private readonly tableStateFacade: TableStateFacade) {}
+    constructor(private readonly authService: AuthService, private readonly router: Router) {}
 
     /**
      * @description Intercepts and http request made by the client, and determines if it should add a `Authorization` header.
      *
-     * Will only add the token to the header if they are currently at a table, and have an existing `token` in
+     * Will only add the token to the header if they are currently at a table, and have an existing `token` is in
      * `localStorage`.
      */
     intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-        return this.tableStateFacade.selectTableId().pipe(
-            first(),
-            switchMap((tableId) => {
-                let headers = req.headers;
+        let headers = req.headers;
 
-                if (tableId) {
-                    const token = this.getToken(tableId);
+        const tableId = this.getTableIdFromPath();
 
-                    if (token) {
-                        headers = headers.set('Authorization', `Bearer ${token}`);
-                    }
-                }
+        if (tableId) {
+            const data = this.authService.get(tableId);
 
-                return next.handle(req.clone({ headers }));
-            }),
-        );
+            if (data) {
+                headers = headers.set('Authorization', `Bearer ${data.token}`);
+            }
+        }
+
+        return next.handle(req.clone({ headers }));
     }
 
     /**
-     * @description Fetches the `token` from local storage for the given {@link tableId} if it exists.
-     *
-     * @param tableId
+     * @description With the `router#url` extracts the `tableId` from the path.
      */
-    private getToken(tableId: string): string | null {
-        const value = localStorage.getItem(tableId);
+    private getTableIdFromPath(): TableId | null {
+        const url = this.router.parseUrl(this.router.url);
 
-        if (!value) {
+        if (!url.root.hasChildren()) {
             return null;
         }
 
-        const { token } = JSON.parse(value);
+        const children = url.root.children;
 
-        return token;
+        if (children['primary'].segments[0]?.path === 'table') {
+            return (children['primary'].segments[1]?.path as TableId) || null;
+        }
+
+        return null;
     }
 }

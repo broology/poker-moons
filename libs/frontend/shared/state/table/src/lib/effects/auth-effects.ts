@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
+import { AuthService } from '@poker-moons/frontend/shared/util/auth';
 import { concatMap, of, tap, withLatestFrom } from 'rxjs';
 import { joinTable } from '../actions/api.actions';
 import { setPlayerId } from '../actions/auth.actions';
@@ -17,10 +18,10 @@ export class TableStateAuthEffects {
             this.actions$.pipe(
                 ofType(connectToWs.request),
                 tap(({ payload: { tableId } }) => {
-                    const value = localStorage.getItem(tableId);
+                    const data = this.authService.get(tableId);
 
-                    if (value) {
-                        const { playerId } = JSON.parse(value);
+                    if (data) {
+                        const { playerId } = data;
 
                         this.store.dispatch(setPlayerId({ payload: { playerId } }));
                     }
@@ -42,18 +43,18 @@ export class TableStateAuthEffects {
                         throw new Error('Missing required params');
                     }
 
-                    localStorage.setItem(
-                        tableId,
-                        JSON.stringify({
-                            created: new Date(),
-                            token: action.payload.token,
-                            playerId: action.payload.id,
-                        }),
-                    );
+                    this.authService.set(tableId, {
+                        token: action.payload.token,
+                        playerId: action.payload.id,
+                    });
                 }),
             ),
         { dispatch: false },
     );
 
-    constructor(private readonly actions$: Actions, private readonly store: Store) {}
+    constructor(
+        private readonly actions$: Actions,
+        private readonly store: Store,
+        private readonly authService: AuthService,
+    ) {}
 }

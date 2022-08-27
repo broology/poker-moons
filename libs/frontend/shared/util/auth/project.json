@@ -19,6 +19,18 @@
                     "libs/frontend/shared/util/auth/**/*.html"
                 ]
             }
+        },
+        "build": {
+            "executor": "@nrwl/angular:ng-packagr-lite",
+            "options": {
+                "tsConfig": "libs/frontend/shared/util/auth/tsconfig.lib.json",
+                "project": "libs/frontend/shared/util/auth/ng-package.json"
+            },
+            "configurations": {
+                "": {
+                    "tsConfig": "libs/frontend/shared/util/auth/tsconfig.lib.prod.json"
+                }
+            }
         }
     },
     "tags": []
