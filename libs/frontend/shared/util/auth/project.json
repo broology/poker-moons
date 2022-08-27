@@ -1,0 +1,25 @@
+{
+    "projectType": "library",
+    "sourceRoot": "libs/frontend/shared/util/auth/src",
+    "prefix": "poker-moons",
+    "targets": {
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/libs/frontend/shared/util/auth"],
+            "options": {
+                "jestConfig": "libs/frontend/shared/util/auth/jest.config.ts",
+                "passWithNoTests": true
+            }
+        },
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "options": {
+                "lintFilePatterns": [
+                    "libs/frontend/shared/util/auth/**/*.ts",
+                    "libs/frontend/shared/util/auth/**/*.html"
+                ]
+            }
+        }
+    },
+    "tags": []
+}

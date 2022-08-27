@@ -5,6 +5,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { TableStateModule } from '@poker-moons/frontend/shared/state/table';
+import { AuthModule } from '@poker-moons/frontend/shared/util/auth';
 import { NG_ENVIRONMENT } from '@poker-moons/frontend/shared/util/environment';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
@@ -12,6 +13,7 @@ import { AppComponent } from './app.component';
 
 @NgModule({
     imports: [
+        AuthModule,
         // Angular Modules
         BrowserModule,
 

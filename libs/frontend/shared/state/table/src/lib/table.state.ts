@@ -1,6 +1,7 @@
 import { createFeature, createReducer } from '@ngrx/store';
 import { ClientTableState } from '@poker-moons/shared/type';
 import { apiReducers } from './reducers/api.reducers';
+import { authReducers } from './reducers/auth.reducers';
 import { wsReducers } from './reducers/ws.reducers';
 
 export const TABLE_STATE = 'tableState';
@@ -28,7 +29,7 @@ export const initialState: ClientTableState = {
 
 export const storeFeature = createFeature({
     name: TABLE_STATE,
-    reducer: createReducer<ClientTableState>(initialState, ...[...wsReducers, ...apiReducers]),
+    reducer: createReducer<ClientTableState>(initialState, ...[...wsReducers, ...apiReducers, ...authReducers]),
 });
 
 export const {
