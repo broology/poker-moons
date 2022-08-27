@@ -1,5 +1,6 @@
 import type { ImmutablePublicPlayer, MutablePublicPlayer, Player, PublicPlayer } from '@poker-moons/shared/type';
 import { merge } from '@poker-moons/shared/util';
+import { nanoid } from 'nanoid';
 import { DeepPartial } from 'ts-essentials';
 
 export function mockPublicPlayer(overrides: DeepPartial<PublicPlayer> = {}): PublicPlayer {
@@ -61,6 +62,7 @@ export function mockPlayer(overrides: DeepPartial<Player> = {}): Player {
         cards: [],
         ready: false,
         timeBank: 120,
+        token: nanoid(40),
     };
 
     return merge(player, overrides);
