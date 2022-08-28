@@ -1,4 +1,4 @@
-import { Options } from '@angular-slider/ngx-slider';
+import { ChangeContext, Options } from '@angular-slider/ngx-slider';
 import { Component, EventEmitter, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
@@ -40,12 +40,14 @@ export class SliderInputComponent {
         hideLimitLabels: true,
         hidePointerLabels: true,
         showSelectionBar: true,
+        step: 25,
     };
 
     manualRefresh = new EventEmitter();
 
-    changed(value: number) {
-        this.control.setValue(value);
+    changed(context: ChangeContext) {
+        this.control.setValue(context.value);
+
         this.manualRefresh.emit();
     }
 }
