@@ -11,10 +11,11 @@ import { TableSocketService } from '../shared/data-access/table-socket.service';
 @Injectable()
 export class TableStateWsEffects {
     /**
-     * When the websocket is requested to be loaded.
-     * - Initializes the socket connection
-     * - Sets up each table event websocket observable
-     * - Connects to the websocket
+     * @description When the websocket is requested to be loaded.
+     *
+     * - Initializes the socket connection.
+     * - Sets up each table event websocket observable.
+     * - Connects to the websocket.
      */
     requestConnectionToWs$ = createEffect(
         () =>

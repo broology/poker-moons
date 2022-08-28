@@ -4,6 +4,22 @@
     "sourceRoot": "libs/frontend/shared/state/table/src",
     "prefix": "poker-moons",
     "targets": {
+        "build": {
+            "executor": "@nrwl/angular:ng-packagr-lite",
+            "outputs": ["dist/libs/frontend/shared/state/table"],
+            "options": {
+                "project": "libs/frontend/shared/state/table/ng-package.json"
+            },
+            "configurations": {
+                "production": {
+                    "tsConfig": "libs/frontend/shared/state/table/tsconfig.lib.prod.json"
+                },
+                "development": {
+                    "tsConfig": "libs/frontend/shared/state/table/tsconfig.lib.json"
+                }
+            },
+            "defaultConfiguration": "production"
+        },
         "test": {
             "executor": "@nrwl/jest:jest",
             "outputs": ["coverage/libs/frontend/shared/state/table"],
@@ -16,23 +32,11 @@
             "executor": "@nrwl/linter:eslint",
             "options": {
                 "lintFilePatterns": [
-                    "libs/frontend/shared/state/table/src/**/*.ts",
-                    "libs/frontend/shared/state/table/src/**/*.html"
+                    "libs/frontend/shared/state/table/**/*.ts",
+                    "libs/frontend/shared/state/table/**/*.html"
                 ]
-            }
-        },
-        "build": {
-            "executor": "@nrwl/angular:ng-packagr-lite",
-            "options": {
-                "tsConfig": "libs/frontend/shared/state/table/tsconfig.lib.json",
-                "project": "libs/frontend/shared/state/table/ng-package.json"
-            },
-            "configurations": {
-                "": {
-                    "tsConfig": "libs/frontend/shared/state/table/tsconfig.lib.prod.json"
-                }
             }
         }
     },
-    "tags": ["scope:frontend", "type:state"]
+    "tags": ["scope:frontend", "type:util"]
 }

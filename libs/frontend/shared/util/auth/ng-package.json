@@ -1,6 +1,6 @@
 {
     "$schema": "../../../../../node_modules/ng-packagr/ng-package.schema.json",
-    "dest": "../../../../../dist/libs/frontend/shared/state/table",
+    "dest": "../../../../../dist/libs/frontend/shared/util/auth",
     "lib": {
         "entryFile": "src/index.ts"
     }

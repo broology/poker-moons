@@ -1,8 +1,25 @@
 {
+    "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
     "projectType": "library",
     "sourceRoot": "libs/frontend/shared/util/auth/src",
     "prefix": "poker-moons",
     "targets": {
+        "build": {
+            "executor": "@nrwl/angular:ng-packagr-lite",
+            "outputs": ["dist/libs/frontend/shared/util/auth"],
+            "options": {
+                "project": "libs/frontend/shared/util/auth/ng-package.json"
+            },
+            "configurations": {
+                "production": {
+                    "tsConfig": "libs/frontend/shared/util/auth/tsconfig.lib.prod.json"
+                },
+                "development": {
+                    "tsConfig": "libs/frontend/shared/util/auth/tsconfig.lib.json"
+                }
+            },
+            "defaultConfiguration": "production"
+        },
         "test": {
             "executor": "@nrwl/jest:jest",
             "outputs": ["coverage/libs/frontend/shared/util/auth"],
@@ -19,19 +36,7 @@
                     "libs/frontend/shared/util/auth/**/*.html"
                 ]
             }
-        },
-        "build": {
-            "executor": "@nrwl/angular:ng-packagr-lite",
-            "options": {
-                "tsConfig": "libs/frontend/shared/util/auth/tsconfig.lib.json",
-                "project": "libs/frontend/shared/util/auth/ng-package.json"
-            },
-            "configurations": {
-                "": {
-                    "tsConfig": "libs/frontend/shared/util/auth/tsconfig.lib.prod.json"
-                }
-            }
         }
     },
-    "tags": []
+    "tags": ["scope:frontend", "type:util"]
 }

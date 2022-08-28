@@ -16,13 +16,15 @@ export class TableRoutingGuard implements CanActivate {
     ) {}
 
     /**
-     * When `/table/:tableId` is loaded, this will attempt to check to see if the table exists.
+     * @description When `/table/:tableId` is loaded, this will attempt to check to see if the table exists.
      *
      * Success:
-     * - initializes the table state's websocket connection
+     *
+     * - Initializes the table state's websocket connection.
      *
      * Failure:
-     * - Throws error alert and redirects to builder
+     *
+     * - Throws error alert and redirects to builder.
      */
     canActivate(route: ActivatedRouteSnapshot): Observable<boolean | UrlTree> | UrlTree {
         const tableId: TableId | undefined = route.params.tableId;

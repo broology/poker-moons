@@ -10,7 +10,8 @@ import { SeatLayoutUiComponent } from './seat-layout-ui.component';
 import { seatLayoutUiImports } from './seat-layout-ui.module';
 
 /**
- * @description Mock version of {@link TableStateFacade} so that the seat layout will be filled with mock data to be displayed
+ * @description Mock version of {@link TableStateFacade} so that the seat layout will be filled with mock data to be
+ * displayed.
  */
 @Injectable()
 class MockTableStateFacade {
