@@ -10,7 +10,7 @@ import {
 import { Either, isRight, right } from 'fp-ts/lib/Either';
 import { PotManagerService } from '../../../round/pot-manager/pot-manager.service';
 import { RoundManagerService } from '../../../round/round-manager/round-manager.service';
-import { incrementSeat, isRoundComplete } from '../../../shared/util/round.util';
+import { incrementSeat } from '../../../shared/util/round.util';
 import { TableGatewayService } from '../../../shared/websocket/table-gateway.service';
 import { TableStateManagerService } from '../../../table-state-manager/table-state-manager.service';
 import { validatePlayerTurn } from '../util/validate-player-turn';
@@ -27,13 +27,19 @@ export class AllInActionHandlerService {
     ) {}
 
     /**
-     * AllInActionHandlerService.allIn
-     * @description Performs the all-in action and returns an action response if the state is valid, else it throws an error describing the invalid state.
-     * All-in means increasing the size of an existing bet in the current round to include all remaining chips in the player's stack.
-     * @param action
+     * @description AllInActionHandlerService.allIn.
+     *
+     * Performs the all-in action and returns an action response if the state is valid, else it throws an error
+     * describing the invalid state. All-in means increasing the size of an existing bet in the current round to
+     * include all remaining chips in the player's stack.
+     *
      * @type Either<PokerMoonsError, { table: ServerTableState; player: Player }>
-     * @returns PerformPlayerActionResponse
-     * @throws Error
+     *
+     * @param action
+     *
+     * @returns PerformPlayerActionResponse.
+     *
+     * @throws Error.
      */
     async allIn(
         action: Either<PokerMoonsError, { table: ServerTableState; player: Player }>,
@@ -78,12 +84,7 @@ export class AllInActionHandlerService {
             table.playerMap[player.id] = { ...player, status: 'all-in' };
             const playerStatuses = Object.values(table.playerMap).map((player) => player.status);
 
-            // Determine if the round is complete, if it isn't, start the next turn
-            if (isRoundComplete(table.activeRound.roundStatus, playerStatuses)) {
-                await this.roundManagerService.endRound(table);
-            } else {
-                await this.roundManagerService.startNextTurn(table, newActiveSeat, playerStatuses);
-            }
+            return this.roundManagerService.startNextTurn(table, newActiveSeat, playerStatuses);
         } else {
             this.logger.error(action.left);
             throw new BadRequestException(action.left);
@@ -91,15 +92,19 @@ export class AllInActionHandlerService {
     }
 
     /**
-     * AllInActionHandlerService.canAllIn
-     * @description Determines if a player is able to go all-in given the current game state.
-     * All-in can happen at any time during a betting round.
-     * @param table
+     * @description AllInActionHandlerService.canAllIn.
+     *
+     * Determines if a player is able to go all-in given the current game state. All-in can happen at any time
+     * during a betting round.
+     *
      * @type ServerTableState
-     * @param player
      * @type Player
-     * @param action
      * @type AllInPlayerAction
+     *
+     * @param table
+     * @param player
+     * @param action
+     *
      * @returns Either<PokerMoonsError, RaisePlayerAction>
      */
     canAllIn(
