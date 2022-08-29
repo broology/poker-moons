@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { PotManagerModule } from '../round/pot-manager/pot-manager.module';
 import { RoundManagerModule } from '../round/round-manager/round-manager.module';
+import { PlayerAccessModule } from '../shared/authentication/player-access.module';
 import { TurnTimerModule } from '../shared/turn-timer/turn-timer.module';
 import { TableGatewayModule } from '../shared/websocket/table-gateway.module';
 import { TableStateManagerModule } from '../table-state-manager/table-state-manager.module';
@@ -13,7 +14,14 @@ import { PlayerActionController } from './player-action.controller';
 import { PlayerActionService } from './player-action.service';
 
 @Module({
-    imports: [TableGatewayModule, TableStateManagerModule, PotManagerModule, RoundManagerModule, TurnTimerModule],
+    imports: [
+        PlayerAccessModule,
+        PotManagerModule,
+        RoundManagerModule,
+        TableGatewayModule,
+        TableStateManagerModule,
+        TurnTimerModule,
+    ],
     controllers: [PlayerActionController],
     providers: [
         PlayerActionService,

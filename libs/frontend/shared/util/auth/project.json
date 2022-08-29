@@ -1,30 +1,30 @@
 {
     "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
     "projectType": "library",
-    "sourceRoot": "libs/frontend/shared/state/table/src",
+    "sourceRoot": "libs/frontend/shared/util/auth/src",
     "prefix": "poker-moons",
     "targets": {
         "build": {
             "executor": "@nrwl/angular:ng-packagr-lite",
-            "outputs": ["dist/libs/frontend/shared/state/table"],
+            "outputs": ["dist/libs/frontend/shared/util/auth"],
             "options": {
-                "project": "libs/frontend/shared/state/table/ng-package.json"
+                "project": "libs/frontend/shared/util/auth/ng-package.json"
             },
             "configurations": {
                 "production": {
-                    "tsConfig": "libs/frontend/shared/state/table/tsconfig.lib.prod.json"
+                    "tsConfig": "libs/frontend/shared/util/auth/tsconfig.lib.prod.json"
                 },
                 "development": {
-                    "tsConfig": "libs/frontend/shared/state/table/tsconfig.lib.json"
+                    "tsConfig": "libs/frontend/shared/util/auth/tsconfig.lib.json"
                 }
             },
             "defaultConfiguration": "production"
         },
         "test": {
             "executor": "@nrwl/jest:jest",
-            "outputs": ["coverage/libs/frontend/shared/state/table"],
+            "outputs": ["coverage/libs/frontend/shared/util/auth"],
             "options": {
-                "jestConfig": "libs/frontend/shared/state/table/jest.config.ts",
+                "jestConfig": "libs/frontend/shared/util/auth/jest.config.ts",
                 "passWithNoTests": true
             }
         },
@@ -32,8 +32,8 @@
             "executor": "@nrwl/linter:eslint",
             "options": {
                 "lintFilePatterns": [
-                    "libs/frontend/shared/state/table/**/*.ts",
-                    "libs/frontend/shared/state/table/**/*.html"
+                    "libs/frontend/shared/util/auth/**/*.ts",
+                    "libs/frontend/shared/util/auth/**/*.html"
                 ]
             }
         }

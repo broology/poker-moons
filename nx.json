@@ -38,11 +38,13 @@
             "style": "scss",
             "linter": "eslint",
             "unitTestRunner": "jest",
-            "e2eTestRunner": "cypress"
+            "e2eTestRunner": "cypress",
+            "buildable": true
         },
         "@nrwl/angular:library": {
             "linter": "eslint",
-            "unitTestRunner": "jest"
+            "unitTestRunner": "jest",
+            "buildable": true
         },
         "@nrwl/angular:component": {
             "style": "scss"

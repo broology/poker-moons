@@ -15,9 +15,7 @@ import {
 import { Observable } from 'rxjs';
 
 /**
- * Frontend api service responsible for funneling requests from frontend to api.
- *
- * TODO Currently doesn't do any sort of authentication for the user need to add jwt or something at least.
+ * @description Frontend api service responsible for funneling requests from frontend to api.
  */
 @Injectable({ providedIn: 'root' })
 export class PlayerApiService {

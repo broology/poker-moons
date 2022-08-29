@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-    displayName: 'frontend-shared-state-table',
+    displayName: 'frontend-shared-util-auth',
     preset: '../../../../../jest.preset.js',
     setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
     globals: {
@@ -9,7 +9,7 @@ export default {
             stringifyContentPathRegex: '\\.(html|svg)$',
         },
     },
-    coverageDirectory: '../../../../../coverage/libs/frontend/shared/state/table',
+    coverageDirectory: '../../../../../coverage/libs/frontend/shared/util/auth',
     transform: {
         '^.+\\.(ts|mjs|js|html)$': 'jest-preset-angular',
     },

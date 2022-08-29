@@ -7,14 +7,8 @@ import {
     PerformPlayerActionResponse,
     PlayerId,
     PokerMoonsError,
-    TableId,
 } from '@poker-moons/shared/type';
-import { buildAsyncRequestActions, createActionType } from '../shared/util/action-util';
-
-/**
- * @description Action performed when the table state is initialized.
- */
-export const initialize = createActionType<{ tableId: TableId }>('initialize the table');
+import { buildAsyncRequestActions } from '../shared/util/action-util';
 
 /**
  * @description The private way for the user to request the cards themselves once the round starts.

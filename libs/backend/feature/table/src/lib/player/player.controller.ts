@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { CustomLoggerService } from '@poker-moons/backend/utility';
 import type {
     GetPlayerCardsResponse,
@@ -6,6 +6,7 @@ import type {
     LeaveTableResponse,
     ToggleReadyStatusResponse,
 } from '@poker-moons/shared/type';
+import { PlayerAccessGuard } from '../shared/authentication/player-access.guard';
 import { PlayerService } from './player.service';
 import {
     GetPlayerCardsRequestValidator,
@@ -31,18 +32,21 @@ export class PlayerController {
     }
 
     @Put(':playerId')
+    @UseGuards(PlayerAccessGuard)
     leave(@Param() { tableId, playerId }: LeaveTableRequestValidator): Promise<LeaveTableResponse> {
         this.logger.debug('Received leave table request: ' + tableId + ', ' + playerId);
         return this.playerService.delete(tableId, playerId);
     }
 
     @Get(':playerId/cards')
+    @UseGuards(PlayerAccessGuard)
     getCards(@Param() { tableId, playerId }: GetPlayerCardsRequestValidator): Promise<GetPlayerCardsResponse> {
         this.logger.debug('Received get cards request: ' + tableId + ', ' + playerId);
         return this.playerService.getCards(tableId, playerId);
     }
 
     @Put(':playerId/ready-status')
+    @UseGuards(PlayerAccessGuard)
     ready(@Param() { tableId, playerId }: ToggleReadyStatusRequestValidator): Promise<ToggleReadyStatusResponse> {
         this.logger.debug('Received player ready update request: ' + tableId + ', ' + playerId);
         return this.playerService.ready(tableId, playerId);

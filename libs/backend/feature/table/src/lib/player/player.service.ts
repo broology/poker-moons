@@ -7,6 +7,7 @@ import {
     LeaveTableResponse,
     Player,
     PlayerId,
+    PublicPlayer,
     SeatId,
     seats,
     TableId,
@@ -17,7 +18,7 @@ import { ReadySystemService } from '../shared/ready-system/ready-system.service'
 import { TableGatewayService } from '../shared/websocket/table-gateway.service';
 import { TableStateManagerService } from '../table-state-manager/table-state-manager.service';
 
-const initialPlayerState: Omit<Player, 'id'> = {
+const initialPlayerState: Omit<Player, 'id' | 'token'> = {
     username: '',
     img: '',
     stack: 3000,
@@ -40,6 +41,23 @@ export class PlayerService {
         private readonly tableGatewayService: TableGatewayService,
     ) {}
 
+    /**
+     * @description Removes any sensitive information from the `Player` and converts it to a public player.
+     *
+     * @param player
+     *
+     * @returns Public player without sensitive information.
+     */
+    private static toPublicPlayer(player: Player): PublicPlayer {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { token, cards, ...publicPlayer } = player;
+
+        return {
+            ...publicPlayer,
+            cards: [],
+        };
+    }
+
     async create(dto: JoinTableRequest, tableId: TableId): Promise<JoinTableResponse> {
         this.logger.log('New player has joined table ' + tableId);
 
@@ -51,20 +69,25 @@ export class PlayerService {
             throw new BadRequestException('Table is full.');
         }
 
+        // Generates the private unique token for the player.
+        const token = nanoid(40);
+
         const newPlayer: Player = {
             ...initialPlayerState,
             username: dto.username,
             seatId: firstAvailableSeat as SeatId,
+            token,
             id: `player_${nanoid()}`,
         };
 
         await this.tableStateManagerService.addNewPlayerToTable(tableId, firstAvailableSeat, newPlayer);
 
         this.readySystemService.onPlayerJoined(tableId);
+
         this.tableGatewayService.emitTableEvent(tableId, {
             type: 'playerJoined',
             seatId: firstAvailableSeat as SeatId,
-            player: newPlayer,
+            player: PlayerService.toPublicPlayer(newPlayer),
         });
 
         return newPlayer;

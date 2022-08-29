@@ -30,9 +30,9 @@ const displaySeatToDepthLevel: Record<SeatId, DepthLevel> = {
 })
 export class SeatComponent implements OnChanges {
     /**
-     * The seat which is being displayed.
+     * @description The seat which is being displayed.
      *
-     * Use this seatId to perform styling calculations relative to the table rotation
+     * Use this seatId to perform styling calculations relative to the table rotation.
      */
     @Input() set displaySeatId(seatId: SeatId) {
         this.playerOrientation = displaySeatToPlayerOrientation[seatId];
@@ -40,7 +40,7 @@ export class SeatComponent implements OnChanges {
     }
 
     /**
-     * The player's seat index.
+     * @description The player's seat index.
      *
      * Use this seatId to pull the player who should be sitting here at the table.
      */

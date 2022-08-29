@@ -1,5 +1,5 @@
 {
-    "name": "@poker-moons/frontend/shared/state/table",
+    "name": "@poker-moons/frontend/shared/util/auth",
     "version": "0.0.1",
     "peerDependencies": {
         "@angular/common": "^14.1.0",

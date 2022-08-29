@@ -1,7 +1,8 @@
-import { Body, Controller, Param, Post } from '@nestjs/common';
-import { PerformPlayerActionResponse } from '@poker-moons/shared/type';
-import { PlayerActionService } from './player-action.service';
+import { Body, Controller, Param, Post, UseGuards } from '@nestjs/common';
 import { CustomLoggerService } from '@poker-moons/backend/utility';
+import { PerformPlayerActionResponse } from '@poker-moons/shared/type';
+import { PlayerAccessGuard } from '../shared/authentication/player-access.guard';
+import { PlayerActionService } from './player-action.service';
 import { PerformPlayerActionParamValidator, PerformPlayerActionRequestValidator } from './player-action.validator';
 
 @Controller()
@@ -11,6 +12,7 @@ export class PlayerActionController {
     constructor(private readonly playerActionService: PlayerActionService) {}
 
     @Post()
+    @UseGuards(PlayerAccessGuard)
     perform(
         @Param() { tableId, playerId }: PerformPlayerActionParamValidator,
         @Body() dto: PerformPlayerActionRequestValidator,
