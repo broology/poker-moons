@@ -11,7 +11,7 @@ import { Either, isRight, left, right } from 'fp-ts/lib/Either';
 import { match } from 'ts-pattern';
 import { PotManagerService } from '../../../round/pot-manager/pot-manager.service';
 import { RoundManagerService } from '../../../round/round-manager/round-manager.service';
-import { incrementSeat, isRoundComplete } from '../../../shared/util/round.util';
+import { incrementSeat } from '../../../shared/util/round.util';
 import { TableGatewayService } from '../../../shared/websocket/table-gateway.service';
 import { TableStateManagerService } from '../../../table-state-manager/table-state-manager.service';
 import { validatePlayerTurn } from '../util/validate-player-turn';
@@ -78,12 +78,7 @@ export class CallActionHandlerService {
             table.playerMap[player.id] = { ...player, status: 'called' };
             const playerStatuses = Object.values(table.playerMap).map((player) => player.status);
 
-            // Determine if the round is complete, if it isn't, start the next turn
-            if (isRoundComplete(table.activeRound.roundStatus, playerStatuses)) {
-                await this.roundManagerService.endRound(table);
-            } else {
-                await this.roundManagerService.startNextTurn(table, newActiveSeat, playerStatuses);
-            }
+            return this.roundManagerService.startNextTurn(table, newActiveSeat, playerStatuses);
         } else {
             this.logger.error(action.left);
             throw new BadRequestException(action.left);

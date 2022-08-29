@@ -9,7 +9,7 @@ import {
 } from '@poker-moons/shared/type';
 import { Either, isRight, right } from 'fp-ts/lib/Either';
 import { RoundManagerService } from '../../../round/round-manager/round-manager.service';
-import { incrementSeat, isRoundComplete } from '../../../shared/util/round.util';
+import { incrementSeat } from '../../../shared/util/round.util';
 import { TableGatewayService } from '../../../shared/websocket/table-gateway.service';
 import { TableStateManagerService } from '../../../table-state-manager/table-state-manager.service';
 import { validatePlayerTurn } from '../util/validate-player-turn';
@@ -25,13 +25,20 @@ export class FoldActionHandlerService {
     ) {}
 
     /**
-     * FoldActionHandlerService.fold
-     * @description Performs the fold action and returns an action response if the state is valid, else it throws an error describing the invalid state.
-     * Folding means the player is out for the current round. The player no longer will have any claim to the pot for the current round and is not required to put any money into the pot for the remainder of the current round.
-     * @param action
+     * @description FoldActionHandlerService.fold.
+     *
+     * Performs the fold action and returns an action response if the state is valid, else it throws an error
+     * describing the invalid state. Folding means the player is out for the current round. The player no longer
+     * will have any claim to the pot for the current round and is not required to put any money into the pot for
+     * the remainder of the current round.
+     *
      * @type Either<PokerMoonsError, FoldPlayerAction>
-     * @returns PerformPlayerActionResponse
-     * @throws Error
+     *
+     * @param action
+     *
+     * @returns PerformPlayerActionResponse.
+     *
+     * @throws Error.
      */
     async fold(
         action: Either<PokerMoonsError, { table: ServerTableState; player: Player }>,
@@ -58,12 +65,7 @@ export class FoldActionHandlerService {
             table.playerMap[player.id] = { ...player, status: 'folded' };
             const playerStatuses = Object.values(table.playerMap).map((player) => player.status);
 
-            // Determine if the round is complete, if it isn't, start the next turn
-            if (isRoundComplete(table.activeRound.roundStatus, playerStatuses)) {
-                await this.roundManagerService.endRound(table);
-            } else {
-                await this.roundManagerService.startNextTurn(table, newActiveSeat, playerStatuses);
-            }
+            return this.roundManagerService.startNextTurn(table, newActiveSeat, playerStatuses);
         } else {
             this.logger.error(action.left);
             throw new Error(action.left);
@@ -71,15 +73,19 @@ export class FoldActionHandlerService {
     }
 
     /**
-     * FoldActionHandlerService.canFold
-     * @description Determines if a player is able to fold given the current game state.
-     * A fold can happen at any point in the play when it is the players turn to act.
-     * @param table
+     * @description FoldActionHandlerService.canFold.
+     *
+     * Determines if a player is able to fold given the current game state. A fold can happen at any point in the
+     * play when it is the players turn to act.
+     *
      * @type ServerTableState
-     * @param player
      * @type Player
-     * @param action
      * @type FoldPlayerAction
+     *
+     * @param table
+     * @param player
+     * @param action
+     *
      * @returns Either<PokerMoonsError, FoldPlayerAction>
      */
     canFold(

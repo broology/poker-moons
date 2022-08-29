@@ -11,7 +11,7 @@ import { Either, isRight, left, right } from 'fp-ts/lib/Either';
 import { match, __ } from 'ts-pattern';
 import { PotManagerService } from '../../../round/pot-manager/pot-manager.service';
 import { RoundManagerService } from '../../../round/round-manager/round-manager.service';
-import { incrementSeat, isRoundComplete } from '../../../shared/util/round.util';
+import { incrementSeat } from '../../../shared/util/round.util';
 import { TableGatewayService } from '../../../shared/websocket/table-gateway.service';
 import { TableStateManagerService } from '../../../table-state-manager/table-state-manager.service';
 import { validatePlayerTurn } from '../util/validate-player-turn';
@@ -28,13 +28,18 @@ export class RaiseActionHandlerService {
     ) {}
 
     /**
-     * RaiseActionHandlerService.raise
-     * @description Performs the raise action and returns an action response if the state is valid, else it throws an error describing the invalid state.
-     * Raising means increasing the size of an existing bet in the current round.
-     * @param action
+     * @description RaiseActionHandlerService.raise.
+     *
+     * Performs the raise action and returns an action response if the state is valid, else it throws an error
+     * describing the invalid state. Raising means increasing the size of an existing bet in the current round.
+     *
      * @type Either<PokerMoonsError, { table: ServerTableState; player: Player, action: RaisePlayerAction }>
-     * @returns PerformPlayerActionResponse
-     * @throws Error
+     *
+     * @param action
+     *
+     * @returns PerformPlayerActionResponse.
+     *
+     * @throws Error.
      */
     async raise(
         action: Either<PokerMoonsError, { table: ServerTableState; player: Player; action: RaisePlayerAction }>,
@@ -76,12 +81,7 @@ export class RaiseActionHandlerService {
             table.playerMap[player.id] = { ...player, status: 'raised' };
             const playerStatuses = Object.values(table.playerMap).map((player) => player.status);
 
-            // Determine if the round is complete, if it isn't, start the next turn
-            if (isRoundComplete(table.activeRound.roundStatus, playerStatuses)) {
-                await this.roundManagerService.endRound(table);
-            } else {
-                await this.roundManagerService.startNextTurn(table, newActiveSeat, playerStatuses);
-            }
+            return this.roundManagerService.startNextTurn(table, newActiveSeat, playerStatuses);
         } else {
             this.logger.error(action.left);
             throw new BadRequestException(action.left);
@@ -89,15 +89,19 @@ export class RaiseActionHandlerService {
     }
 
     /**
-     * RaiseActionHandlerService.canRaise
-     * @description Determines if a player is able to raise given the current game state.
-     * A raise can happen at any time during a betting round.
-     * @param table
+     * @description RaiseActionHandlerService.canRaise.
+     *
+     * Determines if a player is able to raise given the current game state. A raise can happen at any time during
+     * a betting round.
+     *
      * @type ServerTableState
-     * @param player
      * @type Player
-     * @param action
      * @type RaisePlayerAction
+     *
+     * @param table
+     * @param player
+     * @param action
+     *
      * @returns Either<PokerMoonsError, RaisePlayerAction>
      */
     canRaise(

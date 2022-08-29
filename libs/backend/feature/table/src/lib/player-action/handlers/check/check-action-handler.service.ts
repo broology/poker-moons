@@ -10,7 +10,7 @@ import {
 import { Either, isRight, left, right } from 'fp-ts/lib/Either';
 import { match } from 'ts-pattern';
 import { RoundManagerService } from '../../../round/round-manager/round-manager.service';
-import { incrementSeat, isRoundComplete } from '../../../shared/util/round.util';
+import { incrementSeat } from '../../../shared/util/round.util';
 import { TableGatewayService } from '../../../shared/websocket/table-gateway.service';
 import { TableStateManagerService } from '../../../table-state-manager/table-state-manager.service';
 import { validatePlayerTurn } from '../util/validate-player-turn';
@@ -26,13 +26,19 @@ export class CheckActionHandlerService {
     ) {}
 
     /**
-     * CheckActionHandlerService.check
-     * @description Performs the check action and returns an action response if the state is valid, else it throws an error describing the invalid state.
-     * Checking is when a player passes the action to the next player while keeping their cards.
-     * @param action
+     * @description CheckActionHandlerService.check.
+     *
+     * Performs the check action and returns an action response if the state is valid, else it throws an error
+     * describing the invalid state. Checking is when a player passes the action to the next player while keeping
+     * their cards.
+     *
      * @type Either<PokerMoonsError, { table: ServerTableState; player: Player }>
-     * @returns PerformPlayerActionResponse
-     * @throws Error
+     *
+     * @param action
+     *
+     * @returns PerformPlayerActionResponse.
+     *
+     * @throws Error.
      */
     async check(
         action: Either<PokerMoonsError, { table: ServerTableState; player: Player }>,
@@ -60,12 +66,7 @@ export class CheckActionHandlerService {
             table.playerMap[player.id] = { ...player, status: 'checked' };
             const playerStatuses = Object.values(table.playerMap).map((player) => player.status);
 
-            // Determine if the round is complete, if it isn't, start the next turn
-            if (isRoundComplete(table.activeRound.roundStatus, playerStatuses)) {
-                await this.roundManagerService.endRound(table);
-            } else {
-                await this.roundManagerService.startNextTurn(table, newActiveSeat, playerStatuses);
-            }
+            return this.roundManagerService.startNextTurn(table, newActiveSeat, playerStatuses);
         } else {
             this.logger.error(action.left);
             throw new BadRequestException(action.left);
@@ -73,15 +74,19 @@ export class CheckActionHandlerService {
     }
 
     /**
-     * CheckActionHandlerService.canCheck
-     * @description Determines if a player is able to check given the current game state.
-     * A check can only happen when there is no bet during current round.
-     * @param table
+     * @description CheckActionHandlerService.canCheck.
+     *
+     * Determines if a player is able to check given the current game state. A check can only happen when there is
+     * no bet during current round.
+     *
      * @type ServerTableState
-     * @param player
      * @type Player
-     * @param action
      * @type CheckPlayerAction
+     *
+     * @param table
+     * @param player
+     * @param action
+     *
      * @returns Either<PokerMoonsError, CheckPlayerAction>
      */
     canCheck(

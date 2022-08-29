@@ -87,7 +87,7 @@ export class ActiveControlsComponent implements OnInit, OnChanges {
 
     raise(): void {
         if (this.raiseFormGroup.valid) {
-            if (this.raiseFormGroup.value === this.stack) {
+            if (this.amountControl.value === this.stack) {
                 return this.allIn();
             }
 

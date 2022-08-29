@@ -7,6 +7,7 @@ import {
     incrementRoundStatus,
     incrementSeat,
     isAutoCompletable,
+    isRoundComplete,
 } from '../../shared/util/round.util';
 import { TableGatewayService } from '../../shared/websocket/table-gateway.service';
 import { TableStateManagerService } from '../../table-state-manager/table-state-manager.service';
@@ -83,6 +84,11 @@ export class RoundManagerService {
             }
 
             await this.tableStateManagerService.updateTable(table.id, { playerMap: updatedPlayerMap });
+
+            // Determine if the round is complete
+            if (isRoundComplete(table.activeRound.roundStatus, playerStatuses)) {
+                return this.endRound(table);
+            }
 
             // If transitioning from deal -> flop, draw 3 cards, otherwise draw only 1
             if (table.activeRound.roundStatus === 'deal') {
