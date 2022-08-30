@@ -1,9 +1,41 @@
 @use '~styles/transitions' as tr;
+@use '~styles/typography' as t;
+@use '~styles/colors' as c;
+@use '~styles/borders.scss' as b;
+@use '~styles/spacing' as s;
+
+.root {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+}
+
+.timer-ctn {
+    position: absolute;
+    padding: s.spacing(0.5);
+    border-radius: b.border-radius('card');
+    color: c.color('text-contrast');
+}
+.timer {
+    @include t.body1;
+    color: 'inherit';
+}
+
+.success {
+    background-color: c.color('success');
+}
+.warning {
+    background-color: c.color('warning');
+}
+.error {
+    background-color: c.color('error');
+}
+
+.moon {
+    fill: c.color('text');
+}
 
 .cycle {
-    color: red;
-    @include tr.transition(d 4s linear);
-    &:hover {
-        d: path('M 50, 25 a 0,25 0 1,1 0,50 a 25,25 0 1,1 0,-50');
-    }
+    @include tr.transition(d 1s linear);
 }
