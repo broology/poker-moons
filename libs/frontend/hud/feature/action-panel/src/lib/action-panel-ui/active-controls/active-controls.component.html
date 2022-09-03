@@ -1,5 +1,5 @@
 <poker-moons-hud-frame>
-    <ng-container *ngIf="minRaiseAmount < stack; else onlyAllInCase">
+    <ng-container *ngIf="toCall < stack; else onlyAllInCase">
         <div class="raise-input">
             <form [formGroup]="raiseFormGroup" (submit)="raise()">
                 <poker-moons-dollar-input
