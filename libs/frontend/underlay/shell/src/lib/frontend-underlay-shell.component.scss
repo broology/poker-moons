@@ -5,6 +5,10 @@
     width: 100%;
     background-color: c.color('background');
     color: c.color('text');
+
+    animation-name: fadeIn;
+    animation-duration: 2s;
+    animation-timing-function: 1s ease-in 0s;
 }
 
 .table {
@@ -31,4 +35,13 @@
     -o-user-select: none;
     user-select: none;
     -webkit-user-drag: none;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
