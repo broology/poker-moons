@@ -9,7 +9,6 @@
         "frontend": "apps/frontend",
         "frontend-e2e": "apps/frontend-e2e",
         "frontend-hud-feature-action-panel": "libs/frontend/hud/feature/action-panel",
-        "frontend-hud-feature-bank-panel": "libs/frontend/hud/feature/bank-panel",
         "frontend-hud-shell": "libs/frontend/hud/shell",
         "frontend-landing": "libs/frontend/landing",
         "frontend-shared-state-table": "libs/frontend/shared/state/table",
