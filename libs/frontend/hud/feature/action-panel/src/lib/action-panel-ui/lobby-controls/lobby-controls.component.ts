@@ -47,7 +47,13 @@ export class LobbyControlsComponent {
     readonly dialogCopy: DialogCopy = {
         title: 'Share this link with others to play!',
         primaryButton: 'COPY',
+        secondaryButton: 'CLOSE',
     };
+
+    /**
+     * @description Whether or not to display the share game dialog.
+     */
+    displayDialog = true;
 
     /**
      * @description Given the component inputs, determines the {@link LobbyStatus}.
@@ -79,5 +85,12 @@ export class LobbyControlsComponent {
 
     toggleReadyStatus(): void {
         this.toggleReadyStatusEmitter.emit();
+    }
+
+    /**
+     * @description Closes the dialog displaying the share game options.
+     */
+    closeDialog(): void {
+        this.displayDialog = false;
     }
 }

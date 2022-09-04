@@ -1,4 +1,4 @@
-<poker-moons-dialog [copy]="dialogCopy" (primary)="copyTableUrl()">
+<poker-moons-dialog *ngIf="displayDialog" [copy]="dialogCopy" (primary)="copyTableUrl()" (secondary)="closeDialog()">
     <div class="text-input-container">
         <input #tableUrlInput type="text" [value]="'/table/' + tableId | appUrl" readonly />
     </div>
