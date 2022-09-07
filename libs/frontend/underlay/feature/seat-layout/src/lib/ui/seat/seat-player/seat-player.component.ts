@@ -28,7 +28,7 @@ export class SeatPlayerComponent {
     @Input() immutablePlayer!: ImmutablePublicPlayer | null;
 
     /**
-     * @description The mutable data of the player in this seat
+     * @description The mutable data of the player in this seat.
      */
     @Input() mutablePlayer!: MutablePublicPlayer | null;
 

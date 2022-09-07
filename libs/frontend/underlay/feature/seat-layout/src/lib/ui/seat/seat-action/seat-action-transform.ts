@@ -6,9 +6,10 @@ export type StyleComponent = keyof SeatActionOrientationTransform;
 
 /**
  * @description Orientation NgStyles to be applied to each component given the {@link PlayerOrientation}.
- * - `cards`: The pair of cards of the player
- * - `stack`: The stack of chips of the player
- * - `called`: The chips called by the player
+ *
+ * - `cards`: The pair of cards of the player.
+ * - `stack`: The stack of chips of the player.
+ * - `called`: The chips called by the player.
  */
 export interface SeatActionOrientationTransform {
     cards: Style;

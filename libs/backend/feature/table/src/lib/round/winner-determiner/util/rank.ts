@@ -3,33 +3,22 @@ import type { Card, Rank, Suit } from '@poker-moons/shared/type';
 import type { HandCategory, PlayerWithHand, RankHandReponse } from '../winner-determiner.types';
 
 /**
- * Assigns a score to a hand based on which category it falls under and the value/rank of each card
- * involved in making the category + the kicker in cases where a tie is possible
+ * @description Assigns a score to a hand based on which category it falls under and the value/rank of each card
+ * involved in making the category + the kicker in cases where a tie is possible.
  *
- * - Categories -
- * Royal Flush - 1000
- * Straight Flush - 900
- * 4 of a kind - 800
- * Full House - 700
- * Flush - 600
- * Straight - 500
- * 3 of a kind - 400
- * Two Pairs - 300
- * Pair - 200
- * High Card - 100
- *
+ * - Categories - Royal Flush - 1000 Straight Flush - 900 4 of a kind - 800 Full House - 700 Flush - 600 Straight -
+ *   500 3 of a kind - 400 Two Pairs - 300 Pair - 200 High Card - 100.
  *
  * @example
+ *     Hand1 = 4 of clubs, 4 of diamonds, 7 of hearts, 2 of clubs, and 9 of spades
+ *     Hand2 = 4 of spades, 4 of hearts, 7 of hearts, 2 of clubs, and 11 of spades
  *
- * Hand1 = 4 of clubs, 4 of diamonds, 7 of hearts, 2 of clubs, and 9 of spades
- * Hand2 = 4 of spades, 4 of hearts, 7 of hearts, 2 of clubs, and 11 of spades
+ *     In this case the category for both hands would be 'Pair' which is given a score of 200
  *
- * In this case the category for both hands would be 'Pair' which is given a score of 200
+ *     Hand1 and Hand2 both have a pair of 4s, so the winning score comes down to the kicker
  *
- * Hand1 and Hand2 both have a pair of 4s, so the winning score comes down to the kicker
- *
- * Score for Hand1 = 200 + 4 + 4 + 9 = 217
- * Score for Hand2 = 200 + 4 + 4 + 11 = 219
+ *     Score for Hand1 = 200 + 4 + 4 + 9 = 217
+ *     Score for Hand2 = 200 + 4 + 4 + 11 = 219
  */
 export function rankHand(player: PlayerWithHand): RankHandReponse {
     // This should never happen, just done to satisfy TS
@@ -137,12 +126,11 @@ export function rankHand(player: PlayerWithHand): RankHandReponse {
 }
 
 /**
- * Sorts the player's hands in ranking order.
+ * @description Sorts the player's hands in ranking order.
  *
- * If only one player is passed in, it means they have won as a result
- * of everyone else folding, so no ranking is necessary.
+ * If only one player is passed in, it means they have won as a result of everyone else folding, so no ranking is necessary.
  *
- * @param players - the players and their hands to compare
+ * @param players - The players and their hands to compare.
  */
 export function compareHands(players: PlayerWithHand[]): RankHandReponse[] {
     if (players.length === 1) {
@@ -163,14 +151,14 @@ export function compareHands(players: PlayerWithHand[]): RankHandReponse[] {
 }
 
 /**
- * A type guard to ensure that at the end of the round each player has two cards in their hand
+ * @description A type guard to ensure that at the end of the round each player has two cards in their hand.
  */
 export const playerHasTwoCards = (playerCards: [Card, Card] | []): playerCards is [Card, Card] => {
     return playerCards.length === 2;
 };
 
 /**
- * A type guard to ensure that at the end of the round five cards are on the table
+ * @description A type guard to ensure that at the end of the round five cards are on the table.
  */
 export const tableHasFiveCards = (
     tableCards: [Card, Card, Card, Card, Card] | Card[],
