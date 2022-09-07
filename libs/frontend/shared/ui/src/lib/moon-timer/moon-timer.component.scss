@@ -15,27 +15,75 @@
     position: absolute;
     padding: s.spacing(0.5);
     border-radius: b.border-radius('card');
-    color: c.color('text-contrast');
+    color: c.color('text');
+    background-color: c.color('tinted');
 }
 .timer {
     @include t.body1;
     color: 'inherit';
 }
 
-.success {
-    background-color: c.color('success');
-}
-.warning {
-    background-color: c.color('warning');
-}
-.error {
-    background-color: c.color('error');
+.cycle {
+    @include tr.transition(d 1s linear, fill 0.2s linear);
 }
 
 .moon {
     fill: c.color('text');
+    filter: drop-shadow(0px 0px 8px c.color('text'));
+}
+.lunar-eclipse {
+    fill: c.color('primary');
+    -webkit-animation: lunar-pulse 1s infinite ease-in-out;
+    animation: lunar-pulse 1s infinite ease-in-out;
+}
+.solar-eclipse {
+    fill: c.color('error');
+    -webkit-animation: solar-pulse 0.5s infinite ease-in-out;
+    animation: solar-pulse 0.5s infinite ease-in-out;
 }
 
-.cycle {
-    @include tr.transition(d 1s linear);
+@-webkit-keyframes lunar-pulse {
+    0% {
+        -webkit-filter: drop-shadow(0px 0px 2px c.color('primary'));
+    }
+    50% {
+        -webkit-filter: drop-shadow(0px 0px 20px c.color('primary'));
+    }
+    100% {
+        -webkit-filter: drop-shadow(0px 0px 2px c.color('primary'));
+    }
+}
+@keyframes lunar-pulse {
+    0% {
+        filter: drop-shadow(0px 0px 2px c.color('primary'));
+    }
+    50% {
+        filter: drop-shadow(0px 0px 20px c.color('primary'));
+    }
+    100% {
+        filter: drop-shadow(0px 0px 2px c.color('primary'));
+    }
+}
+
+@-webkit-keyframes solar-pulse {
+    0% {
+        -webkit-filter: drop-shadow(0px 0px 5px c.color('error'));
+    }
+    50% {
+        -webkit-filter: drop-shadow(0px 0px 20px c.color('error'));
+    }
+    100% {
+        -webkit-filter: drop-shadow(0px 0px 5px c.color('error'));
+    }
+}
+@keyframes solar-pulse {
+    0% {
+        filter: drop-shadow(0px 0px 5px c.color('error'));
+    }
+    50% {
+        filter: drop-shadow(0px 0px 20px c.color('error'));
+    }
+    100% {
+        filter: drop-shadow(0px 0px 5px c.color('error'));
+    }
 }

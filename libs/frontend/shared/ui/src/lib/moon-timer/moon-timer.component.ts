@@ -50,7 +50,11 @@ export class MoonTimerComponent implements OnInit {
 
     getColorClass(): string {
         const ratio = this.currentTime / this.duration;
-        return ratio > 0.5 ? 'success' : ratio > 0.25 ? 'warning' : 'error';
+        return ratio > 0.5 ? 'good' : ratio > 0.25 ? 'warning' : 'danger';
+    }
+    getMoonColorClass(): string {
+        const ratio = this.currentTime / this.duration;
+        return ratio > 0.5 ? 'moon' : ratio > 0.25 ? 'lunar-eclipse' : 'solar-eclipse';
     }
 
     click(): void {
