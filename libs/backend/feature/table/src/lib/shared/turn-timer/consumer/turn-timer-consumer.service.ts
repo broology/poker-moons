@@ -28,11 +28,10 @@ export class TurnTimerServiceConsumer {
     ) {}
 
     /**
-     * @description Triggered when the player has run out of time for their turn.
-     *              Sets the users time bank to zero and Auto checks/folds for the player,
-     *              moving the turn to the next player.
+     * @description Triggered when the player has run out of time for their turn. Sets the users time bank to zero
+     * and Auto checks/folds for the player, moving the turn to the next player.
      *
-     * @param job contains {@link TimeoutQueueJobData}
+     * @param job Contains {@link TimeoutQueueJobData}
      */
     @Process(TURN_TIMER_BULL_JOB)
     async onComplete(job: Job<TurnTimerQueueJobData>): Promise<void> {
@@ -48,8 +47,8 @@ export class TurnTimerServiceConsumer {
     }
 
     /**
-     * @description Determines whether the player should automatically check or fold and calls
-     *              the appropriate action handler.
+     * @description Determines whether the player should automatically check or fold and calls the appropriate
+     * action handler.
      *
      * @param tableId
      * @param playerId

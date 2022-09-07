@@ -17,13 +17,14 @@ export class WinnerDeterminerService {
     ) {}
 
     /**
-     * Determines the winner at the end of a round of poker
+     * @description Determines the winner at the end of a round of poker.
      *
-     * @param tableId - the table the round is taking place on
-     * @param playerMap - a map of the players in the current round
-     * @param round - the current round
+     * @param tableId - The table the round is taking place on.
+     * @param playerMap - A map of the players in the current round.
+     * @param round - The current round.
      *
-     * @returns the winning player ID(s), the amount won, and text that can be displayed that indicates who won with what hand
+     * @returns The winning player ID(s), the amount won, and text that can be displayed that indicates who won
+     *   with what hand.
      */
     async determineWinner(tableId: TableId, playerMap: Record<PlayerId, Player>, round: Round): Promise<void> {
         const playersWithHand: PlayerWithHand[] = [];
@@ -56,16 +57,15 @@ export class WinnerDeterminerService {
     }
 
     /**
-     * Finds the best hand across the combination of possible hands for a player
+     * @description Finds the best hand across the combination of possible hands for a player.
      *
-     * In poker a hand consists of 5 cards chosen from 7 total
-     * 7 CHOOSE 5 = 21 possible combinations
+     * In poker a hand consists of 5 cards chosen from 7 total 7 CHOOSE 5 = 21 possible combinations.
      *
-     * TODO: Think about a more efficient way to accomplish this without using brute force
-     * to create every possible hand combination
+     * TODO: Think about a more efficient way to accomplish this without using brute force to create every possible
+     * hand combination.
      *
-     * @param playerCards - the two cards in the player's hand
-     * @param tableCards - the five cards on the table
+     * @param playerCards - The two cards in the player's hand.
+     * @param tableCards - The five cards on the table.
      */
     private findBestHand(
         playerId: PlayerId,
@@ -109,11 +109,11 @@ export class WinnerDeterminerService {
     }
 
     /**
-     * Builds a map of the winners and the amount that they have won
+     * @description Builds a map of the winners and the amount that they have won.
      *
-     * @param tableId - the table the round is taking place on
-     * @param playerMap - a map of the players in the current round
-     * @param playersWithHand - each of the non-folded player's and their best hand
+     * @param tableId - The table the round is taking place on.
+     * @param playerMap - A map of the players in the current round.
+     * @param playersWithHand - Each of the non-folded player's and their best hand.
      */
     private async buildWinnerMap(
         tableId: TableId,

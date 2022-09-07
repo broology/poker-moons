@@ -11,8 +11,7 @@ import { OnEndArgs, OnStartArgs, OnTurnArgs, TurnTimerQueueJobData } from './tur
 @Injectable()
 export class TurnTimerService {
     /**
-     * @description The allotted amount of time users are allowed for their turn, without running into
-     *              their `timeBank`.
+     * @description The allotted amount of time users are allowed for their turn, without running into their `timeBank`.
      */
     private static readonly timeout = { seconds: 30 };
 
@@ -25,23 +24,24 @@ export class TurnTimerService {
     ) {}
 
     /**
-     * @description Builds a deterministic id to use for the `Table`'s turn-timer job.
-     *              As, a table should only ever have one of these jobs running.
-     *              as their can only be one active player.
+     * @description Builds a deterministic id to use for the `Table`'s turn-timer job. As, a table should only ever
+     * have one of these jobs running. as their can only be one active player.
      *
-     * @param tableId id of the table
-     * @returns jobId of table ready queue job
+     * @param tableId Id of the table.
+     *
+     * @returns JobId of table ready queue job.
      */
     private static buildJobId(tableId: string): string {
         return `${tableId}/turn-timer`;
     }
 
     /**
-     * @description Given the amount of `secondsElapsed` in the turn. Calculate if any,
-     *              how much seconds are to be taken of the `timeBank`.
+     * @description Given the amount of `secondsElapsed` in the turn. Calculate if any, how much seconds are to be
+     * taken of the `timeBank`.
      *
-     * @param secondsElapsed amount of seconds turn took
-     * @returns amount of seconds to take of `timeBank` if any
+     * @param secondsElapsed Amount of seconds turn took.
+     *
+     * @returns Amount of seconds to take of `timeBank` if any.
      */
     private static calculateTimeBankDelta(secondsElapsed: number): number {
         const delta = secondsElapsed - TurnTimerService.timeout.seconds;
@@ -50,14 +50,14 @@ export class TurnTimerService {
     }
 
     /**
-     * @description Starts the turn timer job for the first player active player in the game.
-     *              Called when a game is first started.
+     * @description Starts the turn timer job for the first player active player in the game. Called when a game is
+     * first started.
      *
-     * @param args id of table and active player
+     * @param args Id of table and active player.
      *
-     * @returns { Date } the active player will timeout
+     * @returns {Date} The active player will timeout.
      *
-     * @throws {InternalServerErrorException} if table status is not `in-progress`
+     * @throws {InternalServerErrorException} If table status is not `in-progress`
      */
     async onStart(args: OnStartArgs): Promise<Date> {
         const { startingPlayerId, tableId } = args;
@@ -74,15 +74,15 @@ export class TurnTimerService {
     }
 
     /**
-     * @description Called after a player performs an action, ending the current players turn timer,
-     *              And starting the next players. If the current player ran past their default timeout
-     *              period, then it will be subtracted from their `timeBank`.
+     * @description Called after a player performs an action, ending the current players turn timer, And starting
+     * the next players. If the current player ran past their default timeout period, then it will be subtracted
+     * from their `timeBank`.
      *
-     * @param args id of table, id of current player, and id of next player
+     * @param args Id of table, id of current player, and id of next player.
      *
-     * @returns {Date} date the next player will timeout
+     * @returns {Date} Date the next player will timeout.
      *
-     * @throws {InternalServerErrorException} if table status is not `in-progress`
+     * @throws {InternalServerErrorException} If table status is not `in-progress`
      */
     async onTurn(args: OnTurnArgs): Promise<Date> {
         const { currentPlayerId, nextPlayerId, tableId } = args;
@@ -101,13 +101,12 @@ export class TurnTimerService {
     }
 
     /**
-     * @description Called after a player performs the final action of a round.
-     *              If the player ran past their default timeout period, then
-     *              it will be subtracted from their `timeBank`.
+     * @description Called after a player performs the final action of a round. If the player ran past their
+     * default timeout period, then it will be subtracted from their `timeBank`.
      *
-     * @param args id of the table and id of the final player to take their turn
+     * @param args Id of the table and id of the final player to take their turn.
      *
-     * @throws {InternalServerErrorException} if table status is not `in-progress`
+     * @throws {InternalServerErrorException} If table status is not `in-progress`
      */
     async onEnd(args: OnEndArgs): Promise<void> {
         const { tableId, finalPlayerId } = args;
@@ -126,8 +125,8 @@ export class TurnTimerService {
     /**
      * @description Create a job setting it to execute when the player would max out their time.
      *
-     * @param tableId id of the table
-     * @param player the player who's timer is being started
+     * @param tableId Id of the table.
+     * @param player The player who's timer is being started.
      */
     private async startTimerForPlayer(tableId: TableId, player: Pick<Player, 'id' | 'timeBank'>): Promise<Date> {
         this.logger.debug(`${tableId}: Turn timer starting for ${player.id}`);
@@ -145,14 +144,14 @@ export class TurnTimerService {
     }
 
     /**
-     * @description Finds the existing turn timer job on the table and stops it, updating the players `timeBank`
-     *              if they exceeded the {@link timeout}.
+     * @description Finds the existing turn timer job on the table and stops it, updating the players `timeBank` if
+     * they exceeded the {@link timeout}.
      *
-     * @param tableId id of the table
-     * @param player the player who's timer is being stopped
+     * @param tableId Id of the table.
+     * @param player The player who's timer is being stopped.
      *
-     * @throws { InternalServerErrorException } if player found in turn timer queue is different than the player
-     *                                          whose timer is being stopped
+     * @throws {InternalServerErrorException} If player found in turn timer queue is different than the player
+     *   whose timer is being stopped.
      */
     private async stopTimerForPlayer(tableId: TableId, player: Pick<Player, 'id' | 'timeBank'>): Promise<void> {
         this.logger.debug(`${tableId}: Turn timer stopping for ${player.id}`);
@@ -162,7 +161,7 @@ export class TurnTimerService {
         const job = await this.jobSchedulerService.stop<TurnTimerQueueJobData>(jobId);
 
         /**
-         * If job does not exist, that means the `turn-timer.consumer` has already processes the current user.
+         * @description If job does not exist, that means the `turn-timer.consumer` has already processes the current user.
          */
         if (job) {
             if (job.data.playerId !== player.id) {
