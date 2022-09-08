@@ -5,6 +5,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { RouterModule } from '@angular/router';
 import { LandingButtonModule } from '@poker-moons/frontend/shared/ui';
 import { AssetUrlModule } from '@poker-moons/frontend/shared/util/environment';
+import { SeatPlayerModule } from 'libs/frontend/underlay/feature/seat-layout/src/lib/ui/seat/seat-player/seat-player.module';
 import { FrontendLandingComponent } from './frontend-landing.component';
 import { TableBuilderStore } from './store/table-builder.store';
 
@@ -15,6 +16,7 @@ export const frontendLandingImports = [
         FlexLayoutModule,
         LandingButtonModule,
         HttpClientModule,
+        SeatPlayerModule,
         RouterModule.forChild([
             {
                 path: '',
