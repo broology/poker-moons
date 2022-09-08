@@ -4,8 +4,7 @@ import { PlayerOrientation } from '../../shared/type';
 /**
  * @description Component that transforms the children card components to their appropriate table orientation.
  *
- * @usage ```html
- * <poker-moons-card-orientation-transform [orientation]="orientation">
+ * @usage ```html <poker-moons-card-orientation-transform [orientation]="orientation">
  *     <!-- You may put a single card, or pre-styled pair of cards -->
  *     <poker-moons-card [card]="card"></poker-moons-card>
  * </poker-moons-card-orientation-transform>
