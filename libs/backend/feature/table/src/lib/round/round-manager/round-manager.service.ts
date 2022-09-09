@@ -14,15 +14,20 @@ import { TableStateManagerService } from '../../table-state-manager/table-state-
 import { DeckManagerService } from '../deck-manager/deck-manager.service';
 import { WinnerDeterminerService } from '../winner-determiner/winner-determiner.service';
 import { noStartingPlayer } from './round-manager.copy';
+import { CustomLoggerService } from '@poker-moons/backend/utility';
+import { BlindManagerService } from '../blind-manager/blind-manager.service';
 
 @Injectable()
 export class RoundManagerService {
+    private logger = new CustomLoggerService(RoundManagerService.name);
+
     constructor(
         private readonly deckManagerService: DeckManagerService,
         private readonly tableGatewayService: TableGatewayService,
         private readonly tableStateManagerService: TableStateManagerService,
         private readonly turnTimeService: TurnTimerService,
         private readonly winnerDeterminerService: WinnerDeterminerService,
+        private readonly blindManagerService: BlindManagerService,
     ) {}
 
     /**
@@ -228,6 +233,8 @@ export class RoundManagerService {
             deck = draw2.deck;
         }
 
+        await this.blindManagerService.forceBlinds(table);
+
         /*
          * Emit the RoundStatusChanged event to the frontend to reset back to 'deal'
          *
@@ -238,7 +245,8 @@ export class RoundManagerService {
             roundStatus: 'deal',
             activeSeat,
             cards: [],
-            toCall: 0,
+            toCall: this.blindManagerService.getBigBlind(),
+            pot: this.blindManagerService.getBigBlind() + this.blindManagerService.getSmallBlind(),
         });
 
         // Start the turn timer for the first player
