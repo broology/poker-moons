@@ -15,14 +15,11 @@ import { DeckManagerService } from '../deck-manager/deck-manager.service';
 import { WinnerDeterminerService } from '../winner-determiner/winner-determiner.service';
 import { noStartingPlayer } from './round-manager.copy';
 import { CustomLoggerService } from '@poker-moons/backend/utility';
-import { PotManagerService } from '../pot-manager/pot-manager.service';
+import { BlindManagerService } from '../blind-manager/blind-manager.service';
 
 @Injectable()
 export class RoundManagerService {
     private logger = new CustomLoggerService(RoundManagerService.name);
-
-    private BIG_BLIND = 10;
-    private SMALL_BLIND = 5;
 
     constructor(
         private readonly deckManagerService: DeckManagerService,
@@ -30,7 +27,7 @@ export class RoundManagerService {
         private readonly tableStateManagerService: TableStateManagerService,
         private readonly turnTimeService: TurnTimerService,
         private readonly winnerDeterminerService: WinnerDeterminerService,
-        private readonly potManagerService: PotManagerService,
+        private readonly blindManagerService: BlindManagerService,
     ) {}
 
     /**
@@ -236,7 +233,7 @@ export class RoundManagerService {
             deck = draw2.deck;
         }
 
-        await this.forceBlinds(table);
+        await this.blindManagerService.forceBlinds(table);
 
         /*
          * Emit the RoundStatusChanged event to the frontend to reset back to 'deal'
@@ -248,8 +245,8 @@ export class RoundManagerService {
             roundStatus: 'deal',
             activeSeat,
             cards: [],
-            toCall: this.BIG_BLIND,
-            pot: this.BIG_BLIND + this.SMALL_BLIND,
+            toCall: this.blindManagerService.getBigBlind(),
+            pot: this.blindManagerService.getBigBlind() + this.blindManagerService.getSmallBlind(),
         });
 
         // Start the turn timer for the first player
@@ -363,43 +360,5 @@ export class RoundManagerService {
 
             await this.startRound(table.id);
         }
-    }
-
-    async forceBlinds(table: ServerTableState): Promise<void> {
-        await this.tableStateManagerService.updateRound(table.id, {
-            toCall: this.BIG_BLIND,
-            smallBlind: this.SMALL_BLIND,
-        });
-        const smallBlindId = this.getNextSeat(table, table.activeRound.dealerSeat);
-        const bigBlindId = this.getNextSeat(table, table.activeRound.dealerSeat + 1);
-        for (const player of Object.values(table.playerMap)) {
-            let newStack;
-            if (player.seatId == smallBlindId) {
-                await this.tableStateManagerService.updateTablePlayer(table.id, player.id, {
-                    stack: player.stack - this.SMALL_BLIND,
-                });
-                newStack = player.stack - this.SMALL_BLIND;
-            } else if (player.seatId == bigBlindId) {
-                await this.tableStateManagerService.updateTablePlayer(table.id, player.id, {
-                    stack: player.stack - this.BIG_BLIND,
-                });
-                newStack = player.stack - this.BIG_BLIND;
-            }
-            this.tableGatewayService.emitTableEvent(table.id, {
-                type: 'playerChanged',
-                id: player.id,
-                stack: newStack,
-            });
-        }
-
-        await this.potManagerService.incrementPot(table.id, table.activeRound.pot, this.BIG_BLIND + this.SMALL_BLIND);
-    }
-
-    getNextSeat(table: ServerTableState, currentSeat: number): number {
-        let possibleSeatId = currentSeat + 1;
-        if (possibleSeatId >= Object.values(table.playerMap).length) {
-            possibleSeatId = 0;
-        }
-        return possibleSeatId;
     }
 }
