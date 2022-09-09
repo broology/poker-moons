@@ -9,7 +9,7 @@ import { DeckManagerService } from '../deck-manager/deck-manager.service';
 import { WinnerDeterminerService } from '../winner-determiner/winner-determiner.service';
 import { noStartingPlayer } from './round-manager.copy';
 import { RoundManagerService } from './round-manager.service';
-import { PotManagerService } from '../pot-manager/pot-manager.service';
+import { BlindManagerService } from '../blind-manager/blind-manager.service';
 
 describe('RoundManagerService', () => {
     const deckManagerService = mock<DeckManagerService>();
@@ -17,7 +17,7 @@ describe('RoundManagerService', () => {
     const tableStateManagerService = mock<TableStateManagerService>();
     const turnTimeService = mock<TurnTimerService>();
     const winnerDeterminerService = mock<WinnerDeterminerService>();
-    const potManagerService = mock<PotManagerService>();
+    const blindManagerService = mock<BlindManagerService>();
 
     const params: [...MockProxy<ConstructorParameters<typeof RoundManagerService>>] = [
         deckManagerService,
@@ -25,7 +25,7 @@ describe('RoundManagerService', () => {
         tableStateManagerService,
         turnTimeService,
         winnerDeterminerService,
-        potManagerService,
+        blindManagerService,
     ];
 
     const service = new RoundManagerService(...params);
@@ -226,12 +226,6 @@ describe('RoundManagerService', () => {
                 toCall: 10,
                 pot: 15,
             });
-        });
-    });
-
-    describe('forceBlinds', () => {
-        it('should get me next seat properly', () => {
-            console.log(service.getNextSeat(table, 5));
         });
     });
 });
