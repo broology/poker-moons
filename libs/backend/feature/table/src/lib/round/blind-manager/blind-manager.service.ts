@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { CustomLoggerService } from '@poker-moons/backend/utility';
 import { ServerTableState } from '@poker-moons/shared/type';
-import { TableStateManagerService } from '../../table-state-manager/table-state-manager.service';
 import { TableGatewayService } from '../../shared/websocket/table-gateway.service';
+import { TableStateManagerService } from '../../table-state-manager/table-state-manager.service';
 import { PotManagerService } from '../pot-manager/pot-manager.service';
 
 @Injectable()
@@ -29,10 +29,10 @@ export class BlindManagerService {
     /**
      * @description Doles out the blinds of a round of poker.
      *
-     * - Handles updating table state with the toCall and small blind amount
-     * - Handles forcing players to put in the big and small blind amounts
+     * - Handles updating table state with the toCall and small blind amount.
+     * - Handles forcing players to put in the big and small blind amounts.
      *
-     * @param table - the ServerTableState and table ID
+     * @param table - The ServerTableState and table ID.
      */
     async forceBlinds(table: ServerTableState): Promise<void> {
         await this.tableStateManagerService.updateRound(table.id, {
@@ -70,9 +70,10 @@ export class BlindManagerService {
     }
 
     /**
-     * Gets the next seat id in seat order, ensuring to wrap around the table
-     * @param table - the ServerTableState and table ID
-     * @param currentSeat - the seat you want to find the next seat of
+     * @description Gets the next seat id in seat order, ensuring to wrap around the table.
+     *
+     * @param table - The ServerTableState and table ID.
+     * @param currentSeat - The seat you want to find the next seat of.
      */
     getNextSeat(table: ServerTableState, currentSeat: number): number {
         let possibleSeatId = currentSeat + 1;

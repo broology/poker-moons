@@ -1,15 +1,15 @@
 import { InternalServerErrorException } from '@nestjs/common';
 import { mockCard, mockPlayer, mockRound, mockServerTableState } from '@poker-moons/shared/testing';
 import { Player, PlayerId } from '@poker-moons/shared/type';
-import { mock, MockProxy, mockReset } from 'jest-mock-extended';
+import { mock, mockReset } from 'jest-mock-extended';
 import { TurnTimerService } from '../../shared/turn-timer/turn-timer.service';
 import { TableGatewayService } from '../../shared/websocket/table-gateway.service';
 import { TableStateManagerService } from '../../table-state-manager/table-state-manager.service';
+import { BlindManagerService } from '../blind-manager/blind-manager.service';
 import { DeckManagerService } from '../deck-manager/deck-manager.service';
 import { WinnerDeterminerService } from '../winner-determiner/winner-determiner.service';
 import { noStartingPlayer } from './round-manager.copy';
 import { RoundManagerService } from './round-manager.service';
-import { BlindManagerService } from '../blind-manager/blind-manager.service';
 
 describe('RoundManagerService', () => {
     const deckManagerService = mock<DeckManagerService>();
@@ -19,7 +19,7 @@ describe('RoundManagerService', () => {
     const winnerDeterminerService = mock<WinnerDeterminerService>();
     const blindManagerService = mock<BlindManagerService>();
 
-    const params: [...MockProxy<ConstructorParameters<typeof RoundManagerService>>] = [
+    const params: ConstructorParameters<typeof RoundManagerService> = [
         deckManagerService,
         tableGatewayService,
         tableStateManagerService,
@@ -34,6 +34,10 @@ describe('RoundManagerService', () => {
         for (const param of params) {
             mockReset(param);
         }
+
+        // Mock all blind calls
+        blindManagerService.getBigBlind.mockReturnValue(10);
+        blindManagerService.getSmallBlind.mockReturnValue(5);
     });
 
     const table = mockServerTableState({
