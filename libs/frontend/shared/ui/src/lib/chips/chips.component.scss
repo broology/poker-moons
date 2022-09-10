@@ -1,5 +1,13 @@
+@use '~styles/breakpoints' as bp;
+
 .chips {
-    display: inline-block;
+    // Hides chips on smaller devices
+    display: none;
+
+    @include bp.xl {
+        display: inline-block;
+    }
+
     width: 275px;
     height: 150px;
 }

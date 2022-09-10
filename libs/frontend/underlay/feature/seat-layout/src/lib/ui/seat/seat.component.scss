@@ -1,11 +1,19 @@
-.label {
+@use '~styles/breakpoints' as bp;
+
+.status {
+    bottom: 17.5px;
+    right: 60px;
+
+    @include bp.md {
+        bottom: 20px;
+        right: 100px;
+    }
+
     width: 0;
     height: 0;
     float: right;
 
     position: relative;
-    bottom: 20px;
-    right: 100px;
 }
 
 .action {
