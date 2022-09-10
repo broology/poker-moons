@@ -2,7 +2,9 @@ import { Module } from '@nestjs/common';
 import { RouterModule } from '@nestjs/core';
 import { PlayerActionModule } from './player-action/player-action.module';
 import { PlayerModule } from './player/player.module';
+import { ReadySystemConsumerModule } from './shared/ready-system';
 import { ReadySystemModule } from './shared/ready-system/ready-system.module';
+import { TurnTimerConsumerModule } from './shared/turn-timer/consumer/turn-timer-consumer.module';
 import { TurnTimerModule } from './shared/turn-timer/turn-timer.module';
 import { TableGatewayModule } from './shared/websocket/table-gateway.module';
 import { TableModule } from './table/table.module';
@@ -15,7 +17,8 @@ import { TableModule } from './table/table.module';
         PlayerActionModule,
 
         // Consumer Modules
-        // TurnTimerConsumerModule,
+        ReadySystemConsumerModule,
+        TurnTimerConsumerModule,
 
         // Routes
         RouterModule.register([

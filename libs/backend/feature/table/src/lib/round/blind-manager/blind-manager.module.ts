@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
-import { TableStateManagerService } from '../../table-state-manager/table-state-manager.service';
-import { TableGatewayService } from '../../shared/websocket/table-gateway.service';
-import { PotManagerService } from '../pot-manager/pot-manager.service';
+import { TableGatewayModule } from '../../shared/websocket/table-gateway.module';
+import { TableStateManagerModule } from '../../table-state-manager/table-state-manager.module';
+import { PotManagerModule } from '../pot-manager/pot-manager.module';
 import { BlindManagerService } from './blind-manager.service';
 
 @Module({
-    imports: [TableStateManagerService, TableGatewayService, PotManagerService],
+    imports: [TableStateManagerModule, TableGatewayModule, PotManagerModule],
     providers: [BlindManagerService],
     exports: [BlindManagerService],
 })

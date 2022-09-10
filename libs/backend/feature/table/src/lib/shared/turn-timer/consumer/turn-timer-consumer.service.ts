@@ -4,9 +4,7 @@ import { JOB_SCHEDULER_BULL_QUEUE } from '@poker-moons/backend/shared/service/jo
 import { CustomLoggerService } from '@poker-moons/backend/utility';
 import { PlayerId, TableId } from '@poker-moons/shared/type';
 import { Job } from 'bull';
-import { right } from 'fp-ts/lib/Either';
-import { CheckActionHandlerService } from '../../../player-action/handlers/check/check-action-handler.service';
-import { FoldActionHandlerService } from '../../../player-action/handlers/fold/fold-action-handler.service';
+import { PlayerActionService } from '../../../player-action/player-action.service';
 import { TableStateManagerService } from '../../../table-state-manager/table-state-manager.service';
 import { TableGatewayService } from '../../websocket/table-gateway.service';
 import { TURN_TIMER_BULL_JOB } from '../turn-timer.const';
@@ -21,18 +19,16 @@ export class TurnTimerServiceConsumer {
     private readonly logger = new CustomLoggerService(TurnTimerServiceConsumer.name);
 
     constructor(
-        private readonly checkActionHandlerService: CheckActionHandlerService,
-        private readonly foldActionHandlerService: FoldActionHandlerService,
+        private readonly playerActionService: PlayerActionService,
         private readonly tableGatewayService: TableGatewayService,
         private readonly tableStateManagerService: TableStateManagerService,
     ) {}
 
     /**
-     * @description Triggered when the player has run out of time for their turn.
-     *              Sets the users time bank to zero and Auto checks/folds for the player,
-     *              moving the turn to the next player.
+     * @description Triggered when the player has run out of time for their turn. Sets the users time bank to zero
+     * and Auto checks/folds for the player, moving the turn to the next player.
      *
-     * @param job contains {@link TimeoutQueueJobData}
+     * @param job Contains {@link TimeoutQueueJobData}
      */
     @Process(TURN_TIMER_BULL_JOB)
     async onComplete(job: Job<TurnTimerQueueJobData>): Promise<void> {
@@ -48,24 +44,21 @@ export class TurnTimerServiceConsumer {
     }
 
     /**
-     * @description Determines whether the player should automatically check or fold and calls
-     *              the appropriate action handler.
+     * @description Determines whether the player should automatically check or fold and calls the appropriate
+     * action handler.
      *
      * @param tableId
      * @param playerId
      */
     private async triggerAction(tableId: TableId, playerId: PlayerId): Promise<void> {
         const table = await this.tableStateManagerService.getTableById(tableId);
-        const player = table.playerMap[playerId];
 
-        const playerStatuses = Object.values(table.playerMap).map((player) => player.status);
-
-        if (playerStatuses.includes('all-in') || playerStatuses.includes('raised')) {
+        if (table.activeRound.toCall > 0) {
             this.logger.log(`Auto-folding for ${playerId}`);
-            await this.foldActionHandlerService.fold(right({ table, player }));
+            await this.playerActionService.perform(tableId, playerId, { action: { type: 'fold' } });
         } else {
             this.logger.log(`Auto-checking for ${playerId}`);
-            await this.checkActionHandlerService.check(right({ table, player }));
+            await this.playerActionService.perform(tableId, playerId, { action: { type: 'check' } });
         }
     }
 }

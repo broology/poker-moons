@@ -31,5 +31,6 @@ import { PlayerActionService } from './player-action.service';
         FoldActionHandlerService,
         RaiseActionHandlerService,
     ],
+    exports: [PlayerActionService],
 })
 export class PlayerActionModule {}
