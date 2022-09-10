@@ -1,8 +1,17 @@
 @use '~styles/colors' as c;
 @use '~styles/spacing' as s;
 @use '~styles/typography' as t;
+@use '~styles/breakpoints' as bp;
 
 .seat {
+    height: 40px;
+    width: 150px;
+
+    @include bp.md {
+        height: 55px;
+        width: 250px;
+    }
+
     display: flex;
     align-content: space-between;
     align-items: center;
@@ -12,9 +21,6 @@
 
     border: 2px solid c.color-alpha('shaded', 0.75);
     border-radius: 25px;
-
-    height: 55px;
-    width: 250px;
 
     padding: s.spacing(0.5) s.spacing(1.5);
 }

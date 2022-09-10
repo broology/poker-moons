@@ -47,6 +47,7 @@ export class LobbyControlsComponent {
     readonly dialogCopy: DialogCopy = {
         title: 'Share this link with others to play!',
         primaryButton: 'COPY',
+        secondaryButton: 'CLOSE',
     };
 
     /**
@@ -79,5 +80,10 @@ export class LobbyControlsComponent {
 
     toggleReadyStatus(): void {
         this.toggleReadyStatusEmitter.emit();
+    }
+
+    closeShareDialog(): void {
+        const element = document.getElementById('share-game-dialog');
+        element?.remove();
     }
 }

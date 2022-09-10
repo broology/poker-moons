@@ -1,6 +1,14 @@
 <div *ngIf="mutablePlayer">
     <poker-moons-depth-transform [depth]="depthLevel">
         <div class="seat-action">
+            <div class="called" [ngStyle]="transform.called">
+                <poker-moons-chips
+                    [amount]="mutablePlayer.biddingCycleCalled"
+                    [orientation]="orientation"
+                    [optimal]="true"
+                ></poker-moons-chips>
+            </div>
+
             <div class="cards" [ngStyle]="transform.cards">
                 <poker-moons-card-orientation-transform [orientation]="orientation">
                     <div [class]="mutablePlayer.status === 'folded' ? 'folded' : ''">
@@ -17,14 +25,6 @@
                     [amount]="mutablePlayer.stack"
                     [orientation]="orientation"
                     [optimal]="false"
-                ></poker-moons-chips>
-            </div>
-
-            <div class="called" [ngStyle]="transform.called">
-                <poker-moons-chips
-                    [amount]="mutablePlayer.biddingCycleCalled"
-                    [orientation]="orientation"
-                    [optimal]="true"
                 ></poker-moons-chips>
             </div>
         </div>
