@@ -51,11 +51,6 @@ export class LobbyControlsComponent {
     };
 
     /**
-     * @description Whether or not to display the share game dialog.
-     */
-    displayDialog = true;
-
-    /**
      * @description Given the component inputs, determines the {@link LobbyStatus}.
      */
     get status(): LobbyStatus {
@@ -87,10 +82,8 @@ export class LobbyControlsComponent {
         this.toggleReadyStatusEmitter.emit();
     }
 
-    /**
-     * @description Closes the dialog displaying the share game options.
-     */
-    closeDialog(): void {
-        this.displayDialog = false;
+    closeShareDialog(): void {
+        const element = document.getElementById('share-game-dialog');
+        element?.remove();
     }
 }
