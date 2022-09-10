@@ -84,7 +84,7 @@ jobs:
         <<: *defaults
         steps:
             - setup
-            - run: yarn format:check ${AFFECTED_ARGS}
+            - run: yarn format:check ${AFFECTED_ARGS} --parallel 2
     lint:
         <<: *defaults
         steps:
