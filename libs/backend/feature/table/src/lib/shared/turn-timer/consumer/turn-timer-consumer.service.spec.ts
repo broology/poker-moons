@@ -1,23 +1,19 @@
 import { mockPlayer, mockServerTableState } from '@poker-moons/shared/testing';
 import { Job } from 'bull';
-import type { MockProxy } from 'jest-mock-extended';
 import { mock, mockReset } from 'jest-mock-extended';
-import { CheckActionHandlerService } from '../../../player-action/handlers/check/check-action-handler.service';
-import { FoldActionHandlerService } from '../../../player-action/handlers/fold/fold-action-handler.service';
+import { PlayerActionService } from '../../../player-action/player-action.service';
 import { TableStateManagerService } from '../../../table-state-manager/table-state-manager.service';
 import { TableGatewayService } from '../../websocket/table-gateway.service';
 import { TurnTimerQueueJobData } from '../turn-timer.type';
 import { TurnTimerServiceConsumer } from './turn-timer-consumer.service';
 
 describe('TurnTimerServiceConsumer', () => {
-    const checkActionHandlerService = mock<CheckActionHandlerService>();
-    const foldActionHandlerService = mock<FoldActionHandlerService>();
+    const playerActionService = mock<PlayerActionService>();
     const tableGatewayService = mock<TableGatewayService>();
     const tableStateManager = mock<TableStateManagerService>();
 
-    const params: [...MockProxy<ConstructorParameters<typeof TurnTimerServiceConsumer>>] = [
-        checkActionHandlerService,
-        foldActionHandlerService,
+    const params: ConstructorParameters<typeof TurnTimerServiceConsumer> = [
+        playerActionService,
         tableGatewayService,
         tableStateManager,
     ];
@@ -28,10 +24,6 @@ describe('TurnTimerServiceConsumer', () => {
         for (const param of params) {
             mockReset(param);
         }
-    });
-
-    it('should be defined', () => {
-        expect(service).toBeDefined();
     });
 
     describe('onComplete', () => {
@@ -66,36 +58,52 @@ describe('TurnTimerServiceConsumer', () => {
             });
         });
 
-        it('should auto-fold for the player if anyone has raised', async () => {
+        it('should auto-fold for the player if call amount is greater than zero', async () => {
             const table = {
-                ...mockServerTableState(),
+                ...mockServerTableState({
+                    activeRound: {
+                        toCall: 10,
+                    },
+                }),
                 playerMap: {
-                    player_0: mockPlayer({ status: 'raised' }),
+                    player_1: mockPlayer({ status: 'called' }),
                     playerId: mockPlayer({ status: 'waiting' }),
                 },
             };
 
             tableStateManager.getTableById.mockResolvedValue(table);
 
-            await service.onComplete(mockJob());
+            const job = mockJob();
 
-            expect(foldActionHandlerService.fold).toHaveBeenCalled();
+            await service.onComplete(job);
+
+            expect(playerActionService.perform).toHaveBeenCalledWith(job.data.tableId, job.data.playerId, {
+                action: { type: 'fold' },
+            });
         });
 
-        it('should auto-check for the player if no one has raised', async () => {
+        it('should auto-check for the player if no one has called or raised', async () => {
             const table = {
-                ...mockServerTableState(),
+                ...mockServerTableState({
+                    activeRound: {
+                        toCall: 0,
+                    },
+                }),
                 playerMap: {
-                    player_0: mockPlayer({ status: 'checked' }),
+                    player_1: mockPlayer({ status: 'checked' }),
                     playerId: mockPlayer({ status: 'waiting' }),
                 },
             };
 
             tableStateManager.getTableById.mockResolvedValue(table);
 
-            await service.onComplete(mockJob());
+            const job = mockJob();
 
-            expect(checkActionHandlerService.check).toHaveBeenCalled();
+            await service.onComplete(job);
+
+            expect(playerActionService.perform).toHaveBeenCalledWith(job.data.tableId, job.data.playerId, {
+                action: { type: 'check' },
+            });
         });
     });
 });

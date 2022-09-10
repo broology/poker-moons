@@ -1,11 +1,11 @@
 import { Job } from 'bull';
 import type { MockProxy } from 'jest-mock-extended';
 import { mock, mockReset } from 'jest-mock-extended';
-import { RoundManagerService } from '../../round/round-manager/round-manager.service';
-import { TableStateManagerService } from '../../table-state-manager/table-state-manager.service';
-import { TableGatewayService } from '../websocket/table-gateway.service';
-import { ReadySystemConsumer } from './ready-system.consumer';
-import { ReadyQueueJobData } from './ready-system.type';
+import { RoundManagerService } from '../../../round/round-manager/round-manager.service';
+import { TableStateManagerService } from '../../../table-state-manager/table-state-manager.service';
+import { TableGatewayService } from '../../websocket/table-gateway.service';
+import { ReadyQueueJobData } from '../ready-system.type';
+import { ReadySystemConsumer } from './ready-system-consumer.service';
 
 describe('ReadySystemConsumer', () => {
     const tableGatewayService = mock<TableGatewayService>();

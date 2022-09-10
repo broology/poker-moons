@@ -40,12 +40,12 @@ describe('TurnTimerService', () => {
         tableStateManagerService.getTableById.mockResolvedValueOnce(mockServerTableState(args));
     }
 
-    function mockStartJob(date = new Date()) {
-        jobSchedulerService.start.mockResolvedValueOnce(date);
+    function mockScheduleJob(date = new Date()) {
+        jobSchedulerService.schedule.mockResolvedValueOnce(date);
     }
 
-    function mockStopJob(stoppedPlayerId: string, startDate = new Date()) {
-        jobSchedulerService.stop.mockResolvedValueOnce({
+    function mockRemoveJob(stoppedPlayerId: string, startDate = new Date()) {
+        jobSchedulerService.remove.mockResolvedValueOnce({
             data: <TurnTimerQueueJobData>{
                 tableId,
                 playerId: stoppedPlayerId,
@@ -64,12 +64,12 @@ describe('TurnTimerService', () => {
                     [player.id]: player,
                 },
             });
-            mockStartJob(timeoutDate);
+            mockScheduleJob(timeoutDate);
 
             const actual = await service.onStart({ tableId, startingPlayerId: player.id });
 
             expect(actual).toEqual(timeoutDate);
-            expect(jobSchedulerService.start).toHaveBeenCalledWith(
+            expect(jobSchedulerService.schedule).toHaveBeenCalledWith(
                 expect.objectContaining({
                     delayInSeconds: 40,
                 }),
@@ -95,8 +95,8 @@ describe('TurnTimerService', () => {
                     [nextPlayer.id]: nextPlayer,
                 },
             });
-            mockStartJob(timeoutDate);
-            mockStopJob(currentPlayer.id);
+            mockScheduleJob(timeoutDate);
+            mockRemoveJob(currentPlayer.id);
 
             const actual = await service.onTurn({
                 tableId,
@@ -105,12 +105,12 @@ describe('TurnTimerService', () => {
             });
 
             expect(actual).toEqual(timeoutDate);
-            expect(jobSchedulerService.start).toHaveBeenCalledWith(
+            expect(jobSchedulerService.schedule).toHaveBeenCalledWith(
                 expect.objectContaining({
                     delayInSeconds: 40,
                 }),
             );
-            expect(jobSchedulerService.stop).toHaveBeenCalled();
+            expect(jobSchedulerService.remove).toHaveBeenCalled();
         });
 
         it('should update time bank current player turn is after default timeout', async () => {
@@ -124,8 +124,8 @@ describe('TurnTimerService', () => {
                     [nextPlayer.id]: nextPlayer,
                 },
             });
-            mockStartJob(timeoutDate);
-            mockStopJob(currentPlayer.id, subSeconds(new Date(), 35));
+            mockScheduleJob(timeoutDate);
+            mockRemoveJob(currentPlayer.id, subSeconds(new Date(), 35));
 
             await service.onTurn({
                 tableId,
@@ -147,8 +147,8 @@ describe('TurnTimerService', () => {
 
         it('should throw error if table is not in-progress', async () => {
             mockFindTableState({ status: 'ended' });
-            mockStartJob(timeoutDate);
-            mockStopJob(playerId);
+            mockScheduleJob(timeoutDate);
+            mockRemoveJob(playerId);
 
             expect(
                 async () => await service.onTurn({ tableId, currentPlayerId: playerId, nextPlayerId: 'player_2' }),
@@ -157,8 +157,8 @@ describe('TurnTimerService', () => {
 
         it('should throw error turn timer queue returns a player id not matching the current player', async () => {
             mockFindTableState({ status: 'in-progress' });
-            mockStartJob(timeoutDate);
-            mockStopJob('player_notCurrent');
+            mockScheduleJob(timeoutDate);
+            mockRemoveJob('player_notCurrent');
 
             expect(
                 async () => await service.onTurn({ tableId, currentPlayerId: playerId, nextPlayerId: 'player_2' }),
@@ -176,14 +176,14 @@ describe('TurnTimerService', () => {
                     [player.id]: player,
                 },
             });
-            mockStopJob(player.id);
+            mockRemoveJob(player.id);
 
             await service.onEnd({
                 tableId,
                 finalPlayerId: player.id,
             });
 
-            expect(jobSchedulerService.stop).toHaveBeenCalled();
+            expect(jobSchedulerService.remove).toHaveBeenCalled();
         });
 
         it('should update time bank of player', async () => {
@@ -195,7 +195,7 @@ describe('TurnTimerService', () => {
                     [player.id]: player,
                 },
             });
-            mockStopJob(player.id, subSeconds(new Date(), 35));
+            mockRemoveJob(player.id, subSeconds(new Date(), 35));
 
             await service.onEnd({
                 tableId,
@@ -215,14 +215,14 @@ describe('TurnTimerService', () => {
 
         it('should throw error if table is not in-progress', async () => {
             mockFindTableState({ status: 'ended' });
-            mockStopJob(playerId);
+            mockRemoveJob(playerId);
 
             expect(async () => await service.onEnd({ tableId, finalPlayerId: playerId })).rejects.toThrow();
         });
 
         it('should throw error turn timer queue returns a player id not matching the current player', async () => {
             mockFindTableState({ status: 'in-progress' });
-            mockStopJob('player_notCurrent');
+            mockRemoveJob('player_notCurrent');
 
             expect(async () => await service.onEnd({ tableId, finalPlayerId: playerId })).rejects.toThrow();
         });

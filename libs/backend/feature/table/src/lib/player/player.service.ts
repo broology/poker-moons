@@ -23,6 +23,7 @@ const initialPlayerState: Omit<Player, 'id' | 'token'> = {
     img: '',
     stack: 3000,
     ready: false,
+    // Players starts with 5 minutes in time bank
     timeBank: 300,
     status: 'waiting',
     roundCalled: 0,
