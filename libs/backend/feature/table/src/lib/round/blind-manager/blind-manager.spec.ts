@@ -1,9 +1,9 @@
+import { mockCard, mockRound, mockServerTableState } from '@poker-moons/shared/testing';
 import { mock, MockProxy, mockReset } from 'jest-mock-extended';
-import { TableStateManagerService } from '../../table-state-manager/table-state-manager.service';
 import { TableGatewayService } from '../../shared/websocket/table-gateway.service';
+import { TableStateManagerService } from '../../table-state-manager/table-state-manager.service';
 import { PotManagerService } from '../pot-manager/pot-manager.service';
 import { BlindManagerService } from './blind-manager.service';
-import { mockCard, mockRound, mockServerTableState } from '@poker-moons/shared/testing';
 
 describe('BlindManagerService', () => {
     const tableStateManagerService = mock<TableStateManagerService>();
