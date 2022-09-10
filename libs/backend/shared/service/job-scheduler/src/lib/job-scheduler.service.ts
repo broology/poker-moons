@@ -4,11 +4,10 @@ import { CustomLoggerService } from '@poker-moons/backend/utility';
 import { Job, Queue } from 'bull';
 import { addSeconds } from 'date-fns';
 import { JOB_SCHEDULER_BULL_QUEUE } from './job-scheduler.const';
-import { StartScheduledJobArgs } from './job-scheduler.type';
+import { ScheduleJobArgs } from './job-scheduler.type';
 
 /**
- * @description Service that is responsible for taking the requests to start and stop
- *              the jobs.
+ * @description Service that is responsible for taking the requests to schedule and remove the jobs.
  */
 @Injectable()
 export class JobSchedulerService {
@@ -17,61 +16,65 @@ export class JobSchedulerService {
     constructor(@InjectQueue(JOB_SCHEDULER_BULL_QUEUE) private readonly queue: Queue) {}
 
     /**
-     * @description Returns the job if it exists
+     * @description Returns the job if it exists.
      *
-     * @param jobId id of job to find
-     * @returns job found, or null
+     * @param jobId Id of job to find.
+     *
+     * @returns Job found, or null.
      */
     get<T>(jobId: string): Promise<Job<T> | null> {
         return this.queue.getJob(jobId);
     }
 
     /**
-     * @description Creates a job that will be executed in `delayInSeconds`.
+     * @description Schedules a job that will be executed in `delayInSeconds`.
      *
      * @param args
      *
-     * @returns date of when the job will execute
+     * @returns Date of when the job will execute.
      */
-    async start<T>(args: StartScheduledJobArgs<T>): Promise<Date> {
+    async schedule<T>(args: ScheduleJobArgs<T>): Promise<Date> {
         const { data, delayInSeconds, name, jobId } = args;
 
-        this.logger.debug(`${jobId}: Starting job`);
+        this.logger.debug(`${jobId}: Scheduling job...`);
 
         const existingJob = await this.queue.getJob(jobId);
 
         if (existingJob) {
-            this.logger.log(`${jobId}: Starting job when this job already exists. Stopping current job...`);
+            this.logger.log(
+                `${jobId}: Scheduling job that already exists. Removing current job, and starting new one...`,
+            );
 
-            await this.stop(jobId);
+            await this.remove(jobId);
         }
 
         const dateOfJob = addSeconds(new Date(), delayInSeconds);
         await this.queue.add(name, data, { jobId, delay: delayInSeconds * 1000 });
 
-        this.logger.log(`${jobId}: Started job to execute at ${dateOfJob}`);
+        this.logger.log(`${jobId}: Scheduled job to execute at ${dateOfJob}`);
 
         return dateOfJob;
     }
 
     /**
-     * @description Finds the active job with the given `jobId` and stops stops/removes it
+     * @description Finds the active job with the given `jobId` and removes it.
      *
-     * @param jobId id of the job being stopped
-     * @returns the removed job if found
+     * @param jobId Id of the job being stopped.
+     *
+     * @returns The removed job if found, null if not found.
      */
-    async stop<T>(jobId: string): Promise<Job<T> | null> {
-        this.logger.debug(`${jobId}: Stopping job`);
+    async remove<T>(jobId: string): Promise<Job<T> | null> {
+        this.logger.debug(`${jobId}: Removing job`);
 
         const job = await this.queue.getJob(jobId);
 
         if (!job) {
-            this.logger.warn(`${jobId}: Stopping job when this job does not exists`);
+            this.logger.warn(`${jobId}: Removing job when this job does not exists`);
             return null;
         }
 
         await this.queue.removeJobs(jobId);
-        this.logger.log(`${jobId}: Stopped job`);
+        this.logger.log(`${jobId}: Removed job`);
         return job;
     }
 }

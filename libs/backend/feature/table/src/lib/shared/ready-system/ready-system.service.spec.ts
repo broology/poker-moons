@@ -37,8 +37,8 @@ describe('ReadySystemService', () => {
         tableStateManager.getTableById.mockResolvedValueOnce(mockServerTableState(args));
     }
 
-    function mockStartJob(date = new Date()) {
-        jobSchedulerService.start.mockResolvedValueOnce(date);
+    function mockScheduleJob(date = new Date()) {
+        jobSchedulerService.schedule.mockResolvedValueOnce(date);
     }
 
     function mockGetJob(exists = true) {
@@ -54,7 +54,7 @@ describe('ReadySystemService', () => {
     }
 
     /**
-     * Both `onPlayerReadied` and `onPlayerLeft` can be tested the same way, as their functionality is the same.
+     * @description Both `onPlayerReadied` and `onPlayerLeft` can be tested the same way, as their functionality is the same.
      */
     describe.each(['onPlayerReadied', 'onPlayerLeft'] as const)('%s', (fn) => {
         it('should start queue if two or more players are in the table, and all players are ready', async () => {
@@ -76,11 +76,11 @@ describe('ReadySystemService', () => {
                 },
                 status: 'lobby',
             });
-            mockStartJob(startDate);
+            mockScheduleJob(startDate);
 
             await service[fn](tableId);
 
-            expect(jobSchedulerService.start).toHaveBeenCalled();
+            expect(jobSchedulerService.schedule).toHaveBeenCalled();
             expect(tableGatewayService.emitTableEvent).toHaveBeenCalled();
             expect(tableStateManager.updateTable).toHaveBeenCalledWith(tableId, { startDate });
         });
@@ -104,11 +104,11 @@ describe('ReadySystemService', () => {
                 },
                 status: 'in-progress',
             });
-            mockStartJob(startDate);
+            mockScheduleJob(startDate);
 
             await service[fn](tableId);
 
-            expect(jobSchedulerService.start).not.toHaveBeenCalled();
+            expect(jobSchedulerService.schedule).not.toHaveBeenCalled();
             expect(tableGatewayService.emitTableEvent).not.toHaveBeenCalled();
             expect(tableStateManager.updateTable).not.toHaveBeenCalledWith(tableId, { startDate });
         });
@@ -132,11 +132,11 @@ describe('ReadySystemService', () => {
                 },
                 status: 'lobby',
             });
-            mockStartJob(startDate);
+            mockScheduleJob(startDate);
 
             await service.onPlayerReadied(tableId);
 
-            expect(jobSchedulerService.start).not.toHaveBeenCalled();
+            expect(jobSchedulerService.schedule).not.toHaveBeenCalled();
             expect(tableGatewayService.emitTableEvent).not.toHaveBeenCalled();
             expect(tableStateManager.updateTable).not.toHaveBeenCalledWith(tableId, { startDate });
         });
@@ -162,11 +162,11 @@ describe('ReadySystemService', () => {
                 },
                 status: 'lobby',
             });
-            mockStartJob(startDate);
+            mockScheduleJob(startDate);
 
             await service.onPlayerReadied(tableId);
 
-            expect(jobSchedulerService.start).not.toHaveBeenCalled();
+            expect(jobSchedulerService.schedule).not.toHaveBeenCalled();
             expect(tableGatewayService.emitTableEvent).not.toHaveBeenCalled();
             expect(tableStateManager.updateTable).not.toHaveBeenCalledWith(tableId, { startDate });
         });
@@ -195,7 +195,7 @@ describe('ReadySystemService', () => {
 
             await service.onPlayerJoined(tableId);
 
-            expect(jobSchedulerService.stop).toHaveBeenCalled();
+            expect(jobSchedulerService.remove).toHaveBeenCalled();
             expect(tableGatewayService.emitTableEvent).toHaveBeenCalled();
             expect(tableStateManager.updateTable).toHaveBeenCalledWith(tableId, { startDate: null });
         });
@@ -222,7 +222,7 @@ describe('ReadySystemService', () => {
 
             await service.onPlayerJoined(tableId);
 
-            expect(jobSchedulerService.stop).not.toHaveBeenCalled();
+            expect(jobSchedulerService.remove).not.toHaveBeenCalled();
             expect(tableGatewayService.emitTableEvent).not.toHaveBeenCalled();
             expect(tableStateManager.updateTable).not.toHaveBeenCalledWith(tableId, { startDate: null });
         });

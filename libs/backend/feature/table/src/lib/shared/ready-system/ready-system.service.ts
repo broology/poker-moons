@@ -10,8 +10,7 @@ import { ReadyQueueJobData } from './ready-system.type';
 @Injectable()
 export class ReadySystemService {
     /**
-     * @description The duration that will occur between when all players ready up
-     *              and the game actually starting
+     * @description The duration that will occur between when all players ready up and the game actually starting.
      */
     private static readonly waitDuration = { seconds: 10 };
 
@@ -24,21 +23,22 @@ export class ReadySystemService {
     ) {}
 
     /**
-     * @description Builds a deterministic id to use for the `Table`'s Ready-queue job.
-     *              As, a table should only ever have one of these jobs running.
+     * @description Builds a deterministic id to use for the `Table`'s Ready-queue job. As, a table should only
+     * ever have one of these jobs running.
      *
-     * @param tableId id of the table
-     * @returns jobId of table ready queue job
+     * @param tableId Id of the table.
+     *
+     * @returns JobId of table ready queue job.
      */
     private static buildJobId(tableId: string): string {
         return `${tableId}/ready-system`;
     }
 
     /**
-     * @description When a player ready's in a table, this will check if
-     *              all players are ready, if so starts the ready queue
+     * @description When a player ready's in a table, this will check if all players are ready, if so starts the ready queue.
      *
-     * @param tableId id of the table a player readied on
+     * @param tableId Id of the table a player readied on.
+     *
      * @returns
      */
     async onPlayerReadied(tableId: TableId): Promise<void> {
@@ -47,10 +47,9 @@ export class ReadySystemService {
     }
 
     /**
-     * @description When a player joins a table while it's still in `lobby`,
-     *              this stop the current if it exists
+     * @description When a player joins a table while it's still in `lobby`, this stop the current if it exists.
      *
-     * @param tableId id of the table a player joined
+     * @param tableId Id of the table a player joined.
      */
     async onPlayerJoined(tableId: TableId): Promise<void> {
         this.logger.debug(`${tableId}: Player joined detected`);
@@ -73,7 +72,7 @@ export class ReadySystemService {
 
         this.logger.log(`${tableId}: Player joined table during lobby, stopping queue`);
 
-        await this.jobSchedulerService.stop(jobId);
+        await this.jobSchedulerService.remove(jobId);
 
         await this.tableStateManager.updateTable(tableId, { startDate: null });
 
@@ -85,10 +84,10 @@ export class ReadySystemService {
     }
 
     /**
-     * @description When a player leaves a table while the table is still in status `lobby`
-     *              then the ready queue is re-validated and reset.
+     * @description When a player leaves a table while the table is still in status `lobby` then the ready queue is
+     * re-validated and reset.
      *
-     * @param tableId id of the table a player left in.
+     * @param tableId Id of the table a player left in.
      */
     onPlayerLeft(tableId: TableId): Promise<void> {
         this.logger.debug(`${tableId}: Player left detected`);
@@ -96,10 +95,10 @@ export class ReadySystemService {
     }
 
     /**
-     * @description If there are at least two players seated
-     *              and all players are ready then update then start/reset the ready queue.
+     * @description If there are at least two players seated and all players are ready then update then start/reset
+     * the ready queue.
      *
-     * @param tableId id of the table a player readied in
+     * @param tableId Id of the table a player readied in.
      */
     private async startOrResetQueue(tableId: TableId): Promise<void> {
         const canStart = await this.canStartQueue(tableId);
@@ -110,7 +109,7 @@ export class ReadySystemService {
         }
         this.logger.log(`${tableId}: All players are ready, triggering queue start`);
 
-        const startDate = await this.jobSchedulerService.start<ReadyQueueJobData>({
+        const startDate = await this.jobSchedulerService.schedule<ReadyQueueJobData>({
             data: { tableId },
             delayInSeconds: ReadySystemService.waitDuration.seconds,
             jobId: ReadySystemService.buildJobId(tableId),
@@ -130,12 +129,12 @@ export class ReadySystemService {
      * @description Checks if the `ReadyQueue` can be started, requires:
      *
      * - Table must be in status `lobby`
-     * - At least two players seated at the table
-     * - All seated players are ready
+     * - At least two players seated at the table.
+     * - All seated players are ready.
      *
-     * @param tableId id of the table to check
+     * @param tableId Id of the table to check.
      *
-     * @returns if the table is in a state where the ready queue can be started
+     * @returns If the table is in a state where the ready queue can be started.
      */
     private async canStartQueue(tableId: TableId): Promise<boolean> {
         const state = await this.tableStateManager.getTableById(tableId);
