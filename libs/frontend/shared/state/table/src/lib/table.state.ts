@@ -25,6 +25,7 @@ export const initialState: ClientTableState = {
     tableId: null,
     startDate: null,
     status: 'lobby',
+    winners: {},
 };
 
 export const storeFeature = createFeature({
@@ -41,4 +42,5 @@ export const {
     selectSeatMap,
     selectStartDate,
     selectStatus,
+    selectWinners,
 } = storeFeature;

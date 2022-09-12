@@ -10,6 +10,7 @@ import {
     SeatId,
     TableId,
     TableStatus,
+    WinnerMap,
 } from '@poker-moons/shared/type';
 import { Observable } from 'rxjs';
 import { joinTable, leaveTable, performTableAction, toggleReadyStatus } from './actions/api.actions';
@@ -23,7 +24,14 @@ import {
     selectMutablePlayerBySeatId,
     selectSumRoundCalled,
 } from './table-state.selectors';
-import { selectActiveRound, selectSeatMap, selectStartDate, selectStatus, selectTableId } from './table.state';
+import {
+    selectActiveRound,
+    selectSeatMap,
+    selectStartDate,
+    selectStatus,
+    selectTableId,
+    selectWinners,
+} from './table.state';
 
 @Injectable({ providedIn: 'root' })
 export class TableStateFacade {
@@ -121,6 +129,13 @@ export class TableStateFacade {
      */
     selectClientSeatId(): Observable<SeatId | null | undefined> {
         return this.store.pipe(select(selectClientSeatId));
+    }
+
+    /**
+     * @description Retrieve the winners of the round that just ended.
+     */
+    selectWinners(): Observable<WinnerMap> {
+        return this.store.pipe(select(selectWinners));
     }
 
     /* Actions */

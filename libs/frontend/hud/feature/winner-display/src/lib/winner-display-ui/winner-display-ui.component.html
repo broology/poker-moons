@@ -1,0 +1,7 @@
+<ng-container *ngIf="(winners | json) !== '{}'">
+    <poker-moons-dialog [copy]="dialogCopy">
+        <div *ngFor="let winner of winners | keyvalue">
+            {{ winner.value.displayText }}
+        </div>
+    </poker-moons-dialog>
+</ng-container>

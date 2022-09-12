@@ -347,18 +347,21 @@ export class RoundManagerService {
 
             await this.tableStateManagerService.updateRound(table.id, roundChanges);
 
-            this.tableGatewayService.emitTableEvent(table.id, {
-                type: 'roundChanged',
-                ...roundChanges,
-            });
-
             await this.tableStateManagerService.updateAllPlayers(table.id, {
                 status: 'waiting',
                 roundCalled: 0,
                 biddingCycleCalled: 0,
             });
 
-            await this.startRound(table.id);
+            // We wait 10 seconds before starting the next round so that the results can be displayed
+            setTimeout(async () => {
+                this.tableGatewayService.emitTableEvent(table.id, {
+                    type: 'roundChanged',
+                    ...roundChanges,
+                });
+
+                await this.startRound(table.id);
+            }, 10000);
         }
     }
 }

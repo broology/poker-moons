@@ -1,0 +1,70 @@
+{
+    "projectType": "library",
+    "sourceRoot": "libs/frontend/hud/feature/winner-display/src",
+    "prefix": "poker-moons",
+    "targets": {
+        "build": {
+            "executor": "@nrwl/angular:ng-packagr-lite",
+            "outputs": ["dist/libs/frontend/hud/feature/winner-display"],
+            "options": {
+                "project": "libs/frontend/hud/feature/winner-display/ng-package.json"
+            },
+            "configurations": {
+                "production": {
+                    "tsConfig": "libs/frontend/hud/feature/winner-display/tsconfig.lib.prod.json"
+                },
+                "development": {
+                    "tsConfig": "libs/frontend/hud/feature/winner-display/tsconfig.lib.json"
+                }
+            },
+            "defaultConfiguration": "production"
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/libs/frontend/hud/feature/winner-display"],
+            "options": {
+                "jestConfig": "libs/frontend/hud/feature/winner-display/jest.config.ts",
+                "passWithNoTests": true
+            }
+        },
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "options": {
+                "lintFilePatterns": [
+                    "libs/frontend/hud/feature/winner-display/**/*.ts",
+                    "libs/frontend/hud/feature/winner-display/**/*.html"
+                ]
+            }
+        },
+        "storybook": {
+            "executor": "@storybook/angular:start-storybook",
+            "options": {
+                "port": 4400,
+                "configDir": "libs/frontend/hud/feature/winner-display/.storybook",
+                "browserTarget": "frontend-hud-feature-winner-display:build-storybook",
+                "compodoc": false
+            },
+            "configurations": {
+                "ci": {
+                    "quiet": true
+                }
+            }
+        },
+        "build-storybook": {
+            "executor": "@storybook/angular:build-storybook",
+            "outputs": ["{options.outputDir}"],
+            "options": {
+                "outputDir": "dist/storybook/frontend-hud-feature-winner-display",
+                "configDir": "libs/frontend/hud/feature/winner-display/.storybook",
+                "browserTarget": "frontend-hud-feature-winner-display:build-storybook",
+                "compodoc": false
+            },
+            "configurations": {
+                "ci": {
+                    "quiet": true
+                }
+            }
+        }
+    },
+    "tags": ["scope:frontend", "scope:hud", "type:feature"]
+}

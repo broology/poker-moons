@@ -71,6 +71,7 @@ describe('TableGateway', () => {
                 immutablePlayerMap: { player_1: { id, username, img, seatId } },
                 startDate: null,
                 status: 'lobby',
+                winners: {},
             });
         });
     });

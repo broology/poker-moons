@@ -1,6 +1,6 @@
 import { ImmutablePublicPlayer, Player } from '..';
 import type { Card } from './card';
-import type { MutablePublicPlayer, PlayerId } from './player';
+import type { MutablePublicPlayer, PlayerId, WinnerMap } from './player';
 import type { Table, TableId } from './table';
 
 export type SharedTableState = Pick<Table, 'seatMap' | 'roundCount' | 'activeRound' | 'status' | 'startDate'>;
@@ -25,6 +25,11 @@ export interface ClientTableState extends SharedTableState {
      * @description Map of player data that will (for the most part) stay the same during the game.
      */
     immutablePlayerMap: Record<PlayerId, ImmutablePublicPlayer>;
+
+    /**
+     * @description The winner(s) of the round that just ended.
+     */
+    winners: WinnerMap;
 }
 
 export interface ServerTableState extends SharedTableState {

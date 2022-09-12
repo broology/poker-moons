@@ -113,6 +113,7 @@ export class TableGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
             immutablePlayerMap,
             startDate,
             status,
+            winners: {},
         };
     }
 }
