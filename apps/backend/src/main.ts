@@ -18,7 +18,7 @@ async function bootstrap() {
 
     // Enable CORS for client to server requests
     app.enableCors({
-        // Allow list of headers allowed to be passed to the server via CORS requests
+        // Allow list of headers allowed to be passed to the server via CORS requests.
         allowedHeaders: ['Authorization', 'Content-Type'],
     });
 
