@@ -38,6 +38,13 @@ describe('RoundManagerService', () => {
         // Mock all blind calls
         blindManagerService.getBigBlind.mockReturnValue(10);
         blindManagerService.getSmallBlind.mockReturnValue(5);
+
+        jest.useFakeTimers();
+        jest.spyOn(global, 'setTimeout');
+    });
+
+    afterAll(() => {
+        jest.useRealTimers();
     });
 
     const table = mockServerTableState({
@@ -221,15 +228,16 @@ describe('RoundManagerService', () => {
                 dealerSeat: 1,
                 activeSeat: 2,
             });
+        });
 
-            expect(tableGatewayService.emitTableEvent).toHaveBeenCalledWith(table.id, {
-                type: 'roundChanged',
-                roundStatus: 'deal',
-                activeSeat: 1,
-                cards: [],
-                toCall: 10,
-                pot: 15,
-            });
+        it('should start the next round after 10 seconds if two or more players still have chips', async () => {
+            tableStateManagerService.getTableById.mockResolvedValue(table);
+            deckManagerService.buildDeck.mockResolvedValue(deck);
+            deckManagerService.drawCard.mockResolvedValue({ card, deck });
+
+            await service.endRound(table);
+
+            expect(setTimeout).toHaveBeenCalledWith(expect.any(Function), 10000);
         });
     });
 });
