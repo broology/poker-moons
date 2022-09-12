@@ -23,6 +23,9 @@
             ],
             "@poker-moons/backend/utility": ["libs/backend/utility/src/index.ts"],
             "@poker-moons/frontend/hud/feature/action-panel": ["libs/frontend/hud/feature/action-panel/src/index.ts"],
+            "@poker-moons/frontend/hud/feature/winner-display": [
+                "libs/frontend/hud/feature/winner-display/src/index.ts"
+            ],
             "@poker-moons/frontend/hud/shell": ["libs/frontend/hud/shell/src/index.ts"],
             "@poker-moons/frontend/landing": ["libs/frontend/landing/src/index.ts"],
             "@poker-moons/frontend/shared/state/table": ["libs/frontend/shared/state/table/src/index.ts"],
