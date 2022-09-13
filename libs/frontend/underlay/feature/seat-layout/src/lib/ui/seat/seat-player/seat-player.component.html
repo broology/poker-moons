@@ -1,7 +1,7 @@
 <ng-container *ngIf="immutablePlayer && mutablePlayer; else empty">
     <div [class]="active ? 'seat active-seat' : 'seat'">
         <div class="timer">
-            <poker-moons-moon-timer [duration]="30000"></poker-moons-moon-timer>
+            <poker-moons-moon-timer [duration]="20000" width="75" height="75"></poker-moons-moon-timer>
         </div>
         <div class="username">{{ immutablePlayer.username }}</div>
         <div class="extra">
@@ -13,7 +13,7 @@
 <ng-template #empty>
     <div class="seat empty-seat">
         <div class="timer">
-            <poker-moons-moon-timer [duration]="30000"></poker-moons-moon-timer>
+            <poker-moons-moon-timer [duration]="20000" width="75" height="75"></poker-moons-moon-timer>
         </div>
         <div class="username">Empty</div>
         <div class="extra"></div>

@@ -30,6 +30,8 @@
 .moon {
     fill: c.color('text');
     filter: drop-shadow(0px 0px 8px c.color('text'));
+    height: s.spacing(8);
+    width: s.spacing(8);
 }
 .lunar-eclipse {
     fill: c.color('primary');
