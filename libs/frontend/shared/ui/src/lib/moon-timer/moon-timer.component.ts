@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { interval, Observable } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
+import { map, shareReplay, takeWhile } from 'rxjs/operators';
 
 interface Time {
     total: number;
@@ -20,27 +20,24 @@ export class MoonTimerComponent implements OnInit {
     @Input() height = '100%';
     @Input() duration = 30000;
     private currentTime: number;
-    public currentTime$: Observable<Time>;
+    public displayTime$: Observable<Time>;
     @Output() handleClick: EventEmitter<string> = new EventEmitter<string>();
 
     constructor() {
         this.currentTime = 0;
-        this.currentTime$ = interval(1000).pipe(
-            map(() => this.getTime()),
+        this.displayTime$ = interval(1000).pipe(
             shareReplay(1),
+            map(() => this.getTime()),
+            takeWhile(() => this.currentTime >= 0),
         );
     }
 
     ngOnInit(): void {
         this.currentTime = this.duration;
-        this.currentTime$.pipe().subscribe((val) => (this.currentTime = val.total - 1000));
+        this.displayTime$.pipe().subscribe((val) => (this.currentTime = val.total - 1000));
     }
 
     getTime(): Time {
-        if (this.currentTime <= 0) {
-            return { total: 0, min: '00', sec: '00' };
-        }
-
         const min = Math.floor((this.currentTime / 1000 / 60) % 60);
         const sec = Math.floor((this.currentTime / 1000) % 60);
 
