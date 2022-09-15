@@ -9,6 +9,8 @@
     position: relative;
     justify-content: center;
     align-items: center;
+    height: 100%;
+    width: 100%;
 }
 
 .timer-ctn {
@@ -30,8 +32,7 @@
 .moon {
     fill: c.color('text');
     filter: drop-shadow(0px 0px 8px c.color('text'));
-    height: s.spacing(8);
-    width: s.spacing(8);
+    height: 100%;
 }
 .lunar-eclipse {
     fill: c.color('primary');

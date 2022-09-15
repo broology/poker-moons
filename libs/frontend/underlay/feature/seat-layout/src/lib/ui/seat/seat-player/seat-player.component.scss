@@ -4,12 +4,12 @@
 @use '~styles/breakpoints' as bp;
 
 .seat {
-    height: 40px;
-    width: 150px;
+    height: s.spacing(6);
+    width: s.spacing(19);
 
     @include bp.md {
-        height: 55px;
-        width: 250px;
+        height: s.spacing(8);
+        width: s.spacing(31);
     }
 
     display: flex;
@@ -22,7 +22,7 @@
     border: 2px solid c.color-alpha('shaded', 0.75);
     border-radius: 25px;
 
-    padding: s.spacing(0.5) s.spacing(1.5);
+    padding: s.spacing(0.5);
 }
 
 .active-seat {
@@ -35,6 +35,7 @@
 
 .timer {
     width: 25%;
+    height: 100%;
 }
 
 .username {
@@ -50,7 +51,6 @@
 
 .extra {
     width: 25%;
-    height: 100%;
 }
 
 .stack {

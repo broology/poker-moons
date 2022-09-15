@@ -6,8 +6,6 @@ $font-family: 'Blinker', sans-serif;
     font-family: $font-family;
     font-weight: 600;
     font-size: 3rem;
-    line-height: 1;
-    letter-spacing: 0;
     text-transform: uppercase;
     text-decoration: none;
     @include br.md {
@@ -18,8 +16,6 @@ $font-family: 'Blinker', sans-serif;
     font-family: $font-family;
     font-weight: 600;
     font-size: 2rem;
-    line-height: 1;
-    letter-spacing: 0;
     text-transform: none;
     text-decoration: none;
     @include br.md {
@@ -30,8 +26,6 @@ $font-family: 'Blinker', sans-serif;
     font-family: $font-family;
     font-weight: 600;
     font-size: 1.25rem;
-    line-height: 1.4;
-    letter-spacing: 0;
     text-transform: none;
     text-decoration: none;
     @include br.md {
@@ -42,8 +36,6 @@ $font-family: 'Blinker', sans-serif;
     font-family: $font-family;
     font-weight: 400;
     font-size: 1.25rem;
-    line-height: 1;
-    letter-spacing: 0;
     text-transform: none;
     text-decoration: none;
     @include br.md {
@@ -54,8 +46,6 @@ $font-family: 'Blinker', sans-serif;
     font-family: $font-family;
     font-weight: 600;
     font-size: 1.15rem;
-    line-height: 1;
-    letter-spacing: 0;
     text-transform: uppercase;
     text-decoration: none;
     @include br.md {
@@ -66,8 +56,6 @@ $font-family: 'Blinker', sans-serif;
     font-family: $font-family;
     font-weight: 400;
     font-size: 1rem;
-    line-height: 1.2;
-    letter-spacing: 0;
     text-transform: none;
     text-decoration: none;
     @include br.md {
@@ -78,17 +66,13 @@ $font-family: 'Blinker', sans-serif;
     font-family: $font-family;
     font-weight: 400;
     font-size: 0.875rem;
-    line-height: 1;
-    letter-spacing: 0;
     text-transform: none;
     text-decoration: none;
 }
 @mixin body2 {
     font-family: $font-family;
-    font-weight: 600;
+    font-weight: 50000;
     font-size: 0.625rem;
-    line-height: 1;
-    letter-spacing: 0;
     text-transform: uppercase;
     text-decoration: none;
 }
@@ -96,8 +80,6 @@ $font-family: 'Blinker', sans-serif;
     font-family: $font-family;
     font-weight: 400;
     font-size: 1rem;
-    line-height: 1.2;
-    letter-spacing: 0;
     text-transform: none;
     text-decoration: none;
 }
@@ -105,8 +87,6 @@ $font-family: 'Blinker', sans-serif;
     font-family: $font-family;
     font-weight: 600;
     font-size: 2rem;
-    line-height: 1.4;
-    letter-spacing: 0;
     text-transform: none;
     text-decoration: none;
     @include br.md {
@@ -117,8 +97,6 @@ $font-family: 'Blinker', sans-serif;
     font-family: $font-family;
     font-weight: 600;
     font-size: 1rem;
-    line-height: 1;
-    letter-spacing: 0;
     text-transform: uppercase;
     text-decoration: none;
     @include br.md {

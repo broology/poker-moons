@@ -16,8 +16,6 @@ interface Time {
     styleUrls: ['./moon-timer.component.scss'],
 })
 export class MoonTimerComponent implements OnInit {
-    @Input() width = '100%';
-    @Input() height = '100%';
     @Input() duration = 30000;
     private currentTime: number;
     public displayTime$: Observable<Time>;
