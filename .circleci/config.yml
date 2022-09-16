@@ -33,6 +33,7 @@ set_env: &set_env
         fi
         source $BASH_ENV
         echo $AFFECTED_ARGS
+        mkdir dist && git rev-parse HEAD > dist/head.txt
 
 yarn_cache: &yarn_cache
     keys:

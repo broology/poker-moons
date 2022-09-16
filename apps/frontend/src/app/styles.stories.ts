@@ -32,23 +32,23 @@ import { Meta, moduleMetadata, Story } from '@storybook/angular';
     ],
     styleUrls: ['../styles.scss'],
 })
-class ColourDisplayComponent {
+class ColorDisplayComponent {
     transforms = ['default', 'shaded', 'tinted', 'alpha-50', 'alpha-25'];
     colours = ['primary', 'secondary', 'foreground', 'background', 'success', 'warning', 'error'];
 }
 
 export default {
     title: 'ColourDisplayComponent',
-    component: ColourDisplayComponent,
+    component: ColorDisplayComponent,
     decorators: [
         moduleMetadata({
             imports: [],
         }),
     ],
-} as Meta<ColourDisplayComponent>;
+} as Meta<ColorDisplayComponent>;
 
-const Template: Story<ColourDisplayComponent> = (args: ColourDisplayComponent) => ({
-    component: ColourDisplayComponent,
+const Template: Story<ColorDisplayComponent> = (args: ColorDisplayComponent) => ({
+    component: ColorDisplayComponent,
     props: args,
 });
 

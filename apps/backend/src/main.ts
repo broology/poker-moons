@@ -16,7 +16,7 @@ async function bootstrap() {
     // Using helmet to follow general security practices.
     app.use(helmet());
 
-    // Enable CORS for client to server requests
+    // Enable CORS for client to server requests.
     app.enableCors({
         // Allow list of headers allowed to be passed to the server via CORS requests.
         allowedHeaders: ['Authorization', 'Content-Type'],
