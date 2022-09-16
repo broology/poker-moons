@@ -21,7 +21,7 @@ import { AppComponent } from './app.component';
         RouterModule,
         AppRoutingModule,
 
-        // Ngrx State
+        // NgRx State
         StoreModule.forRoot([]),
         EffectsModule.forRoot([]),
         StoreDevtoolsModule.instrument({

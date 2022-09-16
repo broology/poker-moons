@@ -22,7 +22,7 @@ async function bootstrap() {
         allowedHeaders: ['Authorization', 'Content-Type'],
     });
 
-    // Enable endpoint validation across all endpoints, allowing use of `class-validator` in controller dtos
+    // Enable endpoint validation across all endpoints, allowing use of `class-validator` in controller dtos.
     app.useGlobalPipes(
         new ValidationPipe({
             forbidUnknownValues: true,
