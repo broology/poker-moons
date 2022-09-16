@@ -1,8 +1,8 @@
 /* eslint-disable @angular-eslint/no-empty-lifecycle-method */
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { interval, Observable } from 'rxjs';
-import { map, shareReplay, takeWhile } from 'rxjs/operators';
+import { filter, map, shareReplay, startWith } from 'rxjs/operators';
 
 interface Time {
     total: number;
@@ -16,23 +16,38 @@ interface Time {
     styleUrls: ['./moon-timer.component.scss'],
 })
 export class MoonTimerComponent implements OnInit {
-    @Input() duration = 30000;
-    private currentTime: number;
+    /**
+     * @description The duration to have the timer run for in milliseconds.
+     *
+     * If `null` is past in then the timer is stopped.
+     */
+    @Input() set duration(duration: number | null) {
+        this.running = duration !== null;
+        this._duration = duration ?? 2000;
+        this.currentTime = duration ?? 2000;
+    }
+
+    private _duration = 2000;
+    private currentTime = 2000;
+    public running = false;
     public displayTime$: Observable<Time>;
-    @Output() handleClick: EventEmitter<string> = new EventEmitter<string>();
 
     constructor() {
-        this.currentTime = 0;
         this.displayTime$ = interval(1000).pipe(
             shareReplay(1),
+            startWith(this.getTime()),
             map(() => this.getTime()),
-            takeWhile(() => this.currentTime >= 0),
+            filter(() => this.running && this.currentTime >= 1000),
         );
     }
 
     ngOnInit(): void {
-        this.currentTime = this.duration;
-        this.displayTime$.pipe().subscribe((val) => (this.currentTime = val.total - 1000));
+        this.currentTime = this._duration;
+        this.displayTime$.pipe().subscribe((val) => {
+            if (this.running) {
+                this.currentTime = val.total - 1000;
+            }
+        });
     }
 
     getTime(): Time {
@@ -45,17 +60,15 @@ export class MoonTimerComponent implements OnInit {
             sec: sec.toString().padStart(2, '0'),
         };
     }
+
     getPath(): string {
-        const toSubtract = ((this.duration - this.currentTime) / this.duration) * 130;
+        const toSubtract = ((this._duration - this.currentTime) / this._duration) * 130;
 
         return `M50,100 C${115 - toSubtract},100 ${115 - toSubtract},0 50,0 C-15,0 -15,100 50,100`;
     }
-    getColorClass(): string {
-        const ratio = this.currentTime / this.duration;
-        return ratio > 0.5 ? 'moon' : ratio > 0.25 ? 'lunar-eclipse' : 'solar-eclipse';
-    }
 
-    click(): void {
-        return this.handleClick.emit();
+    getColorClass(): string {
+        const ratio = this.currentTime / this._duration;
+        return ratio > 0.5 ? 'moon' : ratio > 0.25 ? 'lunar-eclipse' : 'solar-eclipse';
     }
 }
