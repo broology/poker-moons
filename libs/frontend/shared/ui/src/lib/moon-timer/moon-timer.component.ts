@@ -1,6 +1,6 @@
 /* eslint-disable @angular-eslint/no-empty-lifecycle-method */
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { interval, Observable } from 'rxjs';
 import { filter, map, shareReplay, startWith } from 'rxjs/operators';
 
@@ -14,6 +14,7 @@ interface Time {
     selector: 'poker-moons-moon-timer',
     templateUrl: './moon-timer.component.html',
     styleUrls: ['./moon-timer.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MoonTimerComponent implements OnInit {
     /**
@@ -37,7 +38,7 @@ export class MoonTimerComponent implements OnInit {
             shareReplay(1),
             startWith(this.getTime()),
             map(() => this.getTime()),
-            filter(() => this.running && this.currentTime >= 1000),
+            filter(() => !this.running || this.currentTime >= 1000),
         );
     }
 
