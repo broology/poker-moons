@@ -61,7 +61,7 @@ export class RoundManagerService {
         ) {
             // if a round a can be auto-completed, which occurs when less than 2 players are actively bidden.
             if (isAutoCompletable(playerStatuses)) {
-                await this.autoCompleteRound(table.id, nextActiveSeat);
+                await this.autoCompleteRound(table.id, table.playerMap, nextActiveSeat);
                 return;
             }
 
@@ -146,7 +146,30 @@ export class RoundManagerService {
      * @param tableId - The ID of the table to auto-complete.
      * @param nextActiveSeat - The seat ID of the player whose turn is next.
      */
-    async autoCompleteRound(tableId: TableId, nextActiveSeat: SeatId): Promise<void> {
+    async autoCompleteRound(
+        tableId: TableId,
+        playerMap: Record<PlayerId, Player>,
+        nextActiveSeat: SeatId,
+    ): Promise<void> {
+        const updatedPlayerMap: Record<PlayerId, Player> = {};
+
+        for (const player of Object.values(playerMap)) {
+            this.tableGatewayService.emitTableEvent(tableId, {
+                type: 'playerChanged',
+                id: player.id,
+                roundCalled: player.biddingCycleCalled + player.roundCalled,
+                biddingCycleCalled: 0,
+            });
+
+            updatedPlayerMap[player.id] = {
+                ...player,
+                roundCalled: player.biddingCycleCalled + player.roundCalled,
+                biddingCycleCalled: 0,
+            };
+        }
+
+        await this.tableStateManagerService.updateTable(tableId, { playerMap: updatedPlayerMap });
+
         let table: ServerTableState;
 
         // eslint-disable-next-line no-constant-condition
@@ -186,8 +209,7 @@ export class RoundManagerService {
             }
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        await this.endRound(table!);
+        await this.endRound(table);
     }
 
     /**
@@ -272,11 +294,11 @@ export class RoundManagerService {
             finalPlayerId: table.seatMap[table.activeRound.activeSeat!]!,
         });
 
-        // Reset players to waiting at the end of the round
         table = await this.tableStateManagerService.getTableById(table.id);
 
         const updatedPlayerMap = table.playerMap;
 
+        // Reset players to waiting at the end of the round
         for (const player of Object.values(table.playerMap)) {
             updatedPlayerMap[player.id] = {
                 ...player,
