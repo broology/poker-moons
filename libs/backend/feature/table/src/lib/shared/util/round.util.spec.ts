@@ -24,6 +24,10 @@ describe('Round Utils', () => {
             expect(isRoundComplete('river', ['checked', 'checked', 'checked', 'checked'])).toEqual(true);
         });
 
+        it('should return true if everyone is folded', () => {
+            expect(isRoundComplete('turn', ['folded', 'folded'])).toEqual(true);
+        });
+
         it('should return false if none of the above are true', () => {
             expect(isRoundComplete('turn', ['raised', 'called', 'called', 'folded'])).toEqual(false);
         });

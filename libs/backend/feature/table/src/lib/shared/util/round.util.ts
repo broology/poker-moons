@@ -31,6 +31,11 @@ export function isRoundComplete(roundStatus: RoundStatus, playerStatuses: Player
         return true;
     }
 
+    // If everyone is folded then the round is complete.
+    if (countOccurrences(playerStatuses, 'folded') === playerStatuses.length) {
+        return true;
+    }
+
     return false;
 }
 

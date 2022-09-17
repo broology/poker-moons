@@ -233,8 +233,6 @@ export class RoundManagerService {
             deck = draw2.deck;
         }
 
-        await this.blindManagerService.forceBlinds(table);
-
         /*
          * Emit the RoundStatusChanged event to the frontend to reset back to 'deal'
          *
@@ -248,6 +246,8 @@ export class RoundManagerService {
             toCall: this.blindManagerService.getBigBlind(),
             pot: this.blindManagerService.getBigBlind() + this.blindManagerService.getSmallBlind(),
         });
+
+        await this.blindManagerService.forceBlinds(table);
 
         // Start the turn timer for the first player
         await this.turnTimeService.onStart({ tableId: table.id, startingPlayerId });

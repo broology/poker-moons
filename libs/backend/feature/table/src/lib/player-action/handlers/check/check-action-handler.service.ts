@@ -97,7 +97,7 @@ export class CheckActionHandlerService {
         const playerTurn = validatePlayerTurn(table, player, action);
 
         if (isRight(playerTurn))
-            return match([table.activeRound.toCall === 0])
+            return match([table.activeRound.toCall === 0 || player.biddingCycleCalled === table.activeRound.toCall])
                 .with([false], () => left(`Must bet a minimum of ${table.activeRound.toCall}.`))
                 .otherwise(() => right({ table, player, action }));
         return playerTurn;
