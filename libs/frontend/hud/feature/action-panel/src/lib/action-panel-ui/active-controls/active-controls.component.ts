@@ -9,7 +9,7 @@ import {
     SimpleChanges,
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { PlayerAction } from '@poker-moons/shared/type';
+import { PlayerAction, Round } from '@poker-moons/shared/type';
 import { map, Observable, startWith } from 'rxjs';
 
 @Component({
@@ -32,9 +32,9 @@ export class ActiveControlsComponent implements OnInit, OnChanges {
     @Input() stack!: number;
 
     /**
-     * @description The `call` amount set by the table.
+     * @description The information about the active round.
      */
-    @Input() toCall!: number;
+    @Input() round!: Pick<Round, 'toCall' | 'smallBlind'>;
 
     /**
      * @description Action emission event that is sent to table state.
@@ -53,7 +53,7 @@ export class ActiveControlsComponent implements OnInit, OnChanges {
      * @description The minimum raisable amount the player can perform.
      */
     get minRaiseAmount(): number {
-        return Math.min(this.toCall * 2, this.stack);
+        return Math.min(this.round.smallBlind * 2 + this.round.toCall, this.stack);
     }
 
     ngOnInit(): void {
@@ -91,8 +91,7 @@ export class ActiveControlsComponent implements OnInit, OnChanges {
                 return this.allIn();
             }
 
-            // NOTE: Considering how the backend works, we want them to raise the actual amount they committed too, not the raise amount + the to call. Which is what the backend does.
-            this.playerActionEmitter.emit({ type: 'raise', amount: this.amountControl.value - this.toCall });
+            this.playerActionEmitter.emit({ type: 'raise', amount: this.amountControl.value });
         }
     }
 
