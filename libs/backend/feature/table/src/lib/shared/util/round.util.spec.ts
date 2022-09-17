@@ -1,4 +1,10 @@
-import { isRoundComplete, incrementSeat, incrementRoundStatus, hasEveryoneTakenTurn } from './round.util';
+import {
+    hasBiddingCycleEnded,
+    hasEveryoneTakenTurn,
+    incrementRoundStatus,
+    incrementSeat,
+    isRoundComplete,
+} from './round.util';
 
 describe('Round Utils', () => {
     describe('isRoundComplete', () => {
@@ -66,6 +72,68 @@ describe('Round Utils', () => {
 
         it('should return false if not everyone has taken their turn', () => {
             expect(hasEveryoneTakenTurn(['raised', 'called', 'waiting'])).toEqual(false);
+        });
+    });
+
+    describe('hasBiddingCycleEnded', () => {
+        it('should return true if all players are folded', () => {
+            expect(
+                hasBiddingCycleEnded(
+                    [
+                        { status: 'folded', biddingCycleCalled: 0 },
+                        { status: 'folded', biddingCycleCalled: 0 },
+                    ],
+                    { toCall: 10 },
+                ),
+            ).toEqual(true);
+        });
+
+        it('should return true if all players are all in', () => {
+            expect(
+                hasBiddingCycleEnded(
+                    [
+                        { status: 'all-in', biddingCycleCalled: 0 },
+                        { status: 'all-in', biddingCycleCalled: 0 },
+                    ],
+                    { toCall: 10 },
+                ),
+            ).toEqual(true);
+        });
+
+        it('should return true if all players match the to call', () => {
+            expect(
+                hasBiddingCycleEnded(
+                    [
+                        { status: 'raised', biddingCycleCalled: 30 },
+                        { status: 'called', biddingCycleCalled: 30 },
+                    ],
+                    { toCall: 30 },
+                ),
+            ).toEqual(true);
+        });
+
+        it('should return false if any player is waiting', () => {
+            expect(
+                hasBiddingCycleEnded(
+                    [
+                        { status: 'waiting', biddingCycleCalled: 0 },
+                        { status: 'all-in', biddingCycleCalled: 0 },
+                    ],
+                    { toCall: 10 },
+                ),
+            ).toEqual(false);
+        });
+
+        it('should return false if any player is under to call amount', () => {
+            expect(
+                hasBiddingCycleEnded(
+                    [
+                        { status: 'raised', biddingCycleCalled: 30 },
+                        { status: 'called', biddingCycleCalled: 10 },
+                    ],
+                    { toCall: 30 },
+                ),
+            ).toEqual(false);
         });
     });
 });
