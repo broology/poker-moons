@@ -28,7 +28,7 @@ export class SeatPlayerComponent {
     @Input() immutablePlayer!: ImmutablePublicPlayer | null;
 
     /**
-     * @description The mutable data of the player in this seat
+     * @description The mutable data of the player in this seat.
      */
     @Input() mutablePlayer!: MutablePublicPlayer | null;
 
@@ -36,4 +36,18 @@ export class SeatPlayerComponent {
      * @description True if this player is currently the active seat at the table.
      */
     active = false;
+
+    /**
+     * @description Calculates the players duration.
+     *
+     * The duration only exists for the active seat.
+     */
+    getDuration(): number | null {
+        if (this.active && this.mutablePlayer) {
+            // Time bank + Default turn timer allotment converted into milliseconds.
+            return (this.mutablePlayer.timeBank + 30) * 1000;
+        }
+
+        return null;
+    }
 }

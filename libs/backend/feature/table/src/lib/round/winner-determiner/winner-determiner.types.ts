@@ -21,7 +21,7 @@ export type PlayerWithHand = Pick<Player, 'id' | 'username' | 'roundCalled'> & {
     cards: [Card, Card];
 
     /**
-     * The five cards that make up the player's hand.
+     * @description The five cards that make up the player's hand.
      *
      * Will be null only if the player has won due to everyone else folding.
      */
@@ -30,17 +30,17 @@ export type PlayerWithHand = Pick<Player, 'id' | 'username' | 'roundCalled'> & {
 
 export interface RankHandReponse {
     /**
-     * The player associated with the ranked hand
+     * @description The player associated with the ranked hand.
      */
     player: PlayerWithHand;
 
     /**
-     * The category/rank associated with the hand
+     * @description The category/rank associated with the hand.
      */
     category: HandCategory;
 
     /**
-     * The score associated with the hand
+     * @description The score associated with the hand.
      */
     score: number;
 }

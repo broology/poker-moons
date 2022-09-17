@@ -104,9 +104,7 @@ export const wsReducers: ReducerTypes<ClientTableState, [ActionType<any>]>[] = [
     }),
 
     /**
-     * @description When one or more winners are declared at the end of a round, update the pots of the mutable players.
-     *
-     * Also sets the winners payload in the state so that the results can be displayed.
+     * @description When a winner is declared at the end of a round. Update the the mutable players pot.
      */
     on(tableWsActionMap.winner, (state, { payload }) => {
         const mutablePlayerMap: Record<PlayerId, MutablePublicPlayer> = {};
