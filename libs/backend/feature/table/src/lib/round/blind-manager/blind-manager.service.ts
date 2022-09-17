@@ -46,7 +46,6 @@ export class BlindManagerService {
             if (player.seatId == smallBlindId) {
                 const smallBlindUpdates = {
                     stack: player.stack - this.SMALL_BLIND,
-                    roundCalled: this.SMALL_BLIND,
                     biddingCycleCalled: this.SMALL_BLIND,
                 };
 
@@ -60,7 +59,6 @@ export class BlindManagerService {
             } else if (player.seatId == bigBlindId) {
                 const bigBlindUpdates = {
                     stack: player.stack - this.BIG_BLIND,
-                    roundCalled: this.BIG_BLIND,
                     biddingCycleCalled: this.BIG_BLIND,
                 };
 
