@@ -23,27 +23,39 @@ const Template: Story<ActiveControlsComponent> = (args: ActiveControlsComponent)
 export const primary = Template.bind({});
 primary.args = {
     called: 0,
-    toCall: 100,
+    round: {
+        toCall: 100,
+        smallBlind: 50,
+    },
     stack: 200,
 };
 
 export const checkCase = Template.bind({});
 checkCase.args = {
     called: 100,
-    toCall: 100,
+    round: {
+        toCall: 100,
+        smallBlind: 50,
+    },
     stack: 200,
 };
 
 export const callCase = Template.bind({});
 callCase.args = {
     called: 0,
-    toCall: 100,
+    round: {
+        toCall: 100,
+        smallBlind: 50,
+    },
     stack: 200,
 };
 
 export const onlyAllInCase = Template.bind({});
 onlyAllInCase.args = {
     called: 0,
-    toCall: 100,
+    round: {
+        toCall: 100,
+        smallBlind: 50,
+    },
     stack: 50,
 };
