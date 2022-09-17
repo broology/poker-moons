@@ -37,7 +37,9 @@
         "serve": {
             "executor": "@nrwl/node:node",
             "options": {
-                "buildTarget": "backend:build"
+                "buildTarget": "backend:build",
+                "inspect": true,
+                "port": 9229
             }
         },
         "lint": {

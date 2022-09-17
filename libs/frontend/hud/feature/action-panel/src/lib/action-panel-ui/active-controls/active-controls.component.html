@@ -1,5 +1,5 @@
 <poker-moons-hud-frame>
-    <ng-container *ngIf="toCall < stack; else onlyAllInCase">
+    <ng-container *ngIf="round.toCall < stack; else onlyAllInCase">
         <div class="raise-input">
             <form [formGroup]="raiseFormGroup" (submit)="raise()">
                 <poker-moons-dollar-input
@@ -31,9 +31,9 @@
             </div>
             <div class="action-button-container">
                 <poker-moons-primary-button
-                    [label]="called < toCall ? 'CALL\n' + (toCall | chipCurrency) : 'CHECK'"
+                    [label]="called < round.toCall ? 'CALL\n' + (round.toCall | chipCurrency) : 'CHECK'"
                     color="primary"
-                    (handleClick)="called < toCall ? call() : check()"
+                    (handleClick)="called < round.toCall ? call() : check()"
                 ></poker-moons-primary-button>
             </div>
             <div class="action-button-container">
@@ -49,7 +49,7 @@
     <ng-template #onlyAllInCase>
         <div class="text-section">
             You do <strong>NOT</strong> have enough chips to match the called amount of
-            <strong>{{ toCall | chipCurrency }}</strong>
+            <strong>{{ round.toCall | chipCurrency }}</strong>
         </div>
         <div class="action-button-container">
             <poker-moons-primary-button

@@ -16,6 +16,10 @@ describe('ActiveControlsComponent', () => {
     beforeEach(() => {
         fixture = TestBed.createComponent(ActiveControlsComponent);
         component = fixture.componentInstance;
+        component.round = {
+            toCall: 100,
+            smallBlind: 50,
+        };
         fixture.detectChanges();
     });
 

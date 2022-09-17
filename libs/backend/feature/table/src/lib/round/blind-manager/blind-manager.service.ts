@@ -41,27 +41,35 @@ export class BlindManagerService {
         });
         const smallBlindId = this.getNextSeat(table, table.activeRound.dealerSeat);
         const bigBlindId = this.getNextSeat(table, table.activeRound.dealerSeat + 1);
+
         for (const player of Object.values(table.playerMap)) {
-            let newStack;
             if (player.seatId == smallBlindId) {
-                await this.tableStateManagerService.updateTablePlayer(table.id, player.id, {
+                const smallBlindUpdates = {
                     stack: player.stack - this.SMALL_BLIND,
-                });
-                newStack = player.stack - this.SMALL_BLIND;
+                    roundCalled: this.SMALL_BLIND,
+                    biddingCycleCalled: this.SMALL_BLIND,
+                };
+
+                await this.tableStateManagerService.updateTablePlayer(table.id, player.id, smallBlindUpdates);
+
                 this.tableGatewayService.emitTableEvent(table.id, {
-                    type: 'playerChanged',
+                    ...smallBlindUpdates,
                     id: player.id,
-                    stack: newStack,
+                    type: 'playerChanged',
                 });
             } else if (player.seatId == bigBlindId) {
-                await this.tableStateManagerService.updateTablePlayer(table.id, player.id, {
+                const bigBlindUpdates = {
                     stack: player.stack - this.BIG_BLIND,
-                });
-                newStack = player.stack - this.BIG_BLIND;
+                    roundCalled: this.BIG_BLIND,
+                    biddingCycleCalled: this.BIG_BLIND,
+                };
+
+                await this.tableStateManagerService.updateTablePlayer(table.id, player.id, bigBlindUpdates);
+
                 this.tableGatewayService.emitTableEvent(table.id, {
+                    ...bigBlindUpdates,
                     type: 'playerChanged',
                     id: player.id,
-                    stack: newStack,
                 });
             }
         }

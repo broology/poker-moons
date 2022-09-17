@@ -49,7 +49,7 @@ describe('RaiseActionHandlerService', () => {
 
     describe('canRaise', () => {
         it('should return table, player, and action if valid', async () => {
-            const result = await service.canRaise(table, player, action);
+            const result = service.canRaise(table, player, action);
 
             expect(result).toEqual(right({ table, player, action }));
         });
@@ -57,7 +57,7 @@ describe('RaiseActionHandlerService', () => {
         it('should return PokerMoonsError if it is not the players turn', async () => {
             const table = mockServerTableState({ activeRound: { activeSeat: 2, toCall: 0 } });
 
-            const result = await service.canRaise(table, player, action);
+            const result = service.canRaise(table, player, action);
 
             expect(result).toEqual(left("Not player's turn."));
         });
@@ -65,13 +65,13 @@ describe('RaiseActionHandlerService', () => {
         it('should return PokerMoonsError if stack is less than toCall amount', async () => {
             const table = mockServerTableState({ activeRound: { activeSeat: 1, toCall: 100 } });
 
-            const result = await service.canRaise(table, { ...player, stack: 50 }, action);
+            const result = service.canRaise(table, { ...player, stack: 50 }, action);
 
             expect(result).toEqual(left(`Minimum to raise is 100.`));
         });
 
         it('should return PokerMoonsError if attempting to raise more than available in stack', async () => {
-            const result = await service.canRaise(table, { ...player, stack: 20 }, action);
+            const result = service.canRaise(table, { ...player, stack: 20 }, action);
 
             expect(result).toEqual(left(`Player does not have ${action.amount} in their stack.`));
         });
@@ -81,18 +81,18 @@ describe('RaiseActionHandlerService', () => {
         it('should update player, increment pot, update toCall amount, emit PlayerTurnEvent, and start next turn', async () => {
             await service.raise(right({ table, player, action }));
 
-            const delta = table.activeRound.toCall - player.biddingCycleCalled + action.amount;
+            const delta = player.biddingCycleCalled + action.amount;
 
             expect(tableStateManagerService.updateTablePlayer).toHaveBeenCalledWith(table.id, player.id, {
                 status: 'raised',
-                biddingCycleCalled: table.activeRound.toCall + action.amount,
+                biddingCycleCalled: action.amount,
                 stack: player.stack - delta,
             });
 
             expect(potManagerService.incrementPot).toHaveBeenCalledWith(table.id, table.activeRound.pot, delta);
 
             expect(tableStateManagerService.updateRound).toHaveBeenCalledWith(table.id, {
-                toCall: table.activeRound.toCall + action.amount,
+                toCall: action.amount,
             });
 
             expect(tableGatewayService.emitTableEvent).toHaveBeenCalledWith(table.id, {

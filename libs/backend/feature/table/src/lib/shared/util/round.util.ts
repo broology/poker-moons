@@ -31,6 +31,11 @@ export function isRoundComplete(roundStatus: RoundStatus, playerStatuses: Player
         return true;
     }
 
+    // If everyone is folded then the round is complete.
+    if (countOccurrences(playerStatuses, 'folded') === playerStatuses.length) {
+        return true;
+    }
+
     return false;
 }
 
@@ -119,7 +124,7 @@ export function hasBiddingCycleEnded(
     round: Pick<Round, 'toCall'>,
 ): boolean {
     for (const player of players) {
-        if (player.status !== ('all-in' || 'folded') && player.biddingCycleCalled < round.toCall) {
+        if (player.status !== 'all-in' && player.status !== 'folded' && player.biddingCycleCalled < round.toCall) {
             return false;
         }
     }

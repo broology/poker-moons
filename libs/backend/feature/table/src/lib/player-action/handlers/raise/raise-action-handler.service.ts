@@ -51,12 +51,12 @@ export class RaiseActionHandlerService {
                 throw new InternalServerErrorException('Something went wrong, no active seat is set!');
             }
 
-            const delta = table.activeRound.toCall - player.biddingCycleCalled + action.right.action.amount;
+            const delta = player.biddingCycleCalled + action.right.action.amount;
 
             // Update the player's status, biddingCycleCalled amount, and stack in the server
             await this.tableStateManagerService.updateTablePlayer(table.id, player.id, {
                 status: 'raised',
-                biddingCycleCalled: table.activeRound.toCall + action.right.action.amount,
+                biddingCycleCalled: action.right.action.amount,
                 stack: player.stack - delta,
             });
 
@@ -65,7 +65,7 @@ export class RaiseActionHandlerService {
 
             // Update toCall amount on round
             await this.tableStateManagerService.updateRound(table.id, {
-                toCall: table.activeRound.toCall + action.right.action.amount,
+                toCall: action.right.action.amount,
             });
 
             // Emit the PlayerTurnEvent to the frontend
@@ -112,7 +112,10 @@ export class RaiseActionHandlerService {
         const playerTurn = validatePlayerTurn(table, player, action);
 
         if (isRight(playerTurn))
-            return match([player.stack > table.activeRound.toCall, player.stack > action.amount])
+            return match([
+                action.amount > table.activeRound.toCall,
+                player.stack > action.amount - table.activeRound.toCall,
+            ])
                 .with([false, __.boolean], () => left(`Minimum to raise is ${table.activeRound.toCall}.`))
                 .with([__.boolean, false], () => left(`Player does not have ${action.amount} in their stack.`))
                 .otherwise(() => right({ table, player, action }));

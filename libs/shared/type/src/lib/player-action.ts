@@ -10,6 +10,9 @@ export type FoldPlayerAction = GeneralPlayerAction<'fold'>;
 export type CallPlayerAction = GeneralPlayerAction<'call'>;
 
 export interface RaisePlayerAction extends GeneralPlayerAction<'raise'> {
+    /**
+     * @description This value is replacing the players current raise amount. Not supplying the difference.
+     */
     amount: number;
 }
 

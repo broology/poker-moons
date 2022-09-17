@@ -45,8 +45,23 @@ describe('CheckActionHandlerService', () => {
     const action: PlayerAction = { type: 'check' };
 
     describe('canCheck', () => {
+        it('should return table, player, and action if round to call amount is zero', async () => {
+            const result = service.canCheck(table, player, action);
+
+            expect(result).toEqual(right({ table, player, action }));
+        });
+
+        it('should return table, player, and action if round to call amount is equal to player bidding cycle called', async () => {
+            const tableWithCalled = { ...table, activeRound: { ...table.activeRound, toCall: 10 } };
+            const playerWithCalled = { ...player, biddingCycleCalled: 10 };
+
+            const result = service.canCheck(tableWithCalled, playerWithCalled, action);
+
+            expect(result).toEqual(right({ table: tableWithCalled, player: playerWithCalled, action }));
+        });
+
         it('should return table, player, and action if valid', async () => {
-            const result = await service.canCheck(table, player, action);
+            const result = service.canCheck(table, player, action);
 
             expect(result).toEqual(right({ table, player, action }));
         });
@@ -54,7 +69,7 @@ describe('CheckActionHandlerService', () => {
         it('should return PokerMoonsError if it is not the players turn', async () => {
             const table = mockServerTableState({ activeRound: { activeSeat: 2, toCall: 0 } });
 
-            const result = await service.canCheck(table, player, action);
+            const result = service.canCheck(table, player, action);
 
             expect(result).toEqual(left("Not player's turn."));
         });
@@ -62,7 +77,7 @@ describe('CheckActionHandlerService', () => {
         it('should return PokerMoonsError if attempting to check when there is a toCall amount', async () => {
             const table = mockServerTableState({ activeRound: { activeSeat: 1, toCall: 100 } });
 
-            const result = await service.canCheck(table, player, action);
+            const result = service.canCheck(table, player, action);
 
             expect(result).toEqual(left(`Must bet a minimum of 100.`));
         });

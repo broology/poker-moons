@@ -94,6 +94,7 @@ export const wsReducers: ReducerTypes<ClientTableState, [ActionType<any>]>[] = [
                                   roundCalled: 0,
                                   biddingCycleCalled: 0,
                                   cards: [null, null],
+                                  status: 'waiting',
                               },
                           }),
                           state.mutablePlayerMap,
