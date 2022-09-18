@@ -84,7 +84,7 @@ describe('RaiseActionHandlerService', () => {
         it('should update player, increment pot, update toCall amount, emit PlayerTurnEvent, and start next turn', async () => {
             await service.raise(right({ table, player, action }));
 
-            const delta = player.biddingCycleCalled + action.amount;
+            const delta = action.amount - player.biddingCycleCalled;
 
             expect(tableStateManagerService.updateTablePlayer).toHaveBeenCalledWith(table.id, player.id, {
                 status: 'raised',
