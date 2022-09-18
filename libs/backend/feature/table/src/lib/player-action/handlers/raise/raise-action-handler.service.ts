@@ -51,7 +51,7 @@ export class RaiseActionHandlerService {
                 throw new InternalServerErrorException('Something went wrong, no active seat is set!');
             }
 
-            const delta = player.biddingCycleCalled + action.right.action.amount;
+            const delta = action.right.action.amount - player.biddingCycleCalled;
 
             // Update the player's status, biddingCycleCalled amount, and stack in the server
             await this.tableStateManagerService.updateTablePlayer(table.id, player.id, {
@@ -111,13 +111,15 @@ export class RaiseActionHandlerService {
     ): Either<PokerMoonsError, { table: ServerTableState; player: Player; action: RaisePlayerAction }> {
         const playerTurn = validatePlayerTurn(table, player, action);
 
+        const minRaise = table.activeRound.toCall + table.activeRound.smallBlind * 2;
+        const delta = action.amount - player.biddingCycleCalled;
+
         if (isRight(playerTurn))
-            return match([
-                action.amount > table.activeRound.toCall,
-                player.stack > action.amount - table.activeRound.toCall,
-            ])
-                .with([false, __.boolean], () => left(`Minimum to raise is ${table.activeRound.toCall}.`))
-                .with([__.boolean, false], () => left(`Player does not have ${action.amount} in their stack.`))
+            return match([action.amount >= minRaise, player.stack >= delta])
+                .with([false, __.boolean], () => left(`Minimum to raise is ${minRaise}.`))
+                .with([__.boolean, false], () =>
+                    left(`Player does not have enough chips in their stack. They need at least ${delta} chips.`),
+                )
                 .otherwise(() => right({ table, player, action }));
         return playerTurn;
     }
