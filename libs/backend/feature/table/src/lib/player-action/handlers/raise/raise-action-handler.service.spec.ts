@@ -43,9 +43,10 @@ describe('RaiseActionHandlerService', () => {
         username: 'Levi',
         cards: [mockCard({ suit: 'clubs', rank: '2' }), mockCard({ suit: 'hearts', rank: '3' })],
         biddingCycleCalled: 200,
+        stack: 50,
     });
 
-    const action: PlayerAction = { type: 'raise', amount: 50 };
+    const action: PlayerAction = { type: 'raise', amount: 250 };
 
     describe('canRaise', () => {
         it('should return table, player, and action if valid', async () => {
@@ -63,17 +64,19 @@ describe('RaiseActionHandlerService', () => {
         });
 
         it('should return PokerMoonsError if stack is less than toCall amount', async () => {
-            const table = mockServerTableState({ activeRound: { activeSeat: 1, toCall: 100 } });
+            const table = mockServerTableState({ activeRound: { activeSeat: 1, toCall: 100, smallBlind: 5 } });
 
-            const result = service.canRaise(table, { ...player, stack: 50 }, action);
+            const result = service.canRaise(table, { ...player, stack: 50 }, { ...action, amount: 90 });
 
-            expect(result).toEqual(left(`Minimum to raise is 100.`));
+            expect(result).toEqual(left(`Minimum to raise is 110.`));
         });
 
         it('should return PokerMoonsError if attempting to raise more than available in stack', async () => {
             const result = service.canRaise(table, { ...player, stack: 20 }, action);
 
-            expect(result).toEqual(left(`Player does not have ${action.amount} in their stack.`));
+            expect(result).toEqual(
+                left(`Player does not have enough chips in their stack. They need at least 50 chips.`),
+            );
         });
     });
 
@@ -81,7 +84,7 @@ describe('RaiseActionHandlerService', () => {
         it('should update player, increment pot, update toCall amount, emit PlayerTurnEvent, and start next turn', async () => {
             await service.raise(right({ table, player, action }));
 
-            const delta = player.biddingCycleCalled + action.amount;
+            const delta = action.amount - player.biddingCycleCalled;
 
             expect(tableStateManagerService.updateTablePlayer).toHaveBeenCalledWith(table.id, player.id, {
                 status: 'raised',

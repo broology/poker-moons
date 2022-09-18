@@ -112,12 +112,20 @@ export function hasEveryoneTakenTurn(playerStatuses: PlayerStatus[]): boolean {
 }
 
 /**
+ * @description If all but one player is folded, then they automatically win, thus bidding cycle is over.
+ */
+export function hasEveryoneButOneFolded(playerStatuses: PlayerStatus[]): boolean {
+    if (countOccurrences(playerStatuses, 'folded') === playerStatuses.length - 1) {
+        return true;
+    }
+
+    return false;
+}
+
+/**
  * @description Determining if the bidding cycle has ended.
  *
- * ```
- *          Players must match the rounds `toCall` value unless they are
- *          all in or folded.
- * ```
+ * Players must match the rounds `toCall` value unless they are all in or folded.
  */
 export function hasBiddingCycleEnded(
     players: Pick<Player, 'biddingCycleCalled' | 'status'>[],

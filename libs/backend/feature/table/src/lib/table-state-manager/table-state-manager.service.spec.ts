@@ -57,7 +57,7 @@ describe('TableStateManagerService', () => {
                     roundStatus: 'deal',
                     activeSeat: null,
                     dealerSeat: 0,
-                    smallBlind: 0,
+                    smallBlind: 5,
                     cards: [],
                 },
                 deck: [],

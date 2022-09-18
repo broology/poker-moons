@@ -4,6 +4,7 @@ import { Player, PlayerId, PlayerStatus, Round, SeatId, ServerTableState, TableI
 import { TurnTimerService } from '../../shared/turn-timer/turn-timer.service';
 import {
     hasBiddingCycleEnded,
+    hasEveryoneButOneFolded,
     hasEveryoneTakenTurn,
     incrementRoundStatus,
     incrementSeat,
@@ -56,8 +57,9 @@ export class RoundManagerService {
          * draw a new card for the table, and update the round status
          */
         if (
-            hasEveryoneTakenTurn(playerStatuses) &&
-            hasBiddingCycleEnded(Object.values(table.playerMap), table.activeRound)
+            (hasEveryoneTakenTurn(playerStatuses) &&
+                hasBiddingCycleEnded(Object.values(table.playerMap), table.activeRound)) ||
+            hasEveryoneButOneFolded(playerStatuses)
         ) {
             // if a round a can be auto-completed, which occurs when less than 2 players are actively bidden.
             if (isAutoCompletable(playerStatuses)) {
@@ -175,6 +177,11 @@ export class RoundManagerService {
         // eslint-disable-next-line no-constant-condition
         while (true) {
             table = await this.tableStateManagerService.getTableById(tableId);
+
+            // Don't need to do anything if table is on river
+            if (table.activeRound.roundStatus === 'river') {
+                break;
+            }
 
             // If transitioning from deal -> flop, draw 3 cards, otherwise draw only 1
             if (table.activeRound.roundStatus === 'deal') {

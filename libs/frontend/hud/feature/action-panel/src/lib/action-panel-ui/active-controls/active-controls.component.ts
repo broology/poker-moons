@@ -66,9 +66,13 @@ export class ActiveControlsComponent implements OnInit, OnChanges {
      * wouldn't need to do this.
      */
     ngOnChanges(changes: SimpleChanges): void {
-        const toCall = changes['toCall']?.currentValue;
+        const round: Pick<Round, 'toCall' | 'smallBlind'> | null = changes['round']?.currentValue;
 
-        if (!isNaN(toCall) && toCall !== changes['toCall']?.previousValue) {
+        if (
+            round &&
+            !isNaN(round.toCall) &&
+            round.toCall !== (changes['round']?.previousValue as Pick<Round, 'toCall' | 'smallBlind'> | null)?.toCall
+        ) {
             this.initForm();
         }
     }

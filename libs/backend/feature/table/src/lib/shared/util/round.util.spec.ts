@@ -1,5 +1,6 @@
 import {
     hasBiddingCycleEnded,
+    hasEveryoneButOneFolded,
     hasEveryoneTakenTurn,
     incrementRoundStatus,
     incrementSeat,
@@ -76,6 +77,16 @@ describe('Round Utils', () => {
 
         it('should return false if not everyone has taken their turn', () => {
             expect(hasEveryoneTakenTurn(['raised', 'called', 'waiting'])).toEqual(false);
+        });
+    });
+
+    describe('hasEveryoneButOneFolded', () => {
+        it('should return true if everyone except one player has folded', () => {
+            expect(hasEveryoneButOneFolded(['folded', 'waiting', 'folded'])).toEqual(true);
+        });
+
+        it('should return false if not everyone but one folded', () => {
+            expect(hasEveryoneButOneFolded(['raised', 'called', 'folded'])).toEqual(false);
         });
     });
 
