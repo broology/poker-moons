@@ -1,4 +1,7 @@
+import { mockPlayer } from '@poker-moons/shared/testing';
+import { PlayerStatus } from '@poker-moons/shared/type';
 import {
+    findNextActiveSeatIfExists,
     hasBiddingCycleEnded,
     hasEveryoneButOneFolded,
     hasEveryoneTakenTurn,
@@ -32,6 +35,61 @@ describe('Round Utils', () => {
         it('should return false if none of the above are true', () => {
             expect(isRoundComplete('turn', ['raised', 'called', 'called', 'folded'])).toEqual(false);
         });
+    });
+
+    describe('findNextActiveSeatIfExists', () => {
+        it('should increment seat to next active player', () => {
+            expect(
+                findNextActiveSeatIfExists(
+                    0,
+                    {
+                        seatMap: { 0: 'player_0', 1: 'player_1' },
+                        playerMap: {
+                            player_0: mockPlayer({ id: 'player_0', status: 'called' }),
+                            player_1: mockPlayer({ id: 'player_1', status: 'called' }),
+                        },
+                    },
+                    ['called', 'called'],
+                ),
+            ).toEqual(1);
+        });
+
+        it.each<PlayerStatus>(['all-in', 'folded', 'out'])('should skip a player that is "%s"', (status) => {
+            expect(
+                findNextActiveSeatIfExists(
+                    0,
+                    {
+                        seatMap: { 0: 'player_0', 1: 'player_1', 2: 'player_2' },
+                        playerMap: {
+                            player_0: mockPlayer({ id: 'player_0', status: 'called' }),
+                            player_1: mockPlayer({ id: 'player_1', status }),
+                            player_2: mockPlayer({ id: 'player_2', status: 'called' }),
+                        },
+                    },
+                    ['called', status, 'called'],
+                ),
+            ).toEqual(2);
+        });
+
+        it.each<PlayerStatus>(['all-in', 'folded', 'out'])(
+            'should return null when all players are is "%s"',
+            (status) => {
+                expect(
+                    findNextActiveSeatIfExists(
+                        0,
+                        {
+                            seatMap: { 0: 'player_0', 1: 'player_1', 2: 'player_2' },
+                            playerMap: {
+                                player_0: mockPlayer({ id: 'player_0', status }),
+                                player_1: mockPlayer({ id: 'player_1', status }),
+                                player_2: mockPlayer({ id: 'player_2', status }),
+                            },
+                        },
+                        [status, status, status],
+                    ),
+                ).toEqual(null);
+            },
+        );
     });
 
     describe('incrementSeat', () => {

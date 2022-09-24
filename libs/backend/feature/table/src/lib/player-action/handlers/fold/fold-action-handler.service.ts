@@ -9,7 +9,7 @@ import {
 } from '@poker-moons/shared/type';
 import { Either, isRight, right } from 'fp-ts/lib/Either';
 import { RoundManagerService } from '../../../round/round-manager/round-manager.service';
-import { incrementSeat } from '../../../shared/util/round.util';
+import { findNextActiveSeatIfExists } from '../../../shared/util/round.util';
 import { TableGatewayService } from '../../../shared/websocket/table-gateway.service';
 import { TableStateManagerService } from '../../../table-state-manager/table-state-manager.service';
 import { validatePlayerTurn } from '../util/validate-player-turn';
@@ -50,10 +50,14 @@ export class FoldActionHandlerService {
                 throw new Error('Something went wrong, no active seat is set!');
             }
 
-            await this.tableStateManagerService.updateTablePlayer(table.id, player.id, { status: 'folded' });
+            const playerUpdate: Partial<Player> = { status: 'folded' };
+            await this.tableStateManagerService.updateTablePlayer(table.id, player.id, playerUpdate);
+            table.playerMap[player.id] = { ...player, ...playerUpdate };
+
+            const playerStatuses = Object.values(table.playerMap).map((player) => player.status);
 
             // Emit the PlayerTurnEvent to the frontend
-            const newActiveSeat = incrementSeat(table.activeRound.activeSeat, table.seatMap);
+            const newActiveSeat = findNextActiveSeatIfExists(table.activeRound.activeSeat, table, playerStatuses);
             this.tableGatewayService.emitTableEvent(table.id, {
                 type: 'turn',
                 playerId: player.id,
@@ -61,9 +65,6 @@ export class FoldActionHandlerService {
                 newActiveSeatId: newActiveSeat,
                 bidAmount: 0,
             });
-
-            table.playerMap[player.id] = { ...player, status: 'folded' };
-            const playerStatuses = Object.values(table.playerMap).map((player) => player.status);
 
             return this.roundManagerService.startNextTurn(table, newActiveSeat, playerStatuses);
         } else {
