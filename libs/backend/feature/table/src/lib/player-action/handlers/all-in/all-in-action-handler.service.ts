@@ -10,7 +10,7 @@ import {
 import { Either, isRight, right } from 'fp-ts/lib/Either';
 import { PotManagerService } from '../../../round/pot-manager/pot-manager.service';
 import { RoundManagerService } from '../../../round/round-manager/round-manager.service';
-import { incrementSeat } from '../../../shared/util/round.util';
+import { findNextActiveSeatIfExists } from '../../../shared/util/round.util';
 import { TableGatewayService } from '../../../shared/websocket/table-gateway.service';
 import { TableStateManagerService } from '../../../table-state-manager/table-state-manager.service';
 import { validatePlayerTurn } from '../util/validate-player-turn';
@@ -55,11 +55,15 @@ export class AllInActionHandlerService {
             }
 
             // Update the player's status, biddingCycleCalled amount, and stack in the server
-            await this.tableStateManagerService.updateTablePlayer(table.id, player.id, {
+            const playerUpdate: Partial<Player> = {
                 status: 'all-in',
                 biddingCycleCalled: player.biddingCycleCalled + player.stack,
                 stack: 0,
-            });
+            };
+            await this.tableStateManagerService.updateTablePlayer(table.id, player.id, playerUpdate);
+            table.playerMap[player.id] = { ...player, ...playerUpdate };
+
+            const playerStatuses = Object.values(table.playerMap).map((player) => player.status);
 
             this.logger.debug(`Player ${player.id} updated stack `);
 
@@ -72,7 +76,7 @@ export class AllInActionHandlerService {
             });
 
             // Emit the PlayerTurnEvent to the frontend
-            const newActiveSeat = incrementSeat(table.activeRound.activeSeat, table.seatMap);
+            const newActiveSeat = findNextActiveSeatIfExists(table.activeRound.activeSeat, table, playerStatuses);
             this.tableGatewayService.emitTableEvent(table.id, {
                 type: 'turn',
                 playerId: player.id,
@@ -80,9 +84,6 @@ export class AllInActionHandlerService {
                 newActiveSeatId: newActiveSeat,
                 bidAmount: player.stack,
             });
-
-            table.playerMap[player.id] = { ...player, status: 'all-in' };
-            const playerStatuses = Object.values(table.playerMap).map((player) => player.status);
 
             return this.roundManagerService.startNextTurn(table, newActiveSeat, playerStatuses);
         } else {

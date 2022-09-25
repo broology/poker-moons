@@ -1,4 +1,12 @@
-import type { Player, PlayerId, PlayerStatus, Round, RoundStatus, SeatId } from '@poker-moons/shared/type';
+import type {
+    Player,
+    PlayerId,
+    PlayerStatus,
+    Round,
+    RoundStatus,
+    SeatId,
+    ServerTableState,
+} from '@poker-moons/shared/type';
 
 /**
  * @description Counts the occurrences of a particular player status from an array of statuses.
@@ -57,22 +65,67 @@ export function isAutoCompletable(playerStatuses: PlayerStatus[]): boolean {
 }
 
 /**
+ * @description This function assumes that someone at the table must be active, and must always be paired with
+ * {@link findNextActiveSeatIfExists}. Will iterate through the table, finding the next seat that is not 'all-in',
+ * 'folded' or 'out.
+ *
+ * @param currentSeatId
+ * @param table
+ */
+function nextActiveSeat(currentSeatId: SeatId, table: Pick<ServerTableState, 'playerMap' | 'seatMap'>): SeatId {
+    const nextSeatId = incrementSeat(currentSeatId, table.seatMap);
+
+    const playerId = table.seatMap[nextSeatId];
+
+    if (!playerId) {
+        return nextActiveSeat(nextSeatId, table);
+    }
+
+    const player = table.playerMap[playerId];
+
+    if (player.status === 'all-in' || player.status === 'folded' || player.status === 'out') {
+        return nextActiveSeat(nextSeatId, table);
+    }
+
+    return nextSeatId;
+}
+
+/**
+ * @description Helper function to find the next active seat if it exists.
+ *
+ * If all players are `all-in`, `folded`, or `out`. Then there is no next active seat and it returns null.
+ * Otherwise, it will increment each seat at the table, and check if they are one of the status listed beforehand,
+ * then it will skip to the next player.
+ *
+ * @param currentSeatId
+ * @param table
+ * @param playerStatuses
+ *
+ * @returns Next active seat in the current bidding cycle if it exists.
+ */
+export function findNextActiveSeatIfExists(
+    currentSeatId: SeatId,
+    table: Pick<ServerTableState, 'playerMap' | 'seatMap'>,
+    playerStatuses: PlayerStatus[],
+): SeatId | null {
+    if (
+        playerStatuses.length ===
+        countOccurrences(playerStatuses, 'all-in') +
+            countOccurrences(playerStatuses, 'folded') +
+            countOccurrences(playerStatuses, 'out')
+    ) {
+        return null;
+    }
+
+    return nextActiveSeat(currentSeatId, table);
+}
+
+/**
  * @description A recursive function that, provided the current seat and seat map, returns the next seat in
  * sequence that has a player associated with it.
  */
 export function incrementSeat(seat: SeatId, seatMap: Partial<Record<SeatId, PlayerId>>): SeatId {
-    if (seat === 5) {
-        const nextSeat = 0;
-        const nextPlayer = seatMap[nextSeat];
-
-        if (nextPlayer) {
-            return nextSeat;
-        } else {
-            return incrementSeat(nextSeat, seatMap);
-        }
-    }
-
-    const nextSeat = (seat + 1) as SeatId;
+    const nextSeat = ((seat + 1) % 6) as SeatId;
     const nextPlayer = seatMap[nextSeat];
 
     if (nextPlayer) {

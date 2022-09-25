@@ -46,7 +46,7 @@ export class RoundManagerService {
      */
     async startNextTurn(
         table: ServerTableState,
-        nextActiveSeat: SeatId,
+        nextActiveSeat: SeatId | null,
         playerStatuses: PlayerStatus[],
     ): Promise<void> {
         // Re-fetch table, because race condition with player service
@@ -135,7 +135,7 @@ export class RoundManagerService {
                 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                 currentPlayerId: table.seatMap[table.activeRound.activeSeat!]!,
                 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                nextPlayerId: table.seatMap[nextActiveSeat]!,
+                nextPlayerId: table.seatMap[nextActiveSeat!]!,
             }),
         ]);
     }
@@ -151,7 +151,7 @@ export class RoundManagerService {
     async autoCompleteRound(
         tableId: TableId,
         playerMap: Record<PlayerId, Player>,
-        nextActiveSeat: SeatId,
+        nextActiveSeat: SeatId | null,
     ): Promise<void> {
         const updatedPlayerMap: Record<PlayerId, Player> = {};
 

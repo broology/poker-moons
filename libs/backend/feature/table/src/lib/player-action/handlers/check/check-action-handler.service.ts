@@ -10,7 +10,7 @@ import {
 import { Either, isRight, left, right } from 'fp-ts/lib/Either';
 import { match } from 'ts-pattern';
 import { RoundManagerService } from '../../../round/round-manager/round-manager.service';
-import { incrementSeat } from '../../../shared/util/round.util';
+import { findNextActiveSeatIfExists } from '../../../shared/util/round.util';
 import { TableGatewayService } from '../../../shared/websocket/table-gateway.service';
 import { TableStateManagerService } from '../../../table-state-manager/table-state-manager.service';
 import { validatePlayerTurn } from '../util/validate-player-turn';
@@ -51,10 +51,14 @@ export class CheckActionHandlerService {
             }
 
             // Update the player's status in the server
-            await this.tableStateManagerService.updateTablePlayer(table.id, player.id, { status: 'checked' });
+            const playerUpdate: Partial<Player> = { status: 'checked' };
+            await this.tableStateManagerService.updateTablePlayer(table.id, player.id, playerUpdate);
+            table.playerMap[player.id] = { ...player, ...playerUpdate };
+
+            const playerStatuses = Object.values(table.playerMap).map((player) => player.status);
 
             // Emit the PlayerTurnEvent to the frontend
-            const newActiveSeat = incrementSeat(table.activeRound.activeSeat, table.seatMap);
+            const newActiveSeat = findNextActiveSeatIfExists(table.activeRound.activeSeat, table, playerStatuses);
             this.tableGatewayService.emitTableEvent(table.id, {
                 type: 'turn',
                 playerId: player.id,
@@ -62,9 +66,6 @@ export class CheckActionHandlerService {
                 newActiveSeatId: newActiveSeat,
                 bidAmount: 0,
             });
-
-            table.playerMap[player.id] = { ...player, status: 'checked' };
-            const playerStatuses = Object.values(table.playerMap).map((player) => player.status);
 
             return this.roundManagerService.startNextTurn(table, newActiveSeat, playerStatuses);
         } else {

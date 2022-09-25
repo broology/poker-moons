@@ -62,7 +62,7 @@ export interface PlayerTurnEvent extends GeneralTableEvent<'turn'> {
     /**
      * @description The new active seat after this turn.
      */
-    newActiveSeatId: SeatId;
+    newActiveSeatId: SeatId | null;
 }
 
 export interface WinnerWinnerChickenDinnerEvent extends GeneralTableEvent<'winner'> {

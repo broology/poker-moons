@@ -11,7 +11,7 @@ import { Either, isRight, left, right } from 'fp-ts/lib/Either';
 import { match } from 'ts-pattern';
 import { PotManagerService } from '../../../round/pot-manager/pot-manager.service';
 import { RoundManagerService } from '../../../round/round-manager/round-manager.service';
-import { incrementSeat } from '../../../shared/util/round.util';
+import { findNextActiveSeatIfExists } from '../../../shared/util/round.util';
 import { TableGatewayService } from '../../../shared/websocket/table-gateway.service';
 import { TableStateManagerService } from '../../../table-state-manager/table-state-manager.service';
 import { validatePlayerTurn } from '../util/validate-player-turn';
@@ -56,17 +56,21 @@ export class CallActionHandlerService {
             const newStatus = delta < player.stack ? 'called' : 'all-in';
 
             // Update the player's status, biddingCycleCalled amount, and stack in the server
-            await this.tableStateManagerService.updateTablePlayer(table.id, player.id, {
+            const playerUpdate: Partial<Player> = {
                 status: newStatus,
                 biddingCycleCalled: table.activeRound.toCall,
                 stack: player.stack - delta,
-            });
+            };
+            await this.tableStateManagerService.updateTablePlayer(table.id, player.id, playerUpdate);
+            table.playerMap[player.id] = { ...player, ...playerUpdate };
+
+            const playerStatuses = Object.values(table.playerMap).map((player) => player.status);
 
             // Increment the pot
             await this.potManagerService.incrementPot(table.id, table.activeRound.pot, delta);
 
             // Emit the PlayerTurnEvent to the frontend
-            const newActiveSeat = incrementSeat(table.activeRound.activeSeat, table.seatMap);
+            const newActiveSeat = findNextActiveSeatIfExists(table.activeRound.activeSeat, table, playerStatuses);
             this.tableGatewayService.emitTableEvent(table.id, {
                 type: 'turn',
                 playerId: player.id,
@@ -74,9 +78,6 @@ export class CallActionHandlerService {
                 newActiveSeatId: newActiveSeat,
                 bidAmount: delta,
             });
-
-            table.playerMap[player.id] = { ...player, status: 'called' };
-            const playerStatuses = Object.values(table.playerMap).map((player) => player.status);
 
             return this.roundManagerService.startNextTurn(table, newActiveSeat, playerStatuses);
         } else {
