@@ -1,5 +1,5 @@
 <div class="root" *rxLet="displayTime$ as t">
-    <svg class="moon" [ngClass]="[getColorClass()]" viewBox="0 0 100 100">
+    <svg class="moon" [ngClass]="[getColorClass(), running ? 'active' : 'inactive']" viewBox="0 0 100 100">
         <path class="cycle" [attr.d]="getPath()" />
     </svg>
     <div class="timer-ctn" *ngIf="running">
