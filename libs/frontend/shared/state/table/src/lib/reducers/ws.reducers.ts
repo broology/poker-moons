@@ -100,7 +100,7 @@ export const wsReducers: ReducerTypes<ClientTableState, [ActionType<any>]>[] = [
                           state.mutablePlayerMap,
                       )
                     : state.mutablePlayerMap,
-            winners: {},
+            winners: payload.roundStatus === 'deal' ? {} : state.winners,
         };
     }),
 

@@ -9,7 +9,7 @@ import {
     TableStatus,
 } from '@poker-moons/shared/type';
 
-type ActionPanelDisplayView = 'active' | 'in-active' | 'lobby' | 'spectator';
+type ActionPanelDisplayView = 'active' | 'in-active' | 'lobby' | 'spectator' | 'hidden';
 
 @Component({
     selector: 'poker-moons-action-panel-ui',
@@ -52,6 +52,10 @@ export class ActionPanelUiComponent {
 
         if (this.tableStatus === 'lobby') {
             return 'lobby';
+        }
+
+        if (this.round.activeSeat === null) {
+            return 'hidden';
         }
 
         return 'in-active';

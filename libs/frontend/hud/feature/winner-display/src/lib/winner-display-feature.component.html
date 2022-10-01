@@ -1,1 +1,5 @@
-<poker-moons-winner-display-ui [winners]="winners$ | push"></poker-moons-winner-display-ui>
+<poker-moons-winner-display-ui
+    [open]="open$ | push"
+    [title]="title$ | push"
+    [message]="message$ | push"
+></poker-moons-winner-display-ui>
