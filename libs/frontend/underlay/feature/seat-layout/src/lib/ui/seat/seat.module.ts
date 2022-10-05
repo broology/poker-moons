@@ -11,8 +11,12 @@ export const seatModuleImports = [
 ];
 
 @NgModule({
-    imports: seatModuleImports,
+    imports: [
+        seatModuleImports,
+        PushModule,
+    ],
     declarations: [SeatComponent],
     exports: [SeatComponent],
 })
-export class SeatModule {}
+export class SeatModule {
+}
