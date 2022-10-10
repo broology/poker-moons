@@ -305,6 +305,9 @@ export class RoundManagerService {
 
         const updatedPlayerMap = table.playerMap;
 
+        // Determine and emit winner of round and update player's stacks
+        await this.winnerDeterminerService.determineWinner(table.id, updatedPlayerMap, table.activeRound);
+
         // Reset players to waiting at the end of the round
         for (const player of Object.values(table.playerMap)) {
             updatedPlayerMap[player.id] = {
@@ -314,9 +317,6 @@ export class RoundManagerService {
         }
 
         await this.tableStateManagerService.updateTable(table.id, { playerMap: updatedPlayerMap });
-
-        // Determine and emit winner of round and update player's stacks
-        await this.winnerDeterminerService.determineWinner(table.id, updatedPlayerMap, table.activeRound);
 
         // Determine if the game can continue (i.e. two or more players still have chips)
         const playerStacks = Object.values(table.playerMap).map((player) => player.stack);
