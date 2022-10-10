@@ -34,7 +34,7 @@ export class WinnerDeterminerService {
                 throw new BadRequestException(playerMissingCards(player.id));
             }
 
-            if (player.status !== 'folded') {
+            if (player.status !== 'folded' && player.status !== 'out') {
                 playersWithHand.push({
                     id: player.id,
                     username: player.username,
