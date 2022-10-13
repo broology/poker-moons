@@ -12,6 +12,8 @@ export class ActionPanelFeatureComponent {
 
     readonly clientImmutablePlayer$ = this.tableStateFacade.selectClientImmutablePlayer();
 
+    readonly loaders$ = this.tableStateFacade.selectLoaders();
+
     readonly round$ = this.tableStateFacade.selectRound();
 
     readonly tableId$ = this.tableStateFacade.selectTableId();

@@ -1,9 +1,10 @@
 import { on, ReducerTypes } from '@ngrx/store';
-import { ClientTableState, MutablePublicPlayer, PlayerId } from '@poker-moons/shared/type';
+import { MutablePublicPlayer, PlayerId } from '@poker-moons/shared/type';
 import { connectToWs, tableWsActionMap } from '../actions/ws.actions';
 import { ActionType } from '../shared/util/action-util';
+import { TableState } from '../table.state';
 
-export const wsReducers: ReducerTypes<ClientTableState, [ActionType<any>]>[] = [
+export const wsReducers: ReducerTypes<TableState, [ActionType<any>]>[] = [
     on(connectToWs.success, (state, { payload }) => ({ ...state, ...payload })),
 
     /**

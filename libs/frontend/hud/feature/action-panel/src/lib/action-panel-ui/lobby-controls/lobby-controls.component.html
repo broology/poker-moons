@@ -20,6 +20,7 @@
     <div class="action-section">
         <poker-moons-primary-button
             [color]="ready ? 'error' : 'primary'"
+            [disabled]="readyLoading"
             [label]="ready ? 'Leave' : 'Ready'"
             (handleClick)="toggleReadyStatus()"
         ></poker-moons-primary-button>

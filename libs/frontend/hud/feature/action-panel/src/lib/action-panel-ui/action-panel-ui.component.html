@@ -1,6 +1,7 @@
 <div class="action-panel" [ngSwitch]="displayView">
     <poker-moons-active-controls
         *ngSwitchCase="'active'"
+        [actionLoading]="loaders.performAction"
         [called]="clientMutablePlayer!.biddingCycleCalled"
         [stack]="clientMutablePlayer!.stack"
         [round]="round"
@@ -10,12 +11,14 @@
     <poker-moons-lobby-controls
         *ngSwitchCase="'lobby'"
         [ready]="clientMutablePlayer!.ready"
+        [readyLoading]="loaders.toggleReadyStatus"
         [startDate]="tableStartDate"
         [tableId]="tableId"
         (toggleReadyStatusEmitter)="toggleReadyStatusEmitter.emit()"
     ></poker-moons-lobby-controls>
     <poker-moons-spectator-controls
         *ngSwitchCase="'spectator'"
+        [joinLoading]="loaders.join"
         [tableStatus]="tableStatus"
         (joinTableEmitter)="joinTableEmitter.emit($event)"
     ></poker-moons-spectator-controls>

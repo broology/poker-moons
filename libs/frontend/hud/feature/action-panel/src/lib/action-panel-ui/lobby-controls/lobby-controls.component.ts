@@ -21,8 +21,12 @@ export class LobbyControlsComponent {
     /**
      * @description Whether the client player has readied them selfs or not.
      */
-    @Input()
-    ready!: boolean;
+    @Input() ready!: boolean;
+
+    /**
+     * @description Whether the client has clicked the toggle action and is currently loading.
+     */
+    @Input() readyLoading!: boolean;
 
     /**
      * @description If all players are ready, this is the date at which the game will start in UTC. Otherwise, is null.

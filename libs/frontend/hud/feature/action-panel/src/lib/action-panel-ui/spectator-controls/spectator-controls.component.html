@@ -1,5 +1,5 @@
 <form *ngIf="tableStatus === 'lobby'; else started" [formGroup]="spectatorForm" (submit)="join()">
-    <poker-moons-dialog [copy]="dialogCopy" (primary)="join()">
+    <poker-moons-dialog [copy]="dialogCopy" [loading]="joinLoading" (primary)="join()">
         <poker-moons-text-input
             placeholder="Username"
             [autofocus]="true"

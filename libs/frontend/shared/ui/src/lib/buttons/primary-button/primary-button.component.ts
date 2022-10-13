@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @angular-eslint/no-empty-lifecycle-method */
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { ButtonColors } from './primary-button.type';
 
@@ -9,7 +9,8 @@ import { ButtonColors } from './primary-button.type';
     templateUrl: './primary-button.component.html',
     styleUrls: ['./primary-button.component.scss'],
 })
-export class PrimaryButtonComponent implements OnInit {
+export class PrimaryButtonComponent {
+    @Input() disabled = false;
     @Input() label?: string;
     @Input() color?: ButtonColors;
     @Input() startIcon?: IconProp;
@@ -19,8 +20,6 @@ export class PrimaryButtonComponent implements OnInit {
     constructor() {
         this.color = 'primary';
     }
-
-    ngOnInit(): void {}
 
     getColorClass() {
         return this.color;

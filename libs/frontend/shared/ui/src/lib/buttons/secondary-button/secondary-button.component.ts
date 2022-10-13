@@ -10,6 +10,7 @@ import { ButtonColors } from './secondary-button.type';
     styleUrls: ['./secondary-button.component.scss'],
 })
 export class SecondaryButtonComponent implements OnInit {
+    @Input() disabled = false;
     @Input() label?: string;
     @Input() color?: ButtonColors;
     @Input() startIcon?: IconProp;

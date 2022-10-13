@@ -37,6 +37,11 @@ export class ActiveControlsComponent implements OnInit, OnChanges {
     @Input() round!: Pick<Round, 'toCall' | 'smallBlind'>;
 
     /**
+     * @description The user has clicked an action and it is currently loading.
+     */
+    @Input() actionLoading!: boolean;
+
+    /**
      * @description Action emission event that is sent to table state.
      */
     @Output() readonly playerActionEmitter = new EventEmitter<PlayerAction>();

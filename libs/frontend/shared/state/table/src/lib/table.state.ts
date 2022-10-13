@@ -3,10 +3,18 @@ import { ClientTableState } from '@poker-moons/shared/type';
 import { apiReducers } from './reducers/api.reducers';
 import { authReducers } from './reducers/auth.reducers';
 import { wsReducers } from './reducers/ws.reducers';
+import { PlayerApiService } from './shared/data-access/player-api.service';
 
 export const TABLE_STATE = 'tableState';
 
-export const initialState: ClientTableState = {
+/**
+ * @description Enforces a loading state for each method in the player api service.
+ */
+export type ApiLoaderStates = Record<keyof PlayerApiService, boolean>;
+
+export type TableState = ClientTableState & { loaders: ApiLoaderStates };
+
+export const initialState: TableState = {
     immutablePlayerMap: {},
     mutablePlayerMap: {},
     seatMap: {},
@@ -26,11 +34,18 @@ export const initialState: ClientTableState = {
     startDate: null,
     status: 'lobby',
     winners: {},
+    loaders: {
+        join: false,
+        leave: false,
+        toggleReadyStatus: false,
+        performAction: false,
+        getCards: false,
+    },
 };
 
 export const storeFeature = createFeature({
     name: TABLE_STATE,
-    reducer: createReducer<ClientTableState>(initialState, ...[...wsReducers, ...apiReducers, ...authReducers]),
+    reducer: createReducer<TableState>(initialState, ...[...wsReducers, ...apiReducers, ...authReducers]),
 });
 
 export const {
@@ -43,4 +58,5 @@ export const {
     selectStartDate,
     selectStatus,
     selectWinners,
+    selectLoaders,
 } = storeFeature;
