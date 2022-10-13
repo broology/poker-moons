@@ -318,14 +318,23 @@ export class RoundManagerService {
 
         await this.tableStateManagerService.updateTable(table.id, { playerMap: updatedPlayerMap });
 
+        // Re-fetch table with updated stacks
+        table = await this.tableStateManagerService.getTableById(table.id);
+
         // Determine if the game can continue (i.e. two or more players still have chips)
         const playerStacks = Object.values(table.playerMap).map((player) => player.stack);
         const numPlayersWithNoChipsLeft = playerStacks.reduce((index, value) => (value === 0 ? index + 1 : index), 0);
 
+        // Set active seat to null, signifying that its no longer anyone's turn until the next round starts.
+        await this.tableStateManagerService.updateRound(table.id, { activeSeat: null });
+        this.tableGatewayService.emitTableEvent(table.id, {
+            type: 'roundChanged',
+            activeSeat: null,
+        });
+
         if (numPlayersWithNoChipsLeft === playerStacks.length - 1) {
             // If only one player has chips left in their stack, update the table status to 'ended'
             await this.tableStateManagerService.updateTable(table.id, { status: 'ended' });
-
             this.tableGatewayService.emitTableEvent(table.id, {
                 type: 'tableStatusChanged',
                 status: 'ended',

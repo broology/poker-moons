@@ -40,7 +40,7 @@
 }
 
 .dialog h2 {
-    @include t.body1;
+    @include t.h6;
 
     font-style: italic;
     text-align: center;
@@ -49,6 +49,8 @@
 }
 
 .dialog-content {
+    @include t.body1;
+
     display: flex;
     align-items: center;
     justify-content: center;

@@ -1,6 +1,4 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { DialogCopy } from '@poker-moons/frontend/shared/ui';
-import { WinnerMap } from '@poker-moons/shared/type';
 
 @Component({
     selector: 'poker-moons-winner-display-ui',
@@ -9,9 +7,18 @@ import { WinnerMap } from '@poker-moons/shared/type';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WinnerDisplayUiComponent {
-    @Input() winners!: WinnerMap;
+    /**
+     * @description Whether the winner display should be displayed or not.
+     */
+    @Input() open!: boolean;
 
-    readonly dialogCopy: DialogCopy = {
-        title: 'Winner(s)',
-    };
+    /**
+     * @description The title of the winner display.
+     */
+    @Input() title!: string;
+
+    /**
+     * @description The message to describing the winner(s).
+     */
+    @Input() message!: string;
 }

@@ -1,5 +1,4 @@
 import { MockNgEnvironment } from '@poker-moons/frontend/shared/util/environment';
-import { mockCard } from '@poker-moons/shared/testing';
 import { Meta, moduleMetadata, Story } from '@storybook/angular';
 import { WinnerDisplayUiComponent } from './winner-display-ui.component';
 import { winnerDisplayUiImports } from './winner-display-ui.module';
@@ -20,34 +19,16 @@ const Template: Story<WinnerDisplayUiComponent> = (args: WinnerDisplayUiComponen
     props: args,
 });
 
-export const noWinners = Template.bind({});
-noWinners.args = {
-    winners: {},
+export const closed = Template.bind({});
+closed.args = {
+    open: false,
+    title: 'Title',
+    message: 'Message',
 };
 
-export const singleWinner = Template.bind({});
-singleWinner.args = {
-    winners: {
-        ['player_1']: {
-            displayText: 'Player 1 won $100 with a full house.',
-            amountWon: 100,
-            cards: [mockCard(), mockCard()],
-        },
-    },
-};
-
-export const multipleWinners = Template.bind({});
-multipleWinners.args = {
-    winners: {
-        ['player_1']: {
-            displayText: 'Player 1 won $50 with a pair.',
-            amountWon: 50,
-            cards: [mockCard(), mockCard()],
-        },
-        ['player_2']: {
-            displayText: 'Player 2 won $50 with a pair.',
-            amountWon: 50,
-            cards: [mockCard(), mockCard()],
-        },
-    },
+export const open = Template.bind({});
+open.args = {
+    open: true,
+    title: 'Title',
+    message: 'Message',
 };
