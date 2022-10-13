@@ -29,18 +29,19 @@ export class WinnerDisplayFeatureComponent {
                 return 'Winner winner chicken dinner!';
             }
 
-            const numberOfWinners = Object.values(winners).length;
+            const list = Object.values(winners);
 
             // Should never happen, but until the winner determinator gets fixed it does happen sometimes
-            if (numberOfWinners === 0) {
+            if (list.length === 0) {
                 return 'Apparently we have no winners, that means no losers!!!';
             }
 
-            if (numberOfWinners === 1) {
-                return 'Round has finished.';
+            // When multiple winners with all the same amount.
+            if (list.every((winner) => winner?.amountWon === list[0]?.amountWon)) {
+                return `We have a multi-way tie!`;
             }
 
-            return `We have a multi-way tie!`;
+            return 'Round has finished.';
         }),
     );
 
