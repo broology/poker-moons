@@ -17,7 +17,8 @@ export class WinnerDeterminerService {
     ) {}
 
     /**
-     * @description Determines the winner at the end of a round of poker.
+     * @description Determines the winner at the end of a round of poker. Also displaying the players in
+     * contentions card's who are in play if there are more than one.
      *
      * @param tableId - The table the round is taking place on.
      * @param playerMap - A map of the players in the current round.
@@ -47,6 +48,8 @@ export class WinnerDeterminerService {
                 });
             }
         }
+
+        this.showCardsIfApplicable(tableId, playersWithHand);
 
         const winnerMap = await this.buildWinnerMap(tableId, playerMap, playersWithHand);
 
@@ -168,5 +171,26 @@ export class WinnerDeterminerService {
         }
 
         return winnerMap;
+    }
+
+    /**
+     * @description Shows all players card's that are contended at the table. Only if there are at least two
+     * players in contention.
+     *
+     * @param tableId
+     * @param playersWithHand
+     */
+    private showCardsIfApplicable(tableId: TableId, playersWithHand: PlayerWithHand[]): void {
+        if (playersWithHand.length < 2) {
+            return;
+        }
+
+        for (const { id, cards } of playersWithHand) {
+            this.tableGatewayService.emitTableEvent(tableId, {
+                type: 'playerChanged',
+                id,
+                cards,
+            });
+        }
     }
 }

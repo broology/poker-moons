@@ -163,6 +163,59 @@ describe('WinnerDeterminerService', () => {
             });
         });
 
+        it('should not display cards if only single player in contention', async () => {
+            potManagerService.buildPot.mockReturnValueOnce(1600).mockReturnValueOnce(600).mockReturnValueOnce(0);
+            potManagerService.splitPot.mockReturnValueOnce(1000).mockReturnValueOnce(600);
+
+            await service.determineWinner(
+                tableId,
+                {
+                    [player1.id]: { ...player1, status: 'folded' },
+                    [player2.id]: { ...player2, status: 'folded' },
+                    [player3.id]: { ...player3, roundCalled: 200 },
+                    [player4.id]: { ...player4, status: 'folded' },
+                    [player5.id]: { ...player5, status: 'folded' },
+                },
+                round,
+            );
+
+            expect(tableGatewayService.emitTableEvent).not.toHaveBeenCalledWith(
+                tableId,
+                expect.objectContaining({
+                    type: 'playerChanged',
+                    id: player3.id,
+                }),
+            );
+        });
+
+        it('should display cards at least 2 players are in contention', async () => {
+            potManagerService.buildPot.mockReturnValueOnce(1600).mockReturnValueOnce(600).mockReturnValueOnce(0);
+            potManagerService.splitPot.mockReturnValueOnce(1000).mockReturnValueOnce(600);
+
+            await service.determineWinner(
+                tableId,
+                {
+                    [player1.id]: { ...player1, status: 'folded' },
+                    [player2.id]: { ...player2, status: 'folded' },
+                    [player3.id]: { ...player3, roundCalled: 200 },
+                    [player4.id]: { ...player4, roundCalled: 200 },
+                    [player5.id]: { ...player5, status: 'folded' },
+                },
+                round,
+            );
+
+            expect(tableGatewayService.emitTableEvent).toHaveBeenCalledWith(tableId, {
+                type: 'playerChanged',
+                id: player3.id,
+                cards: player3.cards,
+            });
+            expect(tableGatewayService.emitTableEvent).toHaveBeenCalledWith(tableId, {
+                type: 'playerChanged',
+                id: player4.id,
+                cards: player4.cards,
+            });
+        });
+
         it('should throw bad request exception if any player does not have 2 cards', async () => {
             const invalidPlayer = mockPlayer({
                 id: 'player_1',
