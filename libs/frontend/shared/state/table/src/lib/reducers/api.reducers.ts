@@ -1,9 +1,9 @@
 import { on, ReducerTypes } from '@ngrx/store';
-import { ClientTableState } from '@poker-moons/shared/type';
-import { getCards, joinTable, leaveTable } from '../actions/api.actions';
-import { ActionType } from '../shared/util/action-util';
+import { getCards, joinTable, leaveTable, performTableAction, toggleReadyStatus } from '../actions/api.actions';
+import { ActionType, buildAsyncRequestLoaderReducers } from '../shared/util/action-util';
+import { TableState } from '../table.state';
 
-export const apiReducers: ReducerTypes<ClientTableState, [ActionType<any>]>[] = [
+export const apiReducers: ReducerTypes<TableState, [ActionType<any>]>[] = [
     on(joinTable.success, (state, { payload }) => ({
         ...state,
         playerId: payload.id,
@@ -15,11 +15,6 @@ export const apiReducers: ReducerTypes<ClientTableState, [ActionType<any>]>[] = 
         playerId: payload.id,
         cards: [],
     })),
-
-    // Does nothing currently
-    //on(preformTableAction.success, (state, { payload }) => state),
-    //on(toggleReadyStatus.success, (state, { payload }) => state),
-
     on(getCards.success, (state, { payload: { playerId, cards } }) => ({
         ...state,
         mutablePlayerMap: {
@@ -30,4 +25,11 @@ export const apiReducers: ReducerTypes<ClientTableState, [ActionType<any>]>[] = 
             },
         },
     })),
+
+    // Loader Reducers
+    ...buildAsyncRequestLoaderReducers(joinTable, 'join'),
+    ...buildAsyncRequestLoaderReducers(leaveTable, 'leave'),
+    ...buildAsyncRequestLoaderReducers(toggleReadyStatus, 'toggleReadyStatus'),
+    ...buildAsyncRequestLoaderReducers(getCards, 'getCards'),
+    ...buildAsyncRequestLoaderReducers(performTableAction, 'performAction'),
 ];

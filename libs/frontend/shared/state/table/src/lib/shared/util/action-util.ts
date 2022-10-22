@@ -1,5 +1,6 @@
-import { ActionCreator, createAction, props } from '@ngrx/store';
+import { ActionCreator, createAction, on, props } from '@ngrx/store';
 import { TypedAction } from '@ngrx/store/src/models';
+import { ApiLoaderStates, TableState } from '../../table.state';
 
 export type ActionType<T> = ActionCreator<string, (props: { payload: T }) => { payload: T } & TypedAction<string>>;
 
@@ -29,4 +30,43 @@ export function buildAsyncRequestActions<Request, SuccessResponse, ErrorResponse
         success: createActionType(`${description} - success`),
         failure: createActionType(`${description} - failed`),
     };
+}
+
+/**
+ * @description Function to build the loader reducers for the given async requests build via {@link buildAsyncRequestActions}.
+ *
+ * This will update the table state loading values automatically when the actions are performed.
+ *
+ * @param request - The async request to create the loader reducer for.
+ * @param loader - The specific loader value to update for this request.
+ *
+ * @returns
+ */
+export function buildAsyncRequestLoaderReducers<Request, SuccessResponse, ErrorResponse>(
+    request: AsyncRequestActions<Request, SuccessResponse, ErrorResponse>,
+    loader: keyof ApiLoaderStates,
+) {
+    return [
+        on<TableState, [ActionType<Request>]>(request.request, (state) => ({
+            ...state,
+            loaders: {
+                ...state.loaders,
+                [loader]: true,
+            },
+        })),
+        on<TableState, [ActionType<SuccessResponse>]>(request.success, (state) => ({
+            ...state,
+            loaders: {
+                ...state.loaders,
+                [loader]: false,
+            },
+        })),
+        on<TableState, [ActionType<ErrorResponse>]>(request.failure, (state) => ({
+            ...state,
+            loaders: {
+                ...state.loaders,
+                [loader]: false,
+            },
+        })),
+    ];
 }

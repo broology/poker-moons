@@ -49,6 +49,11 @@ export class DialogComponent {
     @Input() copy!: DialogCopy;
 
     /**
+     * @description Whether or not the action being click on the dialog is loading.
+     */
+    @Input() loading!: boolean;
+
+    /**
      * @description The event emitter that emits events when the primary button is clicked.
      */
     @Output() primary = new EventEmitter<void>();

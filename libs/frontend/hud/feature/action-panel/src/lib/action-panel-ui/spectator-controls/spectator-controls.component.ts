@@ -18,6 +18,8 @@ export class SpectatorControlsComponent implements OnInit {
 
     @Input() tableStatus!: TableStatus;
 
+    @Input() joinLoading!: boolean;
+
     @Output() joinTableEmitter: EventEmitter<JoinTableRequest>;
 
     error?: string;

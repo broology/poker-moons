@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ApiLoaderStates } from '@poker-moons/frontend/shared/state/table';
 import {
     ImmutablePublicPlayer,
     JoinTableRequest,
@@ -21,6 +22,8 @@ export class ActionPanelUiComponent {
     @Input() clientImmutablePlayer!: ImmutablePublicPlayer | null;
 
     @Input() clientMutablePlayer!: MutablePublicPlayer | null;
+
+    @Input() loaders!: ApiLoaderStates;
 
     @Input() round!: Round;
 

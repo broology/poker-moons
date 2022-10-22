@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { initialState } from '@poker-moons/frontend/shared/state/table';
 import { ActionPanelUiComponent } from './action-panel-ui.component';
 import { actionPanelUiImports } from './action-panel-ui.module';
 
@@ -16,6 +17,7 @@ describe('ActionPanelUiComponent', () => {
     beforeEach(() => {
         fixture = TestBed.createComponent(ActionPanelUiComponent);
         component = fixture.componentInstance;
+        component.loaders = initialState.loaders;
         fixture.detectChanges();
     });
 

@@ -20,6 +20,7 @@
         <ng-container *rxLet="currentRaiseAmount$ as raiseValue">
             <div class="action-button-container">
                 <poker-moons-primary-button
+                    [disabled]="actionLoading"
                     [label]="
                         raiseValue === stack
                             ? 'ALL IN\n' + (stack | chipCurrency)
@@ -31,6 +32,7 @@
             </div>
             <div class="action-button-container">
                 <poker-moons-primary-button
+                    [disabled]="actionLoading"
                     [label]="called < round.toCall ? 'CALL\n' + (round.toCall | chipCurrency) : 'CHECK'"
                     color="primary"
                     (handleClick)="called < round.toCall ? call() : check()"
@@ -38,6 +40,7 @@
             </div>
             <div class="action-button-container">
                 <poker-moons-primary-button
+                    [disabled]="actionLoading"
                     [label]="'FOLD\n'"
                     color="error"
                     (handleClick)="fold()"
@@ -53,13 +56,19 @@
         </div>
         <div class="action-button-container">
             <poker-moons-primary-button
+                [disabled]="actionLoading"
                 label="ALL IN"
                 color="primary"
                 (handleClick)="allIn()"
             ></poker-moons-primary-button>
         </div>
         <div class="action-button-container">
-            <poker-moons-primary-button label="FOLD" color="error" (handleClick)="fold()"></poker-moons-primary-button>
+            <poker-moons-primary-button
+                [disabled]="actionLoading"
+                label="FOLD"
+                color="error"
+                (handleClick)="fold()"
+            ></poker-moons-primary-button>
         </div>
     </ng-template>
 </poker-moons-hud-frame>
