@@ -6,7 +6,7 @@
     "targets": {
         "build": {
             "executor": "@nrwl/angular:ng-packagr-lite",
-            "outputs": ["dist/libs/frontend/shared/state/table"],
+            "outputs": ["{workspaceRoot}/dist/libs/frontend/shared/state/table"],
             "options": {
                 "project": "libs/frontend/shared/state/table/ng-package.json"
             },
@@ -22,7 +22,7 @@
         },
         "test": {
             "executor": "@nrwl/jest:jest",
-            "outputs": ["coverage/libs/frontend/shared/state/table"],
+            "outputs": ["{workspaceRoot}/coverage/libs/frontend/shared/state/table"],
             "options": {
                 "jestConfig": "libs/frontend/shared/state/table/jest.config.ts",
                 "passWithNoTests": true

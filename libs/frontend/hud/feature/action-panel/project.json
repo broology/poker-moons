@@ -6,7 +6,7 @@
     "targets": {
         "build": {
             "executor": "@nrwl/angular:ng-packagr-lite",
-            "outputs": ["dist/libs/frontend/hud/feature/action-panel"],
+            "outputs": ["{workspaceRoot}/dist/libs/frontend/hud/feature/action-panel"],
             "options": {
                 "project": "libs/frontend/hud/feature/action-panel/ng-package.json"
             },
@@ -22,7 +22,7 @@
         },
         "test": {
             "executor": "@nrwl/jest:jest",
-            "outputs": ["coverage/libs/frontend/hud/feature/action-panel"],
+            "outputs": ["{workspaceRoot}/coverage/libs/frontend/hud/feature/action-panel"],
             "options": {
                 "jestConfig": "libs/frontend/hud/feature/action-panel/jest.config.ts",
                 "passWithNoTests": true

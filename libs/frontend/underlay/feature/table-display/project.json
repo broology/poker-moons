@@ -6,7 +6,7 @@
     "targets": {
         "build": {
             "executor": "@nrwl/angular:ng-packagr-lite",
-            "outputs": ["dist/libs/frontend/underlay/feature/table-display"],
+            "outputs": ["{workspaceRoot}/dist/libs/frontend/underlay/feature/table-display"],
             "options": {
                 "project": "libs/frontend/underlay/feature/table-display/ng-package.json"
             },
@@ -22,7 +22,7 @@
         },
         "test": {
             "executor": "@nrwl/jest:jest",
-            "outputs": ["coverage/libs/frontend/underlay/feature/table-display"],
+            "outputs": ["{workspaceRoot}/coverage/libs/frontend/underlay/feature/table-display"],
             "options": {
                 "jestConfig": "libs/frontend/underlay/feature/table-display/jest.config.ts",
                 "passWithNoTests": true

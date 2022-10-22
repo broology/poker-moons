@@ -1,3 +1,4 @@
+/* eslint-disable */
 export default {
     displayName: 'backend-shared-service-job-scheduler',
 

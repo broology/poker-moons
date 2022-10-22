@@ -6,7 +6,7 @@
     "targets": {
         "build": {
             "executor": "@nrwl/angular:ng-packagr-lite",
-            "outputs": ["dist/libs/frontend/underlay/feature/seat-layout"],
+            "outputs": ["{workspaceRoot}/dist/libs/frontend/underlay/feature/seat-layout"],
             "options": {
                 "project": "libs/frontend/underlay/feature/seat-layout/ng-package.json"
             },
@@ -22,7 +22,7 @@
         },
         "test": {
             "executor": "@nrwl/jest:jest",
-            "outputs": ["coverage/libs/frontend/underlay/feature/seat-layout"],
+            "outputs": ["{workspaceRoot}/coverage/libs/frontend/underlay/feature/seat-layout"],
             "options": {
                 "jestConfig": "libs/frontend/underlay/feature/seat-layout/jest.config.ts",
                 "passWithNoTests": true

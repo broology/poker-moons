@@ -5,7 +5,7 @@
     "targets": {
         "build": {
             "executor": "@nrwl/angular:ng-packagr-lite",
-            "outputs": ["dist/libs/frontend/hud/feature/winner-display"],
+            "outputs": ["{workspaceRoot}/dist/libs/frontend/hud/feature/winner-display"],
             "options": {
                 "project": "libs/frontend/hud/feature/winner-display/ng-package.json"
             },
@@ -21,7 +21,7 @@
         },
         "test": {
             "executor": "@nrwl/jest:jest",
-            "outputs": ["coverage/libs/frontend/hud/feature/winner-display"],
+            "outputs": ["{workspaceRoot}/coverage/libs/frontend/hud/feature/winner-display"],
             "options": {
                 "jestConfig": "libs/frontend/hud/feature/winner-display/jest.config.ts",
                 "passWithNoTests": true

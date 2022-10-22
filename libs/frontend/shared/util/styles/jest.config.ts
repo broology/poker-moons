@@ -1,3 +1,4 @@
+/* eslint-disable */
 export default {
     displayName: 'frontend-shared-util-styles',
     preset: '../../../../../jest.preset.js',

@@ -6,7 +6,7 @@
     "targets": {
         "build": {
             "executor": "@nrwl/angular:ng-packagr-lite",
-            "outputs": ["dist/libs/frontend/hud/shell"],
+            "outputs": ["{workspaceRoot}/dist/libs/frontend/hud/shell"],
             "options": {
                 "project": "libs/frontend/hud/shell/ng-package.json"
             },
@@ -22,7 +22,7 @@
         },
         "test": {
             "executor": "@nrwl/jest:jest",
-            "outputs": ["coverage/libs/frontend/hud/shell"],
+            "outputs": ["{workspaceRoot}/coverage/libs/frontend/hud/shell"],
             "options": {
                 "jestConfig": "libs/frontend/hud/shell/jest.config.ts",
                 "passWithNoTests": true
