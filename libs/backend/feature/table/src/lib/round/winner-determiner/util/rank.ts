@@ -3,6 +3,46 @@ import type { Card, Rank, Suit } from '@poker-moons/shared/type';
 import type { HandCategory, PlayerWithHand, RankHandReponse } from '../winner-determiner.types';
 
 /**
+ * @description Determines if the player has any staight, and specifically if their straight is made using the ace
+ * as a low card instead of a high card.
+ *
+ * @param ranks - The map of ranks to the number of cards the player has of each rank.
+ * @param firstCardIndex - The index of the first card in the player's hand.
+ */
+function determineStraight(
+    ranks: Record<Rank, number>,
+    firstCardIndex: number,
+): { hasStraight: boolean; hasLowAceStraight: boolean } {
+    // First check for a straight with a high ace
+    if (
+        ranks[14] === 1 &&
+        Object.values(ranks)
+            .slice(firstCardIndex, firstCardIndex + 5)
+            .filter((count) => count === 1).length === 5
+    ) {
+        return { hasStraight: true, hasLowAceStraight: false };
+    }
+
+    // Then check for a straight with a low ace
+    if (
+        ranks[14] === 1 &&
+        Object.values(ranks)
+            .slice(0, 4)
+            .filter((count) => count === 1).length === 4
+    ) {
+        return { hasStraight: true, hasLowAceStraight: true };
+    }
+
+    // Finally, check for any other straight
+    const hasStraight =
+        Object.values(ranks)
+            .slice(firstCardIndex, firstCardIndex + 5)
+            .filter((count) => count === 1).length === 5;
+
+    return { hasStraight, hasLowAceStraight: false };
+}
+
+/**
  * @description Assigns a score to a hand based on which category it falls under and the value/rank of each card
  * involved in making the category + the kicker in cases where a tie is possible.
  *
@@ -55,6 +95,8 @@ export function rankHand(player: PlayerWithHand): RankHandReponse {
     // Used when checking for a straight or a royal flush
     const firstCardIndex = Object.values(ranks).findIndex((index) => index === 1);
 
+    const straightResult = determineStraight(ranks, firstCardIndex);
+
     // Map each category to true/false depending on whether the hand meets the criteria
     const categoryMap: Record<HandCategory, boolean> = {
         'royal flush': false,
@@ -62,10 +104,7 @@ export function rankHand(player: PlayerWithHand): RankHandReponse {
         'four of a kind': Object.values(ranks).some((count) => count === 4),
         'full house': Object.values(ranks).filter(Boolean).length === 2,
         flush: Object.values(suits).some((count) => count === 5),
-        straight:
-            Object.values(ranks)
-                .slice(firstCardIndex, firstCardIndex + 5)
-                .filter((count) => count === 1).length === 5,
+        straight: straightResult.hasStraight,
         'three of a kind': Object.values(ranks).some((count) => count === 3),
         'two pairs': Object.values(ranks).filter((count) => count === 2).length === 2,
         pair: Object.values(ranks).filter((count) => count === 2).length === 1,
@@ -87,15 +126,14 @@ export function rankHand(player: PlayerWithHand): RankHandReponse {
     });
 
     // Add the values of the cards to the score
-    if (
-        category === 'royal flush' ||
-        category === 'straight flush' ||
-        category === 'full house' ||
-        category === 'flush' ||
-        category === 'straight'
-    ) {
+    if (category === 'royal flush' || category === 'full house' || category === 'flush') {
         player.hand.forEach((card) => {
             score += parseInt(card.rank);
+        });
+    } else if (category === 'straight flush' || category === 'straight') {
+        // If the player has a low ace straight we count the ace as 1 point instead of 14
+        player.hand.forEach((card) => {
+            score += parseInt(card.rank === '14' && straightResult.hasLowAceStraight ? '1' : card.rank);
         });
     } else if (category === 'four of a kind') {
         score += parseInt(Object.keys(ranks).filter((key) => ranks[key as Rank] === 4)[0]) * 4;

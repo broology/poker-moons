@@ -254,6 +254,54 @@ describe('Rank Utility Functions', () => {
             });
         });
 
+        it('should return a high ace straight', () => {
+            const player: PlayerWithHand = {
+                id: 'player_1',
+                username: 'Levi',
+                cards: [mockCard({ suit: 'clubs', rank: '12' }), mockCard({ suit: 'spades', rank: '14' })],
+                hand: [
+                    mockCard({ suit: 'clubs', rank: '10' }),
+                    mockCard({ suit: 'spades', rank: '11' }),
+                    mockCard({ suit: 'clubs', rank: '12' }),
+                    mockCard({ suit: 'diamonds', rank: '13' }),
+                    mockCard({ suit: 'spades', rank: '14' }),
+                ],
+                roundCalled: 100,
+            };
+
+            const result = rankHand(player);
+
+            expect(result).toEqual<RankHandReponse>({
+                player,
+                category: 'straight',
+                score: 500 + 10 + 11 + 12 + 13 + 14,
+            });
+        });
+
+        it('should return a low ace straight', () => {
+            const player: PlayerWithHand = {
+                id: 'player_1',
+                username: 'Levi',
+                cards: [mockCard({ suit: 'clubs', rank: '2' }), mockCard({ suit: 'spades', rank: '14' })],
+                hand: [
+                    mockCard({ suit: 'spades', rank: '14' }),
+                    mockCard({ suit: 'clubs', rank: '2' }),
+                    mockCard({ suit: 'spades', rank: '3' }),
+                    mockCard({ suit: 'clubs', rank: '4' }),
+                    mockCard({ suit: 'diamonds', rank: '5' }),
+                ],
+                roundCalled: 100,
+            };
+
+            const result = rankHand(player);
+
+            expect(result).toEqual<RankHandReponse>({
+                player,
+                category: 'straight',
+                score: 500 + 1 + 2 + 3 + 4 + 5,
+            });
+        });
+
         it('should return flush with a score of 600 + value of cards', () => {
             const player: PlayerWithHand = {
                 id: 'player_1',
