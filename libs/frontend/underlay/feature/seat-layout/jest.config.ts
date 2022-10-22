@@ -1,3 +1,4 @@
+/* eslint-disable */
 export default {
     displayName: 'frontend-underlay-feature-seat-layout',
 

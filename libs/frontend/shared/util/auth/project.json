@@ -6,7 +6,7 @@
     "targets": {
         "build": {
             "executor": "@nrwl/angular:ng-packagr-lite",
-            "outputs": ["dist/libs/frontend/shared/util/auth"],
+            "outputs": ["{workspaceRoot}/dist/libs/frontend/shared/util/auth"],
             "options": {
                 "project": "libs/frontend/shared/util/auth/ng-package.json"
             },
@@ -22,7 +22,7 @@
         },
         "test": {
             "executor": "@nrwl/jest:jest",
-            "outputs": ["coverage/libs/frontend/shared/util/auth"],
+            "outputs": ["{workspaceRoot}/coverage/libs/frontend/shared/util/auth"],
             "options": {
                 "jestConfig": "libs/frontend/shared/util/auth/jest.config.ts",
                 "passWithNoTests": true

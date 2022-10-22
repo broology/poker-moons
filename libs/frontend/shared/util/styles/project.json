@@ -23,7 +23,7 @@
         },
         "test": {
             "executor": "@nrwl/jest:jest",
-            "outputs": ["coverage/libs/frontend/shared/util/styles"],
+            "outputs": ["{workspaceRoot}/coverage/libs/frontend/shared/util/styles"],
             "options": {
                 "jestConfig": "libs/frontend/shared/util/styles/jest.config.ts",
                 "passWithNoTests": true
