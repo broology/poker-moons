@@ -54,12 +54,12 @@ export class SeatPlayerComponent implements OnInit, OnChanges {
     }
 
     ngOnInit() {
-        this.tableStateFacade.selectRound().subscribe(value => {
+        this.tableStateFacade.selectRound().subscribe((value) => {
             this.dealerSeat = value.dealerSeat;
             this.bigBlindSeat = this.getNextSeat(this.dealerSeat.valueOf());
             this.smallBlindSeat = this.getNextSeat(this.getNextSeat(this.dealerSeat.valueOf()));
         });
-        this.tableStateFacade.selectImmutablePlayerMap().subscribe(value => {
+        this.tableStateFacade.selectImmutablePlayerMap().subscribe((value) => {
             this.playerMap = value;
         });
     }
@@ -97,5 +97,4 @@ export class SeatPlayerComponent implements OnInit, OnChanges {
         }
         return -100;
     }
-
 }
