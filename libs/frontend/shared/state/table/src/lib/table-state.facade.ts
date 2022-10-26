@@ -38,8 +38,7 @@ import {
 
 @Injectable({ providedIn: 'root' })
 export class TableStateFacade {
-    constructor(private readonly store: Store) {
-    }
+    constructor(private readonly store: Store) {}
 
     /* Selectors */
 
@@ -115,7 +114,7 @@ export class TableStateFacade {
     }
 
     /**
-     * @description Retrieve the current immutable player map
+     * @description Retrieve the current immutable player map.
      */
     selectImmutablePlayerMap(): Observable<Record<PlayerId, ImmutablePublicPlayer> | null> {
         return this.store.pipe(select(selectImmutablePlayerMap));
