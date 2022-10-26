@@ -25,9 +25,7 @@ import {
     selectSumRoundCalled,
 } from './table-state.selectors';
 import {
-    ApiLoaderStates,
     selectActiveRound,
-    selectLoaders,
     selectSeatMap,
     selectStartDate,
     selectStatus,
@@ -38,7 +36,8 @@ import {
 
 @Injectable({ providedIn: 'root' })
 export class TableStateFacade {
-    constructor(private readonly store: Store) {}
+    constructor(private readonly store: Store) {
+    }
 
     /* Selectors */
 
@@ -114,7 +113,7 @@ export class TableStateFacade {
     }
 
     /**
-     * @description Retrieve the current immutable player map.
+     * @description Retrieve the current immutable player map
      */
     selectImmutablePlayerMap(): Observable<Record<PlayerId, ImmutablePublicPlayer> | null> {
         return this.store.pipe(select(selectImmutablePlayerMap));
@@ -146,13 +145,6 @@ export class TableStateFacade {
      */
     selectWinners(): Observable<WinnerMap> {
         return this.store.pipe(select(selectWinners));
-    }
-
-    /**
-     * @description Selects the api loading states.
-     */
-    selectLoaders(): Observable<ApiLoaderStates> {
-        return this.store.pipe(select(selectLoaders));
     }
 
     /* Actions */

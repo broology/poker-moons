@@ -16,7 +16,8 @@ export class BlindManagerService {
         private readonly tableStateManagerService: TableStateManagerService,
         private readonly tableGatewayService: TableGatewayService,
         private readonly potManagerService: PotManagerService,
-    ) {}
+    ) {
+    }
 
     getBigBlind(): number {
         return this.BIG_BLIND;
