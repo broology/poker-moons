@@ -1,10 +1,6 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { OnInit } from '@angular/core';
-import { OnChanges } from '@angular/core';
-import { SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { TableStateFacade } from '@poker-moons/frontend/shared/state/table';
-import { ImmutablePublicPlayer, MutablePublicPlayer, SeatId } from '@poker-moons/shared/type';
-import { PlayerId } from '@poker-moons/shared/type';
+import { ImmutablePublicPlayer, MutablePublicPlayer, PlayerId, SeatId } from '@poker-moons/shared/type';
 
 @Component({
     selector: 'poker-moons-seat-player',
@@ -54,12 +50,12 @@ export class SeatPlayerComponent implements OnInit, OnChanges {
     }
 
     ngOnInit() {
-        this.tableStateFacade.selectRound().subscribe(value => {
+        this.tableStateFacade.selectRound().subscribe((value) => {
             this.dealerSeat = value.dealerSeat;
             this.bigBlindSeat = this.getNextSeat(this.dealerSeat.valueOf());
             this.smallBlindSeat = this.getNextSeat(this.getNextSeat(this.dealerSeat.valueOf()));
         });
-        this.tableStateFacade.selectImmutablePlayerMap().subscribe(value => {
+        this.tableStateFacade.selectImmutablePlayerMap().subscribe((value) => {
             this.playerMap = value;
         });
     }
@@ -97,5 +93,4 @@ export class SeatPlayerComponent implements OnInit, OnChanges {
         }
         return -100;
     }
-
 }

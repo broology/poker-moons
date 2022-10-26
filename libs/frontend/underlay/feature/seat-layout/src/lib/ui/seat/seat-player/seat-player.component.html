@@ -1,32 +1,30 @@
-<ng-container *ngIf='immutablePlayer && mutablePlayer; else empty'>
+<ng-container *ngIf="immutablePlayer && mutablePlayer; else empty">
     <div [class]="active ? 'seat active-seat' : 'seat'">
-        <div class='timer'>
-            <poker-moons-moon-timer [duration]='getDuration()'></poker-moons-moon-timer>
+        <div class="timer">
+            <poker-moons-moon-timer [duration]="getDuration()"></poker-moons-moon-timer>
         </div>
-        <div class='username'>{{ immutablePlayer.username }}</div>
-        <div class='extra'>
-            <span class='stack'>{{ mutablePlayer.stack | chipCurrency }}</span>
+        <div class="username">{{ immutablePlayer.username }}</div>
+        <div class="extra">
+            <span class="stack">{{ mutablePlayer.stack | chipCurrency }}</span>
         </div>
-        <div *ngIf='dealerSeat === immutablePlayer.seatId' class='blind-chip'>
+        <div *ngIf="dealerSeat === immutablePlayer.seatId" class="blind-chip">
             <p>D</p>
         </div>
-        <div *ngIf='immutablePlayer.seatId === bigBlindSeat'
-             class='blind-chip'>
+        <div *ngIf="immutablePlayer.seatId === bigBlindSeat" class="blind-chip">
             <p>B</p>
         </div>
-        <div *ngIf='immutablePlayer.seatId === smallBlindSeat'
-             class='blind-chip'>
+        <div *ngIf="immutablePlayer.seatId === smallBlindSeat" class="blind-chip">
             <p>S</p>
         </div>
     </div>
 </ng-container>
 
 <ng-template #empty>
-    <div class='seat empty-seat'>
-        <div class='timer'>
-            <poker-moons-moon-timer [duration]='null'></poker-moons-moon-timer>
+    <div class="seat empty-seat">
+        <div class="timer">
+            <poker-moons-moon-timer [duration]="null"></poker-moons-moon-timer>
         </div>
-        <div class='username'>Empty</div>
-        <div class='extra'></div>
+        <div class="username">Empty</div>
+        <div class="extra"></div>
     </div>
 </ng-template>
