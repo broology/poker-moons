@@ -17,26 +17,26 @@ import { joinTable, leaveTable, performTableAction, toggleReadyStatus } from './
 import { connectToWs } from './actions/ws.actions';
 import {
     selectActiveSeatId,
+    selectBigBlindSeat,
     selectClientImmutablePlayer,
     selectClientMutablePlayer,
     selectClientSeatId,
+    selectDealerSeat,
     selectImmutablePlayerBySeatId,
     selectMutablePlayerBySeatId,
-    selectSumRoundCalled,
-    selectDealerSeat,
-    selectBigBlindSeat,
     selectSmallBlindSeat,
+    selectSumRoundCalled,
 } from './table-state.selectors';
 import {
     ApiLoaderStates,
     selectActiveRound,
+    selectImmutablePlayerMap,
     selectLoaders,
     selectSeatMap,
     selectStartDate,
     selectStatus,
     selectTableId,
     selectWinners,
-    selectImmutablePlayerMap,
 } from './table.state';
 
 @Injectable({ providedIn: 'root' })
