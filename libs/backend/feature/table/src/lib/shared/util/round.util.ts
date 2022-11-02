@@ -136,6 +136,26 @@ export function incrementSeat(seat: SeatId, seatMap: Partial<Record<SeatId, Play
 }
 
 /**
+ * @description Determines the starting seat when a round begins.
+ *
+ * @param dealerSeat - The seat of the dealer for the round.
+ * @param seatMap - The seat map for the round.
+ */
+export function determineStartingSeat(dealerSeat: SeatId, seatMap: Partial<Record<SeatId, PlayerId>>): SeatId {
+    const numPlayers = Object.values(seatMap).length;
+
+    // Pre-flop, the dealer always acts first in 2 or 3 player poker.
+    if (numPlayers === 2 || numPlayers === 3) {
+        return dealerSeat;
+    }
+
+    const smallBlindSeat = incrementSeat(dealerSeat, seatMap);
+    const bigBlindSeat = incrementSeat(smallBlindSeat, seatMap);
+
+    return incrementSeat(bigBlindSeat, seatMap);
+}
+
+/**
  * @description Provided the current round status, returns the next status in sequence.
  */
 export function incrementRoundStatus(status: RoundStatus): RoundStatus {

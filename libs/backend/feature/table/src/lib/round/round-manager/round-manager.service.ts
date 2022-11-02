@@ -3,6 +3,7 @@ import { CustomLoggerService } from '@poker-moons/backend/utility';
 import { Player, PlayerId, PlayerStatus, Round, SeatId, ServerTableState, TableId } from '@poker-moons/shared/type';
 import { TurnTimerService } from '../../shared/turn-timer/turn-timer.service';
 import {
+    determineStartingSeat,
     hasBiddingCycleEnded,
     hasEveryoneButOneFolded,
     hasEveryoneTakenTurn,
@@ -49,6 +50,8 @@ export class RoundManagerService {
         nextActiveSeat: SeatId | null,
         playerStatuses: PlayerStatus[],
     ): Promise<void> {
+        let nextSeat: SeatId | null = nextActiveSeat;
+
         // Re-fetch table, because race condition with player service
         table = await this.tableStateManagerService.getTableById(table.id);
 
@@ -63,7 +66,7 @@ export class RoundManagerService {
         ) {
             // if a round a can be auto-completed, which occurs when less than 2 players are actively bidden.
             if (isAutoCompletable(playerStatuses)) {
-                await this.autoCompleteRound(table.id, table.playerMap, nextActiveSeat);
+                await this.autoCompleteRound(table.id, table.playerMap);
                 return;
             }
 
@@ -115,10 +118,12 @@ export class RoundManagerService {
                 toCall: 0,
             });
 
+            nextSeat = incrementSeat(table.activeRound.dealerSeat, table.seatMap);
+
             this.tableGatewayService.emitTableEvent(table.id, {
                 type: 'roundChanged',
                 roundStatus: incrementRoundStatus(table.activeRound.roundStatus),
-                activeSeat: nextActiveSeat,
+                activeSeat: nextSeat,
                 cards: table.activeRound.cards,
                 toCall: 0,
             });
@@ -128,14 +133,14 @@ export class RoundManagerService {
         await Promise.all([
             this.tableStateManagerService.updateRound(table.id, {
                 turnCount: table.activeRound.turnCount + 1,
-                activeSeat: nextActiveSeat,
+                activeSeat: nextSeat,
             }),
             this.turnTimeService.onTurn({
                 tableId: table.id,
                 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                 currentPlayerId: table.seatMap[table.activeRound.activeSeat!]!,
                 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                nextPlayerId: table.seatMap[nextActiveSeat!]!,
+                nextPlayerId: table.seatMap[nextSeat!]!,
             }),
         ]);
     }
@@ -146,13 +151,9 @@ export class RoundManagerService {
      * This method should be called in the player action handlers at the end of every turn.
      *
      * @param tableId - The ID of the table to auto-complete.
-     * @param nextActiveSeat - The seat ID of the player whose turn is next.
+     * @param playerMap - The map of player IDs to player data.
      */
-    async autoCompleteRound(
-        tableId: TableId,
-        playerMap: Record<PlayerId, Player>,
-        nextActiveSeat: SeatId | null,
-    ): Promise<void> {
+    async autoCompleteRound(tableId: TableId, playerMap: Record<PlayerId, Player>): Promise<void> {
         const updatedPlayerMap: Record<PlayerId, Player> = {};
 
         for (const player of Object.values(playerMap)) {
@@ -206,7 +207,6 @@ export class RoundManagerService {
             this.tableGatewayService.emitTableEvent(table.id, {
                 type: 'roundChanged',
                 roundStatus: newStatus,
-                activeSeat: nextActiveSeat,
                 cards: table.activeRound.cards,
                 toCall: 0,
             });
@@ -222,7 +222,7 @@ export class RoundManagerService {
     /**
      * @description Starts a new round of poker.
      *
-     * - Handles setting the first active seat if it hasn't already been set.
+     * - Handles setting the first active seat.
      * - Handles building a new deck and dealing out cards to the players.
      * - Handles initiating the first player's turn timer.
      *
@@ -233,16 +233,13 @@ export class RoundManagerService {
     async startRound(tableId: TableId): Promise<void> {
         const table = await this.tableStateManagerService.getTableById(tableId);
 
-        let activeSeat = table.activeRound.activeSeat;
+        const startingSeat = determineStartingSeat(table.activeRound.dealerSeat, table.seatMap);
 
-        if (activeSeat == null) {
-            activeSeat = incrementSeat(table.activeRound.dealerSeat, table.seatMap);
+        await this.tableStateManagerService.updateRound(table.id, { activeSeat: startingSeat });
 
-            await this.tableStateManagerService.updateRound(table.id, { activeSeat });
-        }
+        const startingPlayerId = table.seatMap[startingSeat];
 
-        const startingPlayerId = table.seatMap[activeSeat];
-
+        // This should never occur
         if (startingPlayerId == null) {
             throw new InternalServerErrorException(noStartingPlayer);
         }
@@ -270,7 +267,7 @@ export class RoundManagerService {
         this.tableGatewayService.emitTableEvent(table.id, {
             type: 'roundChanged',
             roundStatus: 'deal',
-            activeSeat,
+            activeSeat: startingSeat,
             cards: [],
             toCall: this.blindManagerService.getBigBlind(),
             pot: this.blindManagerService.getBigBlind() + this.blindManagerService.getSmallBlind(),
@@ -371,7 +368,6 @@ export class RoundManagerService {
             table = await this.tableStateManagerService.getTableById(table.id);
 
             const nextDealerSeat = incrementSeat(table.activeRound.dealerSeat, table.seatMap);
-            const nextActiveSeat = incrementSeat(nextDealerSeat, table.seatMap);
 
             const roundChanges: Partial<Round> = {
                 turnCount: 0,
@@ -380,7 +376,6 @@ export class RoundManagerService {
                 toCall: 0,
                 cards: [],
                 dealerSeat: nextDealerSeat,
-                activeSeat: nextActiveSeat,
             };
 
             await this.tableStateManagerService.updateRound(table.id, roundChanges);

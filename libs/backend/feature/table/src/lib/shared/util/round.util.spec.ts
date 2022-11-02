@@ -1,6 +1,7 @@
 import { mockPlayer } from '@poker-moons/shared/testing';
 import { PlayerStatus } from '@poker-moons/shared/type';
 import {
+    determineStartingSeat,
     findNextActiveSeatIfExists,
     hasBiddingCycleEnded,
     hasEveryoneButOneFolded,
@@ -107,6 +108,20 @@ describe('Round Utils', () => {
 
         it('should skip empty seats when 5 is passed in', () => {
             expect(incrementSeat(5, { 2: 'player_2', 5: 'player_5' })).toEqual(2);
+        });
+    });
+
+    describe('determineStartingSeat', () => {
+        it('should return the dealer seat if the number of players is 2', () => {
+            expect(determineStartingSeat(0, { 0: 'player_0', 2: 'player_2' })).toEqual(0);
+        });
+
+        it('should return the dealer seat if the number of players is 3', () => {
+            expect(determineStartingSeat(2, { 0: 'player_0', 2: 'player_2', 5: 'player_5' })).toEqual(2);
+        });
+
+        it('should return the seat to the left of the big blind if there are more than 3 players', () => {
+            expect(determineStartingSeat(2, { 0: 'player_0', 2: 'player_2', 4: 'player_4', 5: 'player_5' })).toEqual(0);
         });
     });
 
