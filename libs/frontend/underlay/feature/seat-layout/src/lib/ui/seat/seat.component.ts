@@ -58,6 +58,10 @@ export class SeatComponent implements OnChanges {
 
     depthLevel!: DepthLevel;
 
+    dealerSeatId$ = this.tableStateFacade.selectDealerSeat();
+    bigBlindSeatId$ = this.tableStateFacade.selectBigBlindSeat();
+    smallBlindSeatId$ = this.tableStateFacade.selectSmallBlindSeat();
+
     constructor(private readonly tableStateFacade: TableStateFacade) {}
 
     ngOnChanges({ playerSeatId }: SimpleChanges): void {

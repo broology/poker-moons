@@ -1,6 +1,5 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { TableStateFacade } from '@poker-moons/frontend/shared/state/table';
-import { ImmutablePublicPlayer, MutablePublicPlayer, PlayerId, SeatId } from '@poker-moons/shared/type';
+import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
+import {ImmutablePublicPlayer, MutablePublicPlayer, SeatId} from '@poker-moons/shared/type';
 
 @Component({
     selector: 'poker-moons-seat-player',
@@ -8,32 +7,26 @@ import { ImmutablePublicPlayer, MutablePublicPlayer, PlayerId, SeatId } from '@p
     styleUrls: ['./seat-player.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SeatPlayerComponent implements OnInit, OnChanges {
+export class SeatPlayerComponent {
+
+    @Input() dealerSeatId!: number | null;
+    @Input() bigBlindSeatId!: number | null;
+    @Input() smallBlindSeatId!: number | null;
+
     /**
      * @description The immutable data of the player in this seat.
      */
     @Input() immutablePlayer!: ImmutablePublicPlayer | null;
+
     /**
      * @description The mutable data of the player in this seat.
      */
     @Input() mutablePlayer!: MutablePublicPlayer | null;
+
     /**
      * @description True if this player is currently the active seat at the table.
      */
-
     active = false;
-
-    dealerSeat: number | undefined;
-
-    bigBlindSeat: number | undefined;
-
-    smallBlindSeat: number | undefined;
-
-    playerMap: Record<PlayerId, ImmutablePublicPlayer> | null;
-
-    constructor(private readonly tableStateFacade: TableStateFacade) {
-        this.playerMap = null;
-    }
 
     /**
      * @description Setter to determine if this seat is currently the active seat.
@@ -47,21 +40,6 @@ export class SeatPlayerComponent implements OnInit, OnChanges {
         }
 
         this.active = false;
-    }
-
-    ngOnInit() {
-        this.tableStateFacade.selectRound().subscribe((value) => {
-            this.dealerSeat = value.dealerSeat;
-            this.bigBlindSeat = this.getNextSeat(this.dealerSeat.valueOf());
-            this.smallBlindSeat = this.getNextSeat(this.getNextSeat(this.dealerSeat.valueOf()));
-        });
-        this.tableStateFacade.selectImmutablePlayerMap().subscribe((value) => {
-            this.playerMap = value;
-        });
-    }
-
-    ngOnChanges(changes: SimpleChanges) {
-        console.log('Dealer: ' + this.dealerSeat);
     }
 
     /**
@@ -78,19 +56,4 @@ export class SeatPlayerComponent implements OnInit, OnChanges {
         return null;
     }
 
-    /**
-     * @description Gets the next seat id in seat order, ensuring to wrap around the table.
-     *
-     * @param currentSeat - The seat you want to find the next seat of.
-     */
-    getNextSeat(currentSeat: number): number {
-        if (this.playerMap) {
-            let possibleSeatId = currentSeat + 1;
-            if (possibleSeatId >= Object.keys(this.playerMap).length) {
-                possibleSeatId = 0;
-            }
-            return possibleSeatId;
-        }
-        return -100;
-    }
 }

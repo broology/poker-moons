@@ -23,6 +23,9 @@ import {
     selectImmutablePlayerBySeatId,
     selectMutablePlayerBySeatId,
     selectSumRoundCalled,
+    selectDealerSeat,
+    selectBigBlindSeat,
+    selectSmallBlindSeat
 } from './table-state.selectors';
 import {
     ApiLoaderStates,
@@ -111,6 +114,18 @@ export class TableStateFacade {
      */
     selectRound(): Observable<Round> {
         return this.store.pipe(select(selectActiveRound));
+    }
+
+    selectDealerSeat(): Observable<number> {
+        return this.store.pipe(select(selectDealerSeat));
+    }
+
+    selectBigBlindSeat(): Observable<number> {
+        return this.store.pipe(select(selectBigBlindSeat));
+    }
+
+    selectSmallBlindSeat(): Observable<number> {
+        return this.store.pipe(select(selectSmallBlindSeat));''
     }
 
     /**
