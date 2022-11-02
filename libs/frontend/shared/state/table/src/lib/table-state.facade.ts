@@ -25,7 +25,7 @@ import {
     selectSumRoundCalled,
     selectDealerSeat,
     selectBigBlindSeat,
-    selectSmallBlindSeat
+    selectSmallBlindSeat,
 } from './table-state.selectors';
 import {
     ApiLoaderStates,
@@ -125,7 +125,8 @@ export class TableStateFacade {
     }
 
     selectSmallBlindSeat(): Observable<number> {
-        return this.store.pipe(select(selectSmallBlindSeat));''
+        return this.store.pipe(select(selectSmallBlindSeat));
+        ('');
     }
 
     /**
