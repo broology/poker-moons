@@ -126,7 +126,6 @@ export class TableStateFacade {
 
     selectSmallBlindSeat(): Observable<number> {
         return this.store.pipe(select(selectSmallBlindSeat));
-        ('');
     }
 
     /**
