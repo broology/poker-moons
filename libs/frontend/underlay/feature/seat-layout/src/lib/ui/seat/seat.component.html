@@ -1,15 +1,18 @@
 <div class="action">
     <poker-moons-seat-action
         [depthLevel]="depthLevel"
-        [playerOrientation]="playerOrientation"
         [mutablePlayer]="mutablePlayer$ | push"
+        [playerOrientation]="playerOrientation"
     ></poker-moons-seat-action>
 </div>
 <div class="display">
     <poker-moons-seat-player
+        [activeSeatId]="activeSeatId$ | push"
         [immutablePlayer]="immutablePlayer$ | push"
         [mutablePlayer]="mutablePlayer$ | push"
-        [activeSeatId]="activeSeatId$ | push"
+        [dealerSeatId]="dealerSeatId$ | push"
+        [bigBlindSeatId]="bigBlindSeatId$ | push"
+        [smallBlindSeatId]="smallBlindSeatId$ | push"
     ></poker-moons-seat-player>
     <div class="status">
         <poker-moons-seat-status

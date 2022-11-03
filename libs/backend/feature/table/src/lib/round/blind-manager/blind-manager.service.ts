@@ -40,7 +40,7 @@ export class BlindManagerService {
             smallBlind: this.SMALL_BLIND,
         });
         const smallBlindId = this.getNextSeat(table, table.activeRound.dealerSeat);
-        const bigBlindId = this.getNextSeat(table, table.activeRound.dealerSeat + 1);
+        const bigBlindId = this.getNextSeat(table, this.getNextSeat(table, table.activeRound.dealerSeat));
 
         for (const player of Object.values(table.playerMap)) {
             if (player.seatId == smallBlindId) {

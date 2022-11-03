@@ -17,16 +17,20 @@ import { joinTable, leaveTable, performTableAction, toggleReadyStatus } from './
 import { connectToWs } from './actions/ws.actions';
 import {
     selectActiveSeatId,
+    selectBigBlindSeat,
     selectClientImmutablePlayer,
     selectClientMutablePlayer,
     selectClientSeatId,
+    selectDealerSeat,
     selectImmutablePlayerBySeatId,
     selectMutablePlayerBySeatId,
+    selectSmallBlindSeat,
     selectSumRoundCalled,
 } from './table-state.selectors';
 import {
     ApiLoaderStates,
     selectActiveRound,
+    selectImmutablePlayerMap,
     selectLoaders,
     selectSeatMap,
     selectStartDate,
@@ -110,6 +114,25 @@ export class TableStateFacade {
      */
     selectRound(): Observable<Round> {
         return this.store.pipe(select(selectActiveRound));
+    }
+
+    selectDealerSeat(): Observable<number> {
+        return this.store.pipe(select(selectDealerSeat));
+    }
+
+    selectBigBlindSeat(): Observable<number> {
+        return this.store.pipe(select(selectBigBlindSeat));
+    }
+
+    selectSmallBlindSeat(): Observable<number> {
+        return this.store.pipe(select(selectSmallBlindSeat));
+    }
+
+    /**
+     * @description Retrieve the current immutable player map.
+     */
+    selectImmutablePlayerMap(): Observable<Record<PlayerId, ImmutablePublicPlayer> | null> {
+        return this.store.pipe(select(selectImmutablePlayerMap));
     }
 
     /**

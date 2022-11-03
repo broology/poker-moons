@@ -8,19 +8,9 @@ import { ImmutablePublicPlayer, MutablePublicPlayer, SeatId } from '@poker-moons
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SeatPlayerComponent {
-    /**
-     * @description Setter to determine if this seat is currently the active seat.
-     */
-    @Input() set activeSeatId(seatId: SeatId | null) {
-        if (this.immutablePlayer) {
-            if (seatId === this.immutablePlayer.seatId) {
-                this.active = true;
-                return;
-            }
-        }
-
-        this.active = false;
-    }
+    @Input() dealerSeatId!: number | null;
+    @Input() bigBlindSeatId!: number | null;
+    @Input() smallBlindSeatId!: number | null;
 
     /**
      * @description The immutable data of the player in this seat.
@@ -36,6 +26,20 @@ export class SeatPlayerComponent {
      * @description True if this player is currently the active seat at the table.
      */
     active = false;
+
+    /**
+     * @description Setter to determine if this seat is currently the active seat.
+     */
+    @Input() set activeSeatId(seatId: SeatId | null) {
+        if (this.immutablePlayer) {
+            if (seatId === this.immutablePlayer.seatId) {
+                this.active = true;
+                return;
+            }
+        }
+
+        this.active = false;
+    }
 
     /**
      * @description Calculates the players duration.
