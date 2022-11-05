@@ -3,7 +3,7 @@ import { NgEnvironment } from '@poker-moons/frontend/shared/util/environment';
 export const environment: NgEnvironment = {
     env: 'production',
 
-    app: 'https://beta.pokermoons.net',
+    app: 'https://pokermoons.net',
 
     api: 'https://api.pokermoons.net',
 
