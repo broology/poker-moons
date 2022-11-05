@@ -192,3 +192,15 @@ export function hasBiddingCycleEnded(
 
     return true;
 }
+
+/**
+ * @description Determines whether a player is actively apart of the round.
+ *
+ * A player is only not actively part of the round, if:
+ *
+ * - They have folded.
+ * - They are out of chips.
+ */
+export function isActivePlayer(player: Pick<Player, 'status'>): boolean {
+    return player.status !== 'folded' && player.status !== 'out';
+}

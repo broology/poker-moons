@@ -1,5 +1,5 @@
 import { mockPlayer } from '@poker-moons/shared/testing';
-import { PlayerStatus } from '@poker-moons/shared/type';
+import { playerStatus, PlayerStatus } from '@poker-moons/shared/type';
 import {
     findNextActiveSeatIfExists,
     hasBiddingCycleEnded,
@@ -7,6 +7,7 @@ import {
     hasEveryoneTakenTurn,
     incrementRoundStatus,
     incrementSeat,
+    isActivePlayer,
     isRoundComplete,
 } from './round.util';
 
@@ -208,5 +209,21 @@ describe('Round Utils', () => {
                 ),
             ).toEqual(false);
         });
+    });
+
+    describe('isActivePlayer', () => {
+        const nonActiveStatuses: PlayerStatus[] = ['folded', 'out'];
+        const nonActiveStatusSet = new Set<PlayerStatus>(nonActiveStatuses);
+
+        it.each(nonActiveStatuses)('should return false if "%s"', (status) => {
+            expect(isActivePlayer({ status })).toEqual(false);
+        });
+
+        it.each<PlayerStatus>(playerStatus.filter((status) => !nonActiveStatusSet.has(status)))(
+            'should return true if "%s"',
+            (status) => {
+                expect(isActivePlayer({ status })).toEqual(true);
+            },
+        );
     });
 });

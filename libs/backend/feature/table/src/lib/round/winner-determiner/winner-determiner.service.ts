@@ -1,5 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import type { Card, Player, PlayerId, Round, TableId, WinnerMap } from '@poker-moons/shared/type';
+import { isActivePlayer } from '../../shared/util/round.util';
 import { TableGatewayService } from '../../shared/websocket/table-gateway.service';
 import { TableStateManagerService } from '../../table-state-manager/table-state-manager.service';
 import { PotManagerService } from '../pot-manager/pot-manager.service';
@@ -17,7 +18,8 @@ export class WinnerDeterminerService {
     ) {}
 
     /**
-     * @description Determines the winner at the end of a round of poker.
+     * @description Determines the winner at the end of a round of poker. Also displaying the players in
+     * contentions card's who are in play if there are more than one.
      *
      * @param tableId - The table the round is taking place on.
      * @param playerMap - A map of the players in the current round.
@@ -34,7 +36,7 @@ export class WinnerDeterminerService {
                 throw new BadRequestException(playerMissingCards(player.id));
             }
 
-            if (player.status !== 'folded' && player.status !== 'out') {
+            if (isActivePlayer(player)) {
                 playersWithHand.push({
                     id: player.id,
                     username: player.username,
@@ -47,6 +49,8 @@ export class WinnerDeterminerService {
                 });
             }
         }
+
+        this.showCardsIfApplicable(tableId, playersWithHand);
 
         const winnerMap = await this.buildWinnerMap(tableId, playerMap, playersWithHand);
 
@@ -168,5 +172,26 @@ export class WinnerDeterminerService {
         }
 
         return winnerMap;
+    }
+
+    /**
+     * @description Shows all players card's that are contended at the table. Only if there are at least two
+     * players in contention.
+     *
+     * @param tableId
+     * @param playersWithHand
+     */
+    private showCardsIfApplicable(tableId: TableId, playersWithHand: PlayerWithHand[]): void {
+        if (playersWithHand.length < 2) {
+            return;
+        }
+
+        for (const { id, cards } of playersWithHand) {
+            this.tableGatewayService.emitTableEvent(tableId, {
+                type: 'playerChanged',
+                id,
+                cards,
+            });
+        }
     }
 }

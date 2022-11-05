@@ -240,4 +240,93 @@ describe('RoundManagerService', () => {
             expect(setTimeout).toHaveBeenCalledWith(expect.any(Function), 10000);
         });
     });
+
+    describe('autoCompleteRound', () => {
+        it('should display only active players cards if more than 1 active player', async () => {
+            const player1 = mockPlayer({
+                id: 'player_1',
+                stack: 10000,
+                status: 'called',
+                cards: [mockCard({ suit: 'clubs', rank: '10' }), mockCard({ suit: 'diamonds', rank: '10' })],
+            });
+            const player2 = mockPlayer({
+                id: 'player_2',
+                stack: 5000,
+                status: 'called',
+                cards: [mockCard({ suit: 'clubs', rank: '9' }), mockCard({ suit: 'diamonds', rank: '9' })],
+            });
+            // Non-active player, thus cards should not be displayed
+            const player3 = mockPlayer({
+                id: 'player_3',
+                stack: 5000,
+                status: 'folded',
+                cards: [mockCard({ suit: 'clubs', rank: '8' }), mockCard({ suit: 'diamonds', rank: '7' })],
+            });
+
+            const table = {
+                ...mockServerTableState({ activeRound: mockRound({ activeSeat: 1, roundStatus: 'river' }) }),
+                playerMap: {
+                    player_1: player1,
+                    player_2: player2,
+                    player_3: player3,
+                },
+            };
+            tableStateManagerService.getTableById.mockResolvedValue(table);
+
+            await service.autoCompleteRound(table.id, table.playerMap, null);
+
+            expect(tableGatewayService.emitTableEvent).toHaveBeenNthCalledWith(
+                1,
+                table.id,
+                expect.objectContaining({ cards: player1.cards }),
+            );
+            expect(tableGatewayService.emitTableEvent).toHaveBeenNthCalledWith(
+                2,
+                table.id,
+                expect.objectContaining({ cards: player2.cards }),
+            );
+            expect(tableGatewayService.emitTableEvent).toHaveBeenNthCalledWith(
+                3,
+                table.id,
+                expect.not.objectContaining({ cards: expect.anything() }),
+            );
+        });
+
+        it('should not display cards if only one active player left', async () => {
+            const player1 = mockPlayer({
+                id: 'player_1',
+                stack: 10000,
+                status: 'called',
+                cards: [mockCard({ suit: 'clubs', rank: '10' }), mockCard({ suit: 'diamonds', rank: '10' })],
+            });
+            const player2 = mockPlayer({
+                id: 'player_2',
+                stack: 5000,
+                status: 'folded',
+                cards: [mockCard({ suit: 'clubs', rank: '9' }), mockCard({ suit: 'diamonds', rank: '9' })],
+            });
+
+            const table = {
+                ...mockServerTableState({ activeRound: mockRound({ activeSeat: 1, roundStatus: 'river' }) }),
+                playerMap: {
+                    player_1: player1,
+                    player_2: player2,
+                },
+            };
+            tableStateManagerService.getTableById.mockResolvedValue(table);
+
+            await service.autoCompleteRound(table.id, table.playerMap, null);
+
+            expect(tableGatewayService.emitTableEvent).toHaveBeenNthCalledWith(
+                1,
+                table.id,
+                expect.not.objectContaining({ cards: expect.anything() }),
+            );
+            expect(tableGatewayService.emitTableEvent).toHaveBeenNthCalledWith(
+                2,
+                table.id,
+                expect.not.objectContaining({ cards: expect.anything() }),
+            );
+        });
+    });
 });

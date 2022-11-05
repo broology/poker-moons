@@ -37,7 +37,7 @@ export class WinnerDisplayFeatureComponent {
             }
 
             // When multiple winners with all the same amount.
-            if (list.every((winner) => winner?.amountWon === list[0]?.amountWon)) {
+            if (list.length > 1 && list.every((winner) => winner?.amountWon === list[0]?.amountWon)) {
                 return `We have a multi-way tie!`;
             }
 
