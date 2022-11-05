@@ -71,10 +71,10 @@
             "executor": "./tools/executors/aws:eb-deploy",
             "options": {
                 "region": "ca-central-1",
-                "ebEnvironment": "poker-moons-backend-environment",
+                "ebEnvironment": "Pokermoonsbackend-env",
                 "ebApplication": "poker-moons-backend",
-                "ebDeploymentBucket": "elasticbeanstalk-ca-central-1-553501565082",
-                "ecrRegistryUrl": "553501565082.dkr.ecr.ca-central-1.amazonaws.com"
+                "ebDeploymentBucket": "elasticbeanstalk-ca-central-1-493826754725",
+                "ecrRegistryUrl": "493826754725.dkr.ecr.ca-central-1.amazonaws.com"
             }
         }
     },

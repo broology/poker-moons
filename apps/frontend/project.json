@@ -101,8 +101,8 @@
             "executor": "./tools/executors/aws:cf-s3-deploy",
             "options": {
                 "region": "ca-central-1",
-                "bucket": "poker-moons-app-develop",
-                "distributionId": "E3OJZ7MARMED16"
+                "bucket": "poker-moons-app",
+                "distributionId": "E3ICBJR893HYVK"
             }
         },
         "storybook": {
