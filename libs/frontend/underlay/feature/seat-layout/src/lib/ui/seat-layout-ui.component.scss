@@ -1,11 +1,27 @@
+@use '~styles/breakpoints' as bp;
+
 /*
  * Positions each seat at it's correct location around the table.
  * This is highly subject to change when designs are made
  */
 .seat {
+    transform-origin: center;
+    transform: translate(-50%, -50%) scale(0.6);
+
+    @include bp.md {
+        transform: translate(-50%, -50%) scale(0.7);
+    }
+
+    @include bp.lg {
+        transform: translate(-50%, -50%) scale(0.8);
+    }
+
+    @include bp.xl {
+        transform: translate(-50%, -50%) scale(1);
+    }
+
     position: fixed;
     text-align: center;
-    transform: translate(-50%, -50%);
 }
 .seat:nth-child(1) {
     left: 50%;
