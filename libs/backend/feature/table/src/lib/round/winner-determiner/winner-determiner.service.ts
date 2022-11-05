@@ -1,5 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import type { Card, Player, PlayerId, Round, TableId, WinnerMap } from '@poker-moons/shared/type';
+import { isActivePlayer } from '../../shared/util/round.util';
 import { TableGatewayService } from '../../shared/websocket/table-gateway.service';
 import { TableStateManagerService } from '../../table-state-manager/table-state-manager.service';
 import { PotManagerService } from '../pot-manager/pot-manager.service';
@@ -35,7 +36,7 @@ export class WinnerDeterminerService {
                 throw new BadRequestException(playerMissingCards(player.id));
             }
 
-            if (player.status !== 'folded' && player.status !== 'out') {
+            if (isActivePlayer(player)) {
                 playersWithHand.push({
                     id: player.id,
                     username: player.username,

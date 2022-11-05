@@ -1,6 +1,15 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CustomLoggerService } from '@poker-moons/backend/utility';
-import { Player, PlayerId, PlayerStatus, Round, SeatId, ServerTableState, TableId } from '@poker-moons/shared/type';
+import {
+    Player,
+    PlayerId,
+    PlayerStatus,
+    PublicPlayer,
+    Round,
+    SeatId,
+    ServerTableState,
+    TableId,
+} from '@poker-moons/shared/type';
 import { TurnTimerService } from '../../shared/turn-timer/turn-timer.service';
 import {
     hasBiddingCycleEnded,
@@ -8,6 +17,7 @@ import {
     hasEveryoneTakenTurn,
     incrementRoundStatus,
     incrementSeat,
+    isActivePlayer,
     isAutoCompletable,
     isRoundComplete,
 } from '../../shared/util/round.util';
@@ -155,12 +165,25 @@ export class RoundManagerService {
     ): Promise<void> {
         const updatedPlayerMap: Record<PlayerId, Player> = {};
 
+        // Build set of active player ids
+        const activePlayerIdSet = Object.values(playerMap).reduce((prev, player) => {
+            if (isActivePlayer(player)) {
+                prev.add(player.id);
+            }
+            return prev;
+        }, new Set<string>());
+
         for (const player of Object.values(playerMap)) {
+            //  if there is more than 1 player and this player is in the active round, then display their cards.
+            const cards: PublicPlayer['cards'] | undefined =
+                activePlayerIdSet.size > 1 && activePlayerIdSet.has(player.id) ? player.cards : undefined;
+
             this.tableGatewayService.emitTableEvent(tableId, {
                 type: 'playerChanged',
                 id: player.id,
                 roundCalled: player.biddingCycleCalled + player.roundCalled,
                 biddingCycleCalled: 0,
+                ...(cards ? { cards } : {}),
             });
 
             updatedPlayerMap[player.id] = {
