@@ -276,7 +276,7 @@ describe('RoundManagerService', () => {
             };
             tableStateManagerService.getTableById.mockResolvedValue(table);
 
-            await service.autoCompleteRound(table.id, table.playerMap, null);
+            await service.autoCompleteRound(table.id, table.playerMap);
 
             expect(tableGatewayService.emitTableEvent).toHaveBeenNthCalledWith(
                 1,
@@ -318,7 +318,7 @@ describe('RoundManagerService', () => {
             };
             tableStateManagerService.getTableById.mockResolvedValue(table);
 
-            await service.autoCompleteRound(table.id, table.playerMap, null);
+            await service.autoCompleteRound(table.id, table.playerMap);
 
             expect(tableGatewayService.emitTableEvent).toHaveBeenNthCalledWith(
                 1,
