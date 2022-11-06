@@ -1,3 +1,4 @@
+import { InternalServerErrorException } from '@nestjs/common';
 import { mockPlayer } from '@poker-moons/shared/testing';
 import { playerStatus, PlayerStatus } from '@poker-moons/shared/type';
 import {
@@ -109,6 +110,10 @@ describe('Round Utils', () => {
 
         it('should skip empty seats when 5 is passed in', () => {
             expect(incrementSeat(5, { 2: 'player_2', 5: 'player_5' })).toEqual(2);
+        });
+
+        it('should throw error if seat map is empty', () => {
+            expect(() => incrementSeat(5, {})).toThrowError(InternalServerErrorException);
         });
     });
 

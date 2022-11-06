@@ -1,3 +1,4 @@
+import { InternalServerErrorException } from '@nestjs/common';
 import type {
     Player,
     PlayerId,
@@ -125,6 +126,12 @@ export function findNextActiveSeatIfExists(
  * sequence that has a player associated with it.
  */
 export function incrementSeat(seat: SeatId, seatMap: Partial<Record<SeatId, PlayerId>>): SeatId {
+    if (Object.keys(seatMap).length === 0) {
+        throw new InternalServerErrorException(
+            'Unexpected error has occurred. (CODE: INCREMENTING_SEAT_IN_EMPTY_SEAT_MAP)',
+        );
+    }
+
     const nextSeat = ((seat + 1) % 6) as SeatId;
     const nextPlayer = seatMap[nextSeat];
 
