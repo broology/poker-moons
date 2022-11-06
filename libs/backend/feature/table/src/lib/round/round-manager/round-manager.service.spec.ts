@@ -95,7 +95,7 @@ describe('RoundManagerService', () => {
             expect(tableGatewayService.emitTableEvent).toHaveBeenCalledWith(table.id, {
                 type: 'roundChanged',
                 roundStatus: 'turn',
-                activeSeat: 2,
+                activeSeat: 1,
                 cards: table.activeRound.cards,
                 toCall: 0,
             });
@@ -104,7 +104,9 @@ describe('RoundManagerService', () => {
 
     describe('startRound', () => {
         it('should deal cards to players, emit round status changed event, and start timer for first player', async () => {
-            const table = mockServerTableState({ activeRound: mockRound({ activeSeat: 1, roundStatus: 'deal' }) });
+            const table = mockServerTableState({
+                activeRound: mockRound({ dealerSeat: 0, activeSeat: 1, roundStatus: 'deal' }),
+            });
 
             tableStateManagerService.getTableById.mockResolvedValue(table);
             deckManagerService.buildDeck.mockResolvedValue(deck);
@@ -123,7 +125,7 @@ describe('RoundManagerService', () => {
             expect(tableGatewayService.emitTableEvent).toHaveBeenCalledWith(table.id, {
                 type: 'roundChanged',
                 roundStatus: 'deal',
-                activeSeat: 1,
+                activeSeat: 3,
                 cards: [],
                 toCall: 10,
                 pot: 15,
@@ -131,11 +133,11 @@ describe('RoundManagerService', () => {
 
             expect(turnTimeService.onStart).toHaveBeenCalledWith({
                 tableId: table.id,
-                startingPlayerId: table.seatMap[1],
+                startingPlayerId: table.seatMap[3],
             });
         });
 
-        it('should set an active seat if there is not one', async () => {
+        it('should set the starting seat', async () => {
             const table = mockServerTableState({
                 activeRound: mockRound({ dealerSeat: 0, activeSeat: null, roundStatus: 'deal' }),
             });
@@ -147,14 +149,16 @@ describe('RoundManagerService', () => {
             await service.startRound(table.id);
 
             expect(tableStateManagerService.updateRound).toHaveBeenCalledWith(table.id, {
-                activeSeat: 1,
+                activeSeat: 3,
             });
         });
 
-        it('should throw InternalServerErrorException if not player is found at the active seat', async () => {
+        it('should throw InternalServerErrorException if no player is found at the active seat', async () => {
             const table = {
-                ...mockServerTableState({ activeRound: mockRound({ activeSeat: 1, roundStatus: 'deal' }) }),
-                seatMap: {},
+                ...mockServerTableState({
+                    activeRound: mockRound({ dealerSeat: 5, activeSeat: 1, roundStatus: 'deal' }),
+                }),
+                seatMap: { 0: 'player_0' as PlayerId, 2: 'player_2' as PlayerId },
             };
 
             tableStateManagerService.getTableById.mockResolvedValue(table);
@@ -226,7 +230,6 @@ describe('RoundManagerService', () => {
                 toCall: 0,
                 cards: [],
                 dealerSeat: 1,
-                activeSeat: 2,
             });
         });
 
