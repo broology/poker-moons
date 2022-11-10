@@ -32,11 +32,11 @@ export const selectActiveSeatId = createSelector(selectActiveRound, (round) => r
 export const selectDealerSeat = createSelector(selectActiveRound, (round) => round.dealerSeat);
 
 export const selectBigBlindSeat = createSelector(selectActiveRound, selectImmutablePlayerMap, (round, playerMap) => {
-    return getNextSeat(round.dealerSeat.valueOf(), playerMap);
+    return getNextSeat(getNextSeat(round.dealerSeat.valueOf(), playerMap), playerMap);
 });
 
 export const selectSmallBlindSeat = createSelector(selectActiveRound, selectImmutablePlayerMap, (round, playerMap) => {
-    return getNextSeat(getNextSeat(round.dealerSeat.valueOf(), playerMap), playerMap);
+    return getNextSeat(round.dealerSeat.valueOf(), playerMap);
 });
 
 export const selectSumRoundCalled = createSelector(selectMutablePlayerMap, (mutablePlayerMap) =>
