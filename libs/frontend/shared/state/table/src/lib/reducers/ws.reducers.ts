@@ -131,7 +131,7 @@ export const wsReducers: ReducerTypes<TableState, [ActionType<any>]>[] = [
     on(tableWsActionMap.tableStatusChanged, (state, { payload }) => {
         return {
             ...state,
-            startDate: !payload.startDate ? state.startDate : new Date(payload.startDate),
+            startDate: !payload.startDate ? null : new Date(payload.startDate),
             status: payload.status,
         };
     }),
