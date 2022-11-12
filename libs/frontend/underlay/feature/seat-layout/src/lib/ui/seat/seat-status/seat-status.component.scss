@@ -4,18 +4,6 @@
 @use '~styles/breakpoints' as bp;
 
 .seat-status {
-    min-height: 20px;
-    max-height: 35px;
-    min-width: 60px;
-    max-width: 75px;
-
-    @include bp.md {
-        min-height: 25px;
-        max-height: 40px;
-        min-width: 125px;
-        max-width: 140px;
-    }
-
     @include t.h6;
 
     display: flex;
@@ -29,6 +17,10 @@
     border-radius: 25px;
 
     text-align: center;
+    min-height: 25px;
+    max-height: 40px;
+    min-width: 125px;
+    max-width: 140px;
 
     padding: s.spacing(0.5) s.spacing(0.5);
 }

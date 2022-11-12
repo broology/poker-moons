@@ -4,14 +4,6 @@
 @use '~styles/breakpoints' as bp;
 
 .seat {
-    height: s.spacing(6);
-    width: s.spacing(19);
-
-    @include bp.md {
-        height: s.spacing(8);
-        width: s.spacing(31);
-    }
-
     display: flex;
     align-content: space-between;
     align-items: center;
@@ -23,6 +15,8 @@
     border-radius: 25px;
 
     padding: s.spacing(0.5);
+    height: s.spacing(8);
+    width: s.spacing(31);
 }
 
 .active-seat {

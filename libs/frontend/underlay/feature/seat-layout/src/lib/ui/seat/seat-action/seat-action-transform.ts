@@ -19,7 +19,7 @@ export interface SeatActionOrientationTransform {
 
 export const seatActionOrientationTransform: Record<PlayerOrientation, SeatActionOrientationTransform> = {
     bottom: {
-        cards: { ['top.px']: -210, ['left.px']: 62.5 },
+        cards: { ['top.px']: -150, ['left.px']: 87.5 },
         stack: { ['top.px']: -160, ['left.px']: 230 },
         called: { ['top.px']: -250, ['left.px']: 15 },
     },

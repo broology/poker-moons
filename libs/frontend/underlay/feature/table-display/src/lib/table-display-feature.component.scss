@@ -1,7 +1,23 @@
+@use '~styles/breakpoints' as bp;
+
 .table-display {
+    transform-origin: center;
+    transform: translate(-50%, -50%) scale(0.6);
+
+    @include bp.md {
+        transform: translate(-50%, -50%) scale(0.7);
+    }
+
+    @include bp.lg {
+        transform: translate(-50%, -50%) scale(0.85);
+    }
+
+    @include bp.xl {
+        transform: translate(-50%, -50%) scale(1);
+    }
+
     position: fixed;
     top: 50%;
     left: 50%;
     text-align: center;
-    transform: translate(-50%, -50%);
 }

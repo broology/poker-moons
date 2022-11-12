@@ -4,7 +4,7 @@
     // Hides chips on smaller devices
     display: none;
 
-    @include bp.xl {
+    @include bp.lg {
         display: inline-block;
     }
 
