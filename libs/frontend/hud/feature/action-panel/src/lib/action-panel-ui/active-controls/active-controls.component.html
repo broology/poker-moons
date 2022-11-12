@@ -1,16 +1,16 @@
 <poker-moons-hud-frame>
-    <ng-container *ngIf="round.toCall < stack; else onlyAllInCase">
+    <ng-container *ngIf="round.toCall < player.stack + player.biddingCycleCalled; else onlyAllInCase">
         <div class="raise-input">
             <form [formGroup]="raiseFormGroup" (submit)="raise()">
                 <poker-moons-dollar-input
                     [min]="minRaiseAmount"
-                    [max]="stack"
+                    [max]="player.stack"
                     [placeholder]="minRaiseAmount"
                     [control]="amountControl"
                 ></poker-moons-dollar-input>
                 <poker-moons-slider-input
                     [min]="minRaiseAmount"
-                    [max]="stack"
+                    [max]="player.stack"
                     [start]="minRaiseAmount"
                     [control]="amountControl"
                 ></poker-moons-slider-input>
@@ -22,8 +22,8 @@
                 <poker-moons-primary-button
                     [disabled]="actionLoading"
                     [label]="
-                        raiseValue === stack
-                            ? 'ALL IN\n' + (stack | chipCurrency)
+                        raiseValue === player.stack
+                            ? 'ALL IN\n' + (player.stack | chipCurrency)
                             : 'RAISE\n' + (raiseValue | chipCurrency)
                     "
                     color="primary"
@@ -33,9 +33,11 @@
             <div class="action-button-container">
                 <poker-moons-primary-button
                     [disabled]="actionLoading"
-                    [label]="called < round.toCall ? 'CALL\n' + (round.toCall | chipCurrency) : 'CHECK'"
+                    [label]="
+                        player.biddingCycleCalled < round.toCall ? 'CALL\n' + (round.toCall | chipCurrency) : 'CHECK'
+                    "
                     color="primary"
-                    (handleClick)="called < round.toCall ? call() : check()"
+                    (handleClick)="player.biddingCycleCalled < round.toCall ? call() : check()"
                 ></poker-moons-primary-button>
             </div>
             <div class="action-button-container">

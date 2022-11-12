@@ -20,6 +20,10 @@ describe('ActiveControlsComponent', () => {
             toCall: 100,
             smallBlind: 50,
         };
+        component.player = {
+            biddingCycleCalled: 10,
+            stack: 100,
+        };
         fixture.detectChanges();
     });
 
