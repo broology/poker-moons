@@ -51,6 +51,7 @@ describe('TableStateManagerService', () => {
                 },
                 roundCount: 0,
                 activeRound: {
+                    previousRaise: 10,
                     pot: 0,
                     toCall: 0,
                     turnCount: 0,
