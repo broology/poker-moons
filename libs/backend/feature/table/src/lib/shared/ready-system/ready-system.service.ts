@@ -35,6 +35,17 @@ export class ReadySystemService {
     }
 
     /**
+     * @description Gets the job id used for the `Table`'s Ready-queue job.
+     *
+     * @param tableId Id of the table.
+     *
+     * @returns JobId of table ready queue job.
+     */
+    private static getJobId(tableId: string): string {
+        return `${tableId}/ready-system`;
+    }
+
+    /**
      * @description When a player ready's in a table, this will check if all players are ready, if so starts the ready queue.
      *
      * @param tableId Id of the table a player readied on.
@@ -103,26 +114,39 @@ export class ReadySystemService {
     private async startOrResetQueue(tableId: TableId): Promise<void> {
         const canStart = await this.canStartQueue(tableId);
 
-        if (!canStart) {
-            this.logger.debug(`${tableId}: Lobby is in a state where it can not start`);
-            return;
+        if (canStart) {
+            this.logger.debug(`${tableId}: Lobby is in a state where it can start queue`);
+
+            //Start the ready quere
+            const startDate = await this.jobSchedulerService.schedule<ReadyQueueJobData>({
+                data: { tableId },
+                delayInSeconds: ReadySystemService.waitDuration.seconds,
+                jobId: ReadySystemService.buildJobId(tableId),
+                name: READY_SYSTEM_BULL_JOB,
+            });
+
+            await this.tableStateManager.updateTable(tableId, { startDate });
+
+            this.tableGatewayService.emitTableEvent(tableId, {
+                type: 'tableStatusChanged',
+                status: 'lobby',
+                startDate,
+            });
+        } else {
+            this.logger.debug(`${tableId}: Lobby is in a state where it can not start queue`);
+            const jobId = ReadySystemService.getJobId(tableId);
+
+            //Remove the ready queue job
+            await this.jobSchedulerService.remove(jobId);
+
+            await this.tableStateManager.updateTable(tableId, { startDate: null });
+
+            this.tableGatewayService.emitTableEvent(tableId, {
+                type: 'tableStatusChanged',
+                status: 'lobby',
+                startDate: null,
+            });
         }
-        this.logger.log(`${tableId}: All players are ready, triggering queue start`);
-
-        const startDate = await this.jobSchedulerService.schedule<ReadyQueueJobData>({
-            data: { tableId },
-            delayInSeconds: ReadySystemService.waitDuration.seconds,
-            jobId: ReadySystemService.buildJobId(tableId),
-            name: READY_SYSTEM_BULL_JOB,
-        });
-
-        await this.tableStateManager.updateTable(tableId, { startDate });
-
-        this.tableGatewayService.emitTableEvent(tableId, {
-            type: 'tableStatusChanged',
-            status: 'lobby',
-            startDate,
-        });
     }
 
     /**
