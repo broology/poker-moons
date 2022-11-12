@@ -27,7 +27,7 @@ export class ActiveControlsComponent implements OnInit, OnChanges {
     /**
      * @description The information about the active round.
      */
-    @Input() round!: Pick<Round, 'toCall' | 'smallBlind'>;
+    @Input() round!: Pick<Round, 'toCall' | 'smallBlind' | 'previousRaise'>;
 
     /**
      * @description The user has clicked an action and it is currently loading.
@@ -51,7 +51,7 @@ export class ActiveControlsComponent implements OnInit, OnChanges {
      * @description The minimum raisable amount the player can perform.
      */
     get minRaiseAmount(): number {
-        return Math.min(this.round.smallBlind * 2 + this.round.toCall, this.player.stack);
+        return this.round.toCall + this.round.previousRaise;
     }
 
     ngOnInit(): void {

@@ -90,6 +90,7 @@ describe('RoundManagerService', () => {
                 cards: table.activeRound.cards,
                 roundStatus: 'turn',
                 toCall: 0,
+                previousRaise: 100,
             });
 
             expect(tableGatewayService.emitTableEvent).toHaveBeenCalledWith(table.id, {
@@ -98,6 +99,7 @@ describe('RoundManagerService', () => {
                 activeSeat: 1,
                 cards: table.activeRound.cards,
                 toCall: 0,
+                previousRaise: 100,
             });
         });
     });
@@ -128,6 +130,7 @@ describe('RoundManagerService', () => {
                 activeSeat: 3,
                 cards: [],
                 toCall: 10,
+                previousRaise: 10,
                 pot: 15,
             });
 

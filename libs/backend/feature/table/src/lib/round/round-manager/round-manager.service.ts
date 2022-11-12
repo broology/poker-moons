@@ -126,6 +126,7 @@ export class RoundManagerService {
                 cards: table.activeRound.cards,
                 roundStatus: incrementRoundStatus(table.activeRound.roundStatus),
                 toCall: 0,
+                previousRaise: table.activeRound.smallBlind * 2,
             });
 
             nextSeat = incrementSeat(table.activeRound.dealerSeat, table.seatMap);
@@ -135,6 +136,7 @@ export class RoundManagerService {
                 roundStatus: incrementRoundStatus(table.activeRound.roundStatus),
                 activeSeat: nextSeat,
                 cards: table.activeRound.cards,
+                previousRaise: table.activeRound.smallBlind * 2,
                 toCall: 0,
             });
         }
@@ -294,6 +296,7 @@ export class RoundManagerService {
             cards: [],
             toCall: this.blindManagerService.getBigBlind(),
             pot: this.blindManagerService.getBigBlind() + this.blindManagerService.getSmallBlind(),
+            previousRaise: this.blindManagerService.getBigBlind(),
         });
 
         await this.blindManagerService.forceBlinds(table);

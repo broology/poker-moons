@@ -20,6 +20,7 @@ export const initialState: TableState = {
     seatMap: {},
     roundCount: 0,
     activeRound: {
+        previousRaise: 0,
         pot: 0,
         smallBlind: 0,
         toCall: 0,

@@ -17,6 +17,7 @@ describe('ActiveControlsComponent', () => {
         fixture = TestBed.createComponent(ActiveControlsComponent);
         component = fixture.componentInstance;
         component.round = {
+            previousRaise: 50,
             toCall: 100,
             smallBlind: 50,
         };

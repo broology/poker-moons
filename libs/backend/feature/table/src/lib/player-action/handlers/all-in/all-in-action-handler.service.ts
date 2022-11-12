@@ -5,6 +5,7 @@ import {
     PerformPlayerActionResponse,
     Player,
     PokerMoonsError,
+    Round,
     ServerTableState,
 } from '@poker-moons/shared/type';
 import { Either, isRight, right } from 'fp-ts/lib/Either';
@@ -70,10 +71,12 @@ export class AllInActionHandlerService {
             // Increment the pot
             await this.potManagerService.incrementPot(table.id, table.activeRound.pot, player.stack);
 
-            // Update toCall amount on round
-            await this.tableStateManagerService.updateRound(table.id, {
-                toCall: player.biddingCycleCalled + player.stack,
-            });
+            const roundUpdates: Partial<Round> = {
+                toCall: Math.max(table.activeRound.toCall, player.biddingCycleCalled + player.stack),
+                previousRaise: Math.max(player.stack, table.activeRound.previousRaise),
+            };
+
+            await this.tableStateManagerService.updateRound(table.id, roundUpdates);
 
             // Emit the PlayerTurnEvent to the frontend
             const newActiveSeat = findNextActiveSeatIfExists(table.activeRound.activeSeat, table, playerStatuses);
@@ -83,6 +86,10 @@ export class AllInActionHandlerService {
                 newStatus: 'all-in',
                 newActiveSeatId: newActiveSeat,
                 bidAmount: player.stack,
+            });
+            this.tableGatewayService.emitTableEvent(table.id, {
+                type: 'roundChanged',
+                ...roundUpdates,
             });
 
             return this.roundManagerService.startNextTurn(table, newActiveSeat, playerStatuses);
