@@ -9,7 +9,7 @@ import {
     SimpleChanges,
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { PlayerAction, Round } from '@poker-moons/shared/type';
+import { Player, PlayerAction, Round } from '@poker-moons/shared/type';
 import { map, Observable, startWith } from 'rxjs';
 
 @Component({
@@ -20,21 +20,14 @@ import { map, Observable, startWith } from 'rxjs';
 })
 export class ActiveControlsComponent implements OnInit, OnChanges {
     /**
-     * @description The `called` amount of the player this round.
-     *
-     * - Used to detect if we are calling or checking as a base.
+     * @description The client player data.
      */
-    @Input() called!: number;
-
-    /**
-     * @description The `stack` available for the user.
-     */
-    @Input() stack!: number;
+    @Input() player!: Pick<Player, 'biddingCycleCalled' | 'stack'>;
 
     /**
      * @description The information about the active round.
      */
-    @Input() round!: Pick<Round, 'toCall' | 'smallBlind'>;
+    @Input() round!: Pick<Round, 'toCall' | 'smallBlind' | 'previousRaise'>;
 
     /**
      * @description The user has clicked an action and it is currently loading.
@@ -58,7 +51,7 @@ export class ActiveControlsComponent implements OnInit, OnChanges {
      * @description The minimum raisable amount the player can perform.
      */
     get minRaiseAmount(): number {
-        return Math.min(this.round.smallBlind * 2 + this.round.toCall, this.stack);
+        return this.round.toCall + this.round.previousRaise;
     }
 
     ngOnInit(): void {
@@ -96,7 +89,7 @@ export class ActiveControlsComponent implements OnInit, OnChanges {
 
     raise(): void {
         if (this.raiseFormGroup.valid) {
-            if (this.amountControl.value === this.stack) {
+            if (this.amountControl.value === this.player.stack) {
                 return this.allIn();
             }
 
@@ -115,7 +108,7 @@ export class ActiveControlsComponent implements OnInit, OnChanges {
         this.raiseFormGroup = new FormGroup({
             amount: new FormControl(
                 this.minRaiseAmount,
-                Validators.compose([Validators.min(this.minRaiseAmount), Validators.max(this.stack)]),
+                Validators.compose([Validators.min(this.minRaiseAmount), Validators.max(this.player.stack)]),
             ),
         });
 

@@ -12,6 +12,7 @@ export function mockRound(overrides: DeepPartial<Round> = {}): Round {
         smallBlind: 50,
         activeSeat: 0,
         dealerSeat: 1,
+        previousRaise: 50,
         toCall: 100,
         turnCount: 0,
         cards: [],

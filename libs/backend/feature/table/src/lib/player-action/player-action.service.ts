@@ -38,31 +38,31 @@ export class PlayerActionService {
 
         switch (dto.action.type) {
             case 'all-in':
-                pipe(
+                await pipe(
                     this.allInActionHandlerService.canAllIn(table, player, dto.action),
                     async (...args) => await this.allInActionHandlerService.allIn(...args),
                 );
                 break;
             case 'call':
-                pipe(
+                await pipe(
                     this.callActionHandlerService.canCall(table, player, dto.action),
                     async (...args) => await this.callActionHandlerService.call(...args),
                 );
                 break;
             case 'check':
-                pipe(
+                await pipe(
                     this.checkActionHandlerService.canCheck(table, player, dto.action),
                     async (...args) => await this.checkActionHandlerService.check(...args),
                 );
                 break;
             case 'fold':
-                pipe(
+                await pipe(
                     this.foldActionHandlerService.canFold(table, player, dto.action),
                     async (...args) => await this.foldActionHandlerService.fold(...args),
                 );
                 break;
             case 'raise':
-                pipe(
+                await pipe(
                     this.raiseActionHandlerService.canRaise(table, player, dto.action),
                     async (...args) => await this.raiseActionHandlerService.raise(...args),
                 );

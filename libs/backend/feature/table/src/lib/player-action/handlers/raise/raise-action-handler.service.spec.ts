@@ -64,11 +64,13 @@ describe('RaiseActionHandlerService', () => {
         });
 
         it('should return PokerMoonsError if stack is less than toCall amount', async () => {
-            const table = mockServerTableState({ activeRound: { activeSeat: 1, toCall: 100, smallBlind: 5 } });
+            const table = mockServerTableState({
+                activeRound: { activeSeat: 1, toCall: 200, previousRaise: 100, smallBlind: 5 },
+            });
 
-            const result = service.canRaise(table, { ...player, stack: 50 }, { ...action, amount: 90 });
+            const result = service.canRaise(table, { ...player, stack: 100 }, { ...action, amount: 90 });
 
-            expect(result).toEqual(left(`Minimum to raise is 110.`));
+            expect(result).toEqual(left(`Minimum to raise is 300.`));
         });
 
         it('should return PokerMoonsError if attempting to raise more than available in stack', async () => {
@@ -95,7 +97,8 @@ describe('RaiseActionHandlerService', () => {
             expect(potManagerService.incrementPot).toHaveBeenCalledWith(table.id, table.activeRound.pot, delta);
 
             expect(tableStateManagerService.updateRound).toHaveBeenCalledWith(table.id, {
-                toCall: action.amount,
+                toCall: table.activeRound.toCall + action.amount,
+                previousRaise: action.amount,
             });
 
             expect(tableGatewayService.emitTableEvent).toHaveBeenCalledWith(table.id, {
@@ -104,6 +107,11 @@ describe('RaiseActionHandlerService', () => {
                 newStatus: 'raised',
                 newActiveSeatId: 2,
                 bidAmount: delta,
+            });
+            expect(tableGatewayService.emitTableEvent).toHaveBeenCalledWith(table.id, {
+                type: 'roundChanged',
+                toCall: table.activeRound.toCall + action.amount,
+                previousRaise: action.amount,
             });
 
             expect(roundManagerService.startNextTurn).toHaveBeenCalled();

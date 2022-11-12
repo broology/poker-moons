@@ -77,6 +77,7 @@ describe('AllInActionHandlerService', () => {
 
             expect(tableStateManagerService.updateRound).toHaveBeenCalledWith(table.id, {
                 toCall: player.biddingCycleCalled + player.stack,
+                previousRaise: player.stack,
             });
 
             expect(tableGatewayService.emitTableEvent).toHaveBeenCalledWith(table.id, {
@@ -85,6 +86,11 @@ describe('AllInActionHandlerService', () => {
                 newStatus: 'all-in',
                 newActiveSeatId: 2,
                 bidAmount: player.stack,
+            });
+            expect(tableGatewayService.emitTableEvent).toHaveBeenCalledWith(table.id, {
+                type: 'roundChanged',
+                toCall: player.biddingCycleCalled + player.stack,
+                previousRaise: player.stack,
             });
 
             expect(roundManagerService.startNextTurn).toHaveBeenCalled();

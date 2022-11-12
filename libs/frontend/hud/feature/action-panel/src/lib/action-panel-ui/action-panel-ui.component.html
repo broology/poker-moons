@@ -2,8 +2,7 @@
     <poker-moons-active-controls
         *ngSwitchCase="'active'"
         [actionLoading]="loaders.performAction"
-        [called]="clientMutablePlayer!.biddingCycleCalled"
-        [stack]="clientMutablePlayer!.stack"
+        [player]="clientMutablePlayer!"
         [round]="round"
         (playerActionEmitter)="playerActionEmitter.emit($event)"
     ></poker-moons-active-controls>

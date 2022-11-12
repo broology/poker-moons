@@ -5,6 +5,7 @@ import {
     Player,
     PokerMoonsError,
     RaisePlayerAction,
+    Round,
     ServerTableState,
 } from '@poker-moons/shared/type';
 import { Either, isRight, left, right } from 'fp-ts/lib/Either';
@@ -68,9 +69,12 @@ export class RaiseActionHandlerService {
             await this.potManagerService.incrementPot(table.id, table.activeRound.pot, delta);
 
             // Update toCall amount on round
-            await this.tableStateManagerService.updateRound(table.id, {
+            const roundUpdates: Partial<Round> = {
                 toCall: action.right.action.amount,
-            });
+                previousRaise: action.right.action.amount,
+            };
+
+            await this.tableStateManagerService.updateRound(table.id, roundUpdates);
 
             // Emit the PlayerTurnEvent to the frontend
             const newActiveSeat = findNextActiveSeatIfExists(table.activeRound.activeSeat, table, playerStatuses);
@@ -80,6 +84,10 @@ export class RaiseActionHandlerService {
                 newStatus: 'raised',
                 newActiveSeatId: newActiveSeat,
                 bidAmount: delta,
+            });
+            this.tableGatewayService.emitTableEvent(table.id, {
+                type: 'roundChanged',
+                ...roundUpdates,
             });
 
             return this.roundManagerService.startNextTurn(table, newActiveSeat, playerStatuses);
@@ -112,7 +120,7 @@ export class RaiseActionHandlerService {
     ): Either<PokerMoonsError, { table: ServerTableState; player: Player; action: RaisePlayerAction }> {
         const playerTurn = validatePlayerTurn(table, player, action);
 
-        const minRaise = table.activeRound.toCall + table.activeRound.smallBlind * 2;
+        const minRaise = table.activeRound.toCall + table.activeRound.previousRaise;
         const delta = action.amount - player.biddingCycleCalled;
 
         if (isRight(playerTurn))

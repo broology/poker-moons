@@ -64,10 +64,6 @@ export const wsReducers: ReducerTypes<TableState, [ActionType<any>]>[] = [
             activeRound: {
                 ...round,
                 pot: round.pot + payload.bidAmount,
-                toCall:
-                    mutablePlayer.biddingCycleCalled + bidAmount > round.toCall
-                        ? mutablePlayer.biddingCycleCalled + bidAmount
-                        : round.toCall,
                 turnCount: round.turnCount + 1,
                 activeSeat: newActiveSeatId,
             },

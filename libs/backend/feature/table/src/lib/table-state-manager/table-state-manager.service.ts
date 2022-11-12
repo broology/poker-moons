@@ -22,6 +22,7 @@ const initialTableState: ServerTableState = {
         activeSeat: null,
         dealerSeat: 0,
         smallBlind: 5,
+        previousRaise: 10,
         cards: [],
     },
     deck: [],
