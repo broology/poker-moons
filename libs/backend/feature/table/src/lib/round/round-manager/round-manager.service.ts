@@ -323,10 +323,13 @@ export class RoundManagerService {
 
         table = await this.tableStateManagerService.getTableById(table.id);
 
-        const updatedPlayerMap = table.playerMap;
-
         // Determine and emit winner of round and update player's stacks
-        await this.winnerDeterminerService.determineWinner(table.id, updatedPlayerMap, table.activeRound);
+        await this.winnerDeterminerService.determineWinner(table.id, table.playerMap, table.activeRound);
+
+        // Refetch table to avoid race condition
+        table = await this.tableStateManagerService.getTableById(table.id);
+
+        const updatedPlayerMap = table.playerMap;
 
         // Reset players to waiting at the end of the round
         for (const player of Object.values(table.playerMap)) {
