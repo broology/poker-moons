@@ -109,8 +109,12 @@ describe('ReadySystemService', () => {
             await service[fn](tableId);
 
             expect(jobSchedulerService.schedule).not.toHaveBeenCalled();
-            expect(tableGatewayService.emitTableEvent).not.toHaveBeenCalled();
-            expect(tableStateManager.updateTable).not.toHaveBeenCalledWith(tableId, { startDate });
+            expect(tableGatewayService.emitTableEvent).toHaveBeenCalledWith(tableId, {
+                type: 'tableStatusChanged',
+                status: 'lobby',
+                startDate: null,
+            });
+            expect(tableStateManager.updateTable).toHaveBeenCalledWith(tableId, { startDate: null });
         });
 
         it('should not start queue if less than two players in game', async () => {
@@ -137,8 +141,12 @@ describe('ReadySystemService', () => {
             await service.onPlayerReadied(tableId);
 
             expect(jobSchedulerService.schedule).not.toHaveBeenCalled();
-            expect(tableGatewayService.emitTableEvent).not.toHaveBeenCalled();
-            expect(tableStateManager.updateTable).not.toHaveBeenCalledWith(tableId, { startDate });
+            expect(tableGatewayService.emitTableEvent).toHaveBeenCalledWith(tableId, {
+                type: 'tableStatusChanged',
+                status: 'lobby',
+                startDate: null,
+            });
+            expect(tableStateManager.updateTable).toHaveBeenCalledWith(tableId, { startDate: null });
         });
 
         it('should not start queue if not all players are ready', async () => {
@@ -167,8 +175,12 @@ describe('ReadySystemService', () => {
             await service.onPlayerReadied(tableId);
 
             expect(jobSchedulerService.schedule).not.toHaveBeenCalled();
-            expect(tableGatewayService.emitTableEvent).not.toHaveBeenCalled();
-            expect(tableStateManager.updateTable).not.toHaveBeenCalledWith(tableId, { startDate });
+            expect(tableGatewayService.emitTableEvent).toHaveBeenCalledWith(tableId, {
+                type: 'tableStatusChanged',
+                status: 'lobby',
+                startDate: null,
+            });
+            expect(tableStateManager.updateTable).toHaveBeenCalledWith(tableId, { startDate: null });
         });
     });
 
