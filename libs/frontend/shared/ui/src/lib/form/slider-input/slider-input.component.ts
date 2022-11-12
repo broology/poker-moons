@@ -1,5 +1,4 @@
-import { ChangeContext, Options } from '@angular-slider/ngx-slider';
-import { Component, EventEmitter, Input } from '@angular/core';
+import { AfterContentInit, Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 @Component({
@@ -7,47 +6,48 @@ import { FormControl } from '@angular/forms';
     templateUrl: './slider-input.component.html',
     styleUrls: ['./slider-input.component.scss'],
 })
-export class SliderInputComponent {
+export class SliderInputComponent implements AfterContentInit {
+    /**
+     * @description Reference to the raw `<input type='slider'.../>`
+     */
+    @ViewChild('slider') input!: ElementRef;
+
     /**
      * @description The minimum value of the slider range.
      */
-    @Input() set min(min: number) {
-        this.options.floor = min;
-    }
+    @Input() min!: number;
 
     /**
      * @description The maximum value of the slider range.
      */
-    @Input() set max(max: number) {
-        this.options.ceil = max;
-    }
-
-    /**
-     * @description The value the slider will start at.
-     */
-    @Input() set start(start: number) {
-        this._value = start;
-    }
+    @Input() max!: number;
 
     /**
      * @description The form control to be updated when the slider changes values.
      */
     @Input() control!: FormControl<number>;
 
-    _value!: number;
+    ngAfterContentInit(): void {
+        this.control.valueChanges.subscribe((value) => {
+            const element = this.input.nativeElement;
 
-    options: Options = {
-        hideLimitLabels: true,
-        hidePointerLabels: true,
-        showSelectionBar: true,
-        step: 25,
-    };
+            const style = getComputedStyle(element);
 
-    manualRefresh = new EventEmitter();
+            element.style.background = this.updateLinearGradient(style.background, value);
+        });
+    }
 
-    changed(context: ChangeContext) {
-        this.control.setValue(context.value);
+    /**
+     * @description Updates the current `style.background`'s linear gradient to fit the current value.
+     *
+     * @param background
+     * @param value
+     */
+    private updateLinearGradient(background: string, value: number): string {
+        const percentage = Math.round(((value - this.min) / (this.max - this.min)) * 100);
 
-        this.manualRefresh.emit();
+        const update = background.replace(/[0-9]+?%/g, `${percentage}%`);
+
+        return update;
     }
 }
