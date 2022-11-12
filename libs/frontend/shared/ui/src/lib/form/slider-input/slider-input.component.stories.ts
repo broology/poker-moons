@@ -25,6 +25,5 @@ export const primary = Template.bind({});
 primary.args = {
     min: 100,
     max: 500,
-    start: 125,
     control: new FormControl(),
 };
