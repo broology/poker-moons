@@ -17,6 +17,7 @@ describe('SliderInputComponent', () => {
     beforeEach(() => {
         fixture = TestBed.createComponent(SliderInputComponent);
         component = fixture.componentInstance;
+        component.value = 100;
         component.max = 100;
         component.min = 500;
         component.control = new FormControl();

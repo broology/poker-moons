@@ -27,6 +27,11 @@ export class SliderInputComponent implements AfterContentInit {
      */
     @Input() control!: FormControl<number>;
 
+    /**
+     * @description The control.value that will ensure the component will update if the form is shared among multiple inputs.
+     */
+    @Input() value!: number;
+
     ngAfterContentInit(): void {
         this.control.valueChanges.subscribe((value) => {
             const element = this.input.nativeElement;

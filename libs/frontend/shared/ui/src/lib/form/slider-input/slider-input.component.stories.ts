@@ -23,6 +23,7 @@ const Template: Story<SliderInputComponent> = (args: SliderInputComponent) => ({
 
 export const primary = Template.bind({});
 primary.args = {
+    value: 100,
     min: 100,
     max: 500,
     control: new FormControl(),

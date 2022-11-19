@@ -27,6 +27,7 @@ primary.args = {
         stack: 200,
     },
     round: {
+        previousRaise: 100,
         toCall: 100,
         smallBlind: 50,
     },
@@ -35,6 +36,7 @@ primary.args = {
 export const checkCase = Template.bind({});
 checkCase.args = {
     round: {
+        previousRaise: 100,
         toCall: 100,
         smallBlind: 50,
     },
@@ -47,6 +49,7 @@ checkCase.args = {
 export const callCase = Template.bind({});
 callCase.args = {
     round: {
+        previousRaise: 100,
         toCall: 100,
         smallBlind: 50,
     },
@@ -59,6 +62,7 @@ callCase.args = {
 export const onlyAllInCase = Template.bind({});
 onlyAllInCase.args = {
     round: {
+        previousRaise: 100,
         toCall: 100,
         smallBlind: 50,
     },

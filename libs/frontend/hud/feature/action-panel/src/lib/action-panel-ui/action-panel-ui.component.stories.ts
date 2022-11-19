@@ -34,6 +34,7 @@ const defaultArgs = {
     round: mockRound({ activeSeat: 0, toCall: 100 }),
     tableStatus: 'lobby' as const,
     startDate: null,
+    loaders: {} as never,
 };
 
 export const primary = Template.bind({});
