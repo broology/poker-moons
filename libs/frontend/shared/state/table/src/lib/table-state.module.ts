@@ -5,6 +5,7 @@ import { StoreModule } from '@ngrx/store';
 import { TableStateApiEffects } from './effects/api-effects';
 import { TableStateAuthEffects } from './effects/auth-effects';
 import { TableStatePopupEffects } from './effects/pop-up.effects';
+import { TableStateSoundEffects } from './effects/sound-effects';
 import { TableStateWsEffects } from './effects/ws.effects';
 import { storeFeature } from './table.state';
 
@@ -16,6 +17,7 @@ import { storeFeature } from './table.state';
             TableStateApiEffects,
             TableStateAuthEffects,
             TableStatePopupEffects,
+            TableStateSoundEffects,
             TableStateWsEffects,
         ]),
     ],

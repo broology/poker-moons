@@ -1,4 +1,5 @@
 {
+    "name": "backend-utility",
     "$schema": "../../../node_modules/nx/schemas/project-schema.json",
     "sourceRoot": "libs/backend/utility/src",
     "projectType": "library",

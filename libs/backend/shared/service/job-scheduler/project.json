@@ -1,4 +1,5 @@
 {
+    "name": "backend-shared-service-job-scheduler",
     "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
     "sourceRoot": "libs/backend/shared/service/job-scheduler/src",
     "projectType": "library",

@@ -31,6 +31,7 @@
             "@poker-moons/frontend/shared/state/table": ["libs/frontend/shared/state/table/src/index.ts"],
             "@poker-moons/frontend/shared/timer-moon": ["libs/frontend/shared/timer-moon/src/index.ts"],
             "@poker-moons/frontend/shared/ui": ["libs/frontend/shared/ui/src/index.ts"],
+            "@poker-moons/frontend/shared/util/audio": ["libs/frontend/shared/util/audio/src/index.ts"],
             "@poker-moons/frontend/shared/util/auth": ["libs/frontend/shared/util/auth/src/index.ts"],
             "@poker-moons/frontend/shared/util/environment": ["libs/frontend/shared/util/environment/src/index.ts"],
             "@poker-moons/frontend/shared/util/styles": ["libs/frontend/shared/util/styles/src/index.ts"],

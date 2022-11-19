@@ -1,4 +1,5 @@
 {
+    "name": "frontend-hud-feature-action-panel",
     "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
     "projectType": "library",
     "sourceRoot": "libs/frontend/hud/feature/action-panel/src",

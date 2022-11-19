@@ -1,4 +1,5 @@
 {
+    "name": "backend-data-access-state",
     "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
     "sourceRoot": "libs/backend/data-access/state/src",
     "projectType": "library",
