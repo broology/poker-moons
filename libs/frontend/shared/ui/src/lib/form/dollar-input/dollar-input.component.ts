@@ -26,4 +26,9 @@ export class DollarInputComponent {
      * @description Minimum number allowed.
      */
     @Input() max = Number.MAX_SAFE_INTEGER;
+
+    /**
+     * @description The control.value that will ensure the component will update if the form is shared among multiple inputs.
+     */
+    @Input() value!: number;
 }
