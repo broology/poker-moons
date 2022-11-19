@@ -1,4 +1,5 @@
 {
+    "name": "backend-feature-table",
     "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
     "sourceRoot": "libs/backend/feature/table/src",
     "projectType": "library",

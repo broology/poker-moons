@@ -1,4 +1,5 @@
 {
+    "name": "frontend-underlay-feature-table-display",
     "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
     "projectType": "library",
     "sourceRoot": "libs/frontend/underlay/feature/table-display/src",

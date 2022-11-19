@@ -1,4 +1,5 @@
 {
+    "name": "frontend-hud-feature-winner-display",
     "projectType": "library",
     "sourceRoot": "libs/frontend/hud/feature/winner-display/src",
     "prefix": "poker-moons",

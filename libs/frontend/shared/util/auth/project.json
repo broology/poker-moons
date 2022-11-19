@@ -1,4 +1,5 @@
 {
+    "name": "frontend-shared-util-auth",
     "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
     "projectType": "library",
     "sourceRoot": "libs/frontend/shared/util/auth/src",
