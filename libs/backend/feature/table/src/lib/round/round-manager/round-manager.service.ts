@@ -410,7 +410,6 @@ export class RoundManagerService {
             await this.tableStateManagerService.updateRound(table.id, roundChanges);
 
             await this.tableStateManagerService.updateAllPlayers(table.id, {
-                status: 'waiting',
                 roundCalled: 0,
                 biddingCycleCalled: 0,
             });
