@@ -34,24 +34,24 @@ export function isRoundComplete(roundStatus: RoundStatus, playerStatuses: Player
     const allIn = countOccurrences(activeStatuses, 'all-in');
 
     // Handles the case where everyone except for 1 player folds, resulting in the end of the round
-    if (folded === playerStatuses.length - 1) {
+    if (folded === activeStatuses.length - 1) {
         return true;
     }
 
     if (roundStatus === 'river') {
         // If it's the river and one player has raised or gone all-in and everyone else has either called or folded, the round is over
-        if ((raised === 1 || allIn === 1) && called + folded === playerStatuses.length - 1) {
+        if ((raised === 1 || allIn === 1) && called + folded === activeStatuses.length - 1) {
             return true;
         }
 
         // If it's the river and everyone checks or folds, the round is over
-        if (checked + folded === playerStatuses.length) {
+        if (checked + folded === activeStatuses.length) {
             return true;
         }
     }
 
     // If everyone is folded then the round is complete.
-    if (folded === playerStatuses.length) {
+    if (folded === activeStatuses.length) {
         return true;
     }
 
