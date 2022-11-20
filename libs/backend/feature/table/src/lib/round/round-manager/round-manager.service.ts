@@ -87,7 +87,7 @@ export class RoundManagerService {
                 const playerChanges = {
                     roundCalled: player.biddingCycleCalled + player.roundCalled,
                     biddingCycleCalled: 0,
-                    status: (player.status === 'folded' || player.status === 'all-in'
+                    status: (player.status === 'folded' || player.status === 'all-in' || player.status === 'out'
                         ? player.status
                         : 'waiting') as PlayerStatus,
                 };
@@ -337,6 +337,11 @@ export class RoundManagerService {
 
         // Reset players to waiting at the end of the round
         for (const player of Object.values(table.playerMap)) {
+            // Don't set players that are out to waiting
+            if (player.status === 'out') {
+                continue;
+            }
+
             updatedPlayerMap[player.id] = {
                 ...player,
                 status: 'waiting',
