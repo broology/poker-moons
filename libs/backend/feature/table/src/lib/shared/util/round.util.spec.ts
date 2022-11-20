@@ -197,6 +197,20 @@ describe('Round Utils', () => {
                 ),
             ).toEqual(true);
         });
+        it('should return true if on player is out', () => {
+            expect(
+                hasBiddingCycleEnded(
+                    [
+                        { status: 'called', biddingCycleCalled: 100 },
+                        { status: 'all-in', biddingCycleCalled: 100 },
+                        { status: 'called', biddingCycleCalled: 100 },
+                        { status: 'called', biddingCycleCalled: 100 },
+                        { status: 'out', biddingCycleCalled: 0 },
+                    ],
+                    { toCall: 100 },
+                ),
+            ).toEqual(true);
+        });
 
         it('should return true if all players match the to call', () => {
             expect(

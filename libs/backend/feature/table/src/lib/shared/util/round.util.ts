@@ -16,15 +16,22 @@ const countOccurrences = (playerStatuses: PlayerStatus[], status: PlayerStatus) 
     playerStatuses.reduce((index, value) => (value === status ? index + 1 : index), 0);
 
 /**
+ * @description Removes all players that are not active playing at the table (have left.)
+ */
+const getActivePlayerStatuses = (playerStatuses: PlayerStatus[]) => playerStatuses.filter((status) => status !== 'out');
+
+/**
  * @description Provided the status of the round and statuses of each of the players in a round, returns true if
  * the round is complete and the winner determiner should be called or false if the round should continue.
  */
 export function isRoundComplete(roundStatus: RoundStatus, playerStatuses: PlayerStatus[]): boolean {
-    const checked = countOccurrences(playerStatuses, 'checked');
-    const folded = countOccurrences(playerStatuses, 'folded');
-    const called = countOccurrences(playerStatuses, 'called');
-    const raised = countOccurrences(playerStatuses, 'raised');
-    const allIn = countOccurrences(playerStatuses, 'all-in');
+    const activeStatuses = getActivePlayerStatuses(playerStatuses);
+
+    const checked = countOccurrences(activeStatuses, 'checked');
+    const folded = countOccurrences(activeStatuses, 'folded');
+    const called = countOccurrences(activeStatuses, 'called');
+    const raised = countOccurrences(activeStatuses, 'raised');
+    const allIn = countOccurrences(activeStatuses, 'all-in');
 
     // Handles the case where everyone except for 1 player folds, resulting in the end of the round
     if (folded === playerStatuses.length - 1) {
@@ -55,12 +62,14 @@ export function isRoundComplete(roundStatus: RoundStatus, playerStatuses: Player
  * @description Determines if a round a can be auto-completed, which occurs when less than 2 players are actively bidden.
  */
 export function isAutoCompletable(playerStatuses: PlayerStatus[]): boolean {
+    const activeStatuses = getActivePlayerStatuses(playerStatuses);
+
     // If there is ever a point where every player has all-ined or folded, or every player but one has all-ined or folded, the round is over
     if (
-        countOccurrences(playerStatuses, 'all-in') + countOccurrences(playerStatuses, 'folded') ===
-            playerStatuses.length - 1 ||
-        countOccurrences(playerStatuses, 'all-in') + countOccurrences(playerStatuses, 'folded') ===
-            playerStatuses.length
+        countOccurrences(activeStatuses, 'all-in') + countOccurrences(activeStatuses, 'folded') ===
+            activeStatuses.length - 1 ||
+        countOccurrences(activeStatuses, 'all-in') + countOccurrences(activeStatuses, 'folded') ===
+            activeStatuses.length
     ) {
         return true;
     }
@@ -187,7 +196,9 @@ export function incrementRoundStatus(status: RoundStatus): RoundStatus {
  * status will need to change.
  */
 export function hasEveryoneTakenTurn(playerStatuses: PlayerStatus[]): boolean {
-    if (countOccurrences(playerStatuses, 'waiting') === 0) {
+    const activeStatuses = getActivePlayerStatuses(playerStatuses);
+
+    if (countOccurrences(activeStatuses, 'waiting') === 0) {
         return true;
     }
 
@@ -198,7 +209,9 @@ export function hasEveryoneTakenTurn(playerStatuses: PlayerStatus[]): boolean {
  * @description If all but one player is folded, then they automatically win, thus bidding cycle is over.
  */
 export function hasEveryoneButOneFolded(playerStatuses: PlayerStatus[]): boolean {
-    if (countOccurrences(playerStatuses, 'folded') === playerStatuses.length - 1) {
+    const activeStatuses = getActivePlayerStatuses(playerStatuses);
+
+    if (countOccurrences(activeStatuses, 'folded') === activeStatuses.length - 1) {
         return true;
     }
 
@@ -215,7 +228,12 @@ export function hasBiddingCycleEnded(
     round: Pick<Round, 'toCall'>,
 ): boolean {
     for (const player of players) {
-        if (player.status !== 'all-in' && player.status !== 'folded' && player.biddingCycleCalled < round.toCall) {
+        if (
+            player.status !== 'all-in' &&
+            player.status !== 'folded' &&
+            player.status !== 'out' &&
+            player.biddingCycleCalled < round.toCall
+        ) {
             return false;
         }
     }
