@@ -160,7 +160,8 @@ export class WinnerDeterminerService {
 
             for (const winner of winnersToPay) {
                 winnerAmountWonMap[winner.player.id] = {
-                    amountWon: collectionAmount / winnersToPay.length,
+                    amountWon:
+                        collectionAmount / winnersToPay.length + (winnerAmountWonMap[winner.player.id]?.amountWon ?? 0),
                     category: winner.category,
                 };
             }
