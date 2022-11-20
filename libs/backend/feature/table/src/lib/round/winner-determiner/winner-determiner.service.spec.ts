@@ -83,21 +83,20 @@ describe('WinnerDeterminerService', () => {
     describe('determineWinner', () => {
         it('should emit single winner and update their stack in the state', async () => {
             potManagerService.buildPot.mockReturnValueOnce(400).mockReturnValueOnce(0);
-            potManagerService.splitPot.mockReturnValueOnce(200).mockReturnValueOnce(200);
 
             await service.determineWinner(tableId, { [player1.id]: player1, [player3.id]: player3 }, round);
 
             expect(tableStateManagerService.updateTablePlayer).toHaveBeenCalledWith(tableId, player3.id, {
-                stack: player3.stack + 200,
+                stack: player3.stack + 400,
             });
 
             expect(tableGatewayService.emitTableEvent).toHaveBeenCalledWith(tableId, {
                 type: 'winner',
                 winners: {
                     [player3.id]: {
-                        amountWon: 200,
+                        amountWon: 400,
                         cards: player3.cards,
-                        displayText: `${player3.username} won $200.00 with a four of a kind`,
+                        displayText: `${player3.username} won $400.00 with a four of a kind`,
                     },
                 },
             });
@@ -105,7 +104,6 @@ describe('WinnerDeterminerService', () => {
 
         it('should emit multiple winners if there is a tie', async () => {
             potManagerService.buildPot.mockReturnValueOnce(400).mockReturnValueOnce(0);
-            potManagerService.splitPot.mockReturnValueOnce(200).mockReturnValueOnce(200);
 
             await service.determineWinner(
                 tableId,
@@ -132,7 +130,6 @@ describe('WinnerDeterminerService', () => {
 
         it('should emit multiple winners with varying amounts won if side pots have formed', async () => {
             potManagerService.buildPot.mockReturnValueOnce(1600).mockReturnValueOnce(600).mockReturnValueOnce(0);
-            potManagerService.splitPot.mockReturnValueOnce(1000).mockReturnValueOnce(600);
 
             await service.determineWinner(
                 tableId,
@@ -165,7 +162,6 @@ describe('WinnerDeterminerService', () => {
 
         it('should not display cards if only single player in contention', async () => {
             potManagerService.buildPot.mockReturnValueOnce(1600).mockReturnValueOnce(600).mockReturnValueOnce(0);
-            potManagerService.splitPot.mockReturnValueOnce(1000).mockReturnValueOnce(600);
 
             await service.determineWinner(
                 tableId,
@@ -190,7 +186,6 @@ describe('WinnerDeterminerService', () => {
 
         it('should display cards at least 2 players are in contention', async () => {
             potManagerService.buildPot.mockReturnValueOnce(1600).mockReturnValueOnce(600).mockReturnValueOnce(0);
-            potManagerService.splitPot.mockReturnValueOnce(1000).mockReturnValueOnce(600);
 
             await service.determineWinner(
                 tableId,

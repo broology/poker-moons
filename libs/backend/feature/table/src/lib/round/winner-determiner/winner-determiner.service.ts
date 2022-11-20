@@ -6,7 +6,12 @@ import { TableStateManagerService } from '../../table-state-manager/table-state-
 import { PotManagerService } from '../pot-manager/pot-manager.service';
 import { compareHands, playerHasTwoCards, tableHasFiveCards } from './util/rank';
 import { playerMissingCards } from './winner-determiner.copy';
-import type { Hand, PlayerWithHand, RankHandReponse as RankHandResponse } from './winner-determiner.types';
+import type {
+    Hand,
+    HandCategory,
+    PlayerWithHand,
+    RankHandReponse as RankHandResponse,
+} from './winner-determiner.types';
 import currency = require('currency.js');
 
 @Injectable()
@@ -128,47 +133,54 @@ export class WinnerDeterminerService {
         const players = Object.values(playerMap);
         const sortedHands = compareHands(playersWithHand);
 
+        const winnerAmountWonMap: Record<PlayerId, { amountWon: number; category: HandCategory }> = {};
+
         // Loop through until no unclaimed chips in pot
         while (this.potManagerService.buildPot(players) > 0) {
+            // An array of players that still have a `roundCalled` amount left
+            const playersWithCommitment = players.filter((player) => player.roundCalled > 0);
+
+            const roundCalledAmounts = playersWithCommitment.map((player) => player.roundCalled);
+            const minRoundCalled = Math.min(...roundCalledAmounts);
+
+            let collectionAmount = 0;
+            collectionAmount += minRoundCalled * playersWithCommitment.length;
+
             // An array of non-folded players that still have a `roundCalled` amount left
-            const playersWithCommitment = sortedHands.filter((hand) => playerMap[hand.player.id].roundCalled > 0);
+            const activePlayersWithCommitment = sortedHands.filter((hand) => playerMap[hand.player.id].roundCalled > 0);
 
             // An array of winners that need to be paid out in this iteration
-            const winnersToPay = playersWithCommitment.filter(
-                (player) => player.score === playersWithCommitment[0].score,
+            const winnersToPay = activePlayersWithCommitment.filter(
+                (player) => player.score === activePlayersWithCommitment[0].score,
             );
 
-            let currentCommitment = 0;
-            let collectionAmount = 0;
+            for (const player of playersWithCommitment) {
+                player.roundCalled -= minRoundCalled;
+            }
 
             for (const winner of winnersToPay) {
-                let collectedSidePot = 0;
-                currentCommitment = winner.player.roundCalled;
-
-                // Collect commitment from all players who have money in pot
-                for (const player of players) {
-                    if (player.roundCalled > 0) {
-                        collectionAmount = Math.min(currentCommitment, player.roundCalled);
-                        player.roundCalled -= collectionAmount;
-                        collectedSidePot += collectionAmount;
-                    }
-                }
-
-                const amountWon = this.potManagerService.splitPot(collectedSidePot, winnersToPay.length);
-
-                // Update winner's stack in server state
-                await this.tableStateManagerService.updateTablePlayer(tableId, winner.player.id, {
-                    stack: playerMap[winner.player.id].stack + amountWon,
-                });
-
-                winnerMap[winner.player.id] = {
-                    amountWon,
-                    cards: winner.player.cards,
-                    displayText: `${winner.player.username} won ${currency(amountWon).format()} with a ${
-                        winner.category
-                    }`,
+                winnerAmountWonMap[winner.player.id] = {
+                    amountWon: collectionAmount / winnersToPay.length,
+                    category: winner.category,
                 };
             }
+        }
+
+        for (const winnerId of Object.keys(winnerAmountWonMap)) {
+            const playerId = winnerId as PlayerId;
+
+            // Update winner's stack in server state
+            await this.tableStateManagerService.updateTablePlayer(tableId, playerId, {
+                stack: playerMap[playerId].stack + winnerAmountWonMap[playerId].amountWon,
+            });
+
+            winnerMap[playerId] = {
+                amountWon: winnerAmountWonMap[playerId].amountWon,
+                cards: playerMap[playerId].cards as [Card, Card],
+                displayText: `${playerMap[playerId].username} won ${currency(
+                    winnerAmountWonMap[playerId].amountWon,
+                ).format()} with a ${winnerAmountWonMap[playerId].category}`,
+            };
         }
 
         return winnerMap;
