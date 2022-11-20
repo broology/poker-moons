@@ -403,6 +403,7 @@ export class RoundManagerService {
                 roundStatus: 'deal',
                 pot: 0,
                 toCall: 0,
+                previousRaise: table.activeRound.smallBlind * 2,
                 cards: [],
                 dealerSeat: nextDealerSeat,
             };

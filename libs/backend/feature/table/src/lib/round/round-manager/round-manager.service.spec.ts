@@ -233,6 +233,7 @@ describe('RoundManagerService', () => {
                 toCall: 0,
                 cards: [],
                 dealerSeat: 1,
+                previousRaise: 100,
             });
         });
 
