@@ -31,8 +31,10 @@ export class TableStateSoundEffects {
             this.actions$.pipe(
                 ofType(tableWsActionMap.tableStatusChanged),
                 tap(({ payload }) => {
-                    if (payload.status === 'in-progress') {
-                        this.audioPlayerService.play('shuffle');
+                    switch (payload.status) {
+                        case 'lobby':
+                        case 'in-progress':
+                        case 'ended':
                     }
                 }),
             ),
