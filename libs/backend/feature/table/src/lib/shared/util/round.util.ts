@@ -20,28 +20,31 @@ const countOccurrences = (playerStatuses: PlayerStatus[], status: PlayerStatus) 
  * the round is complete and the winner determiner should be called or false if the round should continue.
  */
 export function isRoundComplete(roundStatus: RoundStatus, playerStatuses: PlayerStatus[]): boolean {
+    const checked = countOccurrences(playerStatuses, 'checked');
+    const folded = countOccurrences(playerStatuses, 'folded');
+    const called = countOccurrences(playerStatuses, 'called');
+    const raised = countOccurrences(playerStatuses, 'raised');
+    const allIn = countOccurrences(playerStatuses, 'all-in');
+
     // Handles the case where everyone except for 1 player folds, resulting in the end of the round
-    if (countOccurrences(playerStatuses, 'folded') === playerStatuses.length - 1) {
+    if (folded === playerStatuses.length - 1) {
         return true;
     }
 
-    // If it's the river and one player has raised or gone all-in and everyone else has either called or folded, the round is over
-    if (
-        roundStatus === 'river' &&
-        (countOccurrences(playerStatuses, 'raised') === 1 || countOccurrences(playerStatuses, 'all-in') === 1) &&
-        countOccurrences(playerStatuses, 'called') + countOccurrences(playerStatuses, 'folded') ===
-            playerStatuses.length - 1
-    ) {
-        return true;
-    }
+    if (roundStatus === 'river') {
+        // If it's the river and one player has raised or gone all-in and everyone else has either called or folded, the round is over
+        if ((raised === 1 || allIn === 1) && called + folded === playerStatuses.length - 1) {
+            return true;
+        }
 
-    // If it's the river and everyone checks, the round is over
-    if (roundStatus === 'river' && countOccurrences(playerStatuses, 'checked') === playerStatuses.length) {
-        return true;
+        // If it's the river and everyone checks or folds, the round is over
+        if (checked + folded === playerStatuses.length) {
+            return true;
+        }
     }
 
     // If everyone is folded then the round is complete.
-    if (countOccurrences(playerStatuses, 'folded') === playerStatuses.length) {
+    if (folded === playerStatuses.length) {
         return true;
     }
 
