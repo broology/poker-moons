@@ -13,6 +13,7 @@ import {
 import { TurnTimerService } from '../../shared/turn-timer/turn-timer.service';
 import {
     determineStartingSeat,
+    findNextActiveSeatIfExists,
     hasBiddingCycleEnded,
     hasEveryoneButOneFolded,
     hasEveryoneTakenTurn,
@@ -129,7 +130,7 @@ export class RoundManagerService {
                 previousRaise: table.activeRound.smallBlind * 2,
             });
 
-            nextSeat = incrementSeat(table.activeRound.dealerSeat, table.seatMap);
+            nextSeat = findNextActiveSeatIfExists(table.activeRound.dealerSeat, table, playerStatuses);
 
             this.tableGatewayService.emitTableEvent(table.id, {
                 type: 'roundChanged',
