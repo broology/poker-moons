@@ -197,7 +197,7 @@ export class RoundManagerService {
             };
         }
 
-        await this.tableStateManagerService.updateAllPlayers(tableId, updatedPlayerMap);
+        await this.tableStateManagerService.updateTable(tableId, { playerMap: updatedPlayerMap });
 
         let table: ServerTableState;
 
