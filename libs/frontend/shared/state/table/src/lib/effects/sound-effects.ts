@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { select, Store } from '@ngrx/store';
 import { AudioPlayerService } from '@poker-moons/frontend/shared/util/audio';
-import { tap } from 'rxjs';
+import { concatMap, of, tap, withLatestFrom } from 'rxjs';
 import { tableWsActionMap } from '../actions/ws.actions';
+import { selectClientImmutablePlayer, selectClientSeatId } from '../table-state.selectors';
 
 @Injectable()
 export class TableStateSoundEffects {
@@ -32,9 +34,10 @@ export class TableStateSoundEffects {
                 ofType(tableWsActionMap.tableStatusChanged),
                 tap(({ payload }) => {
                     switch (payload.status) {
+                        case 'ended':
+                            return this.audioPlayerService.play('gameFinished');
                         case 'lobby':
                         case 'in-progress':
-                        case 'ended':
                     }
                 }),
             ),
@@ -45,19 +48,58 @@ export class TableStateSoundEffects {
         () =>
             this.actions$.pipe(
                 ofType(tableWsActionMap.turn),
-                tap(({ payload }) => {
+                concatMap((action) => of(action).pipe(withLatestFrom(this.store.pipe(select(selectClientSeatId))))),
+                tap(([{ payload }, clientSeatId]) => {
                     switch (payload.newStatus) {
                         case 'called':
                         case 'raised':
                         case 'all-in':
-                            return this.audioPlayerService.play('stackMove');
+                            this.audioPlayerService.play('stackMove');
+                            break;
+                        case 'checked':
+                            this.audioPlayerService.play('check');
+                            break;
                         case 'folded':
-                            return this.audioPlayerService.play('cardSlide');
+                            this.audioPlayerService.play('fold');
+                            break;
+                    }
+
+                    // Notify client it's their turn after action sound is played
+                    setTimeout(() => {
+                        if (payload.newActiveSeatId === clientSeatId) {
+                            this.audioPlayerService.play('clientTurn');
+                        }
+                    }, 500);
+                }),
+            ),
+        { dispatch: false },
+    );
+
+    winner$ = createEffect(
+        () =>
+            this.actions$.pipe(
+                ofType(tableWsActionMap.winner),
+                concatMap((action) =>
+                    of(action).pipe(withLatestFrom(this.store.pipe(select(selectClientImmutablePlayer)))),
+                ),
+                tap(([{ payload }, player]) => {
+                    if (player) {
+                        const isWinner = Object.keys(payload.winners).some((playerId) => playerId === player.id);
+
+                        if (isWinner) {
+                            return this.audioPlayerService.play('winRound');
+                        } else {
+                            return this.audioPlayerService.play('loseRound');
+                        }
                     }
                 }),
             ),
         { dispatch: false },
     );
 
-    constructor(private readonly actions$: Actions, private readonly audioPlayerService: AudioPlayerService) {}
+    constructor(
+        private readonly actions$: Actions,
+        private readonly audioPlayerService: AudioPlayerService,
+        private readonly store: Store,
+    ) {}
 }
