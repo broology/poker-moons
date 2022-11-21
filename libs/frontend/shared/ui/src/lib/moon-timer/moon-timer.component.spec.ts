@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MockNgEnvironment } from '@poker-moons/frontend/shared/util/environment';
 import { MoonTimerComponent } from './moon-timer.component';
 
 describe('MoonTimerComponent', () => {
@@ -8,6 +9,7 @@ describe('MoonTimerComponent', () => {
     beforeEach(async () => {
         await TestBed.configureTestingModule({
             declarations: [MoonTimerComponent],
+            providers: [MockNgEnvironment],
         }).compileComponents();
     });
 

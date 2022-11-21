@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
+import { MockNgEnvironment } from '@poker-moons/frontend/shared/util/environment';
 import { SeatComponent } from './seat.component';
 import { seatModuleImports } from './seat.module';
 
@@ -11,7 +12,7 @@ describe('SeatComponent', () => {
         await TestBed.configureTestingModule({
             imports: seatModuleImports,
             declarations: [SeatComponent],
-            providers: [provideMockStore()],
+            providers: [provideMockStore(), MockNgEnvironment],
         }).compileComponents();
     });
 

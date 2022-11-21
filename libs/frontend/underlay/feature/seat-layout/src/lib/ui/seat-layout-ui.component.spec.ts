@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MockNgEnvironment } from '@poker-moons/frontend/shared/util/environment';
 import { SeatLayoutUiComponent } from './seat-layout-ui.component';
 
 describe('SeatLayoutUiComponent', () => {
@@ -8,6 +9,7 @@ describe('SeatLayoutUiComponent', () => {
     beforeEach(async () => {
         await TestBed.configureTestingModule({
             declarations: [SeatLayoutUiComponent],
+            providers: [MockNgEnvironment],
         }).compileComponents();
     });
 
