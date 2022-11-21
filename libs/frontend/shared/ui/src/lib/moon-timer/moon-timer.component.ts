@@ -3,6 +3,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { interval, Observable } from 'rxjs';
 import { filter, map, shareReplay, startWith } from 'rxjs/operators';
+import { MoonTimerSoundService } from './moon-timer-sound.service';
 
 interface Time {
     total: number;
@@ -26,6 +27,7 @@ export class MoonTimerComponent implements OnInit {
         this.running = duration !== null;
         this._duration = duration ?? 2000;
         this.currentTime = duration ?? 2000;
+        this.soundService.update(duration);
     }
 
     private _duration = 2000;
@@ -33,7 +35,7 @@ export class MoonTimerComponent implements OnInit {
     public running = false;
     public displayTime$: Observable<Time>;
 
-    constructor() {
+    constructor(private readonly soundService: MoonTimerSoundService) {
         this.displayTime$ = interval(1000).pipe(
             shareReplay(1),
             startWith(this.getTime()),
@@ -47,6 +49,7 @@ export class MoonTimerComponent implements OnInit {
         this.displayTime$.pipe().subscribe((val) => {
             if (this.running) {
                 this.currentTime = val.total - 1000;
+                this.soundService.update(this.currentTime);
             }
         });
     }

@@ -1,3 +1,4 @@
+import { MockNgEnvironment } from '@poker-moons/frontend/shared/util/environment';
 import { componentWrapperDecorator, Meta, moduleMetadata, Story } from '@storybook/angular';
 import { MoonTimerComponent } from './moon-timer.component';
 import { moonTimerModuleImports } from './moon-timer.module';
@@ -8,6 +9,7 @@ export default {
     decorators: [
         moduleMetadata({
             imports: moonTimerModuleImports,
+            providers: [MockNgEnvironment],
         }),
         componentWrapperDecorator((story) => `<div style="padding: 8em; background-color: black;">${story}</div>`),
     ],
