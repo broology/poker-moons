@@ -9,8 +9,8 @@ import { PotManagerService } from '../pot-manager/pot-manager.service';
 export class BlindManagerService {
     private logger = new CustomLoggerService(BlindManagerService.name);
 
-    private BIG_BLIND = 10;
-    private SMALL_BLIND = 5;
+    private BIG_BLIND = 100;
+    private SMALL_BLIND = 50;
 
     constructor(
         private readonly tableStateManagerService: TableStateManagerService,
@@ -39,8 +39,16 @@ export class BlindManagerService {
             toCall: this.BIG_BLIND,
             smallBlind: this.SMALL_BLIND,
         });
-        const smallBlindId = this.getNextSeat(table, table.activeRound.dealerSeat);
-        const bigBlindId = this.getNextSeat(table, this.getNextSeat(table, table.activeRound.dealerSeat));
+        let smallBlindId;
+        let bigBlindId;
+        // traditionally, if there are only 2 players, the dealer gets the small blind
+        if (Object.keys(table.playerMap).length == 2) {
+            smallBlindId = table.activeRound.dealerSeat;
+            bigBlindId = this.getNextSeat(table, this.getNextSeat(table, table.activeRound.dealerSeat));
+        } else {
+            smallBlindId = this.getNextSeat(table, table.activeRound.dealerSeat);
+            bigBlindId = this.getNextSeat(table, this.getNextSeat(table, table.activeRound.dealerSeat));
+        }
 
         for (const player of Object.values(table.playerMap)) {
             if (player.seatId == smallBlindId) {

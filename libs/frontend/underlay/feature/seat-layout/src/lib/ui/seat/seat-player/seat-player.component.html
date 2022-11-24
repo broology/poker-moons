@@ -8,13 +8,13 @@
             <span class="stack">{{ mutablePlayer.stack | chipCurrency }}</span>
         </div>
         <div *ngIf="dealerSeatId === immutablePlayer.seatId" class="blind-chip">
-            <p>D</p>
+            <p class="blindChip" id="dealer">D</p>
         </div>
         <div *ngIf="immutablePlayer.seatId === bigBlindSeatId" class="blind-chip">
-            <p>B</p>
+            <p class="blindChip" id="bigBlind">B</p>
         </div>
         <div *ngIf="immutablePlayer.seatId === smallBlindSeatId" class="blind-chip">
-            <p>S</p>
+            <p class="blindChip" id="smallBlind">S</p>
         </div>
     </div>
 </ng-container>

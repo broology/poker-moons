@@ -54,3 +54,28 @@
     margin-right: s.spacing(1);
     vertical-align: top;
 }
+
+.blindChip {
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    padding: 8px;
+    text-align: center;
+
+    font: 16px Arial, sans-serif;
+    margin-right: 0.25rem;
+}
+
+#dealer {
+    background-color: white;
+    color: black;
+}
+
+#bigBlind {
+    background-color: darkkhaki;
+    color: black;
+}
+
+#smallBlind{
+    background-color: #7b42dc;
+}
