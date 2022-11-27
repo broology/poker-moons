@@ -39,8 +39,8 @@ export function isRoundComplete(roundStatus: RoundStatus, playerStatuses: Player
     }
 
     if (roundStatus === 'river') {
-        // If it's the river and one player has raised or gone all-in and everyone else has either called or folded, the round is over
-        if ((raised === 1 || allIn === 1) && called + folded === activeStatuses.length - 1) {
+        // If it's the river and one player has raised or gone all-in and everyone else has either checked, called or folded, the round is over
+        if ((raised === 1 || allIn === 1) && checked + called + folded === activeStatuses.length - 1) {
             return true;
         }
 

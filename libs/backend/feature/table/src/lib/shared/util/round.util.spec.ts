@@ -23,8 +23,8 @@ describe('Round Utils', () => {
             expect(isRoundComplete('river', ['raised', 'called', 'folded', 'folded'])).toEqual(true);
         });
 
-        it('should return true if its the river and one player has gone all-in and everyone else has either called or folded', () => {
-            expect(isRoundComplete('river', ['folded', 'called', 'all-in', 'folded'])).toEqual(true);
+        it('should return true if its the river and one player has gone all-in and everyone else has either called or folded or checked', () => {
+            expect(isRoundComplete('river', ['checked', 'called', 'all-in', 'folded'])).toEqual(true);
         });
 
         it('should return true if its the river and everyone checks', () => {
