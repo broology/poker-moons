@@ -31,21 +31,31 @@ export const selectActiveSeatId = createSelector(selectActiveRound, (round) => r
 
 export const selectDealerSeat = createSelector(selectActiveRound, (round) => round.dealerSeat);
 
-export const selectBigBlindSeat = createSelector(selectActiveRound, selectMutablePlayerMap, (round, playerMap) => {
-    if (getNumberOfActivePlayers(playerMap) === 2) {
-        return getNextSeat(round.dealerSeat.valueOf(), playerMap);
-    } else {
-        return getNextSeat(getNextSeat(round.dealerSeat.valueOf(), playerMap), playerMap);
-    }
-});
+export const selectBigBlindSeat = createSelector(
+    selectActiveRound,
+    selectSeatMap,
+    selectMutablePlayerMap,
+    (round, seatMap, playerMap) => {
+        if (getNumberOfActivePlayers(seatMap) === 2) {
+            return getNextSeat(round.dealerSeat, seatMap, playerMap);
+        } else {
+            return getNextSeat(getNextSeat(round.dealerSeat, seatMap, playerMap), seatMap, playerMap);
+        }
+    },
+);
 
-export const selectSmallBlindSeat = createSelector(selectActiveRound, selectMutablePlayerMap, (round, playerMap) => {
-    if (getNumberOfActivePlayers(playerMap) === 2) {
-        return round.dealerSeat.valueOf();
-    } else {
-        return getNextSeat(round.dealerSeat.valueOf(), playerMap);
-    }
-});
+export const selectSmallBlindSeat = createSelector(
+    selectActiveRound,
+    selectSeatMap,
+    selectMutablePlayerMap,
+    (round, seatMap, playerMap) => {
+        if (getNumberOfActivePlayers(playerMap) === 2) {
+            return round.dealerSeat.valueOf();
+        } else {
+            return getNextSeat(round.dealerSeat, seatMap, playerMap);
+        }
+    },
+);
 
 export const selectSumRoundCalled = createSelector(selectMutablePlayerMap, (mutablePlayerMap) =>
     Object.values(mutablePlayerMap).reduce((prev, cur) => prev + cur.roundCalled, 0),
@@ -78,15 +88,41 @@ export const selectImmutablePlayerBySeatId = (props: { seatId: SeatId }) =>
  *
  * @param currentSeat - The seat you want to find the next seat of.
  */
-function getNextSeat(currentSeat: number, playerMap: Record<PlayerId, MutablePublicPlayer>): number {
-    if (playerMap) {
-        let possibleSeatId = currentSeat + 1;
-        if (possibleSeatId >= Object.keys(playerMap).length) {
-            possibleSeatId = 0;
-        }
-        return possibleSeatId;
+function getNextSeat(
+    currentSeatId: SeatId,
+    seatMap: Partial<Record<SeatId, PlayerId>>,
+    playerMap: Record<PlayerId, MutablePublicPlayer>,
+): SeatId {
+    const nextSeatId = incrementSeat(currentSeatId, seatMap);
+
+    const playerId = seatMap[nextSeatId];
+
+    if (!playerId) {
+        return getNextSeat(nextSeatId, seatMap, playerMap);
     }
-    return -100;
+
+    const player = playerMap[playerId];
+
+    if (player.status === 'out') {
+        return getNextSeat(nextSeatId, seatMap, playerMap);
+    }
+
+    return nextSeatId;
+}
+
+function incrementSeat(seat: SeatId, seatMap: Partial<Record<SeatId, PlayerId>>): SeatId {
+    if (Object.keys(seatMap).length === 0) {
+        throw new Error('Unexpected error has occurred. (CODE: INCREMENTING_SEAT_IN_EMPTY_SEAT_MAP)');
+    }
+
+    const nextSeat = ((seat + 1) % 6) as SeatId;
+    const nextPlayer = seatMap[nextSeat];
+
+    if (nextPlayer) {
+        return nextSeat;
+    } else {
+        return incrementSeat(nextSeat, seatMap);
+    }
 }
 
 function getNumberOfActivePlayers(playerMap: Record<PlayerId, MutablePublicPlayer>): number {
