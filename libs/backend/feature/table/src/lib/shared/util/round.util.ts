@@ -12,7 +12,7 @@ import type {
 /**
  * @description Counts the occurrences of a particular player status from an array of statuses.
  */
-const countOccurrences = (playerStatuses: PlayerStatus[], status: PlayerStatus) =>
+export const countOccurrences = (playerStatuses: PlayerStatus[], status: PlayerStatus) =>
     playerStatuses.reduce((index, value) => (value === status ? index + 1 : index), 0);
 
 /**

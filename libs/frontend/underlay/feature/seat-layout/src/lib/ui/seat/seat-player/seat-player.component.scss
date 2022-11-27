@@ -17,6 +17,7 @@
     padding: s.spacing(0.5);
     height: s.spacing(8);
     width: s.spacing(31);
+    position: relative;
 }
 
 .active-seat {
@@ -53,4 +54,35 @@
     float: right;
     margin-right: s.spacing(1);
     vertical-align: top;
+}
+
+.chip-dip {
+    display: flex;
+    position: absolute;
+    top: -2.25rem;
+    right: -1.25rem;
+}
+
+.blind-chip {
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    padding: 8px;
+    text-align: center;
+    font: 16px Arial, sans-serif;
+    margin-right: 0.25rem;
+}
+
+#dealer {
+    background-color: white;
+    color: black;
+}
+
+#big-blind {
+    background-color: darkkhaki;
+    color: black;
+}
+
+#small-blind {
+    background-color: #7b42dc;
 }

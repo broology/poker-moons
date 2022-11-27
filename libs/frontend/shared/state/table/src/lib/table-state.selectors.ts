@@ -1,5 +1,5 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { ImmutablePublicPlayer, PlayerId, SeatId } from '@poker-moons/shared/type';
+import { ImmutablePublicPlayer, MutablePublicPlayer, Player, PlayerId, SeatId } from '@poker-moons/shared/type';
 
 import {
     selectActiveRound,
@@ -31,12 +31,20 @@ export const selectActiveSeatId = createSelector(selectActiveRound, (round) => r
 
 export const selectDealerSeat = createSelector(selectActiveRound, (round) => round.dealerSeat);
 
-export const selectBigBlindSeat = createSelector(selectActiveRound, selectImmutablePlayerMap, (round, playerMap) => {
-    return getNextSeat(getNextSeat(round.dealerSeat.valueOf(), playerMap), playerMap);
+export const selectBigBlindSeat = createSelector(selectActiveRound, selectMutablePlayerMap, (round, playerMap) => {
+    if (getNumberOfActivePlayers(playerMap) === 2) {
+        return getNextSeat(round.dealerSeat.valueOf(), playerMap);
+    } else {
+        return getNextSeat(getNextSeat(round.dealerSeat.valueOf(), playerMap), playerMap);
+    }
 });
 
-export const selectSmallBlindSeat = createSelector(selectActiveRound, selectImmutablePlayerMap, (round, playerMap) => {
-    return getNextSeat(round.dealerSeat.valueOf(), playerMap);
+export const selectSmallBlindSeat = createSelector(selectActiveRound, selectMutablePlayerMap, (round, playerMap) => {
+    if (getNumberOfActivePlayers(playerMap) === 2) {
+        return round.dealerSeat.valueOf();
+    } else {
+        return getNextSeat(round.dealerSeat.valueOf(), playerMap);
+    }
 });
 
 export const selectSumRoundCalled = createSelector(selectMutablePlayerMap, (mutablePlayerMap) =>
@@ -70,7 +78,7 @@ export const selectImmutablePlayerBySeatId = (props: { seatId: SeatId }) =>
  *
  * @param currentSeat - The seat you want to find the next seat of.
  */
-function getNextSeat(currentSeat: number, playerMap: Record<PlayerId, ImmutablePublicPlayer>): number {
+function getNextSeat(currentSeat: number, playerMap: Record<PlayerId, MutablePublicPlayer>): number {
     if (playerMap) {
         let possibleSeatId = currentSeat + 1;
         if (possibleSeatId >= Object.keys(playerMap).length) {
@@ -79,4 +87,14 @@ function getNextSeat(currentSeat: number, playerMap: Record<PlayerId, ImmutableP
         return possibleSeatId;
     }
     return -100;
+}
+
+function getNumberOfActivePlayers(playerMap: Record<PlayerId, MutablePublicPlayer>): number {
+    let count = 0;
+    for (const o of Object.values(playerMap)) {
+        if (o.status !== 'out') {
+            count++;
+        }
+    }
+    return count;
 }
