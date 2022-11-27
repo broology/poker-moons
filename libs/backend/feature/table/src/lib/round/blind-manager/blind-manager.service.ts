@@ -65,7 +65,7 @@ export class BlindManagerService {
 
                 const smallBlindUpdates = {
                     stack: newStackAmount,
-                    biddingCycleCalled: this.SMALL_BLIND,
+                    biddingCycleCalled: smallBlindAmount,
                 };
 
                 await this.tableStateManagerService.updateTablePlayer(table.id, player.id, smallBlindUpdates);
@@ -86,7 +86,7 @@ export class BlindManagerService {
 
                 const bigBlindUpdates = {
                     stack: newStackAmount,
-                    biddingCycleCalled: this.BIG_BLIND,
+                    biddingCycleCalled: bigBlindAmount,
                 };
 
                 await this.tableStateManagerService.updateTablePlayer(table.id, player.id, bigBlindUpdates);

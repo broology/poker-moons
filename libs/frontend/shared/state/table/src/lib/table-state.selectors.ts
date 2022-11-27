@@ -36,10 +36,14 @@ export const selectBigBlindSeat = createSelector(
     selectSeatMap,
     selectMutablePlayerMap,
     (round, seatMap, playerMap) => {
-        if (getNumberOfActivePlayers(seatMap) === 2) {
-            return getNextSeat(round.dealerSeat, seatMap, playerMap);
+        if (Object.keys(seatMap).length > 0) {
+            if (getNumberOfActivePlayers(seatMap) === 2) {
+                return getNextSeat(round.dealerSeat, seatMap, playerMap);
+            } else {
+                return getNextSeat(getNextSeat(round.dealerSeat, seatMap, playerMap), seatMap, playerMap);
+            }
         } else {
-            return getNextSeat(getNextSeat(round.dealerSeat, seatMap, playerMap), seatMap, playerMap);
+            return 0;
         }
     },
 );
@@ -49,10 +53,14 @@ export const selectSmallBlindSeat = createSelector(
     selectSeatMap,
     selectMutablePlayerMap,
     (round, seatMap, playerMap) => {
-        if (getNumberOfActivePlayers(playerMap) === 2) {
-            return round.dealerSeat.valueOf();
+        if (Object.keys(seatMap).length > 0) {
+            if (getNumberOfActivePlayers(playerMap) === 2) {
+                return round.dealerSeat.valueOf();
+            } else {
+                return getNextSeat(round.dealerSeat, seatMap, playerMap);
+            }
         } else {
-            return getNextSeat(round.dealerSeat, seatMap, playerMap);
+            return 0;
         }
     },
 );
