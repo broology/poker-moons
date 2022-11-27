@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CustomLoggerService } from '@poker-moons/backend/utility';
 import { Player, PlayerId, ServerTableState } from '@poker-moons/shared/type';
+import { getNextBlindSeat } from '../../shared/util/round.util';
 import { TableGatewayService } from '../../shared/websocket/table-gateway.service';
 import { TableStateManagerService } from '../../table-state-manager/table-state-manager.service';
 import { PotManagerService } from '../pot-manager/pot-manager.service';
@@ -44,16 +45,26 @@ export class BlindManagerService {
         // traditionally, if there are only 2 players, the dealer gets the small blind
         if (this.getNumberOfActivePlayers(table.playerMap) === 2) {
             smallBlindId = table.activeRound.dealerSeat;
-            bigBlindId = this.getNextSeat(table, this.getNextSeat(table, table.activeRound.dealerSeat));
+            bigBlindId = getNextBlindSeat(table.activeRound.dealerSeat, table);
         } else {
-            smallBlindId = this.getNextSeat(table, table.activeRound.dealerSeat);
-            bigBlindId = this.getNextSeat(table, this.getNextSeat(table, table.activeRound.dealerSeat));
+            smallBlindId = getNextBlindSeat(table.activeRound.dealerSeat, table);
+            bigBlindId = getNextBlindSeat(getNextBlindSeat(table.activeRound.dealerSeat, table), table);
         }
 
+        let smallBlindAmount = this.SMALL_BLIND;
+        let bigBlindAmount = this.BIG_BLIND;
         for (const player of Object.values(table.playerMap)) {
             if (player.seatId === smallBlindId) {
+                let newStackAmount;
+                if (player.stack < this.SMALL_BLIND) {
+                    newStackAmount = 0;
+                    smallBlindAmount = player.stack;
+                } else {
+                    newStackAmount = player.stack - this.SMALL_BLIND;
+                }
+
                 const smallBlindUpdates = {
-                    stack: player.stack - this.SMALL_BLIND,
+                    stack: newStackAmount,
                     biddingCycleCalled: this.SMALL_BLIND,
                 };
 
@@ -65,8 +76,16 @@ export class BlindManagerService {
                     type: 'playerChanged',
                 });
             } else if (player.seatId == bigBlindId) {
+                let newStackAmount;
+                if (player.stack < this.BIG_BLIND) {
+                    newStackAmount = 0;
+                    bigBlindAmount = player.stack;
+                } else {
+                    newStackAmount = player.stack - this.BIG_BLIND;
+                }
+
                 const bigBlindUpdates = {
-                    stack: player.stack - this.BIG_BLIND,
+                    stack: newStackAmount,
                     biddingCycleCalled: this.BIG_BLIND,
                 };
 
@@ -80,21 +99,7 @@ export class BlindManagerService {
             }
         }
 
-        await this.potManagerService.incrementPot(table.id, table.activeRound.pot, this.BIG_BLIND + this.SMALL_BLIND);
-    }
-
-    /**
-     * @description Gets the next seat id in seat order, ensuring to wrap around the table.
-     *
-     * @param table - The ServerTableState and table ID.
-     * @param currentSeat - The seat you want to find the next seat of.
-     */
-    getNextSeat(table: ServerTableState, currentSeat: number): number {
-        let possibleSeatId = currentSeat + 1;
-        if (possibleSeatId >= Object.values(table.playerMap).length) {
-            possibleSeatId = 0;
-        }
-        return possibleSeatId;
+        await this.potManagerService.incrementPot(table.id, table.activeRound.pot, bigBlindAmount + smallBlindAmount);
     }
 
     getNumberOfActivePlayers(playerMap: Record<PlayerId, Player>): number {

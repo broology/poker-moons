@@ -106,6 +106,27 @@ function nextActiveSeat(currentSeatId: SeatId, table: Pick<ServerTableState, 'pl
     return nextSeatId;
 }
 
+export function getNextBlindSeat(
+    currentSeatId: SeatId,
+    table: Pick<ServerTableState, 'playerMap' | 'seatMap'>,
+): SeatId {
+    const nextSeatId = incrementSeat(currentSeatId, table.seatMap);
+
+    const playerId = table.seatMap[nextSeatId];
+
+    if (!playerId) {
+        return getNextBlindSeat(nextSeatId, table);
+    }
+
+    const player = table.playerMap[playerId];
+
+    if (player.status === 'out') {
+        return getNextBlindSeat(nextSeatId, table);
+    }
+
+    return nextSeatId;
+}
+
 /**
  * @description Helper function to find the next active seat if it exists.
  *
