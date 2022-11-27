@@ -4,7 +4,6 @@ import { Player, PlayerId, ServerTableState } from '@poker-moons/shared/type';
 import { TableGatewayService } from '../../shared/websocket/table-gateway.service';
 import { TableStateManagerService } from '../../table-state-manager/table-state-manager.service';
 import { PotManagerService } from '../pot-manager/pot-manager.service';
-import { countOccurrences } from '../../shared/util/round.util';
 
 @Injectable()
 export class BlindManagerService {

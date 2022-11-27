@@ -1,5 +1,5 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { ImmutablePublicPlayer, MutablePublicPlayer, Player, PlayerId, SeatId } from '@poker-moons/shared/type';
+import { MutablePublicPlayer, PlayerId, SeatId } from '@poker-moons/shared/type';
 
 import {
     selectActiveRound,
