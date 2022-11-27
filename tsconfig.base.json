@@ -23,6 +23,7 @@
             ],
             "@poker-moons/backend/utility": ["libs/backend/utility/src/index.ts"],
             "@poker-moons/frontend/hud/feature/action-panel": ["libs/frontend/hud/feature/action-panel/src/index.ts"],
+            "@poker-moons/frontend/hud/feature/sound": ["libs/frontend/hud/feature/sound/src/index.ts"],
             "@poker-moons/frontend/hud/feature/winner-display": [
                 "libs/frontend/hud/feature/winner-display/src/index.ts"
             ],

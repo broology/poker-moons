@@ -9,6 +9,7 @@
         "frontend": "apps/frontend",
         "frontend-e2e": "apps/frontend-e2e",
         "frontend-hud-feature-action-panel": "libs/frontend/hud/feature/action-panel",
+        "frontend-hud-feature-sound": "libs/frontend/hud/feature/sound",
         "frontend-hud-feature-winner-display": "libs/frontend/hud/feature/winner-display",
         "frontend-hud-shell": "libs/frontend/hud/shell",
         "frontend-landing": "libs/frontend/landing",

@@ -1,4 +1,4 @@
-import { AfterContentInit, Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 @Component({
@@ -6,11 +6,27 @@ import { FormControl } from '@angular/forms';
     templateUrl: './slider-input.component.html',
     styleUrls: ['./slider-input.component.scss'],
 })
-export class SliderInputComponent implements AfterContentInit {
+export class SliderInputComponent implements AfterViewInit {
     /**
      * @description Reference to the raw `<input type='slider'.../>`
      */
     @ViewChild('slider') input!: ElementRef;
+
+    /**
+     * @description Whether or not the slider input is disabled.
+     */
+    @Input() set disabled(value: boolean) {
+        this._disabled = value;
+        if (!this.control) {
+            return;
+        }
+
+        if (value) {
+            this.control.disable();
+        } else {
+            this.control.enable();
+        }
+    }
 
     /**
      * @description The minimum value of the slider range.
@@ -32,14 +48,21 @@ export class SliderInputComponent implements AfterContentInit {
      */
     @Input() value!: number;
 
-    ngAfterContentInit(): void {
+    _disabled!: boolean;
+
+    ngAfterViewInit(): void {
+        this.update(this.value);
         this.control.valueChanges.subscribe((value) => {
-            const element = this.input.nativeElement;
-
-            const style = getComputedStyle(element);
-
-            element.style.background = this.updateLinearGradient(style.background, value);
+            this.update(value);
         });
+    }
+
+    private update(value: number) {
+        const element = this.input.nativeElement;
+
+        const style = getComputedStyle(element);
+
+        element.style.background = this.updateLinearGradient(style.background, value);
     }
 
     /**

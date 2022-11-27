@@ -1,3 +1,3 @@
-<div class="slider">
+<div [ngClass]="_disabled ? ['slider', 'slider-disabled'] : 'slider'">
     <input #slider type="range" [min]="min" [max]="max" [formControl]="control" [value]="value" />
 </div>
