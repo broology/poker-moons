@@ -39,8 +39,13 @@ export function isRoundComplete(roundStatus: RoundStatus, playerStatuses: Player
     }
 
     if (roundStatus === 'river') {
-        // If it's the river and one player has raised or gone all-in and everyone else has either checked, called or folded, the round is over
-        if ((raised === 1 || allIn === 1) && checked + called + folded === activeStatuses.length - 1) {
+        // If it's the river and one player has raised and everyone else has either called or folded, the round is over
+        if (raised === 1 && allIn + called + folded === activeStatuses.length - 1) {
+            return true;
+        }
+
+        // If it's the river and at least one player all-ins, then all other players must be checked, called or folded.
+        if (allIn > 0 && allIn + checked + called + folded === activeStatuses.length) {
             return true;
         }
 
@@ -64,13 +69,11 @@ export function isRoundComplete(roundStatus: RoundStatus, playerStatuses: Player
 export function isAutoCompletable(playerStatuses: PlayerStatus[]): boolean {
     const activeStatuses = getActivePlayerStatuses(playerStatuses);
 
+    const folded = countOccurrences(activeStatuses, 'folded');
+    const allIn = countOccurrences(activeStatuses, 'all-in');
+
     // If there is ever a point where every player has all-ined or folded, or every player but one has all-ined or folded, the round is over
-    if (
-        countOccurrences(activeStatuses, 'all-in') + countOccurrences(activeStatuses, 'folded') ===
-            activeStatuses.length - 1 ||
-        countOccurrences(activeStatuses, 'all-in') + countOccurrences(activeStatuses, 'folded') ===
-            activeStatuses.length
-    ) {
+    if (allIn + folded === activeStatuses.length - 1 || allIn + folded === activeStatuses.length) {
         return true;
     }
 
