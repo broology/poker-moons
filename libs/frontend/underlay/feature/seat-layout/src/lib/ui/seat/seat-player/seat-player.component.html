@@ -7,14 +7,16 @@
         <div class="extra">
             <span class="stack">{{ mutablePlayer.stack | chipCurrency }}</span>
         </div>
-        <div *ngIf="dealerSeatId === immutablePlayer.seatId" class="blind-chip">
-            <p class="blindChip" id="dealer">D</p>
-        </div>
-        <div *ngIf="immutablePlayer.seatId === bigBlindSeatId" class="blind-chip">
-            <p class="blindChip" id="bigBlind">B</p>
-        </div>
-        <div *ngIf="immutablePlayer.seatId === smallBlindSeatId" class="blind-chip">
-            <p class="blindChip" id="smallBlind">S</p>
+        <div class="chip-dip">
+            <div *ngIf="dealerSeatId === immutablePlayer.seatId" >
+                <p class="blind-chip" id="dealer">D</p>
+            </div>
+            <div *ngIf="immutablePlayer.seatId === bigBlindSeatId" >
+                <p class="blind-chip" id="big-blind">B</p>
+            </div>
+            <div *ngIf="immutablePlayer.seatId === smallBlindSeatId" >
+                <p class="blind-chip" id="small-blind">S</p>
+            </div>
         </div>
     </div>
 </ng-container>
