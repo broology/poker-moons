@@ -6,8 +6,6 @@
 
 <a href="https://pokermoons.net" rel="poker-moons-logo">![Poker Moons](https://user-images.githubusercontent.com/22535375/204163134-7c6e99ce-86a4-4b6e-897b-3216cfbb402c.png)</a>
 
-
-
 This project was generated using [Nx](https://nx.dev).
 
 ## Description
