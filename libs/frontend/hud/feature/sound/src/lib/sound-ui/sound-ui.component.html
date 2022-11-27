@@ -1,0 +1,17 @@
+<div class="sound-options">
+    <div class="button-container">
+        <poker-moons-secondary-button
+            [startIcon]="muted ? volumeMutedIcon : volumeHighIcon"
+            (handleClick)="toggleMute.emit()"
+        ></poker-moons-secondary-button>
+    </div>
+    <div class="slider-container">
+        <poker-moons-slider-input
+            [disabled]="muted"
+            [min]="0"
+            [max]="100"
+            [control]="volumeControl"
+            [value]="volumeControl.value"
+        ></poker-moons-slider-input>
+    </div>
+</div>

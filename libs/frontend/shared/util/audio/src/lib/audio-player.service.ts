@@ -27,6 +27,7 @@ type AudioPlayerEffect = keyof typeof audioPlayerEffects;
  */
 @Injectable({ providedIn: 'root' })
 export class AudioPlayerService {
+    private _muted = false;
     private _volume = 1;
 
     /**
@@ -34,11 +35,34 @@ export class AudioPlayerService {
      */
     private effectInstance: Partial<Record<AudioPlayerEffect, HTMLAudioElement>> = {};
 
-    constructor(@Inject(NG_ENVIRONMENT) private readonly environment: NgEnvironment) {}
+    get muted(): boolean {
+        return this._muted;
+    }
 
+    /**
+     * @description When audio is muted updates the variable and sets all active instances volume to zero.
+     */
+    set muted(value: boolean) {
+        this._muted = value;
+
+        const volume = value ? 0 : this._volume;
+        this.updateAllInstancesVolume(volume);
+    }
+
+    get volume(): number {
+        return this._volume;
+    }
+
+    /**
+     * @description When the volume is changed updates the variable and update all the active instances volume.
+     */
     set volume(level: number) {
         this._volume = level;
+
+        this.updateAllInstancesVolume(level);
     }
+
+    constructor(@Inject(NG_ENVIRONMENT) private readonly environment: NgEnvironment) {}
 
     /**
      * @description Plays the effect.
@@ -64,6 +88,19 @@ export class AudioPlayerService {
 
         if (instance) {
             instance.pause();
+        }
+    }
+
+    /**
+     * @description Updates each of the currently active sound effect instances with the volume level.
+     *
+     * This may be called when the volume is changed during active sounds.
+     */
+    private updateAllInstancesVolume(level: number) {
+        for (const instance of Object.values(this.effectInstance)) {
+            if (instance) {
+                instance.volume = level;
+            }
         }
     }
 }

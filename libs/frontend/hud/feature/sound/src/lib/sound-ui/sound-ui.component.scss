@@ -1,0 +1,31 @@
+@use '~styles/colors' as c;
+@use '~styles/spacing' as s;
+@use '~styles/breakpoints' as bp;
+
+.sound-options {
+    transform-origin: right;
+    transform: scale(0.8);
+
+    @include bp.xl {
+        transform: scale(1);
+    }
+
+    position: fixed;
+    top: 0;
+    right: 0;
+
+    display: flex;
+    width: 9em;
+    padding-right: 1em;
+    padding-top: -1em;
+}
+
+.button-container {
+    width: 3.5em;
+}
+
+.slider-container {
+    width: 7em;
+    margin: auto;
+    padding-bottom: 5px;
+}
