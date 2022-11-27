@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { CustomLoggerService } from '@poker-moons/backend/utility';
 import { Player, PlayerId, ServerTableState } from '@poker-moons/shared/type';
+import { getNextBlindSeat } from '../../shared/util/round.util';
 import { TableGatewayService } from '../../shared/websocket/table-gateway.service';
 import { TableStateManagerService } from '../../table-state-manager/table-state-manager.service';
 import { PotManagerService } from '../pot-manager/pot-manager.service';
-import { getNextBlindSeat } from '../../shared/util/round.util';
 
 @Injectable()
 export class BlindManagerService {
@@ -85,7 +85,7 @@ export class BlindManagerService {
                 }
 
                 const bigBlindUpdates = {
-                    stack: player.stack - this.BIG_BLIND,
+                    stack: newStackAmount,
                     biddingCycleCalled: this.BIG_BLIND,
                 };
 
