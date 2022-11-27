@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
+import { MockNgEnvironment } from '@poker-moons/frontend/shared/util/environment';
 import { SoundFeatureComponent } from './sound-feature.component';
 import { soundFeatureImports } from './sound-feature.module';
 
@@ -11,7 +12,7 @@ describe('SoundFeatureComponent', () => {
         await TestBed.configureTestingModule({
             imports: soundFeatureImports,
             declarations: [SoundFeatureComponent],
-            providers: [provideMockStore()],
+            providers: [provideMockStore(), MockNgEnvironment],
         }).compileComponents();
     });
 

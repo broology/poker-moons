@@ -70,10 +70,6 @@ export class AudioPlayerService {
      * @param effect - The effect to be played.
      */
     play(effect: AudioPlayerEffect): void {
-        if (this.muted) {
-            return;
-        }
-
         const instance = new Audio(`${this.environment.assets}${audioPlayerEffects[effect]}`);
 
         instance.volume = this._volume;
