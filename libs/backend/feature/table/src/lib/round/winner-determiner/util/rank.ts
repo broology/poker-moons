@@ -152,7 +152,7 @@ export function rankHand(player: PlayerWithHand): RankHandReponse {
     }
 
     // Add the rank of the highest card to the score, which acts as the kicker to break ties
-    if (category === 'two pairs' || category === 'pair' || category === 'high card') {
+    if (category === 'four of a kind' || category === 'three of a kind' || category === 'two pairs' || category === 'pair' || category === 'high card') {
         score += Math.max(
             ...Object.keys(ranks)
                 .filter((key) => ranks[key as Rank] === 1)
