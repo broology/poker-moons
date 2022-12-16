@@ -82,7 +82,7 @@ describe('Rank Utility Functions', () => {
                         roundCalled: 100,
                     },
                     category: 'three of a kind',
-                    score: 400 + 4 + 4 + 4,
+                    score: 400 + 4 + 4 + 4 + 8,
                 },
                 {
                     player: {
@@ -226,7 +226,7 @@ describe('Rank Utility Functions', () => {
             expect(result).toEqual<RankHandReponse>({
                 player,
                 category: 'three of a kind',
-                score: 400 + 4 + 4 + 4,
+                score: 400 + 4 + 4 + 4 + 8,
             });
         });
 
@@ -370,7 +370,7 @@ describe('Rank Utility Functions', () => {
             expect(result).toEqual<RankHandReponse>({
                 player,
                 category: 'four of a kind',
-                score: 800 + 4 + 4 + 4 + 4,
+                score: 800 + 4 + 4 + 4 + 4 + 7,
             });
         });
 

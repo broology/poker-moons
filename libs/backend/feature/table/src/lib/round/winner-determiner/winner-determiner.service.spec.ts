@@ -55,7 +55,7 @@ describe('WinnerDeterminerService', () => {
     const player2 = mockPlayer({
         id: 'player_2',
         username: 'Bob',
-        cards: [mockCard({ suit: 'spades', rank: '2' }), mockCard({ suit: 'hearts', rank: '8' })],
+        cards: [mockCard({ suit: 'spades', rank: '2' }), mockCard({ suit: 'hearts', rank: '3' })],
         roundCalled: 200,
     });
 
@@ -107,7 +107,10 @@ describe('WinnerDeterminerService', () => {
 
             await service.determineWinner(
                 tableId,
-                { [player1.id]: { ...player1, roundCalled: 200 }, [player2.id]: player2 },
+                {
+                    [player1.id]: { ...player1, roundCalled: 200 },
+                    [player2.id]: player2,
+                },
                 round,
             );
 
