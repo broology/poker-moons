@@ -82,7 +82,7 @@ describe('Rank Utility Functions', () => {
                         roundCalled: 100,
                     },
                     category: 'three of a kind',
-                    score: 400 + 4 + 4 + 4,
+                    score: 400 + 4 + 4 + 4 + 8,
                 },
                 {
                     player: {
