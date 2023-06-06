@@ -151,7 +151,9 @@ export function rankHand(player: PlayerWithHand): RankHandReponse {
             ) * 2;
     }
 
-    // Add the rank of the highest card to the score, which acts as the kicker to break ties
+    // Add the rank of the highest card(s) to the score, which act as the kicker(s) to break ties.
+    // Every hand must form 5 cards, so count the number of cards in the main hand and the excess
+    // become the kickers we have to consider.
     if (
         category === 'four of a kind' ||
         category === 'three of a kind' ||
@@ -159,12 +161,29 @@ export function rankHand(player: PlayerWithHand): RankHandReponse {
         category === 'pair' ||
         category === 'high card'
     ) {
-        score += Math.max(
-            ...Object.keys(ranks)
-                .filter((key) => ranks[key as Rank] === 1)
-                .map(Number),
-        );
+        // the number of kickers to consider for each category
+        const kickersCountMap: Record<string, number> = {
+            'four of a kind': 1,
+            'three of a kind': 2,
+            'two pairs': 1,
+            'pair': 3,
+            'high card': 5
+        };
+
+        let kickersCount = kickersCountMap[category];
+
+        // Find all eligible kickers (single, non-paired cards in players hand)
+        // convert to numeric value of the rank, sort from highest to lowest, and then slice based
+        // on how many kickers we need to take.
+        let kickers = Object.keys(ranks)
+            .filter((key) => ranks[key as Rank] === 1)
+            .map(Number)
+            .sort((a, b) => b - a) // sort descending
+            .slice(0, kickersCount); // take the top 'kickersCount' elements
+
+        score += kickers.reduce((a, b) => a + b, 0); // add all kickers to the score
     }
+
 
     return { player, category, score };
 }
