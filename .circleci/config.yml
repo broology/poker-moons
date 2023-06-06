@@ -6,7 +6,7 @@ version: 2.1
 
 orbs:
     aws-cli: circleci/aws-cli@1.4.1
-    node: circleci/node@5.0.1
+    node: circleci/node@5.1.0
 
 defaults: &defaults
     working_directory: ~/repo
@@ -15,7 +15,6 @@ defaults: &defaults
     resource_class: arm.medium
 
 node_config: &node_config
-    install-yarn: true
     node-version: '14.18'
 
 set_env: &set_env
@@ -56,6 +55,9 @@ commands:
             - checkout
             - node/install:
                   <<: *node_config
+            - run:
+                  name: Install Yarn
+                  command: npm install --global yarn
             - run:
                   <<: *set_env
             - restore_cache:
