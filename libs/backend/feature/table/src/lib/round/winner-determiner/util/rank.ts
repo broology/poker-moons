@@ -170,12 +170,12 @@ export function rankHand(player: PlayerWithHand): RankHandReponse {
             'high card': 5
         };
 
-        let kickersCount = kickersCountMap[category];
+        const kickersCount = kickersCountMap[category];
 
         // Find all eligible kickers (single, non-paired cards in players hand)
         // convert to numeric value of the rank, sort from highest to lowest, and then slice based
         // on how many kickers we need to take.
-        let kickers = Object.keys(ranks)
+        const kickers = Object.keys(ranks)
             .filter((key) => ranks[key as Rank] === 1)
             .map(Number)
             .sort((a, b) => b - a) // sort descending
