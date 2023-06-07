@@ -166,8 +166,8 @@ export function rankHand(player: PlayerWithHand): RankHandReponse {
             'four of a kind': 1,
             'three of a kind': 2,
             'two pairs': 1,
-            'pair': 3,
-            'high card': 5
+            pair: 3,
+            'high card': 5,
         };
 
         const kickersCount = kickersCountMap[category];
@@ -183,7 +183,6 @@ export function rankHand(player: PlayerWithHand): RankHandReponse {
 
         score += kickers.reduce((a, b) => a + b, 0); // add all kickers to the score
     }
-
 
     return { player, category, score };
 }
